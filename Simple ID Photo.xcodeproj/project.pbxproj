@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		47C49B3E2967FB1C00F2BF35 /* Simple_ID_PhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* Simple_ID_PhotoApp.swift */; };
+		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */; };
 		47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3F2967FB1C00F2BF35 /* ContentView.swift */; };
 		47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B412967FB1E00F2BF35 /* Assets.xcassets */; };
 		47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B442967FB1E00F2BF35 /* Preview Assets.xcassets */; };
@@ -37,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		47C49B3D2967FB1C00F2BF35 /* Simple_ID_PhotoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoApp.swift; sourceTree = "<group>"; };
+		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp.swift; sourceTree = "<group>"; };
 		47C49B3F2967FB1C00F2BF35 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		47C49B412967FB1E00F2BF35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47C49B442967FB1E00F2BF35 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				47C49B6C2968017A00F2BF35 /* Resources */,
-				47C49B3D2967FB1C00F2BF35 /* Simple_ID_PhotoApp.swift */,
+				47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */,
 				47C49B3F2967FB1C00F2BF35 /* ContentView.swift */,
 				47C49B462967FB1E00F2BF35 /* Persistence.swift */,
 				47C49B482967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld */,
@@ -273,7 +273,7 @@
 			files = (
 				47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */,
 				47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */,
-				47C49B3E2967FB1C00F2BF35 /* Simple_ID_PhotoApp.swift in Sources */,
+				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */,
 				47C49B4A2967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

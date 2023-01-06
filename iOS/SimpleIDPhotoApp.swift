@@ -1,5 +1,5 @@
 //
-//  Simple_ID_PhotoApp.swift
+//  SimpleIDPhotoApp.swift
 //  Simple ID Photo
 //  
 //  Created by TakashiUshikoshi on 2023/01/06
@@ -9,7 +9,7 @@
 import SwiftUI
 
 @main
-struct Simple_ID_PhotoApp: App {
+struct SimpleIDPhotoApp: App {
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
