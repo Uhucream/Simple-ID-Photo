@@ -43,7 +43,7 @@
 		47C49B442967FB1E00F2BF35 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		47C49B462967FB1E00F2BF35 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		47C49B492967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Simple_ID_Photo.xcdatamodel; sourceTree = "<group>"; };
-		47C49B4F2967FB1E00F2BF35 /* Simple ID PhotoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Simple ID PhotoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests (iOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B532967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoTests.swift; sourceTree = "<group>"; };
 		47C49B592967FB1F00F2BF35 /* Simple ID PhotoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Simple ID PhotoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITests.swift; sourceTree = "<group>"; };
@@ -89,7 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */,
-				47C49B4F2967FB1E00F2BF35 /* Simple ID PhotoTests.xctest */,
+				47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */,
 				47C49B592967FB1F00F2BF35 /* Simple ID PhotoUITests.xctest */,
 			);
 			name = Products;
@@ -161,9 +161,9 @@
 			productReference = 47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		47C49B4E2967FB1E00F2BF35 /* Simple ID PhotoTests */ = {
+		47C49B4E2967FB1E00F2BF35 /* Tests (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 47C49B662967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID PhotoTests" */;
+			buildConfigurationList = 47C49B662967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Tests (iOS)" */;
 			buildPhases = (
 				47C49B4B2967FB1E00F2BF35 /* Sources */,
 				47C49B4C2967FB1E00F2BF35 /* Frameworks */,
@@ -174,9 +174,9 @@
 			dependencies = (
 				47C49B512967FB1E00F2BF35 /* PBXTargetDependency */,
 			);
-			name = "Simple ID PhotoTests";
+			name = "Tests (iOS)";
 			productName = "Simple ID PhotoTests";
-			productReference = 47C49B4F2967FB1E00F2BF35 /* Simple ID PhotoTests.xctest */;
+			productReference = 47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		47C49B582967FB1F00F2BF35 /* Simple ID PhotoUITests */ = {
@@ -234,7 +234,7 @@
 			projectRoot = "";
 			targets = (
 				47C49B392967FB1C00F2BF35 /* Simple ID Photo */,
-				47C49B4E2967FB1E00F2BF35 /* Simple ID PhotoTests */,
+				47C49B4E2967FB1E00F2BF35 /* Tests (iOS) */,
 				47C49B582967FB1F00F2BF35 /* Simple ID PhotoUITests */,
 			);
 		};
@@ -580,7 +580,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		47C49B662967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID PhotoTests" */ = {
+		47C49B662967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Tests (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				47C49B672967FB1F00F2BF35 /* Debug */,
