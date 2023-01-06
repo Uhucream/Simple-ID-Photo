@@ -18,6 +18,7 @@
 		47C49B602967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */; };
 		47C49B71296831E600F2BF35 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B70296831E600F2BF35 /* RootView.swift */; };
 		47C49B742968326200F2BF35 /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B732968326200F2BF35 /* TopView.swift */; };
+		47C49B772968456400F2BF35 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B762968456400F2BF35 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		47C49B70296831E600F2BF35 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		47C49B732968326200F2BF35 /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
+		47C49B762968456400F2BF35 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 		47C49B6C2968017A00F2BF35 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				47C49B752968453100F2BF35 /* Firebase */,
 				47C49B432967FB1E00F2BF35 /* Preview Content */,
 				47C49B412967FB1E00F2BF35 /* Assets.xcassets */,
 			);
@@ -169,6 +172,14 @@
 				47C49B732968326200F2BF35 /* TopView.swift */,
 			);
 			path = Top;
+			sourceTree = "<group>";
+		};
+		47C49B752968453100F2BF35 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				47C49B762968456400F2BF35 /* GoogleService-Info.plist */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,6 +288,7 @@
 			files = (
 				47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */,
+				47C49B772968456400F2BF35 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
