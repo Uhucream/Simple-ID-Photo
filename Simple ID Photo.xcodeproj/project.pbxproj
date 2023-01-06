@@ -98,12 +98,11 @@
 		47C49B3C2967FB1C00F2BF35 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				47C49B6C2968017A00F2BF35 /* Resources */,
 				47C49B3D2967FB1C00F2BF35 /* Simple_ID_PhotoApp.swift */,
 				47C49B3F2967FB1C00F2BF35 /* ContentView.swift */,
-				47C49B412967FB1E00F2BF35 /* Assets.xcassets */,
 				47C49B462967FB1E00F2BF35 /* Persistence.swift */,
 				47C49B482967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld */,
-				47C49B432967FB1E00F2BF35 /* Preview Content */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -131,6 +130,15 @@
 				47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */,
 			);
 			path = UITests;
+			sourceTree = "<group>";
+		};
+		47C49B6C2968017A00F2BF35 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				47C49B432967FB1E00F2BF35 /* Preview Content */,
+				47C49B412967FB1E00F2BF35 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -424,7 +432,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -453,7 +461,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
