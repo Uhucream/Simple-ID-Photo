@@ -78,7 +78,7 @@
 		47C49B312967FB1C00F2BF35 = {
 			isa = PBXGroup;
 			children = (
-				47C49B3C2967FB1C00F2BF35 /* Simple ID Photo */,
+				47C49B3C2967FB1C00F2BF35 /* iOS */,
 				47C49B522967FB1E00F2BF35 /* Simple ID PhotoTests */,
 				47C49B5C2967FB1F00F2BF35 /* Simple ID PhotoUITests */,
 				47C49B3B2967FB1C00F2BF35 /* Products */,
@@ -95,7 +95,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		47C49B3C2967FB1C00F2BF35 /* Simple ID Photo */ = {
+		47C49B3C2967FB1C00F2BF35 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				47C49B3D2967FB1C00F2BF35 /* Simple_ID_PhotoApp.swift */,
@@ -105,7 +105,7 @@
 				47C49B482967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld */,
 				47C49B432967FB1E00F2BF35 /* Preview Content */,
 			);
-			path = "Simple ID Photo";
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		47C49B432967FB1E00F2BF35 /* Preview Content */ = {
@@ -424,7 +424,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Simple ID Photo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -453,7 +453,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Simple ID Photo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
