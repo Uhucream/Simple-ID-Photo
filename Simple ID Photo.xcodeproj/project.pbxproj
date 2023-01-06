@@ -17,6 +17,7 @@
 		47C49B5E2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */; };
 		47C49B602967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */; };
 		47C49B71296831E600F2BF35 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B70296831E600F2BF35 /* RootView.swift */; };
+		47C49B742968326200F2BF35 /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B732968326200F2BF35 /* TopView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITests.swift; sourceTree = "<group>"; };
 		47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		47C49B70296831E600F2BF35 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		47C49B732968326200F2BF35 /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				47C49B6F296831C700F2BF35 /* Root */,
+				47C49B722968324A00F2BF35 /* Top */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -158,6 +161,14 @@
 				47C49B70296831E600F2BF35 /* RootView.swift */,
 			);
 			path = Root;
+			sourceTree = "<group>";
+		};
+		47C49B722968324A00F2BF35 /* Top */ = {
+			isa = PBXGroup;
+			children = (
+				47C49B732968326200F2BF35 /* TopView.swift */,
+			);
+			path = Top;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,6 +305,7 @@
 				47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */,
 				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */,
 				47C49B4A2967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld in Sources */,
+				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				47C49B71296831E600F2BF35 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
