@@ -79,7 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				47C49B3C2967FB1C00F2BF35 /* iOS */,
-				47C49B522967FB1E00F2BF35 /* Simple ID PhotoTests */,
+				47C49B522967FB1E00F2BF35 /* Tests */,
 				47C49B5C2967FB1F00F2BF35 /* Simple ID PhotoUITests */,
 				47C49B3B2967FB1C00F2BF35 /* Products */,
 			);
@@ -116,12 +116,12 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		47C49B522967FB1E00F2BF35 /* Simple ID PhotoTests */ = {
+		47C49B522967FB1E00F2BF35 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				47C49B532967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift */,
 			);
-			path = "Simple ID PhotoTests";
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		47C49B5C2967FB1F00F2BF35 /* Simple ID PhotoUITests */ = {
