@@ -45,7 +45,7 @@
 		47C49B492967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Simple_ID_Photo.xcdatamodel; sourceTree = "<group>"; };
 		47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests (iOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B532967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoTests.swift; sourceTree = "<group>"; };
-		47C49B592967FB1F00F2BF35 /* Simple ID PhotoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Simple ID PhotoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UITests (iOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITests.swift; sourceTree = "<group>"; };
 		47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,7 +90,7 @@
 			children = (
 				47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */,
 				47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */,
-				47C49B592967FB1F00F2BF35 /* Simple ID PhotoUITests.xctest */,
+				47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -179,9 +179,9 @@
 			productReference = 47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		47C49B582967FB1F00F2BF35 /* Simple ID PhotoUITests */ = {
+		47C49B582967FB1F00F2BF35 /* UITests (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 47C49B692967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID PhotoUITests" */;
+			buildConfigurationList = 47C49B692967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "UITests (iOS)" */;
 			buildPhases = (
 				47C49B552967FB1F00F2BF35 /* Sources */,
 				47C49B562967FB1F00F2BF35 /* Frameworks */,
@@ -192,9 +192,9 @@
 			dependencies = (
 				47C49B5B2967FB1F00F2BF35 /* PBXTargetDependency */,
 			);
-			name = "Simple ID PhotoUITests";
+			name = "UITests (iOS)";
 			productName = "Simple ID PhotoUITests";
-			productReference = 47C49B592967FB1F00F2BF35 /* Simple ID PhotoUITests.xctest */;
+			productReference = 47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -235,7 +235,7 @@
 			targets = (
 				47C49B392967FB1C00F2BF35 /* Simple ID Photo */,
 				47C49B4E2967FB1E00F2BF35 /* Tests (iOS) */,
-				47C49B582967FB1F00F2BF35 /* Simple ID PhotoUITests */,
+				47C49B582967FB1F00F2BF35 /* UITests (iOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -589,7 +589,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		47C49B692967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID PhotoUITests" */ = {
+		47C49B692967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "UITests (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				47C49B6A2967FB1F00F2BF35 /* Debug */,
