@@ -26,9 +26,9 @@ struct TopView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.borderedProminent)
                     .controlSize(.large)
-                    .tint(.secondary)
+                    .tint(.systemGray3)
 
                     Button(action: {
                         
@@ -41,9 +41,9 @@ struct TopView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.borderedProminent)
                     .controlSize(.large)
-                    .tint(.accentColor)
+                    .tint(.cyan)
                 }
                 .padding()
                 
