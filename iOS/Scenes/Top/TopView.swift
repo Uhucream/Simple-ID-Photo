@@ -49,15 +49,10 @@ struct TopView: View {
                 }
                 .padding()
                 
-                VStack {
-                    Spacer()
-                    
-                    Text("作成された証明写真がありません")
-                        .foregroundColor(.secondaryLabel)
-                    
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Text("作成された証明写真がありません")
+                    .foregroundColor(.secondaryLabel)
+                
+                Spacer()
             }
             .frame(minHeight: screenSizeHelper.screenHeight)
         }
