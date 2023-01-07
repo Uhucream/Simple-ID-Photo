@@ -25,9 +25,9 @@ struct TopView: View {
                                 .font(.callout)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 4)
                     }
                     .buttonStyle(.bordered)
+                    .controlSize(.large)
                     .tint(.secondary)
 
                     Button(action: {
@@ -40,9 +40,9 @@ struct TopView: View {
                                 .font(.callout)
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 4)
                     }
                     .buttonStyle(.bordered)
+                    .controlSize(.large)
                     .tint(.accentColor)
                 }
                 .padding()
