@@ -9,44 +9,72 @@
 import SwiftUI
 
 struct TopView: View {
+    @EnvironmentObject var screenSizeHelper: ScreenSizeHelper
+    
     var body: some View {
-        Group {
+        ScrollView {
             VStack {
-                Spacer()
-                
-                Text("作成された証明写真がありません")
-                    .foregroundColor(.secondary)
-                
-                Spacer()
-            }
-            .frame(maxHeight: .infinity)
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Menu {
+                HStack {
                     Button(action: {
                         
                     }) {
-                        Label("カメラで撮影", systemImage: "camera")
+                        VStack(spacing: 4) {
+                            Image(systemName: "photo.on.rectangle.angled")
+                            
+                            Text("アルバムから選択")
+                                .font(.callout)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 4)
                     }
-                    
+                    .buttonStyle(.bordered)
+                    .tint(.secondary)
+
                     Button(action: {
                         
                     }) {
-                        Label("写真ライブラリから選択", systemImage: "photo.on.rectangle")
+                        VStack(spacing: 4) {
+                            Image(systemName: "camera")
+                            
+                            Text("カメラで撮影")
+                                .font(.callout)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 4)
                     }
-                } label: {
-                    Label("create", systemImage: "plus")
+                    .buttonStyle(.bordered)
+                    .tint(.accentColor)
                 }
+                .padding()
+                
+                VStack {
+                    Spacer()
+                    
+                    Text("作成された証明写真がありません")
+                        .foregroundColor(.secondary)
+                    
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+            .frame(minHeight: screenSizeHelper.screenHeight)
         }
     }
 }
 
 struct TopView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        let screenSizeHelper: ScreenSizeHelper = .shared
+        
+        GeometryReader { geometry in
             TopView()
+                .onAppear {
+                    screenSizeHelper.update(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
+                }
+                .onChange(of: geometry.size) { (screenSize: CGSize) in
+                    screenSizeHelper.update(screenWidth: screenSize.width, screenHeight: screenSize.height)
+                }
         }
+        .environmentObject(screenSizeHelper)
     }
 }
