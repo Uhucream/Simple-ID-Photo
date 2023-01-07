@@ -9,8 +9,23 @@
 import SwiftUI
 
 struct TopViewContainer: View {
+    @State private var shouldShowCameraView: Bool = false
+    
+    @State private var pictureURL: URL? = nil
+    
+    func showCameraView() -> Void {
+        shouldShowCameraView = true
+    }
+    
     var body: some View {
-        TopView()
+        TopView(
+            onTapTakePictureButton: {
+                showCameraView()
+            }
+        )
+        .fullScreenCover(isPresented: $shouldShowCameraView) {
+            CameraView(pictureURL: $pictureURL)
+        }
     }
 }
 
