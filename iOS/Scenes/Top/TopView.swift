@@ -9,14 +9,17 @@
 import SwiftUI
 
 struct TopView: View {
-    @EnvironmentObject var screenSizeHelper: ScreenSizeHelper
+    @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
+    
+    var onTapSelectFromAlbumButton: (() -> Void)?
+    var onTapTakePictureButton: (() -> Void)?
     
     var body: some View {
         ScrollView {
             VStack {
                 HStack {
                     Button(action: {
-                        
+                        onTapSelectFromAlbumButton?()
                     }) {
                         VStack(spacing: 4) {
                             Image(systemName: "photo.on.rectangle.angled")
@@ -32,7 +35,7 @@ struct TopView: View {
                     .tint(.systemGray3)
 
                     Button(action: {
-                        
+                        onTapTakePictureButton?()
                     }) {
                         VStack(spacing: 4) {
                             Image(systemName: "camera")
