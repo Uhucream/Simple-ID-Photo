@@ -342,9 +342,10 @@
 			};
 			buildConfigurationList = 47C49B352967FB1C00F2BF35 /* Build configuration list for PBXProject "Simple ID Photo" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ja,
 				en,
 				Base,
 			);
