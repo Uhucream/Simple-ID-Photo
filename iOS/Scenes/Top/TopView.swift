@@ -53,7 +53,7 @@ struct TopView: View {
                     Spacer()
                     
                     Text("作成された証明写真がありません")
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondaryLabel)
                     
                     Spacer()
                 }
