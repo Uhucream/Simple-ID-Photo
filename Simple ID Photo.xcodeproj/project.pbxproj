@@ -33,6 +33,7 @@
 		47C49B90296847CE00F2BF35 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 47C49B8F296847CE00F2BF35 /* FirebaseStorageCombine-Community */; };
 		47C49B94296849A700F2BF35 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B93296849A700F2BF35 /* CameraView.swift */; };
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
+		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		47C49B762968456400F2BF35 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		47C49B93296849A700F2BF35 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
+		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 		47C49B3C2967FB1C00F2BF35 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				47D9041029692E7B00DD4FAF /* Extensions */,
 				47D9040D2969141300DD4FAF /* Utilities */,
 				47C49B6E296831BB00F2BF35 /* Scenes */,
 				47C49B912968497A00F2BF35 /* ViewComponents */,
@@ -234,6 +237,14 @@
 				47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		47D9041029692E7B00DD4FAF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				47D9041129692E9200DD4FAF /* Color+.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -385,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */,
+				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
 				47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */,
 				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */,
