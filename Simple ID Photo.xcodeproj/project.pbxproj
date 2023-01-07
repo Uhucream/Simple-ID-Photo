@@ -32,6 +32,7 @@
 		47C49B8E296847CE00F2BF35 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 47C49B8D296847CE00F2BF35 /* FirebaseStorage */; };
 		47C49B90296847CE00F2BF35 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 47C49B8F296847CE00F2BF35 /* FirebaseStorageCombine-Community */; };
 		47C49B94296849A700F2BF35 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B93296849A700F2BF35 /* CameraView.swift */; };
+		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		47C49B732968326200F2BF35 /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
 		47C49B762968456400F2BF35 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		47C49B93296849A700F2BF35 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 		47C49B3C2967FB1C00F2BF35 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				47D9040D2969141300DD4FAF /* Utilities */,
 				47C49B6E296831BB00F2BF35 /* Scenes */,
 				47C49B912968497A00F2BF35 /* ViewComponents */,
 				47C49B6C2968017A00F2BF35 /* Resources */,
@@ -223,6 +226,14 @@
 				47C49B93296849A700F2BF35 /* CameraView.swift */,
 			);
 			path = RepresentedViews;
+			sourceTree = "<group>";
+		};
+		47D9040D2969141300DD4FAF /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,6 +388,7 @@
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
 				47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */,
 				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */,
+				47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */,
 				47C49B4A2967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld in Sources */,
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				47C49B71296831E600F2BF35 /* RootView.swift in Sources */,
