@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		479BBC562969534400C02BB7 /* en.xcloc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC542969534400C02BB7 /* en.xcloc */; };
-		479BBC572969534400C02BB7 /* ja.xcloc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC552969534400C02BB7 /* ja.xcloc */; };
 		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */; };
 		47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3F2967FB1C00F2BF35 /* ContentView.swift */; };
 		47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B412967FB1E00F2BF35 /* Assets.xcassets */; };
@@ -56,8 +54,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		479BBC542969534400C02BB7 /* en.xcloc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = en.xcloc; sourceTree = "<group>"; };
-		479BBC552969534400C02BB7 /* ja.xcloc */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ja.xcloc; sourceTree = "<group>"; };
 		47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp.swift; sourceTree = "<group>"; };
 		47C49B3F2967FB1C00F2BF35 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -118,8 +114,6 @@
 		479BBC532969534400C02BB7 /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
-				479BBC542969534400C02BB7 /* en.xcloc */,
-				479BBC552969534400C02BB7 /* ja.xcloc */,
 			);
 			path = Localizations;
 			sourceTree = "<group>";
@@ -385,8 +379,6 @@
 			files = (
 				47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */,
-				479BBC562969534400C02BB7 /* en.xcloc in Resources */,
-				479BBC572969534400C02BB7 /* ja.xcloc in Resources */,
 				47C49B772968456400F2BF35 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

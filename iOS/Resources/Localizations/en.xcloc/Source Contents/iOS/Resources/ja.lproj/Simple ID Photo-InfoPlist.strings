@@ -1,4 +1,0 @@
-/* Bundle name */
-"CFBundleName" = "Simple ID Photo";
-/* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "証明写真を作成するためにカメラを使用します。";
