@@ -23,6 +23,7 @@ struct TopView: View {
                             
                             Text("アルバムから選択")
                                 .font(.callout)
+                                .fontWeight(.medium)
                         }
                         .frame(maxWidth: .infinity)
                     }
@@ -38,6 +39,7 @@ struct TopView: View {
                             
                             Text("カメラで撮影")
                                 .font(.callout)
+                                .fontWeight(.medium)
                         }
                         .frame(maxWidth: .infinity)
                     }
