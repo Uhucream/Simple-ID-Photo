@@ -9,9 +9,15 @@
 import SwiftUI
 
 struct TopViewContainer: View {
+    @State private var shouldShowPicturePickerView: Bool = false
+    
     @State private var shouldShowCameraView: Bool = false
     
     @State private var pictureURL: URL? = nil
+    
+    func showPicturePickerView() -> Void {
+        shouldShowPicturePickerView = true
+    }
     
     func showCameraView() -> Void {
         shouldShowCameraView = true
@@ -19,10 +25,16 @@ struct TopViewContainer: View {
     
     var body: some View {
         TopView(
+            onTapSelectFromAlbumButton: {
+                showPicturePickerView()
+            },
             onTapTakePictureButton: {
                 showCameraView()
             }
         )
+        .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
+            PicturePickerView(pictureURL: $pictureURL)
+        }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
             CameraView(pictureURL: $pictureURL)
         }
