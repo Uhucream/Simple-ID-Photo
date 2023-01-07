@@ -61,6 +61,7 @@ struct TopView: View {
             }
             .frame(minHeight: screenSizeHelper.screenHeight)
         }
+        .navigationTitle("証明写真")
     }
 }
 
@@ -68,15 +69,17 @@ struct TopView_Previews: PreviewProvider {
     static var previews: some View {
         let screenSizeHelper: ScreenSizeHelper = .shared
         
-        GeometryReader { geometry in
-            TopView()
-                .onAppear {
-                    screenSizeHelper.update(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
-                }
-                .onChange(of: geometry.size) { (screenSize: CGSize) in
-                    screenSizeHelper.update(screenWidth: screenSize.width, screenHeight: screenSize.height)
-                }
+        NavigationView {
+            GeometryReader { geometry in
+                TopView()
+                    .onAppear {
+                        screenSizeHelper.update(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
+                    }
+                    .onChange(of: geometry.size) { (screenSize: CGSize) in
+                        screenSizeHelper.update(screenWidth: screenSize.width, screenHeight: screenSize.height)
+                    }
+            }
+            .environmentObject(screenSizeHelper)
         }
-        .environmentObject(screenSizeHelper)
     }
 }
