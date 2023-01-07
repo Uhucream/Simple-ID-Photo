@@ -15,24 +15,22 @@ struct ContentView: View {
     @EnvironmentObject var screenSizeHelper: ScreenSizeHelper
 
     var body: some View {
-        NavigationView {
-            GeometryReader { rootGeometry in
-                RootView()
-                    .onAppear {
-                        screenSizeHelper
-                            .update(
-                                screenWidth: rootGeometry.size.width,
-                                screenHeight: rootGeometry.size.height
-                            )
-                    }
-                    .onChange(of: rootGeometry.size) { (screenSize: CGSize) -> Void in
-                        screenSizeHelper
-                            .update(
-                                screenWidth: screenSize.width,
-                                screenHeight: screenSize.height
-                            )
-                    }
-            }
+        GeometryReader { rootGeometry in
+            RootView()
+                .onAppear {
+                    screenSizeHelper
+                        .update(
+                            screenWidth: rootGeometry.size.width,
+                            screenHeight: rootGeometry.size.height
+                        )
+                }
+                .onChange(of: rootGeometry.size) { (screenSize: CGSize) -> Void in
+                    screenSizeHelper
+                        .update(
+                            screenWidth: screenSize.width,
+                            screenHeight: screenSize.height
+                        )
+                }
         }
     }
 }
