@@ -57,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		47013AEB296C006B000A0D89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		479BBC7829696DCB00C02BB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		479BBC7A29696DD800C02BB7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		479BBC7E29696E0500C02BB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -119,6 +120,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		47013AEA296C004C000A0D89 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				47013AEB296C006B000A0D89 /* README.md */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		479BBC532969534400C02BB7 /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +201,7 @@
 		47C49B6C2968017A00F2BF35 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				47013AEA296C004C000A0D89 /* Firebase */,
 				479BBC532969534400C02BB7 /* Localizations */,
 				47C49B432967FB1E00F2BF35 /* Preview Content */,
 				47C49B412967FB1E00F2BF35 /* Assets.xcassets */,
