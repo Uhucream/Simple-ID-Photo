@@ -58,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		47013AEB296C006B000A0D89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		47013AEC296C0224000A0D89 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		479BBC7829696DCB00C02BB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		479BBC7A29696DD800C02BB7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		479BBC7E29696E0500C02BB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		47013AEA296C004C000A0D89 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
+				47013AEC296C0224000A0D89 /* GoogleService-Info.plist */,
 				47013AEB296C006B000A0D89 /* README.md */,
 			);
 			path = Firebase;
