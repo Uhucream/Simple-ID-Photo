@@ -32,7 +32,7 @@ struct CreateIDPhotoViewContainer: View {
         }
     }
     
-    func maskSourceImage(_ maskPixelBuffer: CVPixelBuffer) -> Void {
+    func maskSourceImage(_ maskPixelBuffer: CVPixelBuffer) async -> Void {
         
         guard let solidColorBackgroundUIImage: UIImage = .init(color: idPhotoBackgroundColor, size: idPhotoSize) else { return }
         guard let solidColorBackgroundCGImage: CGImage = solidColorBackgroundUIImage.cgImage else { return }
@@ -75,7 +75,7 @@ struct CreateIDPhotoViewContainer: View {
         previewUIImage = filteredUIImage
     }
     
-    func performVisionRequest() -> Void {
+    func performVisionRequest() async throws -> Void {
 
         let segmentationRequest: VNGeneratePersonSegmentationRequest = .init()
         
@@ -92,9 +92,9 @@ struct CreateIDPhotoViewContainer: View {
             let mask = segmentationRequest.results!.first!
             let maskBuffer = mask.pixelBuffer
             
-            maskSourceImage(maskBuffer)
+            await maskSourceImage(maskBuffer)
         } catch {
-            print(error)
+            throw error
         }
     }
     
@@ -104,10 +104,12 @@ struct CreateIDPhotoViewContainer: View {
             previewUIImage: $previewUIImage
         )
         .task {
-            performVisionRequest()
+            try? await performVisionRequest()
         }
         .onChange(of: idPhotoBackgroundColor)  { _ in
-            performVisionRequest()
+            Task {
+                try? await performVisionRequest()
+            }
         }
     }
 }
