@@ -1,9 +1,9 @@
 //
 //  VisionIDPhotoGenerator.swift
 //  Simple ID Photo
-//  
+//
 //  Created by TakashiUshikoshi on 2023/01/15
-//  
+//
 //
 
 import SwiftUI
@@ -22,6 +22,8 @@ final class VisionIDPhotoGenerator: ObservableObject {
     @Published var idPhotoBackgroundColor: Color = .init(0x5FB8DE, alpha: 1.0)
     
     private var sourceImageSize: CGSize = .zero
+    
+    private var faceWithHairRectangle: CGRect = .zero
     
     init(sourceCIImage: CIImage?) {
         self.sourceCIImage = sourceCIImage
@@ -55,6 +57,29 @@ final class VisionIDPhotoGenerator: ObservableObject {
             self.generatedIDPhoto = maskedImage
         } catch {
             throw error
+        }
+    }
+    
+    func performHumanRectanglesAndFaceLandmarksRequest() -> Void {
+        
+        let humanRectanglesRequest: VNDetectHumanRectanglesRequest = .init()
+        
+        let faceLandmarksRequest: VNDetectFaceLandmarksRequest = .init()
+        
+        guard let sourceCIImage = sourceCIImage else { return }
+        
+        let imageReqeustHandler: VNImageRequestHandler = .init(ciImage: sourceCIImage, options: [:])
+        
+        do {
+            try imageReqeustHandler.perform([humanRectanglesRequest, faceLandmarksRequest])
+
+            self.faceWithHairRectangle = getFaceWithHairRectangle(
+                imageSize: sourceCIImage.extent.size,
+                humanRectanglesRequest: humanRectanglesRequest,
+                faceLandmarksRequest: faceLandmarksRequest
+            )
+        } catch {
+            print(error)
         }
     }
 }
@@ -101,5 +126,69 @@ extension VisionIDPhotoGenerator {
         let filteredUIImage: UIImage = .init(cgImage: filteredCGImage)
         
         return filteredUIImage
+    }
+    
+    func getFaceWithHairRectangle(imageSize: CGSize, humanRectanglesRequest: VNDetectHumanRectanglesRequest, faceLandmarksRequest: VNDetectFaceLandmarksRequest) -> CGRect {
+        
+        guard let humanObservation = humanRectanglesRequest.results?.first as? VNHumanObservation else { return .zero }
+
+        guard let faceObservation = faceLandmarksRequest.results?.first as? VNFaceObservation else { return CGRect.zero }
+        
+        let humanNormalizedRectangle: CGRect = humanObservation.boundingBox
+        
+        let originConvertedHumanNormalizedRectangle: CGRect = .init(
+            origin: CGPoint(
+                x: humanNormalizedRectangle.origin.x,
+                y: 1 - humanNormalizedRectangle.maxY
+            ),
+            size: humanNormalizedRectangle.size
+        )
+
+        let denormalizedHumanRectangle: CGRect = VNImageRectForNormalizedRect(originConvertedHumanNormalizedRectangle, Int(imageSize.width), Int(imageSize.height))
+
+        guard let faceContourLandmark2D = faceObservation.landmarks?.faceContour else { return CGRect.zero }
+        
+        let denormalizedFaceContourPoints: [CGPoint] = faceContourLandmark2D.pointsInImage(imageSize: imageSize)
+        
+        let originConvertedFaceContourPoints: [CGPoint] = denormalizedFaceContourPoints
+            .map { point in
+                return CGPoint(x: point.x, y: imageSize.height - point.y)
+            }
+        
+        let faceNormalizedRectangle: CGRect = faceObservation.boundingBox
+        
+        let originConvertedNormalizedFaceRectangle: CGRect = .init(
+            origin: CGPoint(
+                x: faceNormalizedRectangle.origin.x,
+                y: 1 - faceNormalizedRectangle.maxY
+            ),
+            size: faceNormalizedRectangle.size
+        )
+        
+        let denormalizedFaceRectangle: CGRect = VNImageRectForNormalizedRect(originConvertedNormalizedFaceRectangle, Int(imageSize.width), Int(imageSize.height))
+        
+        guard let bottomPointOfFaceWithHairRect: CGPoint = originConvertedFaceContourPoints.max(by: { $0.y < $1.y }) else { return CGRect.zero }
+        
+        let bottomYOfFaceWithHairRect =  bottomPointOfFaceWithHairRect.y
+        
+        let topYOfFaceWithHairRect: CGFloat = denormalizedHumanRectangle.minY
+        
+        let topLeftXOfFaceWithHairRect: CGFloat = denormalizedFaceRectangle.origin.x
+        
+        let faceWithHairRectWidth: CGFloat = denormalizedFaceRectangle.width
+        let faceWithHairRectHeight: CGFloat = bottomYOfFaceWithHairRect - topYOfFaceWithHairRect
+
+        let faceWithHairRectangle: CGRect = .init(
+            origin: CGPoint(
+                x: topLeftXOfFaceWithHairRect,
+                y: topYOfFaceWithHairRect
+            ),
+            size: CGSize(
+                width: Double(faceWithHairRectWidth),
+                height: Double(faceWithHairRectHeight)
+            )
+        )
+        
+        return faceWithHairRectangle
     }
 }
