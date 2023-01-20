@@ -72,3 +72,22 @@ extension Color {
     static let systemGray5 = Color(uiColor: .systemGray5)
     static let systemGray6 = Color(uiColor: .systemGray6)
 }
+
+// MARK: Fixed colors
+extension Color {
+    static let fixedBlack = Color(uiColor: .black)
+    static let fixedDarkGray = Color(uiColor: .darkGray)
+    static let fixedLightGray = Color(uiColor: .lightGray)
+    static let fixedWhite = Color(uiColor: .white)
+    static let fixedGray = Color(uiColor: .gray)
+    static let fixedRed = Color(uiColor: .red)
+    static let fixedGreen = Color(uiColor: .green)
+    static let fixedBlue = Color(uiColor: .blue)
+    static let fixedCyan = Color(uiColor: .cyan)
+    static let fixedYellow = Color(uiColor: .yellow)
+    static let fixedMagenta = Color(uiColor: .magenta)
+    static let fixedOrange = Color(uiColor: .orange)
+    static let fixedPurple = Color(uiColor: .purple)
+    static let fixedBrown = Color(uiColor: .brown)
+    static let fixedClear = Color(uiColor: .clear)
+}
