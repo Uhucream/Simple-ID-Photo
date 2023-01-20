@@ -13,6 +13,8 @@ struct TopViewContainer: View {
     
     @State private var shouldShowCameraView: Bool = false
     
+    @State private var shouldShowCreateIDPhotoView: Bool = false
+    
     @State private var pictureURL: URL? = nil
     
     func showPicturePickerView() -> Void {
@@ -37,6 +39,23 @@ struct TopViewContainer: View {
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
             CameraView(pictureURL: $pictureURL)
+        }
+        .onChange(of: pictureURL) { newPictureURL in
+            guard newPictureURL != nil else { return }
+            
+            shouldShowCreateIDPhotoView = true
+        }
+        .background {
+            NavigationLink(isActive: $shouldShowCreateIDPhotoView) {
+                if let pictureURL = pictureURL, let ciImageFromURL = CIImage(contentsOf: pictureURL) {
+                    CreateIDPhotoViewContainer(
+                        sourceCIImage: ciImageFromURL
+                    )
+                }
+            } label: {
+                Color.clear
+            }
+            .isDetailLink(false)
         }
     }
 }
