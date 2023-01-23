@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
 		475FB236296FD5000059796F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB235296FD5000059796F /* UIImage+.swift */; };
@@ -65,6 +66,7 @@
 /* Begin PBXFileReference section */
 		47013AEB296C006B000A0D89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		47013AEC296C0224000A0D89 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4728DA43297ECC180056767F /* IDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSize.swift; sourceTree = "<group>"; };
 		47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionIDPhotoGenerator.swift; sourceTree = "<group>"; };
 		475FB231296FD47F0059796F /* CreateIDPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIDPhotoView.swift; sourceTree = "<group>"; };
 		475FB235296FD5000059796F /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
@@ -142,6 +144,22 @@
 			path = Firebase;
 			sourceTree = "<group>";
 		};
+		4728DA3F297EA7240056767F /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				4728DA42297ECBFE0056767F /* IDPhoto */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		4728DA42297ECBFE0056767F /* IDPhoto */ = {
+			isa = PBXGroup;
+			children = (
+				4728DA43297ECC180056767F /* IDPhotoSize.swift */,
+			);
+			path = IDPhoto;
+			sourceTree = "<group>";
+		};
 		475FB230296FD47F0059796F /* CreateIDPhoto */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +201,7 @@
 		47C49B3C2967FB1C00F2BF35 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4728DA3F297EA7240056767F /* Entities */,
 				47D9041029692E7B00DD4FAF /* Extensions */,
 				47D9040D2969141300DD4FAF /* Utilities */,
 				47C49B6E296831BB00F2BF35 /* Scenes */,
@@ -460,6 +479,7 @@
 				479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */,
 				475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */,
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
+				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
 				47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */,
 				475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */,
 				47C49B71296831E600F2BF35 /* RootView.swift in Sources */,
