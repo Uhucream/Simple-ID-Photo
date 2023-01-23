@@ -16,6 +16,7 @@
 		479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC7F29696E0500C02BB7 /* InfoPlist.strings */; };
 		479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC8129696FF900C02BB7 /* TopViewContainer.swift */; };
 		479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC832969754800C02BB7 /* PicturePickerView.swift */; };
+		47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1C7BE297E3B4700A22EAB /* CIImage+.swift */; };
 		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */; };
 		47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3F2967FB1C00F2BF35 /* ContentView.swift */; };
 		47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B412967FB1E00F2BF35 /* Assets.xcassets */; };
@@ -75,6 +76,7 @@
 		479BBC8029696E0900C02BB7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		479BBC8129696FF900C02BB7 /* TopViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewContainer.swift; sourceTree = "<group>"; };
 		479BBC832969754800C02BB7 /* PicturePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePickerView.swift; sourceTree = "<group>"; };
+		47C1C7BE297E3B4700A22EAB /* CIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+.swift"; sourceTree = "<group>"; };
 		47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp.swift; sourceTree = "<group>"; };
 		47C49B3F2967FB1C00F2BF35 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 		47D9041029692E7B00DD4FAF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				47C1C7BE297E3B4700A22EAB /* CIImage+.swift */,
 				475FB235296FD5000059796F /* UIImage+.swift */,
 				47D9041129692E9200DD4FAF /* Color+.swift */,
 			);
@@ -448,6 +451,7 @@
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
 				47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */,
+				47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */,
 				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */,
 				479573E2296C1B1400B98881 /* IDPhotoSizePickerView.swift in Sources */,
 				47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */,
