@@ -21,7 +21,7 @@ struct CreateIDPhotoView: View {
     
     private let BACKGROUND_COLORS: [Color] = [Color(0x5FB8DE, alpha: 1.0), Color(0xA5A5AD, alpha: 1.0)]
     
-    @State private var selectedProcess: IDPhotoProcessSelection = .size
+    @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor
     
     @Binding var selectedBackgroundColor: Color
     
