@@ -16,7 +16,7 @@ import CoreImage.CIFilterBuiltins
 final class VisionIDPhotoGenerator: ObservableObject {
     var sourceCIImage: CIImage?
     
-    @Published var generatedIDPhoto: UIImage? = nil
+    @Published var generatedIDPhoto: CIImage? = nil
     
     @Published var idPhotoSize: CGSize = .init(width: 1296, height: 746)
     @Published var idPhotoBackgroundColor: Color = .init(0x5FB8DE, alpha: 1.0)
@@ -50,7 +50,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
             let mask = segmentationRequest.results!.first!
             let maskBuffer = mask.pixelBuffer
             
-            let maskedImage: UIImage? = await maskSourceImage(maskBuffer)
+            let maskedImage: CIImage? = await maskSourceImage(maskBuffer)
             
             guard let maskedImage = maskedImage else { return }
             
@@ -68,7 +68,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
         
         guard let sourceCIImage = sourceCIImage else { return }
         
-        let imageReqeustHandler: VNImageRequestHandler = .init(ciImage: sourceCIImage, options: [:])
+        let imageReqeustHandler: VNImageRequestHandler = .init(ciImage: sourceCIImage, orientation: .up, options: [:])
         
         do {
             try imageReqeustHandler.perform([humanRectanglesRequest, faceLandmarksRequest])
@@ -85,7 +85,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
 }
 
 extension VisionIDPhotoGenerator {
-    func maskSourceImage(_ maskPixelBuffer: CVPixelBuffer) async -> UIImage? {
+    func maskSourceImage(_ maskPixelBuffer: CVPixelBuffer) async -> CIImage? {
         
         guard let solidColorBackgroundUIImage: UIImage = .init(color: idPhotoBackgroundColor, size: idPhotoSize) else { return nil }
         guard let solidColorBackgroundCGImage: CGImage = solidColorBackgroundUIImage.cgImage else { return nil }
@@ -119,13 +119,7 @@ extension VisionIDPhotoGenerator {
         
         guard let blendedCIImage: CIImage = blendWithMaskFilter.outputImage else { return nil }
         
-        let ciContext: CIContext = .init()
-        
-        guard let filteredCGImage = ciContext.createCGImage(blendedCIImage, from: blendedCIImage.extent) else { return nil }
-        
-        let filteredUIImage: UIImage = .init(cgImage: filteredCGImage)
-        
-        return filteredUIImage
+        return blendedCIImage
     }
     
     func getFaceWithHairRectangle(imageSize: CGSize, humanRectanglesRequest: VNDetectHumanRectanglesRequest, faceLandmarksRequest: VNDetectFaceLandmarksRequest) -> CGRect {
