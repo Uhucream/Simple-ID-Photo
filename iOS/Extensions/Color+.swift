@@ -1,9 +1,9 @@
 //
 //  Color+.swift
 //  Simple ID Photo
-//  
+//
 //  Created by TakashiUshikoshi on 2023/01/07
-//  
+//
 //
 
 import SwiftUI
@@ -75,19 +75,18 @@ extension Color {
 
 // MARK: Fixed colors
 extension Color {
-    static let fixedBlack = Color(uiColor: .black)
-    static let fixedDarkGray = Color(uiColor: .darkGray)
-    static let fixedLightGray = Color(uiColor: .lightGray)
-    static let fixedWhite = Color(uiColor: .white)
-    static let fixedGray = Color(uiColor: .gray)
-    static let fixedRed = Color(uiColor: .red)
-    static let fixedGreen = Color(uiColor: .green)
-    static let fixedBlue = Color(uiColor: .blue)
-    static let fixedCyan = Color(uiColor: .cyan)
-    static let fixedYellow = Color(uiColor: .yellow)
-    static let fixedMagenta = Color(uiColor: .magenta)
-    static let fixedOrange = Color(uiColor: .orange)
-    static let fixedPurple = Color(uiColor: .purple)
-    static let fixedBrown = Color(uiColor: .brown)
-    static let fixedClear = Color(uiColor: .clear)
-}
+    static let fixedBlack = Color(uiColor: UIColor(white: 0.0, alpha: 1.0))
+    static let fixedDarkGray = Color(uiColor: UIColor(white: 0.33, alpha: 1.0))
+    static let fixedLightGray = Color(uiColor: UIColor(white: 0.67, alpha: 1.0))
+    static let fixedWhite = Color(uiColor: UIColor(white: 1.0, alpha: 1.0))
+    static let fixedGray = Color(uiColor: UIColor(white: 0.5, alpha: 1.0))
+    static let fixedRed = Color(uiColor: UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0))
+    static let fixedGreen = Color(uiColor: UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0))
+    static let fixedBlue = Color(uiColor: UIColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0))
+    static let fixedCyan = Color(uiColor: UIColor(red: 0.0, green: 1.0, blue: 1.0, alpha: 1.0))
+    static let fixedYellow = Color(uiColor: UIColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0))
+    static let fixedMagenta = Color(uiColor: UIColor(red: 1.0, green: 0.0, blue: 1.0, alpha: 1.0))
+    static let fixedOrange = Color(uiColor: UIColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1.0))
+    static let fixedPurple = Color(uiColor: UIColor(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0))
+    static let fixedBrown = Color(uiColor: UIColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0))
+    }
