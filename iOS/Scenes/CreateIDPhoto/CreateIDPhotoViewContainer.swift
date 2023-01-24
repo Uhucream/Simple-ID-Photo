@@ -44,9 +44,9 @@ struct CreateIDPhotoViewContainer: View {
             }
         }
         .onChange(of: visionIDPhotoGenerator.generatedIDPhoto) { newGeneratedIDPhoto in
-            guard let newGeneratedIDPhoto = newGeneratedIDPhoto else { return }
+            guard let newGeneratedIDPhotoUIImage: UIImage = newGeneratedIDPhoto?.uiImage(orientation: .up) else { return }
             
-            self.refreshPreviewImage(newImage: newGeneratedIDPhoto)
+            self.refreshPreviewImage(newImage: newGeneratedIDPhotoUIImage)
         }
     }
 }
