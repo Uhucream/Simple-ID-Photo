@@ -21,8 +21,8 @@ struct CreateIDPhotoViewContainer: View {
         
         self.visionIDPhotoGenerator = .init(sourceCIImage: sourceCIImage)
         
-        if let unwrappedSourceCIImage = sourceCIImage {
-            _previewUIImage = State(initialValue: UIImage(ciImage: unwrappedSourceCIImage))
+        if let unwrappedSourceUIImage = sourceCIImage?.uiImage(orientation: .up) {
+            _previewUIImage = State(initialValue: unwrappedSourceUIImage)
         }
     }
     
