@@ -23,7 +23,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
     
     private var sourceImageSize: CGSize = .zero
     
-    private var faceWithHairRectangle: CGRect = .zero
+    var faceWithHairRectangle: CGRect = .zero
     
     init(sourceCIImage: CIImage?) {
         self.sourceCIImage = sourceCIImage
