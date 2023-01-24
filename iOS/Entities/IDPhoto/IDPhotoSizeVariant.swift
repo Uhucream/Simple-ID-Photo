@@ -10,6 +10,8 @@ import Foundation
 
 public enum IDPhotoSizeVariant: CaseIterable {
     
+    case original
+    
     case passport
     
     case w24_h30
@@ -29,6 +31,16 @@ public enum IDPhotoSizeVariant: CaseIterable {
         let GENERIC_FACE_HEIGHT_PERCENTAGE: Double = (60 / 100)
         
         switch self {
+
+        case .original:
+            let width: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            let height: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            
+            let faceHeight: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            
+            let marginTop: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: marginTop)
             
         case .passport:
             let width: Measurement<UnitLength> = .init(value: 35, unit: .millimeters)
@@ -128,6 +140,9 @@ extension IDPhotoSizeVariant {
     var purposeInJapan: [String] {
         
         switch self {
+            
+        case .original:
+            return []
             
         case .passport:
             return [
