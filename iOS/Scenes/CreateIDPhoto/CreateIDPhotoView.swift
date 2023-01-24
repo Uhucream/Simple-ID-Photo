@@ -13,40 +13,6 @@ struct IDPhotoBackgroundColor {
     let color: Color
 }
 
-struct IDPhotoBackgroundColorPicker: View {
-    var availableBackgroundColors: [Color]
-    
-    @Binding var selectedBackgroundColor: Color
-    
-    var body: some View {
-        HStack(alignment: .center, spacing: 12) {
-            ForEach(availableBackgroundColors, id: \.self) { color in
-                ZStack {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(color)
-                        .aspectRatio(1.0, contentMode: .fit)
-                        .frame(maxHeight: .infinity)
-                        .padding(4)
-                        .overlay {
-                            if color == selectedBackgroundColor {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.tintColor, lineWidth: 2)
-                                
-                                Image(systemName: "checkmark")
-                                    .resizable()
-                                    .padding()
-                                    .foregroundColor(.systemBackground)
-                            }
-                        }
-                }
-                .onTapGesture {
-                    selectedBackgroundColor = color
-                }
-            }
-        }
-    }
-}
-
 struct CreateIDPhotoView: View {
     private let BACKGROUND_COLORS: [Color] = [Color(0x5FB8DE, alpha: 1.0), Color(0xA5A5AD, alpha: 1.0)]
     
