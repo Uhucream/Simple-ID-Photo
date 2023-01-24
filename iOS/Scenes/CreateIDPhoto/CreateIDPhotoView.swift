@@ -13,18 +13,118 @@ struct IDPhotoBackgroundColor {
     let color: Color
 }
 
+struct IDPhotoSizePicker: View {
+    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
+    
+    private func renderSelectionLabelText(_ sizeVariant: IDPhotoSizeVariant) -> Text {
+        if sizeVariant == .original {
+            return Text("オリジナル")
+        }
+        
+        if sizeVariant == .passport {
+            return Text("パスポート (35 x 45 mm)")
+        }
+        
+        let photoWidth: Int = Int(sizeVariant.photoSize.width.value)
+        let photoHeight: Int = Int(sizeVariant.photoSize.height.value)
+        
+        let unitSymbol: String = sizeVariant.photoSize.height.unit.symbol
+        
+        return Text("\(photoWidth) x \(photoHeight) \(unitSymbol)")
+    }
+    
+    var body: some View {
+        HStack {
+            ScrollViewReader { scrollViewProxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 4) {
+                        ForEach(IDPhotoSizeVariant.allCases, id: \.self) { sizeSelection in
+                            let isSelected: Bool = self.selectedIDPhotoSize == sizeSelection
+                            
+                            ZStack {
+                                renderSelectionLabelText(sizeSelection)
+                            }
+                            .font(.system(size: 14.0, design: .rounded))
+                            .fontWeight(.regular)
+                            .foregroundColor(
+                                isSelected ? .fixedWhite : .fixedLightGray
+                            )
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 1)
+                            .background {
+                                ZStack {
+                                    if isSelected {
+                                        BlurView(blurStyle: .systemChromeMaterialDark)
+                                            .background {
+                                                Color.fixedLightGray
+                                            }
+                                            .clipShape(Capsule())
+                                    }
+                                }
+                            }
+                            .onTapGesture {
+                                selectedIDPhotoSize = sizeSelection
+                            }
+                            .id(sizeSelection)
+                        }
+                    }
+                    .padding()
+                    .onAppear {
+                        if selectedIDPhotoSize == .original {
+                            return
+                        }
+                        
+                        scrollViewProxy.scrollTo(selectedIDPhotoSize)
+                    }
+                }
+            }
+        }
+    }
+}
+
 struct CreateIDPhotoView: View {
+    private enum IDPhotoProcessSelection {
+        case backgroundColor
+        case size
+    }
+    
     private let BACKGROUND_COLORS: [Color] = [Color(0x5FB8DE, alpha: 1.0), Color(0xA5A5AD, alpha: 1.0)]
     
-    @State private var shouldShowSelectSizeSheet: Bool = false
+    @State private var selectedProcess: IDPhotoProcessSelection = .size
     
     @Binding var selectedBackgroundColor: Color
     
+    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
+    
     @Binding var previewUIImage: UIImage?
     
+    var onTapDismissButton: (() -> Void)? = nil
+    var onTapSaveButton: (() -> Void)? = nil
+    
     var body: some View {
-        VStack(spacing: 0) {
-            Group {
+        VStack(alignment: .center) {
+            HStack {
+                ZStack {
+                    if selectedProcess == .backgroundColor {
+                        Text("背景色")
+                    }
+                    
+                    if selectedProcess == .size {
+                        Text("サイズ")
+                    }
+                }
+                .font(Font.subheadline)
+                .fontWeight(.light)
+                .foregroundColor(.white)
+                .transaction { transaction in
+                    transaction.animation = .none
+                }
+            }
+            .padding()
+            
+            Spacer()
+            
+            ZStack {
                 if let previewUIImage = previewUIImage {
                     Image(uiImage: previewUIImage)
                         .resizable()
@@ -38,56 +138,116 @@ struct CreateIDPhotoView: View {
             }
             .frame(maxHeight: 280)
             
-            Form {
-                Section {
-                    ScrollView(.horizontal) {
-                        IDPhotoBackgroundColorPicker(
-                            availableBackgroundColors: BACKGROUND_COLORS,
-                            selectedBackgroundColor: $selectedBackgroundColor
-                        )
-                        .frame(minHeight: 48)
-                        .padding()
+            Spacer()
+            
+            VStack(spacing: 0) {
+                ZStack {
+                    if self.selectedProcess == .backgroundColor {
+                        HStack {
+                            Spacer()
+                            
+                            IDPhotoBackgroundColorPicker(
+                                availableBackgroundColors: BACKGROUND_COLORS,
+                                selectedBackgroundColor: $selectedBackgroundColor
+                            )
+                            
+                            Spacer()
+                        }
                     }
-                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                } header: {
-                    Text("背景色")
+                    
+                    if self.selectedProcess == .size {
+                        IDPhotoSizePicker(selectedIDPhotoSize: $selectedIDPhotoSize)
+                    }
+                }
+                .transaction { transaction in
+                    transaction.animation = .none
                 }
                 
-                Section {
-                    HStack {
-                        Text("サイズを選択")
-                            .foregroundColor(.tintColor)
-                        
-                        Spacer()
-                        
-                        Image(systemName: "chevron.up.chevron.down")
+                HStack(alignment: .center) {
+                    Button(
+                        role: .destructive,
+                        action: {
+                            self.onTapDismissButton?()
+                        }
+                    ) {
+                        Label("終了", systemImage: "xmark")
+                            .labelStyle(.iconOnly)
                     }
-                    .onTapGesture {
-                        shouldShowSelectSizeSheet = true
+                    .controlSize(.mini)
+                    
+                    Spacer()
+                    
+                    HStack(alignment: .center, spacing: 12) {
+                        Button(
+                            action: {
+                                var transaction: Transaction = .init(animation: .easeInOut)
+                                
+                                transaction.disablesAnimations = true
+                                
+                                withTransaction(transaction) {
+                                    self.selectedProcess = .backgroundColor
+                                }
+                            }
+                        ) {
+                            VStack(spacing: 2) {
+                                Label("背景色", systemImage: "paintbrush")
+                                    .labelStyle(.iconOnly)
+                                    .padding(8)
+                                
+                                Circle()
+                                    .frame(width: 4, height: 4)
+                                    .foregroundColor(self.selectedProcess == .backgroundColor ? .yellow : .clear)
+                            }
+                        }
+                        .tint(.white)
+                        
+                        Button(
+                            action: {
+                                var transaction: Transaction = .init(animation: .easeInOut)
+                                
+                                transaction.disablesAnimations = true
+                                
+                                withTransaction(transaction) {
+                                    self.selectedProcess = .size
+                                }
+                            }
+                        ) {
+                            VStack(spacing: 2) {
+                                Label("サイズ", systemImage: "person.crop.rectangle")
+                                    .labelStyle(.iconOnly)
+                                    .padding(8)
+                                
+                                Circle()
+                                    .frame(width: 4, height: 4)
+                                    .foregroundColor(self.selectedProcess == .size ? .yellow : .clear)
+                            }
+                        }
+                        .tint(.white)
                     }
-                } header: {
-                    Text("サイズ")
+                    
+                    Spacer()
+                    
+                    Button(
+                        action: {
+                            
+                        }
+                    ) {
+                        Image(systemName: "square.and.arrow.down")
+                    }
+                    .tint(.yellow)
+                    .controlSize(.mini)
                 }
+                .frame(maxHeight: 28)
+                .padding()
             }
         }
         .background {
             Color
-                .systemGroupedBackground
+                .fixedBlack
+                .overlay {
+                    BlurView(blurStyle: .systemChromeMaterialDark)
+                }
                 .edgesIgnoringSafeArea(.all)
-        }
-        .sheet(isPresented: $shouldShowSelectSizeSheet) {
-            NavigationView {
-                IDPhotoSizePickerView()
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button(action: {
-                                
-                            }) {
-                                Text("閉じる")
-                            }
-                        }
-                    }
-            }
         }
     }
 }
@@ -98,6 +258,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
             selectedBackgroundColor: .constant(
                 Color(0x5FB8DE, alpha: 1.0)
             ),
+            selectedIDPhotoSize: .constant(.original),
             previewUIImage: .constant(
                 .init(named: "TimCook")
             )

@@ -1,9 +1,9 @@
 //
 //  CreateIDPhotoViewContainer.swift
 //  Simple ID Photo
-//  
+//
 //  Created by TakashiUshikoshi on 2023/01/11
-//  
+//
 //
 
 import SwiftUI
@@ -16,6 +16,8 @@ struct CreateIDPhotoViewContainer: View {
     @ObservedObject var visionIDPhotoGenerator: VisionIDPhotoGenerator
     
     @State private var previewUIImage: UIImage? = nil
+    
+    @State private var selectedIDPhotoSize: IDPhotoSizeVariant = .original
     
     init(sourceCIImage: CIImage?) {
         
@@ -33,7 +35,8 @@ struct CreateIDPhotoViewContainer: View {
     var body: some View {
         CreateIDPhotoView(
             selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
-            previewUIImage: $previewUIImage
+            selectedIDPhotoSize: $selectedIDPhotoSize,
+            previewUIImage: $previewUIImage.animation()
         )
         .task {
             try? await visionIDPhotoGenerator.performPersonSegmentationRequest()
@@ -48,6 +51,7 @@ struct CreateIDPhotoViewContainer: View {
             
             self.refreshPreviewImage(newImage: newGeneratedIDPhotoUIImage)
         }
+        .toolbar(.hidden)
     }
 }
 
