@@ -130,52 +130,31 @@ extension VisionIDPhotoGenerator {
         
         let humanNormalizedRectangle: CGRect = humanObservation.boundingBox
         
-        let originConvertedHumanNormalizedRectangle: CGRect = .init(
-            origin: CGPoint(
-                x: humanNormalizedRectangle.origin.x,
-                y: 1 - humanNormalizedRectangle.maxY
-            ),
-            size: humanNormalizedRectangle.size
-        )
-
-        let denormalizedHumanRectangle: CGRect = VNImageRectForNormalizedRect(originConvertedHumanNormalizedRectangle, Int(imageSize.width), Int(imageSize.height))
+        let denormalizedHumanRectangle: CGRect = VNImageRectForNormalizedRect(humanNormalizedRectangle, Int(imageSize.width), Int(imageSize.height))
 
         guard let faceContourLandmark2D = faceObservation.landmarks?.faceContour else { return CGRect.zero }
         
         let denormalizedFaceContourPoints: [CGPoint] = faceContourLandmark2D.pointsInImage(imageSize: imageSize)
         
-        let originConvertedFaceContourPoints: [CGPoint] = denormalizedFaceContourPoints
-            .map { point in
-                return CGPoint(x: point.x, y: imageSize.height - point.y)
-            }
-        
         let faceNormalizedRectangle: CGRect = faceObservation.boundingBox
         
-        let originConvertedNormalizedFaceRectangle: CGRect = .init(
-            origin: CGPoint(
-                x: faceNormalizedRectangle.origin.x,
-                y: 1 - faceNormalizedRectangle.maxY
-            ),
-            size: faceNormalizedRectangle.size
-        )
+        let denormalizedFaceRectangle: CGRect = VNImageRectForNormalizedRect(faceNormalizedRectangle, Int(imageSize.width), Int(imageSize.height))
         
-        let denormalizedFaceRectangle: CGRect = VNImageRectForNormalizedRect(originConvertedNormalizedFaceRectangle, Int(imageSize.width), Int(imageSize.height))
-        
-        guard let bottomPointOfFaceWithHairRect: CGPoint = originConvertedFaceContourPoints.max(by: { $0.y < $1.y }) else { return CGRect.zero }
+        guard let bottomPointOfFaceWithHairRect: CGPoint = denormalizedFaceContourPoints.min(by: { $0.y < $1.y }) else { return CGRect.zero }
         
         let bottomYOfFaceWithHairRect =  bottomPointOfFaceWithHairRect.y
         
-        let topYOfFaceWithHairRect: CGFloat = denormalizedHumanRectangle.minY
-        
+        let topYOfFaceWithHairRect: CGFloat = denormalizedHumanRectangle.maxY
         let topLeftXOfFaceWithHairRect: CGFloat = denormalizedFaceRectangle.origin.x
         
         let faceWithHairRectWidth: CGFloat = denormalizedFaceRectangle.width
-        let faceWithHairRectHeight: CGFloat = bottomYOfFaceWithHairRect - topYOfFaceWithHairRect
 
+        let faceWithHairRectHeight: CGFloat = topYOfFaceWithHairRect - bottomYOfFaceWithHairRect
+        
         let faceWithHairRectangle: CGRect = .init(
             origin: CGPoint(
                 x: topLeftXOfFaceWithHairRect,
-                y: topYOfFaceWithHairRect
+                y: bottomYOfFaceWithHairRect
             ),
             size: CGSize(
                 width: Double(faceWithHairRectWidth),
