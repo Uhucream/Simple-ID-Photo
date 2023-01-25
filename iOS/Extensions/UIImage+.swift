@@ -34,4 +34,21 @@ extension UIImage {
 
         self.init(cgImage: cgImage)
     }
+    
+    //    MARK: Generate an UIImage from an URL
+    //
+    //    http://web.archive.org/web/20230125022524/https://www.rasukarusan.com/entry/2019/01/07/233207
+    convenience init(url: URL) {
+        do {
+            let data = try Data(contentsOf: url)
+
+            self.init(data: data)!
+
+            return
+        } catch {
+            print("Error: \(error)")
+        }
+
+        self.init()
+    }
 }
