@@ -103,6 +103,7 @@ struct CreateIDPhotoView: View {
                     ) {
                         Label("終了", systemImage: "xmark")
                             .labelStyle(.iconOnly)
+                            .padding()
                     }
                     .controlSize(.mini)
                     
@@ -164,12 +165,14 @@ struct CreateIDPhotoView: View {
                         }
                     ) {
                         Image(systemName: "square.and.arrow.down")
+                            .padding()
                     }
                     .tint(.yellow)
                     .controlSize(.mini)
                 }
                 .frame(maxHeight: 28)
-                .padding()
+                .padding(.vertical)
+                .padding(.horizontal, 4)
             }
         }
         .background {
