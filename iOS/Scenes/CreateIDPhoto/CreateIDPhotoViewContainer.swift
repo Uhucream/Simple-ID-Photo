@@ -13,6 +13,8 @@ import CoreImage.CIFilterBuiltins
 import VideoToolbox
 
 struct CreateIDPhotoViewContainer: View {
+    @Environment(\.dismiss) var dismiss
+    
     @ObservedObject var visionIDPhotoGenerator: VisionIDPhotoGenerator
     
     @State private var previewUIImage: UIImage? = nil
@@ -21,6 +23,8 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var croppingRect: CGRect = .zero
     
+    @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
+    
     init(sourceCIImage: CIImage?) {
         
         self.visionIDPhotoGenerator = .init(sourceCIImage: sourceCIImage)
@@ -28,6 +32,10 @@ struct CreateIDPhotoViewContainer: View {
         if let unwrappedSourceUIImage = sourceCIImage?.uiImage(orientation: .up) {
             _previewUIImage = State(initialValue: unwrappedSourceUIImage)
         }
+    }
+    
+    func showDiscardViewConfirmationDialog() -> Void {
+        shouldShowDiscardViewConfirmationDialog = true
     }
     
     func refreshPreviewImage(newImage: UIImage) -> Void {
@@ -96,7 +104,10 @@ struct CreateIDPhotoViewContainer: View {
         CreateIDPhotoView(
             selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
             selectedIDPhotoSize: $selectedIDPhotoSize,
-            previewUIImage: $previewUIImage.animation()
+            previewUIImage: $previewUIImage.animation(),
+            onTapDismissButton: {
+                showDiscardViewConfirmationDialog()
+            }
         )
         .task {
             try? await visionIDPhotoGenerator.performPersonSegmentationRequest()
@@ -115,6 +126,19 @@ struct CreateIDPhotoViewContainer: View {
         }
         .onChange(of: self.selectedIDPhotoSize) { _ in
             self.cropImage()
+        }
+        .confirmationDialog(
+            "証明写真作成を終了",
+            isPresented: $shouldShowDiscardViewConfirmationDialog
+        ) {
+            Button(
+                role: .destructive,
+                action: {
+                    dismiss()
+                }
+            ) {
+                Text("保存せずに終了")
+            }
         }
         .toolbar(.hidden)
     }
