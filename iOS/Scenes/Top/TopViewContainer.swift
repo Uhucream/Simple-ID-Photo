@@ -47,9 +47,12 @@ struct TopViewContainer: View {
         }
         .background {
             NavigationLink(isActive: $shouldShowCreateIDPhotoView) {
-                if let pictureURL = pictureURL, let ciImageFromURL = CIImage(contentsOf: pictureURL) {
+                if let pictureURL = pictureURL,
+                   let uiimageFromURL = UIImage(url: pictureURL),
+                   let orientationFixedUIImage = uiimageFromURL.orientationFixed()
+                {
                     CreateIDPhotoViewContainer(
-                        sourceCIImage: ciImageFromURL
+                        sourceUIImage: orientationFixedUIImage
                     )
                 }
             } label: {

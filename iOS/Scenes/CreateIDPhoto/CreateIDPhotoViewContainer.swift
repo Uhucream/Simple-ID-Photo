@@ -25,13 +25,13 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
-    init(sourceCIImage: CIImage?) {
+    init(sourceUIImage: UIImage?) {
         
-        self.visionIDPhotoGenerator = .init(sourceCIImage: sourceCIImage)
+        self.visionIDPhotoGenerator = .init(
+            sourceCIImage: sourceUIImage?.ciImage(),
+        )
         
-        if let unwrappedSourceUIImage = sourceCIImage?.uiImage(orientation: .up) {
-            _previewUIImage = State(initialValue: unwrappedSourceUIImage)
-        }
+        _previewUIImage = State(initialValue: sourceUIImage)
     }
     
     func showDiscardViewConfirmationDialog() -> Void {
@@ -149,7 +149,7 @@ struct CreateIDPhotoViewContainer_Previews: PreviewProvider {
         let sampleUIImage: UIImage = UIImage(named: "TimCook")!
         
         NavigationView {
-            CreateIDPhotoViewContainer(sourceCIImage: .init(image: sampleUIImage))
+            CreateIDPhotoViewContainer(sourceUIImage: sampleUIImage)
         }
     }
 }
