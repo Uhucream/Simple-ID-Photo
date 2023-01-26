@@ -16,6 +16,8 @@ struct TopViewContainer: View {
     
     @State private var shouldShowCreateIDPhotoView: Bool = false
     
+    @State private var isThisViewDisappeared: Bool = false
+    
     @State private var pictureURL: URL? = nil
     
     func showPicturePickerView() -> Void {
@@ -55,19 +57,34 @@ struct TopViewContainer: View {
     }
     
     var body: some View {
-        TopView(
-            onTapSelectFromAlbumButton: {
-                showPicturePickerView()
-            },
-            onTapTakePictureButton: {
-                showCameraView()
+        ZStack {
+            TopView(
+                onTapSelectFromAlbumButton: {
+                    showPicturePickerView()
+                },
+                onTapTakePictureButton: {
+                    showCameraView()
+                }
+            )
+            
+            if self.pictureURL != nil && !self.isThisViewDisappeared {
+                Color
+                    .clear
+                    .ignoresSafeArea()
+                    .overlay(.ultraThinMaterial)
+                    .overlay {
+                        ProgressView()
+                    }
             }
-        )
+        }
         .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
             PicturePickerView(pictureURL: $pictureURL)
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
             CameraView(pictureURL: $pictureURL)
+        }
+        .onDisappear {
+            isThisViewDisappeared = true
         }
         .onChange(of: pictureURL) { newPictureURL in
             guard newPictureURL != nil else { return }
