@@ -51,13 +51,17 @@ struct TopView: View {
                     .tint(.cyan)
                 }
                 .padding()
-                
-                Text("作成された証明写真がありません")
-                    .foregroundColor(.secondaryLabel)
-                
-                Spacer()
+
+                VStack {
+                    Spacer()
+                    
+                    Text("作成された証明写真がありません")
+                        .foregroundColor(.secondaryLabel)
+                    
+                    Spacer()
+                }
+                .aspectRatio(3 / 4, contentMode: .fit)
             }
-            .frame(minHeight: screenSizeHelper.screenHeight)
         }
         .navigationTitle("証明写真")
     }
