@@ -16,6 +16,8 @@ import CoreImage.CIFilterBuiltins
 final class VisionIDPhotoGenerator: ObservableObject {
     var sourceCIImage: CIImage?
     
+    var sourceImageOrientation: CGImagePropertyOrientation
+    
     @Published var generatedIDPhoto: CIImage? = nil
     
     @Published var idPhotoSize: CGSize = .init(width: 1296, height: 746)
@@ -25,8 +27,10 @@ final class VisionIDPhotoGenerator: ObservableObject {
     
     var faceWithHairRectangle: CGRect = .zero
     
-    init(sourceCIImage: CIImage?) {
+    init(sourceCIImage: CIImage?, sourceImageOrientation: CGImagePropertyOrientation) {
         self.sourceCIImage = sourceCIImage
+        
+        self.sourceImageOrientation = sourceImageOrientation
         
         guard let sourceCIImage = sourceCIImage else { return }
         
@@ -42,7 +46,11 @@ final class VisionIDPhotoGenerator: ObservableObject {
         
         guard let sourceCIImage: CIImage = sourceCIImage else { return }
         
-        let imageRequestHandler: VNImageRequestHandler = .init(ciImage: sourceCIImage, options: [:])
+        let imageRequestHandler: VNImageRequestHandler = .init(
+            ciImage: sourceCIImage,
+            orientation: self.sourceImageOrientation,
+            options: [:]
+        )
         
         do {
             try imageRequestHandler.perform([segmentationRequest])
@@ -68,7 +76,11 @@ final class VisionIDPhotoGenerator: ObservableObject {
         
         guard let sourceCIImage = sourceCIImage else { return }
         
-        let imageReqeustHandler: VNImageRequestHandler = .init(ciImage: sourceCIImage, orientation: .up, options: [:])
+        let imageReqeustHandler: VNImageRequestHandler = .init(
+            ciImage: sourceCIImage,
+            orientation: self.sourceImageOrientation,
+            options: [:]
+        )
         
         do {
             try imageReqeustHandler.perform([humanRectanglesRequest, faceLandmarksRequest])

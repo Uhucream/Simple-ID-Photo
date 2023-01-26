@@ -18,6 +18,7 @@ struct CreateIDPhotoViewContainer: View {
     @ObservedObject var visionIDPhotoGenerator: VisionIDPhotoGenerator
     
     @State private var previewUIImage: UIImage? = nil
+    @State private var sourceImageOrientation: UIImage.Orientation
     
     @State private var selectedIDPhotoSize: IDPhotoSizeVariant = .original
     
@@ -29,9 +30,12 @@ struct CreateIDPhotoViewContainer: View {
         
         self.visionIDPhotoGenerator = .init(
             sourceCIImage: sourceUIImage?.ciImage(),
+            sourceImageOrientation: .init(sourceUIImage?.imageOrientation ?? .up)
         )
         
         _previewUIImage = State(initialValue: sourceUIImage)
+
+        _sourceImageOrientation = State(initialValue: sourceUIImage?.imageOrientation ?? .up)
     }
     
     func showDiscardViewConfirmationDialog() -> Void {
@@ -93,7 +97,7 @@ struct CreateIDPhotoViewContainer: View {
         
         let croppedImage = generatedCIImage.cropped(to: croppingRect)
         
-        self.previewUIImage = croppedImage.uiImage(orientation: .up)
+        self.previewUIImage = croppedImage.uiImage(orientation: self.sourceImageOrientation)
     }
     
 //    func cropImageAsPassportSize() -> Void {
@@ -120,7 +124,7 @@ struct CreateIDPhotoViewContainer: View {
             }
         }
         .onChange(of: visionIDPhotoGenerator.generatedIDPhoto) { newGeneratedIDPhoto in
-            guard let newGeneratedIDPhotoUIImage: UIImage = newGeneratedIDPhoto?.uiImage(orientation: .up) else { return }
+            guard let newGeneratedIDPhotoUIImage: UIImage = newGeneratedIDPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
             
             self.refreshPreviewImage(newImage: newGeneratedIDPhotoUIImage)
         }
