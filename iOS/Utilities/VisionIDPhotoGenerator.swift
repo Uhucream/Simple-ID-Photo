@@ -12,7 +12,6 @@ import Vision
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
-@MainActor
 final class VisionIDPhotoGenerator: ObservableObject {
     var sourceCIImage: CIImage?
     
@@ -25,7 +24,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
     
     private var sourceImageSize: CGSize = .zero
     
-    var faceWithHairRectangle: CGRect = .zero
+    lazy var faceWithHairRectangle: CGRect = .zero
     
     init(sourceCIImage: CIImage?, sourceImageOrientation: CGImagePropertyOrientation) {
         self.sourceCIImage = sourceCIImage
@@ -58,11 +57,13 @@ final class VisionIDPhotoGenerator: ObservableObject {
             let mask = segmentationRequest.results!.first!
             let maskBuffer = mask.pixelBuffer
             
-            let maskedImage: CIImage? = await maskSourceImage(maskBuffer)
+            async let maskedImage: CIImage? = maskSourceImage(maskBuffer)
             
-            guard let maskedImage = maskedImage else { return }
+            guard let maskedImage = await maskedImage else { return }
             
-            self.generatedIDPhoto = maskedImage
+            DispatchQueue.main.async {
+                self.generatedIDPhoto = maskedImage
+            }
         } catch {
             throw error
         }
