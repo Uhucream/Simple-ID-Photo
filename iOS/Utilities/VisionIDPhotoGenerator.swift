@@ -24,7 +24,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
     
     private var sourceImageSize: CGSize = .zero
     
-    lazy var faceWithHairRectangle: CGRect = .zero
+    var faceWithHairRectangle: CGRect = .zero
     
     init(sourceCIImage: CIImage?, sourceImageOrientation: CGImagePropertyOrientation) {
         self.sourceCIImage = sourceCIImage
@@ -52,6 +52,12 @@ final class VisionIDPhotoGenerator: ObservableObject {
         )
         
         do {
+            if Task.isCancelled {
+                segmentationRequest.cancel()
+                
+                throw CancellationError()
+            }
+            
             try imageRequestHandler.perform([segmentationRequest])
             
             let mask = segmentationRequest.results!.first!
@@ -69,7 +75,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
         }
     }
     
-    func performHumanRectanglesAndFaceLandmarksRequest() -> Void {
+    func performHumanRectanglesAndFaceLandmarksRequest() async throws -> Void {
         
         let humanRectanglesRequest: VNDetectHumanRectanglesRequest = .init()
         
@@ -84,15 +90,22 @@ final class VisionIDPhotoGenerator: ObservableObject {
         )
         
         do {
+            if Task.isCancelled {
+                humanRectanglesRequest.cancel()
+                faceLandmarksRequest.cancel()
+                
+                throw CancellationError()
+            }
+            
             try imageReqeustHandler.perform([humanRectanglesRequest, faceLandmarksRequest])
 
-            self.faceWithHairRectangle = getFaceWithHairRectangle(
+            self.faceWithHairRectangle = self.getFaceWithHairRectangle(
                 imageSize: sourceCIImage.extent.size,
                 humanRectanglesRequest: humanRectanglesRequest,
                 faceLandmarksRequest: faceLandmarksRequest
             )
         } catch {
-            print(error)
+            throw error
         }
     }
 }

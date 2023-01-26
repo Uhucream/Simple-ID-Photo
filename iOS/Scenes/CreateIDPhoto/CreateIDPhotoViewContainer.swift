@@ -116,7 +116,7 @@ struct CreateIDPhotoViewContainer: View {
         .task {
             try? await visionIDPhotoGenerator.performPersonSegmentationRequest()
             
-            visionIDPhotoGenerator.performHumanRectanglesAndFaceLandmarksRequest()
+            try? await visionIDPhotoGenerator.performHumanRectanglesAndFaceLandmarksRequest()
         }
         .onChange(of: visionIDPhotoGenerator.idPhotoBackgroundColor)  { _ in
             Task {
