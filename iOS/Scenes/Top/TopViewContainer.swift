@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct TopViewContainer: View {
     @State private var shouldShowPicturePickerView: Bool = false
@@ -23,6 +24,34 @@ struct TopViewContainer: View {
     
     func showCameraView() -> Void {
         shouldShowCameraView = true
+    }
+    
+    func setPictureURLFromDroppedItem(itemProviders: [NSItemProvider]) -> Bool {
+
+        guard let itemProvider = itemProviders.first else { return false }
+        
+        itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { url, error in
+
+            if let error = error {
+                print("error: \(error)")
+
+                return
+            }
+            
+            guard let url = url else {
+                return
+            }
+
+            let fileName = "\(Int(Date().timeIntervalSince1970)).\(url.pathExtension)"
+
+            let newFileURL: URL = .init(fileURLWithPath: NSTemporaryDirectory() + fileName)
+
+            try? FileManager.default.copyItem(at: url, to: newFileURL)
+
+            self.pictureURL = newFileURL
+        }
+
+        return true
     }
     
     var body: some View {
@@ -45,6 +74,7 @@ struct TopViewContainer: View {
             
             shouldShowCreateIDPhotoView = true
         }
+        .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
         .background {
             NavigationLink(isActive: $shouldShowCreateIDPhotoView) {
                 if let pictureURL = pictureURL,
