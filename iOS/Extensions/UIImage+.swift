@@ -51,4 +51,16 @@ extension UIImage {
 
         self.init()
     }
+    
+    func ciImage() -> CIImage? {
+        if let ciImage = self.ciImage {
+            return ciImage
+        }
+        
+        if let cgImage = self.cgImage {
+            return CIImage(cgImage: cgImage)
+        }
+        
+        return nil
+    }
 }
