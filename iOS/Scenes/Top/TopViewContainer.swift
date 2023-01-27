@@ -16,7 +16,7 @@ struct TopViewContainer: View {
     
     @State private var shouldShowCreateIDPhotoView: Bool = false
     
-    @State private var isThisViewDisappeared: Bool = false
+    @State private var isPhotoLoadingInProgress: Bool = false
     
     @State private var pictureURL: URL? = nil
     
@@ -31,6 +31,8 @@ struct TopViewContainer: View {
     func setPictureURLFromDroppedItem(itemProviders: [NSItemProvider]) -> Bool {
 
         guard let itemProvider = itemProviders.first else { return false }
+        
+        self.isPhotoLoadingInProgress = true
         
         itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { url, error in
 
@@ -51,6 +53,8 @@ struct TopViewContainer: View {
             try? FileManager.default.copyItem(at: url, to: newFileURL)
 
             self.pictureURL = newFileURL
+            
+            self.isPhotoLoadingInProgress = false
         }
 
         return true
@@ -67,7 +71,7 @@ struct TopViewContainer: View {
                 }
             )
             
-            if self.pictureURL != nil && !self.isThisViewDisappeared {
+            if self.isPhotoLoadingInProgress {
                 Color
                     .clear
                     .ignoresSafeArea()
@@ -78,13 +82,10 @@ struct TopViewContainer: View {
             }
         }
         .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
-            PicturePickerView(pictureURL: $pictureURL)
+            PicturePickerView(pictureURL: $pictureURL, isLoadingInProgress: $isPhotoLoadingInProgress)
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
             CameraView(pictureURL: $pictureURL)
-        }
-        .onDisappear {
-            isThisViewDisappeared = true
         }
         .onChange(of: pictureURL) { newPictureURL in
             guard newPictureURL != nil else { return }

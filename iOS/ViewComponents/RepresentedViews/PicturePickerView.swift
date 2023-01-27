@@ -13,6 +13,8 @@ struct PicturePickerView: UIViewControllerRepresentable {
     @Environment(\.dismiss) private var dismiss
 
     @Binding var pictureURL: URL?
+    
+    @Binding var isLoadingInProgress: Bool
 
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var configuration = PHPickerConfiguration()
@@ -43,6 +45,8 @@ struct PicturePickerView: UIViewControllerRepresentable {
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
 
             parentView.dismiss()
+            
+            self.parentView.isLoadingInProgress = true
 
             guard let provider = results.first?.itemProvider else {
                 return
@@ -72,6 +76,8 @@ struct PicturePickerView: UIViewControllerRepresentable {
                 try? FileManager.default.copyItem(at: url, to: newFileURL)
 
                 self.parentView.pictureURL = newFileURL
+                
+                self.parentView.isLoadingInProgress = false
             }
         }
     }
