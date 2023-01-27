@@ -82,7 +82,13 @@ struct TopViewContainer: View {
             }
         }
         .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
-            PicturePickerView(pictureURL: $pictureURL, isLoadingInProgress: $isPhotoLoadingInProgress)
+            PicturePickerView(
+                pictureURL: $pictureURL,
+                isLoadingInProgress: $isPhotoLoadingInProgress
+            )
+            .onPictureSelected {
+                self.shouldShowPicturePickerView = false
+            }
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
             CameraView(pictureURL: $pictureURL)
