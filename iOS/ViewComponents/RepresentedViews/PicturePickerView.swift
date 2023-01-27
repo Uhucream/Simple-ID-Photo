@@ -10,11 +10,19 @@ import SwiftUI
 import PhotosUI
 
 struct PicturePickerView: UIViewControllerRepresentable {
-    @Environment(\.dismiss) private var dismiss
-
     @Binding var pictureURL: URL?
     
     @Binding var isLoadingInProgress: Bool
+    
+    private(set) var onSelected: (() -> Void)?
+    
+    public func onPictureSelected(perform action: @escaping () -> Void) -> Self {
+        var view = self
+        
+        view.onSelected = action
+        
+        return view
+    }
 
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var configuration = PHPickerConfiguration()
@@ -44,7 +52,7 @@ struct PicturePickerView: UIViewControllerRepresentable {
 
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
 
-            parentView.dismiss()
+            parentView.onSelected?()
             
             self.parentView.isLoadingInProgress = true
 
