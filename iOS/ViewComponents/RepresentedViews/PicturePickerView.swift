@@ -57,12 +57,16 @@ struct PicturePickerView: UIViewControllerRepresentable {
             self.parentView.isLoadingInProgress = true
 
             guard let provider = results.first?.itemProvider else {
+                self.parentView.isLoadingInProgress = false
+                
                 return
             }
 
             let typeIdentifier = UTType.image.identifier
             
             guard provider.hasItemConformingToTypeIdentifier(typeIdentifier) else {
+                self.parentView.isLoadingInProgress = false
+                
                 return
             }
 
@@ -74,6 +78,8 @@ struct PicturePickerView: UIViewControllerRepresentable {
                 }
                 
                 guard let url = url else {
+                    self.parentView.isLoadingInProgress = false
+                    
                     return
                 }
 
