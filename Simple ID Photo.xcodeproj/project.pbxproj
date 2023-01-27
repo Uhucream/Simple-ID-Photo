@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */; };
+		4730700529837F0400EAEC14 /* Percentage in Frameworks */ = {isa = PBXBuildFile; productRef = 4730700429837F0400EAEC14 /* Percentage */; };
 		47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
 		475FB236296FD5000059796F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB235296FD5000059796F /* UIImage+.swift */; };
@@ -113,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4730700529837F0400EAEC14 /* Percentage in Frameworks */,
 				47C49B86296847CE00F2BF35 /* FirebaseDatabaseSwift in Frameworks */,
 				47C49B84296847CE00F2BF35 /* FirebaseDatabase in Frameworks */,
 				47C49B7C296847CE00F2BF35 /* FirebaseAnalyticsSwift in Frameworks */,
@@ -359,6 +361,7 @@
 				47C49B8B296847CE00F2BF35 /* FirebaseFirestoreSwift */,
 				47C49B8D296847CE00F2BF35 /* FirebaseStorage */,
 				47C49B8F296847CE00F2BF35 /* FirebaseStorageCombine-Community */,
+				4730700429837F0400EAEC14 /* Percentage */,
 			);
 			productName = "Simple ID Photo";
 			productReference = 47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */;
@@ -435,6 +438,7 @@
 			mainGroup = 47C49B312967FB1C00F2BF35;
 			packageReferences = (
 				47C49B78296847CE00F2BF35 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				4730700329837F0400EAEC14 /* XCRemoteSwiftPackageReference "Percentage" */,
 			);
 			productRefGroup = 47C49B3B2967FB1C00F2BF35 /* Products */;
 			projectDirPath = "";
@@ -858,6 +862,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4730700329837F0400EAEC14 /* XCRemoteSwiftPackageReference "Percentage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:sindresorhus/Percentage.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		47C49B78296847CE00F2BF35 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -869,6 +881,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4730700429837F0400EAEC14 /* Percentage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4730700329837F0400EAEC14 /* XCRemoteSwiftPackageReference "Percentage" */;
+			productName = Percentage;
+		};
 		47C49B79296847CE00F2BF35 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 47C49B78296847CE00F2BF35 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
