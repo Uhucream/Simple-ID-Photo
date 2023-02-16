@@ -38,14 +38,15 @@ struct CreateIDPhotoView: View {
                 ZStack {
                     if selectedProcess == .backgroundColor {
                         Text("背景色")
+                            .fontWeight(.light)
                     }
                     
                     if selectedProcess == .size {
                         Text("サイズ")
+                            .fontWeight(.light)
                     }
                 }
                 .font(Font.subheadline)
-                .fontWeight(.light)
                 .foregroundColor(.white)
                 .transaction { transaction in
                     transaction.animation = .none

@@ -100,19 +100,34 @@ struct CreateIDPhotoViewContainer: View {
         self.previewUIImage = croppedImage.uiImage(orientation: self.sourceImageOrientation)
     }
     
-//    func cropImageAsPassportSize() -> Void {
-//
-//    }
+    //    func cropImageAsPassportSize() -> Void {
+    //
+    //    }
     
     var body: some View {
-        CreateIDPhotoView(
-            selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
-            selectedIDPhotoSize: $selectedIDPhotoSize,
-            previewUIImage: $previewUIImage.animation(),
-            onTapDismissButton: {
-                showDiscardViewConfirmationDialog()
+        ZStack {
+            if #available(iOS 16, *) {
+                CreateIDPhotoView(
+                    selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
+                    selectedIDPhotoSize: $selectedIDPhotoSize,
+                    previewUIImage: $previewUIImage.animation(),
+                    onTapDismissButton: {
+                        showDiscardViewConfirmationDialog()
+                    }
+                )
+                .toolbar(.hidden)
+            } else {
+                CreateIDPhotoView(
+                    selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
+                    selectedIDPhotoSize: $selectedIDPhotoSize,
+                    previewUIImage: $previewUIImage.animation(),
+                    onTapDismissButton: {
+                        showDiscardViewConfirmationDialog()
+                    }
+                )
+                .navigationBarHidden(true)
             }
-        )
+        }
         .task {
             try? await visionIDPhotoGenerator.performPersonSegmentationRequest()
             
@@ -144,7 +159,6 @@ struct CreateIDPhotoViewContainer: View {
                 Text("保存せずに終了")
             }
         }
-        .toolbar(.hidden)
     }
 }
 

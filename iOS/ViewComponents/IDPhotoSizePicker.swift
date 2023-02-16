@@ -38,9 +38,9 @@ struct IDPhotoSizePicker: View {
                             
                             ZStack {
                                 renderSelectionLabelText(sizeSelection)
+                                    .font(.system(size: 14.0, design: .rounded))
+                                    .fontWeight(.regular)
                             }
-                            .font(.system(size: 14.0, design: .rounded))
-                            .fontWeight(.regular)
                             .foregroundColor(
                                 isSelected ? .fixedWhite : .fixedLightGray
                             )
