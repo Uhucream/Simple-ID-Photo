@@ -30,7 +30,9 @@ struct CreateIDPhotoView: View {
     @Binding var previewUIImage: UIImage?
     
     var onTapDismissButton: (() -> Void)? = nil
-    var onTapSaveButton: (() -> Void)? = nil
+
+    var onTapSaveWithNoMarginButton: (() -> Void)? = nil
+    var onTapSaveImageForPrintingButton: (() -> Void)? = nil
     
     var body: some View {
         VStack(alignment: .center) {
@@ -160,16 +162,43 @@ struct CreateIDPhotoView: View {
                     
                     Spacer()
                     
-                    Button(
-                        action: {
-                            
+                    ZStack {
+                        if self.selectedIDPhotoSize == .original {
+                            Button(
+                                action: {
+                                    onTapSaveWithNoMarginButton?()
+                                }
+                            ) {
+                                Image(systemName: "square.and.arrow.down")
+                                    .padding()
+                            }
+                            .tint(.yellow)
+                            .controlSize(.mini)
+                        } else {
+                            Menu {
+                                Button(
+                                    action: {
+                                        onTapSaveWithNoMarginButton?()
+                                    }
+                                ) {
+                                    Label("そのまま保存", systemImage: "photo")
+                                }
+                                
+                                Button(
+                                    action: {
+                                        onTapSaveImageForPrintingButton?()
+                                    }
+                                ) {
+                                    Label("印刷用に保存", systemImage: "printer.dotmatrix.filled.and.paper")
+                                }
+                            } label: {
+                                Image(systemName: "square.and.arrow.down")
+                                    .padding()
+                            }
+                            .tint(.yellow)
+                            .controlSize(.mini)
                         }
-                    ) {
-                        Image(systemName: "square.and.arrow.down")
-                            .padding()
                     }
-                    .tint(.yellow)
-                    .controlSize(.mini)
                 }
                 .frame(maxHeight: 28)
                 .padding(.vertical)
