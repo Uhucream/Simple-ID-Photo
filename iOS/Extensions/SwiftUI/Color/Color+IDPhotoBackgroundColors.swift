@@ -14,7 +14,9 @@ final class IDPhotoBackgroundColors {
     private init() {}
     
     let blue: Color = .init("IDPhotoBackgroundColors/Blue")
+    let brown: Color = .init("IDPhotoBackgroundColors/Brown")
     let gray: Color = .init("IDPhotoBackgroundColors/Gray")
+    let white: Color = .init("IDPhotoBackgroundColors/White")
 }
 
 extension Color {
