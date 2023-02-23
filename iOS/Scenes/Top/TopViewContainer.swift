@@ -125,10 +125,14 @@ struct TopViewContainer_Previews: PreviewProvider {
             GeometryReader { geometry in
                 TopViewContainer()
                     .onAppear {
-                        screenSizeHelper.update(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
+                        screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)
+                        screenSizeHelper.updateScreenSize(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
+                    }
+                    .onChange(of: geometry.safeAreaInsets) { (safeAreaInsets: EdgeInsets) in
+                        screenSizeHelper.updateSafeAreaInsets(safeAreaInsets)
                     }
                     .onChange(of: geometry.size) { (screenSize: CGSize) in
-                        screenSizeHelper.update(screenWidth: screenSize.width, screenHeight: screenSize.height)
+                        screenSizeHelper.updateScreenSize(screenWidth: screenSize.width, screenHeight: screenSize.height)
                     }
             }
             .environmentObject(screenSizeHelper)

@@ -15,7 +15,13 @@ final class ScreenSizeHelper: ObservableObject {
     @Published private(set) var screenWidth: CGFloat = .zero
     @Published private(set) var screenHeight: CGFloat = .zero
     
-    func update(screenWidth: CGFloat, screenHeight: CGFloat) {
+    @Published private(set) var safeAreaInsets: EdgeInsets = .init()
+    
+    func updateSafeAreaInsets(_ insets: EdgeInsets) -> Void {
+        self.safeAreaInsets = insets
+    }
+    
+    func updateScreenSize(screenWidth: CGFloat, screenHeight: CGFloat) {
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
     }
