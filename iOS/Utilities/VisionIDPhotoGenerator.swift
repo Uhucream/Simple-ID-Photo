@@ -20,7 +20,7 @@ final class VisionIDPhotoGenerator: ObservableObject {
     @Published var generatedIDPhoto: CIImage? = nil
     
     @Published var idPhotoSize: CGSize = .init(width: 1296, height: 746)
-    @Published var idPhotoBackgroundColor: Color = .init(0x5FB8DE, alpha: 1.0)
+    @Published var idPhotoBackgroundColor: Color = .idPhotoBackgroundColors.blue
     
     private var sourceImageSize: CGSize = .zero
     

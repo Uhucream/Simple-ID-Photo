@@ -19,7 +19,10 @@ struct CreateIDPhotoView: View {
         case size
     }
     
-    private let BACKGROUND_COLORS: [Color] = [Color(0x5FB8DE, alpha: 1.0), Color(0xA5A5AD, alpha: 1.0)]
+    private let BACKGROUND_COLORS: [Color] = [
+        .idPhotoBackgroundColors.blue,
+        .idPhotoBackgroundColors.gray
+    ]
     
     @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor
     
@@ -220,7 +223,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
     static var previews: some View {
         CreateIDPhotoView(
             selectedBackgroundColor: .constant(
-                Color(0x5FB8DE, alpha: 1.0)
+                Color.idPhotoBackgroundColors.blue
             ),
             selectedIDPhotoSize: .constant(.original),
             previewUIImage: .constant(
