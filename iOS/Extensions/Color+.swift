@@ -89,4 +89,4 @@ extension Color {
     static let fixedOrange = Color(uiColor: UIColor(red: 1.0, green: 0.5, blue: 0.0, alpha: 1.0))
     static let fixedPurple = Color(uiColor: UIColor(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0))
     static let fixedBrown = Color(uiColor: UIColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0))
-    }
+}
