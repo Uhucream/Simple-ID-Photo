@@ -18,6 +18,7 @@
 		475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB237296FD6300059796F /* CreateIDPhotoViewContainer.swift */; };
 		47694A772993E9A800C447CA /* Animation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47694A762993E9A700C447CA /* Animation+.swift */; };
 		4778B34629A7396000F35EE0 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4778B34529A7396000F35EE0 /* Colors.xcassets */; };
+		4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4778B34729A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift */; };
 		47868951297F6CDC00952BFD /* IDPhotoBackgroundColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47868950297F6CDC00952BFD /* IDPhotoBackgroundColorPicker.swift */; };
 		47868953297F7EC100952BFD /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47868952297F7EC100952BFD /* BlurView.swift */; };
 		478689552980216600952BFD /* IDPhotoSizePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478689542980216600952BFD /* IDPhotoSizePicker.swift */; };
@@ -87,6 +88,7 @@
 		475FB237296FD6300059796F /* CreateIDPhotoViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIDPhotoViewContainer.swift; sourceTree = "<group>"; };
 		47694A762993E9A700C447CA /* Animation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+.swift"; sourceTree = "<group>"; };
 		4778B34529A7396000F35EE0 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		4778B34729A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+IDPhotoBackgroundColors.swift"; sourceTree = "<group>"; };
 		47868950297F6CDC00952BFD /* IDPhotoBackgroundColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoBackgroundColorPicker.swift; sourceTree = "<group>"; };
 		47868952297F7EC100952BFD /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		478689542980216600952BFD /* IDPhotoSizePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSizePicker.swift; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 				47C1C7BE297E3B4700A22EAB /* CIImage+.swift */,
 				475FB235296FD5000059796F /* UIImage+.swift */,
 				47D9041129692E9200DD4FAF /* Color+.swift */,
+				4778B34729A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift */,
 				478689562980CECE00952BFD /* CGImagePropertyOrientation+.swift */,
 				47694A762993E9A700C447CA /* Animation+.swift */,
 				47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */,
@@ -541,6 +544,7 @@
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
 				47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */,
+				4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */,
 				475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */,
 				47C49B71296831E600F2BF35 /* RootView.swift in Sources */,
 			);
