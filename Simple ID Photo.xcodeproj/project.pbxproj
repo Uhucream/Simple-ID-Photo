@@ -213,6 +213,56 @@
 			path = AssetsFiles;
 			sourceTree = "<group>";
 		};
+		4778B34929A741F800F35EE0 /* Color */ = {
+			isa = PBXGroup;
+			children = (
+				47D9041129692E9200DD4FAF /* Color+.swift */,
+				4778B34729A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift */,
+			);
+			path = Color;
+			sourceTree = "<group>";
+		};
+		4778B34A29A7421600F35EE0 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				4778B34929A741F800F35EE0 /* Color */,
+				47694A762993E9A700C447CA /* Animation+.swift */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		4778B34B29A7423F00F35EE0 /* CoreImage */ = {
+			isa = PBXGroup;
+			children = (
+				47C1C7BE297E3B4700A22EAB /* CIImage+.swift */,
+			);
+			path = CoreImage;
+			sourceTree = "<group>";
+		};
+		4778B34C29A7425600F35EE0 /* ImageIO */ = {
+			isa = PBXGroup;
+			children = (
+				478689562980CECE00952BFD /* CGImagePropertyOrientation+.swift */,
+			);
+			path = ImageIO;
+			sourceTree = "<group>";
+		};
+		4778B34E29A7427000F35EE0 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		4778B34F29A7428000F35EE0 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				475FB235296FD5000059796F /* UIImage+.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
 		479BBC532969534400C02BB7 /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,13 +405,11 @@
 		47D9041029692E7B00DD4FAF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				47C1C7BE297E3B4700A22EAB /* CIImage+.swift */,
-				475FB235296FD5000059796F /* UIImage+.swift */,
-				47D9041129692E9200DD4FAF /* Color+.swift */,
-				4778B34729A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift */,
-				478689562980CECE00952BFD /* CGImagePropertyOrientation+.swift */,
-				47694A762993E9A700C447CA /* Animation+.swift */,
-				47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */,
+				4778B34E29A7427000F35EE0 /* Foundation */,
+				4778B34B29A7423F00F35EE0 /* CoreImage */,
+				4778B34C29A7425600F35EE0 /* ImageIO */,
+				4778B34F29A7428000F35EE0 /* UIKit */,
+				4778B34A29A7421600F35EE0 /* SwiftUI */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
