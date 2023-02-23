@@ -199,6 +199,15 @@
 			path = CreateIDPhoto;
 			sourceTree = "<group>";
 		};
+		4778B34029A7359E00F35EE0 /* AssetsFiles */ = {
+			isa = PBXGroup;
+			children = (
+				47C49B432967FB1E00F2BF35 /* Preview Content */,
+				47C49B412967FB1E00F2BF35 /* Assets.xcassets */,
+			);
+			path = AssetsFiles;
+			sourceTree = "<group>";
+		};
 		479BBC532969534400C02BB7 /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,8 +284,7 @@
 			children = (
 				47013AEA296C004C000A0D89 /* Firebase */,
 				479BBC532969534400C02BB7 /* Localizations */,
-				47C49B432967FB1E00F2BF35 /* Preview Content */,
-				47C49B412967FB1E00F2BF35 /* Assets.xcassets */,
+				4778B34029A7359E00F35EE0 /* AssetsFiles */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -711,7 +719,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS/Resources/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Resources/AssetsFiles/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -744,7 +752,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS/Resources/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"iOS/Resources/AssetsFiles/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
