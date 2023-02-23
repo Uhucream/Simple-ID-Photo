@@ -12,8 +12,8 @@ import SwiftUI
 final class ScreenSizeHelper: ObservableObject {
     static var shared: ScreenSizeHelper = .init()
     
-    @Published var screenWidth: CGFloat = .zero
-    @Published var screenHeight: CGFloat = .zero
+    @Published private(set) var screenWidth: CGFloat = .zero
+    @Published private(set) var screenHeight: CGFloat = .zero
     
     func update(screenWidth: CGFloat, screenHeight: CGFloat) {
         self.screenWidth = screenWidth
