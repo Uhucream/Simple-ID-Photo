@@ -38,7 +38,7 @@ struct IDPhotoSize {
         self.marginBottom = marginBottom
     }
     
-    func cgsize(pixelDensity: Int) -> CGSize {
+    func cgsize(pixelDensity: Double) -> CGSize {
         
         let inchesWidth: Measurement<UnitLength> = self.width.converted(to: .inches)
         let inchesHeight: Measurement<UnitLength> = self.height.converted(to: .inches)
