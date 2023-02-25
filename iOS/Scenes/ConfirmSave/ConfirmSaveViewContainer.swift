@@ -39,31 +39,35 @@ struct Triangle: Shape {
     }
 }
 
-fileprivate struct PrintSizeGuideView: View {
+fileprivate struct PrintSizeGuideView<Content: View>: View {
 
-    private static let  SIZE_GUIDE_BORDER_WIDTH: Double = 2
+    private let  SIZE_GUIDE_BORDER_WIDTH: Double = 2
+    
+    @ViewBuilder var content: () -> Content
     
     var body: some View {
         GeometryReader { geometry in
-            Group {
+            let triangleWidth: CGFloat = 5%.of(geometry.size.width)
+            
+            ZStack {
                 VStack(alignment: .center, spacing: 0) {
                     Triangle()
                         .aspectRatio(1, contentMode: .fit)
-                        .frame(maxWidth: 5%.of(geometry.size.width))
+                        .frame(maxWidth: triangleWidth)
                     
                     Spacer()
                     
                     HStack(alignment: .center, spacing: 0) {
                         Triangle()
                             .aspectRatio(1, contentMode: .fit)
-                            .frame(maxWidth: 5%.of(geometry.size.width))
+                            .frame(maxWidth: triangleWidth)
                             .rotationEffect(Angle(degrees: -90))
                         
                         Spacer()
                         
                         Triangle()
                             .aspectRatio(1, contentMode: .fit)
-                            .frame(maxWidth: 5%.of(geometry.size.width))
+                            .frame(maxWidth: triangleWidth)
                             .rotationEffect(Angle(degrees: 90))
                     }
                     
@@ -71,12 +75,15 @@ fileprivate struct PrintSizeGuideView: View {
                     
                     Triangle()
                         .aspectRatio(1, contentMode: .fit)
-                        .frame(maxWidth: 5%.of(geometry.size.width))
+                        .frame(maxWidth: triangleWidth)
                         .rotationEffect(Angle(degrees: 180))
                 }
+                
+                content()
+                    .padding(triangleWidth)
             }
-            .padding(PrintSizeGuideView.SIZE_GUIDE_BORDER_WIDTH)
-            .border(Color.fixedBlack, width: PrintSizeGuideView.SIZE_GUIDE_BORDER_WIDTH)
+            .padding(self.SIZE_GUIDE_BORDER_WIDTH)
+            .border(Color.fixedBlack, width: self.SIZE_GUIDE_BORDER_WIDTH)
         }
     }
 }
@@ -95,9 +102,7 @@ fileprivate struct IDPhotoWithSizeGuide: View {
     }
     
     var body: some View {
-        ZStack {
-            PrintSizeGuideView()
-            
+        PrintSizeGuideView {
             Image(uiImage: idPhotoUIImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
