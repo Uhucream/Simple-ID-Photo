@@ -17,7 +17,7 @@ fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
 }()
 
 struct CreatedIDPhotoHistoryCard: View {
-
+    
     var idPhotoThumbnailUIImage: UIImage
     var idPhotoSizeType: IDPhotoSizeVariant
     
@@ -49,7 +49,7 @@ struct CreatedIDPhotoHistoryCard: View {
     
     
     var body: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .firstTextBaseline) {
             HStack(alignment: .center) {
                 Image(uiImage: idPhotoThumbnailUIImage)
                     .resizable()
@@ -63,8 +63,6 @@ struct CreatedIDPhotoHistoryCard: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 0) {
-                Spacer()
-                
                 Text(createdAt, style: .date)
                     .font(.headline)
                     .fontWeight(.medium)
