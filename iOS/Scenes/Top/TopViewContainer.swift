@@ -20,6 +20,8 @@ struct TopViewContainer: View {
     
     @State private var pictureURL: URL? = nil
     
+    @State private var createdIDPhotoHistories: [CreatedIDPhotoDetail] = mockHistoriesData
+    
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
     }
@@ -63,6 +65,7 @@ struct TopViewContainer: View {
     var body: some View {
         ZStack {
             TopView(
+                createdIDPhotoHistories: $createdIDPhotoHistories,
                 onTapSelectFromAlbumButton: {
                     showPicturePickerView()
                 },
