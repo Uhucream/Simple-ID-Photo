@@ -28,17 +28,22 @@ struct CreatedIDPhotoHistoryCard: View {
         let photoWidth: Int = .init(idPhotoSizeType.photoSize.width.value)
         let photoHeight: Int = .init(idPhotoSizeType.photoSize.height.value)
         
-        HStack(alignment: .center, spacing: 4) {
-            Text("\(photoWidth)")
+        if self.idPhotoSizeType == .original {
+            Text("オリジナルサイズ")
                 .fontWeight(.medium)
-            
-            Image(systemName: "xmark")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxHeight: 10)
-            
-            Text("\(photoHeight)")
-                .fontWeight(.medium)
+        } else {
+            HStack(alignment: .center, spacing: 4) {
+                Text("\(photoWidth)")
+                    .fontWeight(.medium)
+                
+                Image(systemName: "xmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 10)
+                
+                Text("\(photoHeight)")
+                    .fontWeight(.medium)
+            }
         }
     }
     
