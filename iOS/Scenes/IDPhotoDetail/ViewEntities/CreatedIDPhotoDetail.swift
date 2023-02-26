@@ -20,13 +20,15 @@ struct CreatedIDPhotoDetail: Identifiable {
     let createdUIImage: UIImage
 }
 
-let mockHistoriesData: [CreatedIDPhotoDetail] = Array(0...12)
-    .map { number in
-        let photoSizeType: IDPhotoSizeVariant = .allCases.randomElement() ?? .w30_h40
-        
+private let allIDPhotoSizeVariants: [IDPhotoSizeVariant] = IDPhotoSizeVariant.allCases
+
+private let startOfToday: Date = Calendar.current.startOfDay(for: .now)
+
+let mockHistoriesData: [CreatedIDPhotoDetail] = allIDPhotoSizeVariants.indices
+    .map { (index) in
         return CreatedIDPhotoDetail(
-            idPhotoSizeType: photoSizeType,
-            createdAt: Calendar.current.date(byAdding: .month, value: -number, to: Date())!,
+            idPhotoSizeType: allIDPhotoSizeVariants[index],
+            createdAt: Calendar.current.date(byAdding: .month, value: -index, to: startOfToday)!,
             createdUIImage: UIImage(named: "SampleIDPhoto")!
         )
     }
