@@ -21,7 +21,7 @@ struct TopView: View {
     var onTapTakePictureButton: (() -> Void)?
     
     @ViewBuilder
-    func renderHistoriesListRow(_ idPhotoCreateHistory: CreatedIDPhotoDetail) -> some View {
+    func renderHistoryCard(_ idPhotoCreateHistory: CreatedIDPhotoDetail) -> some View {
         CreatedIDPhotoHistoryCard(
             idPhotoThumbnailUIImage: idPhotoCreateHistory.createdUIImage,
             idPhotoSizeType: idPhotoCreateHistory.idPhotoSizeType,
@@ -107,7 +107,7 @@ struct TopView: View {
                 Section {
                     ForEach(historiesCreatedInThreeMonths) { history in
                         NavigationLink(destination: IDPhotoDetailView()) {
-                            renderHistoriesListRow(history)
+                            renderHistoryCard(history)
                         }
                         .isDetailLink(true)
                     }
@@ -118,7 +118,7 @@ struct TopView: View {
                 Section {
                     ForEach(historiesCreatedOverThreeMonthsAgo) { history in
                         NavigationLink(destination: IDPhotoDetailView()) {
-                            renderHistoriesListRow(history)
+                            renderHistoryCard(history)
                         }
                         .isDetailLink(true)
                     }
