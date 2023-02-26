@@ -21,11 +21,11 @@ struct TopView: View {
     var onTapTakePictureButton: (() -> Void)?
     
     @ViewBuilder
-    func renderHistoryCard(_ idPhotoCreateHistory: CreatedIDPhotoDetail) -> some View {
+    func renderHistoryCard(_ createdIDPhotoHistory: CreatedIDPhotoDetail) -> some View {
         CreatedIDPhotoHistoryCard(
-            idPhotoThumbnailUIImage: idPhotoCreateHistory.createdUIImage,
-            idPhotoSizeType: idPhotoCreateHistory.idPhotoSizeType,
-            createdAt: idPhotoCreateHistory.createdAt
+            idPhotoThumbnailUIImage: createdIDPhotoHistory.createdUIImage,
+            idPhotoSizeType: createdIDPhotoHistory.idPhotoSizeType,
+            createdAt: createdIDPhotoHistory.createdAt
         )
         .frame(maxHeight: 40)
     }
