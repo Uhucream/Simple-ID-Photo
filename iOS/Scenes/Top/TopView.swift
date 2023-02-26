@@ -21,7 +21,7 @@ struct TopView: View {
     var onTapTakePictureButton: (() -> Void)?
     
     @ViewBuilder
-    func renderHistoiesListRow(_ idPhotoCreateHistory: CreatedIDPhotoDetail) -> some View {
+    func renderHistoriesListRow(_ idPhotoCreateHistory: CreatedIDPhotoDetail) -> some View {
         let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
             let formatter: RelativeDateTimeFormatter = .init()
             
@@ -149,7 +149,7 @@ struct TopView: View {
                 Section {
                     ForEach(historiesCreatedInThreeMonths) { history in
                         NavigationLink(destination: IDPhotoDetailView()) {
-                            renderHistoiesListRow(history)
+                            renderHistoriesListRow(history)
                         }
                         .isDetailLink(true)
                     }
@@ -160,7 +160,7 @@ struct TopView: View {
                 Section {
                     ForEach(historiesCreatedOverThreeMonthsAgo) { history in
                         NavigationLink(destination: IDPhotoDetailView()) {
-                            renderHistoiesListRow(history)
+                            renderHistoriesListRow(history)
                         }
                         .isDetailLink(true)
                     }
