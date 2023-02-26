@@ -18,6 +18,11 @@ fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
 
 struct CreatedIDPhotoHistoryCard: View {
     
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    
+    @ScaledMetric(relativeTo: .body) var titleScaleFactor: CGFloat = 1
+    @ScaledMetric(relativeTo: .headline) var thumbnailScaleFactor: CGFloat = 1
+    
     var idPhotoThumbnailUIImage: UIImage
     var idPhotoSizeType: IDPhotoSizeVariant
     
@@ -32,14 +37,14 @@ struct CreatedIDPhotoHistoryCard: View {
             Text("オリジナルサイズ")
                 .fontWeight(.medium)
         } else {
-            HStack(alignment: .center, spacing: 4) {
+            HStack(alignment: .center, spacing: 4 * titleScaleFactor) {
                 Text("\(photoWidth)")
                     .fontWeight(.medium)
                 
                 Image(systemName: "xmark")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 10)
+                    .frame(maxHeight: 10 * titleScaleFactor)
                 
                 Text("\(photoHeight)")
                     .fontWeight(.medium)
@@ -49,28 +54,49 @@ struct CreatedIDPhotoHistoryCard: View {
     
     
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            HStack(alignment: .center) {
-                Image(uiImage: idPhotoThumbnailUIImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .shadow(radius: 0.8)
-                
+        if self.dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading) {
                 renderTitle()
                     .lineLimit(1)
-            }
-            
-            Spacer()
-            
-            VStack(alignment: .trailing, spacing: 0) {
-                Text(createdAt, style: .date)
-                    .font(.headline)
-                    .fontWeight(.medium)
                 
-                Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
-                    .font(.caption2)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(createdAt, style: .date)
+                        .font(.headline)
+                        .fontWeight(.medium)
+                    
+                    Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
+                        .font(.caption2)
+                }
+                .foregroundColor(.secondaryLabel)
             }
-            .foregroundColor(.secondaryLabel)
+        } else {
+            HStack(alignment: .center) {
+                HStack(alignment: .center) {
+                    Image(uiImage: idPhotoThumbnailUIImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxHeight: 60 * thumbnailScaleFactor, alignment: .center)
+                        .shadow(radius: 0.8)
+                    
+                    renderTitle()
+                        .lineLimit(1)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 0) {
+                    Text("")
+                        .font(.caption2)
+                    
+                    Text(createdAt, style: .date)
+                        .font(.headline)
+                        .fontWeight(.medium)
+                    
+                    Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
+                        .font(.caption2)
+                }
+                .foregroundColor(.secondaryLabel)
+            }
         }
     }
 }

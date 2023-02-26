@@ -27,7 +27,7 @@ struct TopView: View {
             idPhotoSizeType: createdIDPhotoHistory.idPhotoSizeType,
             createdAt: createdIDPhotoHistory.createdAt
         )
-        .frame(maxHeight: 40)
+        .scaledToFit()
     }
     
     var body: some View {
