@@ -22,53 +22,11 @@ struct TopView: View {
     
     @ViewBuilder
     func renderHistoriesListRow(_ idPhotoCreateHistory: CreatedIDPhotoDetail) -> some View {
-        let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
-            let formatter: RelativeDateTimeFormatter = .init()
-            
-            formatter.unitsStyle = .abbreviated
-            
-            return formatter
-        }()
-
-        let photoWidth: Int = Int(idPhotoCreateHistory.idPhotoSizeType.photoSize.width.value)
-        let photoHeight: Int = Int(idPhotoCreateHistory.idPhotoSizeType.photoSize.height.value)
-        
-        HStack(alignment: .center) {
-            HStack(alignment: .center) {
-                Image(uiImage: idPhotoCreateHistory.createdUIImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .shadow(radius: 0.8)
-                
-                HStack(alignment: .center, spacing: 4) {
-                    Text("\(photoWidth)")
-                        .fontWeight(.medium)
-                    
-                    Image(systemName: "xmark")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 10)
-                    
-                    Text("\(photoHeight)")
-                        .fontWeight(.medium)
-                }
-                .lineLimit(1)
-            }
-            
-            Spacer()
-            
-            VStack(alignment: .trailing, spacing: 0) {
-                Spacer()
-                
-                Text(idPhotoCreateHistory.createdAt, style: .date)
-                    .font(.headline)
-                    .fontWeight(.medium)
-
-                Text(relativeDateTimeFormatter.localizedString(for: idPhotoCreateHistory.createdAt, relativeTo: .now))
-                    .font(.caption2)
-            }
-            .foregroundColor(.secondaryLabel)
-        }
+        CreatedIDPhotoHistoryCard(
+            idPhotoThumbnailUIImage: idPhotoCreateHistory.createdUIImage,
+            idPhotoSizeType: idPhotoCreateHistory.idPhotoSizeType,
+            createdAt: idPhotoCreateHistory.createdAt
+        )
         .frame(maxHeight: 40)
     }
     
