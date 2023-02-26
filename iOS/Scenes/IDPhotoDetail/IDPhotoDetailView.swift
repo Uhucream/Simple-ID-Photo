@@ -8,6 +8,14 @@
 
 import SwiftUI
 
+fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
+    let formatter: RelativeDateTimeFormatter = .init()
+    
+    formatter.unitsStyle = .abbreviated
+    
+    return formatter
+}()
+
 struct IDPhotoDetailView: View {
     @State var idPhotoSize: IDPhotoSize = {
         return IDPhotoSizeVariant.w24_h30.photoSize
@@ -100,10 +108,11 @@ struct IDPhotoDetailView: View {
                             .font(.subheadline)
                             .foregroundColor(Color.secondaryLabel)
                         
-                        HStack {
+                        VStack(alignment: .leading, spacing: 2) {
                             Text(Date(), style: .date)
                             
-                            Text("(") + Text(Date(), style: .relative) + Text(" 前)")
+                            Text(relativeDateTimeFormatter.localizedString(for: Date().addingTimeInterval(-10000000), relativeTo: .now))
+                                .font(.caption2)
                         }
                     }
                     .padding(.vertical, 10)
