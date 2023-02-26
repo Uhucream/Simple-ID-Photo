@@ -41,10 +41,14 @@ struct TopView: View {
                             Image(systemName: "photo.on.rectangle.angled")
                             
                             Text("アルバムから選択")
-                                .font(.callout)
+                                .font(.subheadline)
                                 .fontWeight(.medium)
+                                .allowsTightening(true)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .scaledToFit()
                         }
-                        .frame(maxWidth: .infinity)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
@@ -57,10 +61,14 @@ struct TopView: View {
                             Image(systemName: "camera")
                             
                             Text("カメラで撮影")
-                                .font(.callout)
+                                .font(.subheadline)
                                 .fontWeight(.medium)
+                                .allowsTightening(true)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .scaledToFit()
                         }
-                        .frame(maxWidth: .infinity)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
