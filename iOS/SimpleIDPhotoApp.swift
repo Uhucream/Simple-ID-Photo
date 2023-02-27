@@ -8,6 +8,16 @@
 
 import SwiftUI
 
+let projectGlobalMeasurementFormatter: MeasurementFormatter = {
+    let formatter: MeasurementFormatter = .init()
+    
+    formatter.unitOptions = [
+        .providedUnit,
+    ]
+    
+    return formatter
+}()
+
 @main
 struct SimpleIDPhotoApp: App {
     let persistenceController = PersistenceController.shared

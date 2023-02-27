@@ -21,11 +21,8 @@ struct IDPhotoSizePicker: View {
         }
         
         let photoWidth: Int = Int(sizeVariant.photoSize.width.value)
-        let photoHeight: Int = Int(sizeVariant.photoSize.height.value)
         
-        let unitSymbol: String = sizeVariant.photoSize.height.unit.symbol
-        
-        return Text("\(photoWidth) x \(photoHeight) \(unitSymbol)")
+        return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: sizeVariant.photoSize.height))")
     }
     
     var body: some View {

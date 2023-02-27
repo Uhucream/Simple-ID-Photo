@@ -40,14 +40,8 @@ struct IDPhotoDetailView: View {
                         }
                     
                     VStack(alignment: .center, spacing: 6) {
-                        let photoWidth: Int = Int(idPhotoSize.width.value)
-                        let photoHeight: Int = Int(idPhotoSize.height.value)
-                        
-                        let widthUnitSymbol: String = idPhotoSize.width.unit.symbol
-                        let heightUnitSymbol: String = idPhotoSize.height.unit.symbol
-                        
                         HStack(alignment: .center) {
-                            Text("横 \(photoWidth) \(widthUnitSymbol)")
+                            Text("横 \(projectGlobalMeasurementFormatter.string(from: idPhotoSize.width))")
                                 .fontWeight(.semibold)
                             
                             Image(systemName: "xmark")
@@ -55,7 +49,7 @@ struct IDPhotoDetailView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(maxHeight: 10)
                             
-                            Text("縦 \(photoHeight) \(heightUnitSymbol)")
+                            Text("縦 \(projectGlobalMeasurementFormatter.string(from: idPhotoSize.height))")
                                 .fontWeight(.semibold)
                         }
                         .lineLimit(1)
