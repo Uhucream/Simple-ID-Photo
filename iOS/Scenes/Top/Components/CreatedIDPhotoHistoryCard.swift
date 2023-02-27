@@ -36,6 +36,9 @@ struct CreatedIDPhotoHistoryCard: View {
         if self.idPhotoSizeType == .original {
             Text("オリジナルサイズ")
                 .fontWeight(.medium)
+        } else if self.idPhotoSizeType == .passport {
+            Text("パスポートサイズ")
+                .fontWeight(.medium)
         } else {
             HStack(alignment: .center, spacing: 4 * titleScaleFactor) {
                 Text("\(photoWidth)")
@@ -121,6 +124,13 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
             CreatedIDPhotoHistoryCard(
                 idPhotoThumbnailUIImage: mockHistory.createdUIImage,
                 idPhotoSizeType: .original,
+                createdAt: mockHistory.createdAt
+            )
+            .frame(maxHeight: 40)
+            
+            CreatedIDPhotoHistoryCard(
+                idPhotoThumbnailUIImage: mockHistory.createdUIImage,
+                idPhotoSizeType: .passport,
                 createdAt: mockHistory.createdAt
             )
             .frame(maxHeight: 40)
