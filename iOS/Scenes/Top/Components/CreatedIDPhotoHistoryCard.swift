@@ -128,21 +128,18 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
                 idPhotoSizeType: mockHistory.idPhotoSizeType,
                 createdAt: mockHistory.createdAt
             )
-            .frame(maxHeight: 40)
             
             CreatedIDPhotoHistoryCard(
                 idPhotoThumbnailUIImage: mockHistory.createdUIImage,
                 idPhotoSizeType: .original,
                 createdAt: mockHistory.createdAt
             )
-            .frame(maxHeight: 40)
             
             CreatedIDPhotoHistoryCard(
                 idPhotoThumbnailUIImage: mockHistory.createdUIImage,
                 idPhotoSizeType: .passport,
                 createdAt: mockHistory.createdAt
             )
-            .frame(maxHeight: 40)
         }
         .previewLayout(.sizeThatFits)
         .previewDisplayName("Created ID Photo History Card")
