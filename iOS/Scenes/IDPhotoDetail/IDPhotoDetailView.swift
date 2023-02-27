@@ -27,7 +27,7 @@ struct IDPhotoDetailView: View {
     var body: some View {
         Form {
             Section {
-                VStack(alignment: .center, spacing: 20) {
+                VStack(alignment: .center, spacing: 28) {
                     Image("SampleIDPhoto")
                         .resizable()
                         .scaledToFit()
@@ -39,7 +39,7 @@ struct IDPhotoDetailView: View {
                                 .blur(radius: 4)
                         }
                     
-                    VStack(alignment: .center, spacing: 4) {
+                    VStack(alignment: .center, spacing: 6) {
                         let photoWidth: Int = Int(idPhotoSize.width.value)
                         let photoHeight: Int = Int(idPhotoSize.height.value)
                         
