@@ -111,7 +111,7 @@ struct IDPhotoDetailView: View {
             
             Section {
                 Group {
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("作成日")
                             .font(.subheadline)
                             .foregroundColor(Color.secondaryLabel)
