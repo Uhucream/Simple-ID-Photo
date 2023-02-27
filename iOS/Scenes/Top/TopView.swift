@@ -27,7 +27,6 @@ struct TopView: View {
             idPhotoSizeType: createdIDPhotoHistory.idPhotoSizeType,
             createdAt: createdIDPhotoHistory.createdAt
         )
-        .scaledToFit()
     }
     
     var body: some View {
