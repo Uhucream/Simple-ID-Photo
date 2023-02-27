@@ -17,6 +17,9 @@ fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
 }()
 
 struct IDPhotoDetailView: View {
+    
+    @Environment(\.colorScheme) var currentColorScheme
+    
     @State var idPhotoSize: IDPhotoSize = {
         return IDPhotoSizeVariant.w24_h30.photoSize
     }()
@@ -29,7 +32,12 @@ struct IDPhotoDetailView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: 250)
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                        .background {
+                            Rectangle()
+                                .fill(currentColorScheme == .light ? Color.gray.opacity(0.2) : Color.fixedWhite.opacity(0.4))
+                                .shadow(color: .black.opacity(0.5), radius: 8)
+                                .blur(radius: 4)
+                        }
                     
                     VStack(alignment: .center, spacing: 4) {
                         let photoWidth: Int = Int(idPhotoSize.width.value)
