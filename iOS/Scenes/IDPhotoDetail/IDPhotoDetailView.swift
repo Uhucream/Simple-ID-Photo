@@ -25,6 +25,31 @@ struct IDPhotoDetailView: View {
     
     @Binding var createdAt: Date
     
+    @ViewBuilder
+    func renderPhotoSizeLabel() -> some View {
+        
+        if idPhotoSizeType == .original {
+            Text("オリジナルサイズ")
+                .fontWeight(.semibold)
+        } else if self.idPhotoSizeType == .passport {
+            Text("パスポートサイズ")
+                .fontWeight(.semibold)
+        } else {
+            HStack(alignment: .center) {
+                Text("横 \(projectGlobalMeasurementFormatter.string(from: idPhotoSizeType.photoSize.width))")
+                    .fontWeight(.semibold)
+                
+                Image(systemName: "xmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 10)
+                
+                Text("縦 \(projectGlobalMeasurementFormatter.string(from: idPhotoSizeType.photoSize.height))")
+                    .fontWeight(.semibold)
+            }
+        }
+    }
+    
     var body: some View {
         Form {
             Section {
@@ -41,19 +66,8 @@ struct IDPhotoDetailView: View {
                         }
                     
                     VStack(alignment: .center, spacing: 6) {
-                        HStack(alignment: .center) {
-                            Text("横 \(projectGlobalMeasurementFormatter.string(from: idPhotoSize.width))")
-                                .fontWeight(.semibold)
-                            
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxHeight: 10)
-                            
-                            Text("縦 \(projectGlobalMeasurementFormatter.string(from: idPhotoSize.height))")
-                                .fontWeight(.semibold)
-                        }
-                        .lineLimit(1)
+                        renderPhotoSizeLabel()
+                            .lineLimit(1)
                         
                         Button(action: {
                             
