@@ -29,8 +29,8 @@ struct CreatedIDPhotoHistoryCard: View {
     
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
-    @ScaledMetric(relativeTo: .body) var titleScaleFactor: CGFloat = 1
-    @ScaledMetric(relativeTo: .headline) var thumbnailScaleFactor: CGFloat = 1
+    @ScaledMetric(relativeTo: .callout) var titleScaleFactor: CGFloat = 1
+    @ScaledMetric(relativeTo: .callout) var thumbnailScaleFactor: CGFloat = 1
     
     var idPhotoThumbnailUIImage: UIImage
     var idPhotoSizeType: IDPhotoSizeVariant
@@ -56,7 +56,7 @@ struct CreatedIDPhotoHistoryCard: View {
                 Image(systemName: "xmark")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 10 * titleScaleFactor)
+                    .frame(maxHeight: 8 * titleScaleFactor)
                 
                 Text("\(photoHeight)")
                     .fontWeight(.medium)
@@ -69,6 +69,7 @@ struct CreatedIDPhotoHistoryCard: View {
         if self.dynamicTypeSize.isAccessibilitySize {
             VStack(alignment: .leading) {
                 renderTitle()
+                    .font(.callout)
                     .lineLimit(1)
                 
                 VStack(alignment: .leading, spacing: 0) {
@@ -87,10 +88,12 @@ struct CreatedIDPhotoHistoryCard: View {
                     Image(uiImage: idPhotoThumbnailUIImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 60 * thumbnailScaleFactor, alignment: .center)
+                        .frame(maxWidth: 50 * thumbnailScaleFactor, alignment: .top)
+                        .clipped()
                         .shadow(radius: 0.8)
                     
                     renderTitle()
+                        .font(.callout)
                         .lineLimit(1)
                 }
                 
