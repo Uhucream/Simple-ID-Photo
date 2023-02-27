@@ -16,6 +16,15 @@ fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
     return formatter
 }()
 
+fileprivate let dateFormatter: DateFormatter = {
+    let formatter: DateFormatter = .init()
+    
+    formatter.dateStyle = .short
+    formatter.timeStyle = .none
+    
+    return formatter
+}()
+
 struct CreatedIDPhotoHistoryCard: View {
     
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -63,8 +72,8 @@ struct CreatedIDPhotoHistoryCard: View {
                     .lineLimit(1)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(createdAt, style: .date)
-                        .font(.headline)
+                    Text(createdAt, formatter: dateFormatter)
+                        .font(.subheadline)
                         .fontWeight(.medium)
                     
                     Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
@@ -91,8 +100,8 @@ struct CreatedIDPhotoHistoryCard: View {
                     Text("")
                         .font(.caption2)
                     
-                    Text(createdAt, style: .date)
-                        .font(.headline)
+                    Text(createdAt, formatter: dateFormatter)
+                        .font(.subheadline)
                         .fontWeight(.medium)
                     
                     Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
