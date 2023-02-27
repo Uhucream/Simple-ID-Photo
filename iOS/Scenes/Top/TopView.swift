@@ -114,7 +114,13 @@ struct TopView: View {
                 
                 Section {
                     ForEach(historiesCreatedInThreeMonths) { history in
-                        NavigationLink(destination: IDPhotoDetailView()) {
+                        NavigationLink(
+                            destination: IDPhotoDetailView(
+                                idPhotoUIImage: .constant(history.createdUIImage),
+                                idPhotoSizeType: .constant(history.idPhotoSizeType),
+                                createdAt: .constant(history.createdAt)
+                            )
+                        ) {
                             renderHistoryCard(history)
                         }
                         .isDetailLink(true)
@@ -125,7 +131,13 @@ struct TopView: View {
                 
                 Section {
                     ForEach(historiesCreatedOverThreeMonthsAgo) { history in
-                        NavigationLink(destination: IDPhotoDetailView()) {
+                        NavigationLink(
+                            destination: IDPhotoDetailView(
+                                idPhotoUIImage: .constant(history.createdUIImage),
+                                idPhotoSizeType: .constant(history.idPhotoSizeType),
+                                createdAt: .constant(history.createdAt)
+                            )
+                        ) {
                             renderHistoryCard(history)
                         }
                         .isDetailLink(true)

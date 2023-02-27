@@ -20,9 +20,10 @@ struct IDPhotoDetailView: View {
     
     @Environment(\.colorScheme) var currentColorScheme
     
-    @State var idPhotoSize: IDPhotoSize = {
-        return IDPhotoSizeVariant.w24_h30.photoSize
-    }()
+    @Binding var idPhotoUIImage: UIImage
+    @Binding var idPhotoSizeType: IDPhotoSizeVariant
+    
+    @Binding var createdAt: Date
     
     var body: some View {
         Form {
@@ -134,6 +135,10 @@ struct IDPhotoDetailView: View {
 
 struct IDPhotoDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        IDPhotoDetailView()
+        IDPhotoDetailView(
+            idPhotoUIImage: .constant(UIImage(named: "SampleIDPhoto")!),
+            idPhotoSizeType: .constant(IDPhotoSizeVariant.w30_h40),
+            createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!)
+        )
     }
 }
