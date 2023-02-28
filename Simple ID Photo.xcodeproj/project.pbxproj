@@ -36,7 +36,7 @@
 		47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B412967FB1E00F2BF35 /* Assets.xcassets */; };
 		47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B442967FB1E00F2BF35 /* Preview Assets.xcassets */; };
 		47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B462967FB1E00F2BF35 /* Persistence.swift */; };
-		47C49B4A2967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B482967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld */; };
+		47C49B4A2967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B482967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld */; };
 		47C49B542967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B532967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift */; };
 		47C49B5E2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */; };
 		47C49B602967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */; };
@@ -329,7 +329,7 @@
 				47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */,
 				47C49B3F2967FB1C00F2BF35 /* ContentView.swift */,
 				47C49B462967FB1E00F2BF35 /* Persistence.swift */,
-				47C49B482967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld */,
+				47C49B482967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -631,7 +631,7 @@
 				478689552980216600952BFD /* IDPhotoSizePicker.swift in Sources */,
 				47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */,
 				479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */,
-				47C49B4A2967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld in Sources */,
+				47C49B4A2967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld in Sources */,
 				47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */,
 				479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */,
 				47868951297F6CDC00952BFD /* IDPhotoBackgroundColorPicker.swift in Sources */,
@@ -1089,13 +1089,13 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		47C49B482967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodeld */ = {
+		47C49B482967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				47C49B492967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodel */,
 			);
 			currentVersion = 47C49B492967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodel */;
-			path = Simple_ID_Photo.xcdatamodeld;
+			path = SimpleIDPhoto.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
