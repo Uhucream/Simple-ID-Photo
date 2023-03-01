@@ -25,6 +25,38 @@ struct IDPhotoDetailView: View {
     
     @Binding var createdAt: Date
     
+    private(set) var onTapChangeSizeButtonCallback: (() -> Void)?
+    
+    private(set) var onTapPrintButtonCallback: (() -> Void)?
+    private(set) var onTapSaveImageButtonCallback: (() -> Void)?
+    
+    public func onTapChangeSizeButton(action: @escaping () -> Void) -> Self {
+
+        var view = self
+        
+        view.onTapChangeSizeButtonCallback = action
+        
+        return view
+    }
+    
+    public func onTapPrintButton(action: @escaping () -> Void) -> Self {
+
+        var view = self
+        
+        view.onTapPrintButtonCallback = action
+        
+        return view
+    }
+    
+    public func onTapSaveImageButton(action: @escaping () -> Void) -> Self {
+
+        var view = self
+        
+        view.onTapSaveImageButtonCallback = action
+        
+        return view
+    }
+    
     @ViewBuilder
     func renderPhotoSizeLabel() -> some View {
         
@@ -70,7 +102,7 @@ struct IDPhotoDetailView: View {
                             .lineLimit(1)
                         
                         Button(action: {
-                            
+                            onTapChangeSizeButtonCallback?()
                         }) {
                             Text("サイズを変更")
                         }
@@ -86,7 +118,7 @@ struct IDPhotoDetailView: View {
             Section {
                 HStack {
                     Button(action: {
-                        
+                        onTapPrintButtonCallback?()
                     }) {
                         HStack(alignment: .center) {
                             Image(systemName: "printer")
@@ -100,7 +132,7 @@ struct IDPhotoDetailView: View {
                     .controlSize(.large)
                     
                     Button(action: {
-                        
+                        onTapSaveImageButtonCallback?()
                     }) {
                         HStack(alignment: .center) {
                             Image(systemName: "square.and.arrow.down")
