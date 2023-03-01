@@ -97,17 +97,18 @@ struct IDPhotoDetailView: View {
                                 .blur(radius: 4)
                         }
                     
-                    VStack(alignment: .center, spacing: 6) {
+                    VStack(alignment: .center, spacing: 0) {
                         renderPhotoSizeLabel()
+                            .font(.title3)
                             .lineLimit(1)
                         
                         Button(action: {
                             onTapChangeSizeButtonCallback?()
                         }) {
                             Text("サイズを変更")
+                                .padding(4)
                         }
                         .buttonStyle(.borderless)
-                        .controlSize(.small)
                     }
                 }
                 .frame(maxWidth: .infinity)
