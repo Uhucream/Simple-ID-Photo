@@ -111,30 +111,34 @@ struct TopView: View {
                         return !isHistoryContainedOnThreeMonthsHistories
                     }
                 
-                Section {
-                    ForEach(historiesCreatedInThreeMonths) { history in
-                        NavigationLink(
-                            destination: IDPhotoDetailViewContainer(history)
-                        ) {
-                            renderHistoryCard(history)
+                if historiesCreatedInThreeMonths.count > 0 {
+                    Section {
+                        ForEach(historiesCreatedInThreeMonths) { history in
+                            NavigationLink(
+                                destination: IDPhotoDetailViewContainer(history)
+                            ) {
+                                renderHistoryCard(history)
+                            }
+                            .isDetailLink(true)
                         }
-                        .isDetailLink(true)
+                    } header: {
+                        Text("3ヶ月以内")
                     }
-                } header: {
-                    Text("3ヶ月以内")
                 }
                 
-                Section {
-                    ForEach(historiesCreatedOverThreeMonthsAgo) { history in
-                        NavigationLink(
-                            destination: IDPhotoDetailViewContainer(history)
-                        ) {
-                            renderHistoryCard(history)
+                if historiesCreatedOverThreeMonthsAgo.count > 0 {
+                    Section {
+                        ForEach(historiesCreatedOverThreeMonthsAgo) { history in
+                            NavigationLink(
+                                destination: IDPhotoDetailViewContainer(history)
+                            ) {
+                                renderHistoryCard(history)
+                            }
+                            .isDetailLink(true)
                         }
-                        .isDetailLink(true)
+                    } header: {
+                        Text("それ以前")
                     }
-                } header: {
-                    Text("それ以前")
                 }
             }
         }
