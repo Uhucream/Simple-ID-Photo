@@ -11,6 +11,7 @@
 		4707215229B02A0800BD8535 /* AppliedIDPhotoSize+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */; };
 		4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215329B02A2D00BD8535 /* AppliedMarginsAroundFace+.swift */; };
 		4707215629B02A7200BD8535 /* GeneratedIDPhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215529B02A7200BD8535 /* GeneratedIDPhoto+.swift */; };
+		4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215729B02A8E00BD8535 /* SourcePhoto+.swift */; };
 		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
@@ -92,6 +93,7 @@
 		4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoSize+.swift"; sourceTree = "<group>"; };
 		4707215329B02A2D00BD8535 /* AppliedMarginsAroundFace+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedMarginsAroundFace+.swift"; sourceTree = "<group>"; };
 		4707215529B02A7200BD8535 /* GeneratedIDPhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GeneratedIDPhoto+.swift"; sourceTree = "<group>"; };
+		4707215729B02A8E00BD8535 /* SourcePhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SourcePhoto+.swift"; sourceTree = "<group>"; };
 		4728DA43297ECC180056767F /* IDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSize.swift; sourceTree = "<group>"; };
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 				4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */,
 				4707215329B02A2D00BD8535 /* AppliedMarginsAroundFace+.swift */,
 				4707215529B02A7200BD8535 /* GeneratedIDPhoto+.swift */,
+				4707215729B02A8E00BD8535 /* SourcePhoto+.swift */,
 			);
 			path = ConvenienceInitializer;
 			sourceTree = "<group>";
@@ -668,6 +671,7 @@
 				47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */,
 				47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */,
 				479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */,
+				4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */,
 				4707215629B02A7200BD8535 /* GeneratedIDPhoto+.swift in Sources */,
 				47C49B4A2967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld in Sources */,
 				47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */,
