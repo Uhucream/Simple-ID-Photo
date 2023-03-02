@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4707215029B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707214F29B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift */; };
 		4707215229B02A0800BD8535 /* AppliedIDPhotoSize+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */; };
+		4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215329B02A2D00BD8535 /* AppliedMarginsAroundFace+.swift */; };
 		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
@@ -88,6 +89,7 @@
 		47013AEC296C0224000A0D89 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4707214F29B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoFaceHeight+.swift"; sourceTree = "<group>"; };
 		4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoSize+.swift"; sourceTree = "<group>"; };
+		4707215329B02A2D00BD8535 /* AppliedMarginsAroundFace+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedMarginsAroundFace+.swift"; sourceTree = "<group>"; };
 		4728DA43297ECC180056767F /* IDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSize.swift; sourceTree = "<group>"; };
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */,
 				4707214F29B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift */,
 				4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */,
+				4707215329B02A2D00BD8535 /* AppliedMarginsAroundFace+.swift */,
 			);
 			path = ConvenienceInitializer;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				478DB92529AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift in Sources */,
 				475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */,
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
+				4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */,
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
 				47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */,
 				4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */,
