@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum IDPhotoSizeVariant: CaseIterable {
+public enum IDPhotoSizeVariant: Int, CaseIterable {
     
     case original
     
