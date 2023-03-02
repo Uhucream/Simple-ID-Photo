@@ -15,6 +15,51 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
+        mockHistoriesData
+            .enumerated()
+            .forEach { (index: Int, history: CreatedIDPhotoDetail) in
+                
+                let sourcePhoto: SourcePhoto = .init(
+                    on: viewContext,
+                    imageURL: history.createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
+                    shotDate: Calendar.current.date(byAdding: .month, value: -(index + 1), to: .now)
+                )
+                
+                let appliedBackgroundColor: AppliedBackgroundColor = .init(
+                    on: viewContext,
+                    color: .idPhotoBackgroundColors.blue
+                )
+                
+                let appliedIDPhotoFaceHeight: AppliedIDPhotoFaceHeight = .init(
+                    on: viewContext,
+                    millimetersHeight: history.idPhotoSizeType.photoSize.faceHeight.value
+                )
+                
+                let appliedMarginsAroundFace: AppliedMarginsAroundFace = .init(
+                    on: viewContext,
+                    bottom: history.idPhotoSizeType.photoSize.marginBottom?.value ?? -1,
+                    top: history.idPhotoSizeType.photoSize.marginTop.value
+                )
+                
+                let appliedIDPhotoSize: AppliedIDPhotoSize = .init(
+                    on: viewContext,
+                    millimetersHeight: history.idPhotoSizeType.photoSize.height.value,
+                    millimetersWidth: history.idPhotoSizeType.photoSize.width.value,
+                    sizeVariant: history.idPhotoSizeType,
+                    faceHeight: appliedIDPhotoFaceHeight,
+                    marginsAroundFace: appliedMarginsAroundFace
+                )
+                
+                let generatedIDPhoto: GeneratedIDPhoto = .init(
+                    on: viewContext,
+                    createdAt: history.createdAt,
+                    imageURL: history.createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
+                    updatedAt: .now,
+                    appliedBackgroundColor: appliedBackgroundColor,
+                    appliedIDPhotoSize: appliedIDPhotoSize,
+                    sourcePhoto: sourcePhoto
+                )
+            }
         
         do {
             try viewContext.save()
