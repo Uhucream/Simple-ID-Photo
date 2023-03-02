@@ -30,6 +30,7 @@
 		479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC7F29696E0500C02BB7 /* InfoPlist.strings */; };
 		479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC8129696FF900C02BB7 /* TopViewContainer.swift */; };
 		479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC832969754800C02BB7 /* PicturePickerView.swift */; };
+		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
 		47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B91A4C29A8567100754657 /* PrintPageRenderer.swift */; };
 		47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1C7BE297E3B4700A22EAB /* CIImage+.swift */; };
 		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */; };
@@ -107,6 +108,7 @@
 		479BBC8029696E0900C02BB7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		479BBC8129696FF900C02BB7 /* TopViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewContainer.swift; sourceTree = "<group>"; };
 		479BBC832969754800C02BB7 /* PicturePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePickerView.swift; sourceTree = "<group>"; };
+		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
 		47B91A4C29A8567100754657 /* PrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintPageRenderer.swift; sourceTree = "<group>"; };
 		47C1C7BE297E3B4700A22EAB /* CIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+.swift"; sourceTree = "<group>"; };
 		47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -292,6 +294,22 @@
 			path = Localizations;
 			sourceTree = "<group>";
 		};
+		47AB8B8929AF6046008C753F /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				47AB8B9529AF7355008C753F /* ConvenienceInitializer */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		47AB8B9529AF7355008C753F /* ConvenienceInitializer */ = {
+			isa = PBXGroup;
+			children = (
+				47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */,
+			);
+			path = ConvenienceInitializer;
+			sourceTree = "<group>";
+		};
 		47B91A4B29A8565700754657 /* UIPrintPageRenderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -452,6 +470,7 @@
 		47D9041029692E7B00DD4FAF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				47AB8B8929AF6046008C753F /* CoreData */,
 				4778B34E29A7427000F35EE0 /* Foundation */,
 				4778B34B29A7423F00F35EE0 /* CoreImage */,
 				4778B34C29A7425600F35EE0 /* ImageIO */,
@@ -633,6 +652,7 @@
 				4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */,
 				478689552980216600952BFD /* IDPhotoSizePicker.swift in Sources */,
 				47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */,
+				47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */,
 				479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */,
 				47C49B4A2967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld in Sources */,
 				47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */,
