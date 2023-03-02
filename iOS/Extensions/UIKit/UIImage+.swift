@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import UniformTypeIdentifiers
 
 extension UIImage {
 
@@ -146,5 +147,24 @@ extension UIImage {
         let uiImage = UIImage(cgImage: cgImage, scale: 1, orientation: .up)
 
         return uiImage
+    }
+    
+    func localURLForXCAssets(
+        fileName: String,
+        fileManager: FileManager = .default
+    ) -> URL? {
+        guard let cacheDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else { return nil }
+        
+        let fileURL = cacheDirectory.appendingPathComponent(fileName, conformingTo: .png)
+        let filePath = fileURL.path
+        
+        if !fileManager.fileExists(atPath: filePath) {
+
+            guard let pngData = self.pngData() else { return nil }
+            
+            fileManager.createFile(atPath: filePath, contents: pngData)
+        }
+         
+        return fileURL
     }
 }
