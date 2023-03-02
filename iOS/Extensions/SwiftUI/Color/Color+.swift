@@ -90,3 +90,19 @@ extension Color {
     static let fixedPurple = Color(uiColor: UIColor(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0))
     static let fixedBrown = Color(uiColor: UIColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0))
 }
+
+extension Color {
+    var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
+        
+        guard let cgColor = cgColor else { return nil }
+        
+        guard let cgColorComponents: [CGFloat] = cgColor.components else { return nil }
+        
+        return (
+            red: cgColorComponents[0],
+            green: cgColorComponents[1],
+            blue: cgColorComponents[2],
+            alpha: cgColorComponents[3]
+        )
+    }
+}
