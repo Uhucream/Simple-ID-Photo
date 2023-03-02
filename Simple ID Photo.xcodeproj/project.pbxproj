@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4707215029B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707214F29B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift */; };
 		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
@@ -84,6 +85,7 @@
 /* Begin PBXFileReference section */
 		47013AEB296C006B000A0D89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		47013AEC296C0224000A0D89 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4707214F29B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoFaceHeight+.swift"; sourceTree = "<group>"; };
 		4728DA43297ECC180056767F /* IDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSize.swift; sourceTree = "<group>"; };
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */,
+				4707214F29B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift */,
 			);
 			path = ConvenienceInitializer;
 			sourceTree = "<group>";
@@ -639,6 +642,7 @@
 				475FB236296FD5000059796F /* UIImage+.swift in Sources */,
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
+				4707215029B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift in Sources */,
 				47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */,
 				47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */,
 				47C7894929AB3A44003D7763 /* CreatedIDPhotoDetail.swift in Sources */,
