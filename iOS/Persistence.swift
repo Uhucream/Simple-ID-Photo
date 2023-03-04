@@ -15,8 +15,13 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        mockHistoriesData
-            .enumerated()
+        
+        let mockHistoriesDataWithIndices = zip(
+            mockHistoriesData.indices,
+            mockHistoriesData
+        )
+        
+        mockHistoriesDataWithIndices
             .forEach { (index: Int, history: CreatedIDPhotoDetail) in
                 
                 let sourcePhoto: SourcePhoto = .init(
