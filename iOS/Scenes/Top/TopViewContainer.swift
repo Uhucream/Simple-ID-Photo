@@ -141,6 +141,7 @@ struct TopViewContainer: View {
                 }
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
+            //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
             CameraView(pictureURL: $pictureURL)
         }
         .onChange(of: pictureURL) { newPictureURL in
