@@ -144,27 +144,22 @@ struct TopViewContainer: View {
             //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
             CameraView(pictureURL: $pictureURL)
         }
+        .fullScreenCover(isPresented: $shouldShowCreateIDPhotoView) {
+            if let pictureURL = pictureURL,
+               let uiimageFromURL = UIImage(url: pictureURL),
+               let orientationFixedUIImage = uiimageFromURL.orientationFixed()
+            {
+                CreateIDPhotoViewContainer(
+                    sourceUIImage: orientationFixedUIImage
+                )
+            }
+        }
         .onChange(of: pictureURL) { newPictureURL in
             guard newPictureURL != nil else { return }
             
             shouldShowCreateIDPhotoView = true
         }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
-        .background {
-            NavigationLink(isActive: $shouldShowCreateIDPhotoView) {
-                if let pictureURL = pictureURL,
-                   let uiimageFromURL = UIImage(url: pictureURL),
-                   let orientationFixedUIImage = uiimageFromURL.orientationFixed()
-                {
-                    CreateIDPhotoViewContainer(
-                        sourceUIImage: orientationFixedUIImage
-                    )
-                }
-            } label: {
-                Color.clear
-            }
-            .isDetailLink(false)
-        }
     }
 }
 
