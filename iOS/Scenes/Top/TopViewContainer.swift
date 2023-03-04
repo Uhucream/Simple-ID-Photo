@@ -34,6 +34,10 @@ struct TopViewContainer: View {
     
     @State private var userSelectedImageURL: URL? = nil
     
+    private var libraryRootDirectoryURL: URL? {
+        return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
+    }
+    
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
     }
@@ -77,9 +81,15 @@ struct TopViewContainer: View {
                 return
             }
             
-            let fileName = "\(Int(Date().timeIntervalSince1970)).\(url.pathExtension)"
+            let sourcePhotosDirectoryURL: URL? = fetchSourcePhotosDirectoryURL()
             
-            let newFileURL: URL = .init(fileURLWithPath: NSTemporaryDirectory() + fileName)
+            guard let sourcePhotosDirectoryURL: URL = sourcePhotosDirectoryURL else { return }
+
+            let fileName = ProcessInfo.processInfo.globallyUniqueString
+
+            let newFileURL: URL = sourcePhotosDirectoryURL
+                .appendingPathComponent(fileName)
+                .appendingPathExtension(url.pathExtension)
             
             try? FileManager.default.copyItem(at: url, to: newFileURL)
             
@@ -106,10 +116,16 @@ struct TopViewContainer: View {
             guard let url = url else {
                 return
             }
+            
+            let sourcePhotosDirectoryURL: URL? = fetchSourcePhotosDirectoryURL()
+            
+            guard let sourcePhotosDirectoryURL: URL = sourcePhotosDirectoryURL else { return }
 
-            let fileName = "\(Int(Date().timeIntervalSince1970)).\(url.pathExtension)"
+            let fileName = ProcessInfo.processInfo.globallyUniqueString
 
-            let newFileURL: URL = .init(fileURLWithPath: NSTemporaryDirectory() + fileName)
+            let newFileURL: URL = sourcePhotosDirectoryURL
+                .appendingPathComponent(fileName)
+                .appendingPathExtension(url.pathExtension)
 
             try? FileManager.default.copyItem(at: url, to: newFileURL)
 
@@ -179,6 +195,34 @@ struct TopViewContainer: View {
             }
         }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
+    }
+}
+
+extension TopViewContainer {
+    private func fetchSourcePhotosDirectoryURL() -> URL? {
+        let fileManager: FileManager = .default
+        
+        guard let libraryRootDirectoryURL = libraryRootDirectoryURL else { return nil }
+        
+        let sourcePhotosDirectoryURL: URL = libraryRootDirectoryURL.appendingPathComponent("SourcePhotos", conformingTo: .directory)
+        
+        var objcTrue: ObjCBool = .init(true)
+        
+        let isSourcePhotosDirectoryExists: Bool  = fileManager.fileExists(atPath: sourcePhotosDirectoryURL.path, isDirectory: &objcTrue)
+        
+        if isSourcePhotosDirectoryExists {
+            return sourcePhotosDirectoryURL
+        }
+        
+        do {
+            try fileManager.createDirectory(at: sourcePhotosDirectoryURL, withIntermediateDirectories: true)
+            
+            return sourcePhotosDirectoryURL
+        } catch {
+            print(error)
+            
+            return nil
+        }
     }
 }
 
