@@ -137,7 +137,20 @@ struct TopViewContainer: View {
                 .onPickerDelegatePickerFuncInvoked { (phpickerViewController, phpickerResults) in
                     setPictureURLFromPHPickerSelectedItem(phpickerViewController: phpickerViewController, phpickerResults: phpickerResults)
                     
-                    self.shouldShowPicturePickerView = false
+                    Task.detached(priority: .userInitiated) {
+                        do {
+                            let oneMillisecond: UInt64 = 1_000_000
+                            
+                            self.shouldShowPicturePickerView = false
+                            
+                            //  MARK: これがないと、すぐに fullScreenCover が表示されてしまい、一瞬画面が真っ黒になる
+                            try await Task.sleep(nanoseconds: oneMillisecond * 90)
+                            
+                            self.shouldShowCreateIDPhotoView = true
+                        } catch {
+                            print(error)
+                        }
+                    }
                 }
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
@@ -153,11 +166,6 @@ struct TopViewContainer: View {
                     sourceUIImage: orientationFixedUIImage
                 )
             }
-        }
-        .onChange(of: pictureURL) { newPictureURL in
-            guard newPictureURL != nil else { return }
-            
-            shouldShowCreateIDPhotoView = true
         }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
     }
