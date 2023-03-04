@@ -31,7 +31,7 @@ struct TopViewContainer: View {
     
     @State private var isPhotoLoadingInProgress: Bool = false
     
-    @State private var pictureURL: URL? = nil
+    @State private var userSelectedImageURL: URL? = nil
     
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
@@ -65,7 +65,7 @@ struct TopViewContainer: View {
 
             try? FileManager.default.copyItem(at: url, to: newFileURL)
 
-            self.pictureURL = newFileURL
+            self.userSelectedImageURL = newFileURL
             
             self.isPhotoLoadingInProgress = false
         }
@@ -97,7 +97,7 @@ struct TopViewContainer: View {
         }
         .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
             PicturePickerView(
-                pictureURL: $pictureURL,
+                pictureURL: $userSelectedImageURL,
                 isLoadingInProgress: $isPhotoLoadingInProgress
             )
             .onPictureSelected {
@@ -105,17 +105,17 @@ struct TopViewContainer: View {
             }
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
-            CameraView(pictureURL: $pictureURL)
+            CameraView(pictureURL: $userSelectedImageURL)
         }
-        .onChange(of: pictureURL) { newPictureURL in
-            guard newPictureURL != nil else { return }
+        .onChange(of: userSelectedImageURL) { newSelectedImageURL in
+            guard newSelectedImageURL != nil else { return }
             
             shouldShowCreateIDPhotoView = true
         }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
         .background {
             NavigationLink(isActive: $shouldShowCreateIDPhotoView) {
-                if let pictureURL = pictureURL,
+                if let pictureURL = userSelectedImageURL,
                    let uiimageFromURL = UIImage(url: pictureURL),
                    let orientationFixedUIImage = uiimageFromURL.orientationFixed()
                 {
