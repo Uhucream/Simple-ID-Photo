@@ -1,5 +1,5 @@
 //
-//  GeneratedIDPhoto+.swift
+//  CreatedIDPhoto+.swift
 //  Simple ID Photo
 //  
 //  Created by TakashiUshikoshi on 2023/03/01
@@ -8,7 +8,7 @@
 
 import CoreData
 
-extension GeneratedIDPhoto {
+extension CreatedIDPhoto {
     convenience init(
         on context: NSManagedObjectContext,
         id: UUID = .init(),

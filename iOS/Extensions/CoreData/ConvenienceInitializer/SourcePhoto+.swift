@@ -14,7 +14,7 @@ extension SourcePhoto {
         id: UUID = .init(),
         imageURL: String?,
         shotDate: Date?,
-        generatedIDPhoto: GeneratedIDPhoto? = nil
+        createdIDPhoto: CreatedIDPhoto? = nil
     ) {
         self.init(context: context)
         
@@ -23,6 +23,6 @@ extension SourcePhoto {
         self.imageURL = imageURL
         self.shotDate = shotDate
         
-        self.generatedIDPhoto = generatedIDPhoto
+        self.createdIDPhoto = createdIDPhoto
     }
 }

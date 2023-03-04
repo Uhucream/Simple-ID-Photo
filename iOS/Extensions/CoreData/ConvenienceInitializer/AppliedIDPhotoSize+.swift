@@ -17,7 +17,7 @@ extension AppliedIDPhotoSize {
         sizeVariant: IDPhotoSizeVariant,
         faceHeight: AppliedIDPhotoFaceHeight? = nil,
         marginsAroundFace: AppliedMarginsAroundFace? = nil,
-        generatedIDPhoto: GeneratedIDPhoto? = nil
+        createdIDPhoto: CreatedIDPhoto? = nil
     ) {
         self.init(context: context)
         
@@ -29,6 +29,6 @@ extension AppliedIDPhotoSize {
         
         self.faceHeight = faceHeight
         self.marginsAroundFace = marginsAroundFace
-        self.generatedIDPhoto = generatedIDPhoto
+        self.createdIDPhoto = createdIDPhoto
     }
 }

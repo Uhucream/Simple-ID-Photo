@@ -14,7 +14,7 @@ extension AppliedBackgroundColor {
         on context: NSManagedObjectContext,
         id: UUID = .init(),
         color: Color,
-        generatedIDPhoto: GeneratedIDPhoto? = nil
+        createdIDPhoto: CreatedIDPhoto? = nil
     ) {
         self.init(context: context)
         
@@ -25,6 +25,6 @@ extension AppliedBackgroundColor {
         self.blue = Double(color.rgba?.blue ?? 0)
         self.alpha = Double(color.rgba?.alpha ?? 0)
         
-        self.generatedIDPhoto = generatedIDPhoto
+        self.createdIDPhoto = createdIDPhoto
     }
 }

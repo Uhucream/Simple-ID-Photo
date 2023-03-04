@@ -50,7 +50,7 @@ struct PersistenceController {
                     marginsAroundFace: appliedMarginsAroundFace
                 )
                 
-                let generatedIDPhoto: GeneratedIDPhoto = .init(
+                let createdIDPhoto: CreatedIDPhoto = .init(
                     on: viewContext,
                     createdAt: history.createdAt,
                     imageURL: history.createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
