@@ -10,6 +10,19 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct TopViewContainer: View {
+    
+    @Environment(\.managedObjectContext) var viewContext
+    
+    @FetchRequest(
+        entity: CreatedIDPhoto.entity(),
+        sortDescriptors: [
+            .init(
+                keyPath: \CreatedIDPhoto.createdAt,
+                ascending: false
+            )
+        ]
+    ) var createdIDPhotoHistories: FetchedResults<CreatedIDPhoto>
+    
     @State private var shouldShowPicturePickerView: Bool = false
     
     @State private var shouldShowCameraView: Bool = false
@@ -19,8 +32,6 @@ struct TopViewContainer: View {
     @State private var isPhotoLoadingInProgress: Bool = false
     
     @State private var pictureURL: URL? = nil
-    
-    @State private var createdIDPhotoHistories: [CreatedIDPhotoDetail] = mockHistoriesData
     
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
@@ -65,7 +76,7 @@ struct TopViewContainer: View {
     var body: some View {
         ZStack {
             TopView(
-                createdIDPhotoHistories: $createdIDPhotoHistories,
+                createdIDPhotoHistories: createdIDPhotoHistories,
                 onTapSelectFromAlbumButton: {
                     showPicturePickerView()
                 },
@@ -138,6 +149,7 @@ struct TopViewContainer_Previews: PreviewProvider {
                         screenSizeHelper.updateScreenSize(screenWidth: screenSize.width, screenHeight: screenSize.height)
                     }
             }
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
             .environmentObject(screenSizeHelper)
         }
     }

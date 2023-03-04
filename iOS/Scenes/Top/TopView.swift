@@ -10,10 +10,11 @@ import SwiftUI
 
 fileprivate let gregorianCalendar: Calendar = .init(identifier: .gregorian)
 
-struct TopView: View {
+struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where CreatedIDPhotosResults.Element ==  CreatedIDPhoto {
+
     @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
-    @Binding var createdIDPhotoHistories: [CreatedIDPhotoDetail]
+    var createdIDPhotoHistories: CreatedIDPhotosResults
     
     private let today: Date = gregorianCalendar.startOfDay(for: .now)
     
@@ -21,11 +22,11 @@ struct TopView: View {
     var onTapTakePictureButton: (() -> Void)?
     
     @ViewBuilder
-    func renderHistoryCard(_ createdIDPhotoHistory: CreatedIDPhotoDetail) -> some View {
+    func renderHistoryCard(_ createdIDPhotoHistory: CreatedIDPhoto) -> some View {
         CreatedIDPhotoHistoryCard(
-            idPhotoThumbnailUIImage: createdIDPhotoHistory.createdUIImage,
-            idPhotoSizeType: createdIDPhotoHistory.idPhotoSizeType,
-            createdAt: createdIDPhotoHistory.createdAt
+            idPhotoThumbnailImageURL: URL(string: createdIDPhotoHistory.imageURL ?? ""),
+            idPhotoSizeType: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
+            createdAt: createdIDPhotoHistory.createdAt ?? .distantPast
         )
     }
     
@@ -91,31 +92,28 @@ struct TopView: View {
                 .aspectRatio(3 / 4, contentMode: .fit)
                 .listRowBackground(Color.systemGroupedBackground)
             } else {
-                let historiesCreatedInThreeMonths: [CreatedIDPhotoDetail] = createdIDPhotoHistories
-                    .filter { (history) -> Bool in
-                        let startOfDateOfCreatedAt: Date = gregorianCalendar.startOfDay(for: history.createdAt)
+
+                let historiesWithinThreeMonths: [CreatedIDPhoto] = createdIDPhotoHistories
+                    .filter { generatedIDPhoto in
+                        let startOfShotDate: Date = gregorianCalendar.startOfDay(for: generatedIDPhoto.sourcePhoto?.shotDate ?? .distantPast)
                         
-                        let elapsedMonths: Int = gregorianCalendar.dateComponents([.month], from: startOfDateOfCreatedAt, to: self.today).month!
+                        let elapsedMonths: Int = gregorianCalendar.dateComponents([.month], from: startOfShotDate, to: self.today).month!
                         
-                        let isInThreeMonths = elapsedMonths <= 3
-                        
-                        return isInThreeMonths
+                        return elapsedMonths <= 3
                     }
                 
-                let historiesCreatedOverThreeMonthsAgo: [CreatedIDPhotoDetail] = createdIDPhotoHistories
+                let historiesOverThreeMonthsAgo: [CreatedIDPhoto] = createdIDPhotoHistories
                     .filter { (history) -> Bool in
-                        let isHistoryContainedOnThreeMonthsHistories: Bool = historiesCreatedInThreeMonths.contains { historyInThreeMonths in
-                            return gregorianCalendar.isDate(history.createdAt, inSameDayAs: historyInThreeMonths.createdAt)
-                        }
+                        let isHistoryContainedOnThreeMonthsHistories: Bool = historiesWithinThreeMonths.contains(history)
                         
                         return !isHistoryContainedOnThreeMonthsHistories
                     }
                 
-                if historiesCreatedInThreeMonths.count > 0 {
+                if historiesWithinThreeMonths.count > 0 {
                     Section {
-                        ForEach(historiesCreatedInThreeMonths) { history in
+                        ForEach(historiesWithinThreeMonths) { history in
                             NavigationLink(
-                                destination: IDPhotoDetailViewContainer(history)
+                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
                             ) {
                                 renderHistoryCard(history)
                             }
@@ -126,11 +124,11 @@ struct TopView: View {
                     }
                 }
                 
-                if historiesCreatedOverThreeMonthsAgo.count > 0 {
+                if historiesOverThreeMonthsAgo.count > 0 {
                     Section {
-                        ForEach(historiesCreatedOverThreeMonthsAgo) { history in
+                        ForEach(historiesOverThreeMonthsAgo) { history in
                             NavigationLink(
-                                destination: IDPhotoDetailViewContainer(history)
+                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
                             ) {
                                 renderHistoryCard(history)
                             }
@@ -140,6 +138,7 @@ struct TopView: View {
                         Text("それ以前")
                     }
                 }
+
             }
         }
         .listStyle(.insetGrouped)
@@ -151,10 +150,25 @@ struct TopView_Previews: PreviewProvider {
     static var previews: some View {
         let screenSizeHelper: ScreenSizeHelper = .shared
         
+        let viewContext = PersistenceController.preview.container.viewContext
+        
         NavigationView {
             GeometryReader { geometry in
                 TopView(
-                    createdIDPhotoHistories: .constant(mockHistoriesData)
+                    createdIDPhotoHistories: [
+                        .init(
+                            on: viewContext,
+                            createdAt: .distantPast,
+                            imageURL: mockHistoriesData[3].createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
+                            updatedAt: .now
+                        ),
+                        .init(
+                            on: viewContext,
+                            createdAt: .distantPast,
+                            imageURL: "",
+                            updatedAt: .now
+                        )
+                    ]
                 )
                 .onAppear {
                     screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)

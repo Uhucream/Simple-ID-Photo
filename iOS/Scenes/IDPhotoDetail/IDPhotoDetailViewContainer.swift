@@ -10,22 +10,43 @@ import SwiftUI
 
 struct IDPhotoDetailViewContainer: View {
     
-    @State private var idPhotoUIImage: UIImage
-    @State private var idPhotoSizeType: IDPhotoSizeVariant
-    @State private var createdAt: Date
-    
-    init(_ createdIDPhotoDetail: CreatedIDPhotoDetail) {
-        _idPhotoUIImage = .init(initialValue: createdIDPhotoDetail.createdUIImage)
-        _idPhotoSizeType = .init(initialValue: createdIDPhotoDetail.idPhotoSizeType)
-        _createdAt = .init(initialValue: createdIDPhotoDetail.createdAt)
-    }
+    @ObservedObject var createdIDPhoto: CreatedIDPhoto
     
     var body: some View {
         VStack {
             IDPhotoDetailView(
-                idPhotoUIImage: $idPhotoUIImage,
-                idPhotoSizeType: $idPhotoSizeType,
-                createdAt: $createdAt
+                idPhotoImageURL: Binding<URL?>(
+                    get: {
+                        let imageURLString: String? = createdIDPhoto.imageURL
+                        let imageURL: URL? = .init(string: imageURLString ?? "")
+                        
+                        return imageURL
+                    },
+                    set: { (newImageURL) in
+                        self.createdIDPhoto.imageURL = newImageURL?.absoluteString
+                    }
+                ),
+                idPhotoSizeType: Binding<IDPhotoSizeVariant>(
+                    get: {
+                        let appliedIDPhotoSize = createdIDPhoto.appliedIDPhotoSize
+                        let idPhotoSizeVariant: IDPhotoSizeVariant = IDPhotoSizeVariant(rawValue: Int(appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .original
+                        
+                        return idPhotoSizeVariant
+                    },
+                    set: { (newIDPhotoSizeVariant) in
+                        createdIDPhoto.appliedIDPhotoSize?.sizeVariant = Int32(newIDPhotoSizeVariant.rawValue)
+                    }
+                ),
+                createdAt: Binding<Date>(
+                    get: {
+                        let createdDate: Date = createdIDPhoto.createdAt ?? .distantPast
+                        
+                        return createdDate
+                    },
+                    set: { (newDate) in
+                        createdIDPhoto.createdAt = newDate
+                    }
+                )
             )
         }
     }
@@ -34,7 +55,14 @@ struct IDPhotoDetailViewContainer: View {
 struct IDPhotoDetailViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            IDPhotoDetailViewContainer(mockHistoriesData[0])
+            let mockCreatedIDPhoto: CreatedIDPhoto = .init(
+                on: PersistenceController.preview.container.viewContext,
+                createdAt: .now.addingTimeInterval(-1000),
+                imageURL: nil,
+                updatedAt: .now
+            )
+            
+            IDPhotoDetailViewContainer(createdIDPhoto: mockCreatedIDPhoto)
         }
     }
 }

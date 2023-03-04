@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Percentage
 
 fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
     let formatter: RelativeDateTimeFormatter = .init()
@@ -32,7 +33,7 @@ struct CreatedIDPhotoHistoryCard: View {
     @ScaledMetric(relativeTo: .callout) var titleScaleFactor: CGFloat = 1
     @ScaledMetric(relativeTo: .callout) var thumbnailScaleFactor: CGFloat = 1
     
-    var idPhotoThumbnailUIImage: UIImage
+    var idPhotoThumbnailImageURL: URL?
     var idPhotoSizeType: IDPhotoSizeVariant
     
     var createdAt: Date
@@ -85,12 +86,54 @@ struct CreatedIDPhotoHistoryCard: View {
         } else {
             HStack(alignment: .center) {
                 HStack(alignment: .center) {
-                    Image(uiImage: idPhotoThumbnailUIImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 50 * thumbnailScaleFactor, alignment: .top)
-                        .clipped()
-                        .shadow(radius: 0.8)
+
+                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
+                    
+                    let createdIDPhotoAspectRatio: CGFloat = {
+                        if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
+                            return 3 / 4
+                        }
+                        
+                        return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
+                    }()
+                    
+                    let imageMaxWidth: CGFloat = 50 * thumbnailScaleFactor
+                    
+                    AsyncImage(
+                        url: idPhotoThumbnailImageURL
+                    ) { asyncImagePhase in
+                        
+                        if let loadedImage = asyncImagePhase.image {
+                            
+                            loadedImage
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .clipped()
+                                .shadow(radius: 0.8)
+                            
+                        } else {
+                            
+                            Rectangle()
+                                .fill(Color.clear)
+                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                                .overlay(.ultraThinMaterial)
+                                .overlay {
+                                    Group {
+                                        if let _ = asyncImagePhase.error {
+                                            Image(systemName: "questionmark.square.dashed")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundColor(.systemGray)
+                                        } else {
+                                            ProgressView()
+                                        }
+                                    }
+                                    .frame(maxWidth: 40%.of(imageMaxWidth))
+                                }
+
+                        }
+                    }
+                    .frame(maxWidth: imageMaxWidth, alignment: .top)
                     
                     renderTitle()
                         .font(.callout)
@@ -127,19 +170,21 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
         
         List {
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailUIImage: mockHistory.createdUIImage,
+                idPhotoThumbnailImageURL: mockHistory.createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!,
                 idPhotoSizeType: mockHistory.idPhotoSizeType,
                 createdAt: mockHistory.createdAt
             )
             
+            //  MARK: AsyncImage のクルクルの表示確認用
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailUIImage: mockHistory.createdUIImage,
+                idPhotoThumbnailImageURL: nil,
                 idPhotoSizeType: .original,
                 createdAt: mockHistory.createdAt
             )
             
+            //  MARK: AsyncImage の error の表示確認用
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailUIImage: mockHistory.createdUIImage,
+                idPhotoThumbnailImageURL: .init(string: "hoge"),
                 idPhotoSizeType: .passport,
                 createdAt: mockHistory.createdAt
             )
