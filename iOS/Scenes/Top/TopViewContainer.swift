@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import PhotosUI
 
 struct TopViewContainer: View {
     @State private var shouldShowPicturePickerView: Bool = false
@@ -28,6 +29,53 @@ struct TopViewContainer: View {
     
     func showCameraView() -> Void {
         shouldShowCameraView = true
+    }
+    
+    func setPictureURLFromPHPickerSelectedItem(
+        phpickerViewController: PHPickerViewController,
+        phpickerResults: [PHPickerResult]
+    ) -> Void {
+        
+        self.isPhotoLoadingInProgress = true
+        
+        guard let itemProvider = phpickerResults.first?.itemProvider else {
+            self.isPhotoLoadingInProgress = false
+            
+            return
+        }
+        
+        let typeIdentifier = UTType.image.identifier
+        
+        guard itemProvider.hasItemConformingToTypeIdentifier(typeIdentifier) else {
+            self.isPhotoLoadingInProgress = false
+            
+            return
+        }
+        
+        itemProvider.loadFileRepresentation(forTypeIdentifier: typeIdentifier) { url, error in
+
+            if let error = error {
+                print("error: \(error)")
+                
+                return
+            }
+            
+            guard let url = url else {
+                self.isPhotoLoadingInProgress = false
+                
+                return
+            }
+            
+            let fileName = "\(Int(Date().timeIntervalSince1970)).\(url.pathExtension)"
+            
+            let newFileURL: URL = .init(fileURLWithPath: NSTemporaryDirectory() + fileName)
+            
+            try? FileManager.default.copyItem(at: url, to: newFileURL)
+            
+            self.pictureURL = newFileURL
+            
+            self.isPhotoLoadingInProgress = false
+        }
     }
     
     func setPictureURLFromDroppedItem(itemProviders: [NSItemProvider]) -> Bool {
@@ -85,13 +133,12 @@ struct TopViewContainer: View {
             }
         }
         .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
-            PicturePickerView(
-                pictureURL: $pictureURL,
-                isLoadingInProgress: $isPhotoLoadingInProgress
-            )
-            .onPictureSelected {
-                self.shouldShowPicturePickerView = false
-            }
+            PicturePickerView()
+                .onPickerDelegatePickerFuncInvoked { (phpickerViewController, phpickerResults) in
+                    setPictureURLFromPHPickerSelectedItem(phpickerViewController: phpickerViewController, phpickerResults: phpickerResults)
+                    
+                    self.shouldShowPicturePickerView = false
+                }
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
             CameraView(pictureURL: $pictureURL)
