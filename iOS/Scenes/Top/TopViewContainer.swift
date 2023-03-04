@@ -148,7 +148,7 @@ struct TopViewContainer: View {
                 .onPickerDelegatePickerFuncInvoked { (phpickerViewController, phpickerResults) in
                     setPictureURLFromPHPickerSelectedItem(phpickerViewController: phpickerViewController, phpickerResults: phpickerResults)
                     
-                    Task.detached(priority: .userInitiated) {
+                    Task(priority: .userInitiated) {
                         do {
                             let oneMillisecond: UInt64 = 1_000_000
                             
