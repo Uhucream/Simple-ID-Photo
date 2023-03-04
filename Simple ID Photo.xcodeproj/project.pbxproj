@@ -127,7 +127,7 @@
 		47C49B412967FB1E00F2BF35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47C49B442967FB1E00F2BF35 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		47C49B462967FB1E00F2BF35 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		47C49B492967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Simple_ID_Photo.xcdatamodel; sourceTree = "<group>"; };
+		47C49B492967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleIDPhoto.xcdatamodel; sourceTree = "<group>"; };
 		47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests (iOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B532967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoTests.swift; sourceTree = "<group>"; };
 		47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UITests (iOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1136,9 +1136,9 @@
 		47C49B482967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				47C49B492967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodel */,
+				47C49B492967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodel */,
 			);
-			currentVersion = 47C49B492967FB1E00F2BF35 /* Simple_ID_Photo.xcdatamodel */;
+			currentVersion = 47C49B492967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodel */;
 			path = SimpleIDPhoto.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
