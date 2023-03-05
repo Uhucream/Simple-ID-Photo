@@ -139,7 +139,7 @@ struct TopViewContainer: View {
         return true
     }
     
-    func createSourcePhotoRecordToPersistence(
+    func registerNewSourcePhotoRecord(
         imageURL: URL
     ) -> SourcePhoto? {
         do {
@@ -228,7 +228,7 @@ struct TopViewContainer: View {
 
             guard let newUserSelectedImageURL = newUserSelectedImageURL else { return }
             
-            let newSourcePhotoRecord: SourcePhoto? = createSourcePhotoRecordToPersistence(imageURL: newUserSelectedImageURL)
+            let newSourcePhotoRecord: SourcePhoto? = registerNewSourcePhotoRecord(imageURL: newUserSelectedImageURL)
             
             self.createdSourcePhotoRecord = newSourcePhotoRecord
         }
