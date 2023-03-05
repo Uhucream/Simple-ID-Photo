@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import UIKit
 
 struct PersistenceController {
     static let shared = PersistenceController()
@@ -26,10 +27,19 @@ struct PersistenceController {
                 
                 let imageFileName: String = "SampleIDPhoto"
                 
+                UIImage(named: imageFileName)!.saveOnLibraryCachesForTest(fileName: imageFileName)
+                
+                let sourcePhotoSavedDirectory: SavedFilePath = .init(
+                    on: viewContext,
+                    rootSearchPathDirectory: .cachesDirectory,
+                    relativePathFromRootSearchPath: ""
+                )
+                
                 let sourcePhoto: SourcePhoto = .init(
                     on: viewContext,
                     imageFileName: imageFileName,
-                    shotDate: Calendar.current.date(byAdding: .month, value: -(index + 1), to: .now)
+                    shotDate: Calendar.current.date(byAdding: .month, value: -(index + 1), to: .now),
+                    savedDirectory: sourcePhotoSavedDirectory
                 )
                 
                 let appliedBackgroundColor: AppliedBackgroundColor = .init(
@@ -57,6 +67,12 @@ struct PersistenceController {
                     marginsAroundFace: appliedMarginsAroundFace
                 )
                 
+                let createdIDPhotoSavedDirectory: SavedFilePath = .init(
+                    on: viewContext,
+                    rootSearchPathDirectory: .cachesDirectory,
+                    relativePathFromRootSearchPath: ""
+                )
+                
                 let createdIDPhoto: CreatedIDPhoto = .init(
                     on: viewContext,
                     createdAt: history.createdAt,
@@ -64,6 +80,7 @@ struct PersistenceController {
                     updatedAt: .now,
                     appliedBackgroundColor: appliedBackgroundColor,
                     appliedIDPhotoSize: appliedIDPhotoSize,
+                    savedDirectory: createdIDPhotoSavedDirectory,
                     sourcePhoto: sourcePhoto
                 )
             }
