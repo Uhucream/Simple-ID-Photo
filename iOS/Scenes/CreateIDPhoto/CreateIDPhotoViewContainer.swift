@@ -15,6 +15,8 @@ import VideoToolbox
 struct CreateIDPhotoViewContainer: View {
     @Environment(\.dismiss) var dismiss
     
+    @ObservedObject var sourcePhotoRecord: SourcePhoto
+    
     @ObservedObject var visionIDPhotoGenerator: VisionIDPhotoGenerator
     
     @State private var previewUIImage: UIImage? = nil
@@ -26,7 +28,12 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
-    init(sourceUIImage: UIImage?) {
+    init(
+        sourcePhotoRecord: SourcePhoto,
+        sourceUIImage: UIImage?
+    ) {
+        
+        _sourcePhotoRecord = .init(wrappedValue: sourcePhotoRecord)
         
         self.visionIDPhotoGenerator = .init(
             sourceCIImage: sourceUIImage?.ciImage(),
@@ -166,8 +173,17 @@ struct CreateIDPhotoViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         let sampleUIImage: UIImage = UIImage(named: "TimCook")!
         
+        let sourcePhotoMockRecord: SourcePhoto = .init(
+            on: PersistenceController.preview.container.viewContext,
+            imageURL: sampleUIImage.localURLForXCAssets(fileName: "TimCook")!.absoluteString,
+            shotDate: .now.addingTimeInterval(-10000)
+        )
+        
         NavigationView {
-            CreateIDPhotoViewContainer(sourceUIImage: sampleUIImage)
+            CreateIDPhotoViewContainer(
+                sourcePhotoRecord: sourcePhotoMockRecord,
+                sourceUIImage: sampleUIImage
+            )
         }
     }
 }

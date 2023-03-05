@@ -1,9 +1,9 @@
 //
 //  TopViewContainer.swift
 //  Simple ID Photo
-//  
+//
 //  Created by TakashiUshikoshi on 2023/01/07
-//  
+//
 //
 
 import SwiftUI
@@ -33,6 +33,8 @@ struct TopViewContainer: View {
     @State private var isPhotoLoadingInProgress: Bool = false
     
     @State private var userSelectedImageURL: URL? = nil
+    
+    @State private var createdSourcePhotoRecord: SourcePhoto? = nil
     
     private var libraryRootDirectoryURL: URL? {
         return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
@@ -139,7 +141,7 @@ struct TopViewContainer: View {
     
     func createSourcePhotoRecordToPersistence(
         imageURL: URL
-    ) -> Void {
+    ) -> SourcePhoto? {
         do {
             
             let ciImageFromURL: CIImage? = .init(contentsOf: imageURL)
@@ -161,15 +163,19 @@ struct TopViewContainer: View {
             
             let imageShotDate: Date? = dateFormatterForExif.date(from: imageShotDateString ?? "")
             
-            SourcePhoto(
+            let newSourcePhoto: SourcePhoto = .init(
                 on: self.viewContext,
                 imageURL: imageURL.absoluteString,
                 shotDate: imageShotDate ?? .now
             )
             
             try viewContext.save()
+            
+            return newSourcePhoto
         } catch {
             print(error)
+            
+            return nil
         }
     }
     
@@ -207,12 +213,13 @@ struct TopViewContainer: View {
             //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
             CameraView(pictureURL: $userSelectedImageURL)
         }
-        .fullScreenCover(isPresented: $shouldShowCreateIDPhotoView) {
+        .fullScreenCover(item: $createdSourcePhotoRecord) { sourcePhotoRecord in
             if let pictureURL = userSelectedImageURL,
                let uiimageFromURL = UIImage(url: pictureURL),
                let orientationFixedUIImage = uiimageFromURL.orientationFixed()
             {
                 CreateIDPhotoViewContainer(
+                    sourcePhotoRecord: sourcePhotoRecord,
                     sourceUIImage: orientationFixedUIImage
                 )
             }
@@ -221,7 +228,9 @@ struct TopViewContainer: View {
 
             guard let newUserSelectedImageURL = newUserSelectedImageURL else { return }
             
-            createSourcePhotoRecordToPersistence(imageURL: newUserSelectedImageURL)
+            let newSourcePhotoRecord: SourcePhoto? = createSourcePhotoRecordToPersistence(imageURL: newUserSelectedImageURL)
+            
+            self.createdSourcePhotoRecord = newSourcePhotoRecord
         }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
     }
