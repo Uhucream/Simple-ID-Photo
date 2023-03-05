@@ -159,7 +159,7 @@ struct TopView_Previews: PreviewProvider {
                         .init(
                             on: viewContext,
                             createdAt: .distantPast,
-                            imageFileName: mockHistoriesData[3].createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
+                            imageFileName: mockHistoriesData[3].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!.absoluteString,
                             updatedAt: .now
                         ),
                         .init(

@@ -222,7 +222,7 @@ struct IDPhotoDetailView_Previews: PreviewProvider {
     static var previews: some View {
         IDPhotoDetailView(
             idPhotoImageURL: .constant(
-                mockHistoriesData[0].createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!
+                mockHistoriesData[0].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!
             ),
             idPhotoSizeType: .constant(IDPhotoSizeVariant.w30_h40),
             createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!)

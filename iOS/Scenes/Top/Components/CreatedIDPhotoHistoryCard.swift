@@ -170,7 +170,7 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
         
         List {
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailImageURL: mockHistory.createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!,
+                idPhotoThumbnailImageURL: mockHistory.createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!,
                 idPhotoSizeType: mockHistory.idPhotoSizeType,
                 createdAt: mockHistory.createdAt
             )

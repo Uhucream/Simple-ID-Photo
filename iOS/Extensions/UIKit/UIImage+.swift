@@ -149,7 +149,7 @@ extension UIImage {
         return uiImage
     }
     
-    func localURLForXCAssets(
+    func saveOnLibraryCachesForTest(
         fileName: String,
         fileManager: FileManager = .default
     ) -> URL? {

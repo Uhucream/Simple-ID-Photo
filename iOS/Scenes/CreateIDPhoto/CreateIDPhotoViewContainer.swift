@@ -274,7 +274,7 @@ struct CreateIDPhotoViewContainer_Previews: PreviewProvider {
         
         let sourcePhotoMockRecord: SourcePhoto = .init(
             on: PersistenceController.preview.container.viewContext,
-            imageFileName: sampleUIImage.localURLForXCAssets(fileName: "TimCook")!.absoluteString,
+            imageFileName: sampleUIImage.saveOnLibraryCachesForTest(fileName: "TimCook")!.absoluteString,
             shotDate: .now.addingTimeInterval(-10000)
         )
         
