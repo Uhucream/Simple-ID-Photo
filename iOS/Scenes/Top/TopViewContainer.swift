@@ -137,6 +137,42 @@ struct TopViewContainer: View {
         return true
     }
     
+    func createSourcePhotoRecordToPersistence(
+        imageURL: URL
+    ) -> Void {
+        do {
+            
+            let ciImageFromURL: CIImage? = .init(contentsOf: imageURL)
+            
+            let imageProperties: [String: Any]? = ciImageFromURL?.properties
+            let imageExif = imageProperties?[kCGImagePropertyExifDictionary as String] as? [String: Any]
+            
+            let imageShotDateString: String? = imageExif?[kCGImagePropertyExifDateTimeOriginal as String] as? String
+            
+            var dateFormatterForExif: DateFormatter {
+                
+                let formatter: DateFormatter = .init()
+                
+                formatter.locale = NSLocale.system
+                formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
+                
+                return formatter
+            }
+            
+            let imageShotDate: Date? = dateFormatterForExif.date(from: imageShotDateString ?? "")
+            
+            SourcePhoto(
+                on: self.viewContext,
+                imageURL: imageURL.absoluteString,
+                shotDate: imageShotDate ?? .now
+            )
+            
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+    }
+    
     var body: some View {
         ZStack {
             TopView(
@@ -164,20 +200,7 @@ struct TopViewContainer: View {
                 .onPickerDelegatePickerFuncInvoked { (phpickerViewController, phpickerResults) in
                     setPictureURLFromPHPickerSelectedItem(phpickerViewController: phpickerViewController, phpickerResults: phpickerResults)
                     
-                    Task(priority: .userInitiated) {
-                        do {
-                            let oneMillisecond: UInt64 = 1_000_000
-                            
-                            self.shouldShowPicturePickerView = false
-                            
-                            //  MARK: これがないと、すぐに fullScreenCover が表示されてしまい、一瞬画面が真っ黒になる
-                            try await Task.sleep(nanoseconds: oneMillisecond * 90)
-                            
-                            self.shouldShowCreateIDPhotoView = true
-                        } catch {
-                            print(error)
-                        }
-                    }
+                    self.shouldShowPicturePickerView = false
                 }
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
@@ -193,6 +216,12 @@ struct TopViewContainer: View {
                     sourceUIImage: orientationFixedUIImage
                 )
             }
+        }
+        .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
+
+            guard let newUserSelectedImageURL = newUserSelectedImageURL else { return }
+            
+            createSourcePhotoRecordToPersistence(imageURL: newUserSelectedImageURL)
         }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
     }
