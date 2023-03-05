@@ -17,6 +17,7 @@ extension CreatedIDPhoto {
         updatedAt: Date?,
         appliedBackgroundColor: AppliedBackgroundColor? = nil,
         appliedIDPhotoSize: AppliedIDPhotoSize? = nil,
+        savedDirectory: SavedFilePath? = nil,
         sourcePhoto: SourcePhoto? = nil
     ) {
         self.init(context: context)
@@ -29,6 +30,7 @@ extension CreatedIDPhoto {
         
         self.appliedBackgroundColor = appliedBackgroundColor
         self.appliedIDPhotoSize = appliedIDPhotoSize
+        self.savedDirectory = savedDirectory
         self.sourcePhoto = sourcePhoto
     }
 }
