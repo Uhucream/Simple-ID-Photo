@@ -165,7 +165,7 @@ struct TopViewContainer: View {
             
             let newSourcePhoto: SourcePhoto = .init(
                 on: self.viewContext,
-                imageURL: imageURL.absoluteString,
+                imageFileName: imageURL.absoluteString,
                 shotDate: imageShotDate ?? .now
             )
             

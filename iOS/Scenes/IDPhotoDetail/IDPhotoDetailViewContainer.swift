@@ -17,13 +17,13 @@ struct IDPhotoDetailViewContainer: View {
             IDPhotoDetailView(
                 idPhotoImageURL: Binding<URL?>(
                     get: {
-                        let imageURLString: String? = createdIDPhoto.imageURL
+                        let imageURLString: String? = createdIDPhoto.imageFileName
                         let imageURL: URL? = .init(string: imageURLString ?? "")
                         
                         return imageURL
                     },
                     set: { (newImageURL) in
-                        self.createdIDPhoto.imageURL = newImageURL?.absoluteString
+                        self.createdIDPhoto.imageFileName = newImageURL?.absoluteString
                     }
                 ),
                 idPhotoSizeType: Binding<IDPhotoSizeVariant>(
@@ -58,7 +58,7 @@ struct IDPhotoDetailViewContainer_Previews: PreviewProvider {
             let mockCreatedIDPhoto: CreatedIDPhoto = .init(
                 on: PersistenceController.preview.container.viewContext,
                 createdAt: .now.addingTimeInterval(-1000),
-                imageURL: nil,
+                imageFileName: nil,
                 updatedAt: .now
             )
             

@@ -13,7 +13,7 @@ extension CreatedIDPhoto {
         on context: NSManagedObjectContext,
         id: UUID = .init(),
         createdAt: Date?,
-        imageURL: String?,
+        imageFileName: String?,
         updatedAt: Date?,
         appliedBackgroundColor: AppliedBackgroundColor? = nil,
         appliedIDPhotoSize: AppliedIDPhotoSize? = nil,
@@ -24,7 +24,7 @@ extension CreatedIDPhoto {
         self.id = id
         
         self.createdAt = createdAt
-        self.imageURL = imageURL
+        self.imageFileName = imageFileName
         self.updatedAt = updatedAt
         
         self.appliedBackgroundColor = appliedBackgroundColor

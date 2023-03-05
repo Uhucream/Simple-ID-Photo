@@ -24,9 +24,11 @@ struct PersistenceController {
         mockHistoriesDataWithIndices
             .forEach { (index: Int, history: CreatedIDPhotoDetail) in
                 
+                let imageFileName: String = "SampleIDPhoto"
+                
                 let sourcePhoto: SourcePhoto = .init(
                     on: viewContext,
-                    imageURL: history.createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
+                    imageFileName: imageFileName,
                     shotDate: Calendar.current.date(byAdding: .month, value: -(index + 1), to: .now)
                 )
                 
@@ -58,7 +60,7 @@ struct PersistenceController {
                 let createdIDPhoto: CreatedIDPhoto = .init(
                     on: viewContext,
                     createdAt: history.createdAt,
-                    imageURL: history.createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
+                    imageFileName: imageFileName,
                     updatedAt: .now,
                     appliedBackgroundColor: appliedBackgroundColor,
                     appliedIDPhotoSize: appliedIDPhotoSize,

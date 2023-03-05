@@ -24,7 +24,7 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     @ViewBuilder
     func renderHistoryCard(_ createdIDPhotoHistory: CreatedIDPhoto) -> some View {
         CreatedIDPhotoHistoryCard(
-            idPhotoThumbnailImageURL: URL(string: createdIDPhotoHistory.imageURL ?? ""),
+            idPhotoThumbnailImageURL: URL(string: createdIDPhotoHistory.imageFileName ?? ""),
             idPhotoSizeType: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
             createdAt: createdIDPhotoHistory.createdAt ?? .distantPast
         )
@@ -159,13 +159,13 @@ struct TopView_Previews: PreviewProvider {
                         .init(
                             on: viewContext,
                             createdAt: .distantPast,
-                            imageURL: mockHistoriesData[3].createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
+                            imageFileName: mockHistoriesData[3].createdUIImage.localURLForXCAssets(fileName: "SampleIDPhoto")!.absoluteString,
                             updatedAt: .now
                         ),
                         .init(
                             on: viewContext,
                             createdAt: .distantPast,
-                            imageURL: "",
+                            imageFileName: "",
                             updatedAt: .now
                         )
                     ]

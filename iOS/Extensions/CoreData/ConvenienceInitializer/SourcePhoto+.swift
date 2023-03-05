@@ -12,7 +12,7 @@ extension SourcePhoto {
     convenience init(
         on context: NSManagedObjectContext,
         id: UUID = .init(),
-        imageURL: String?,
+        imageFileName: String?,
         shotDate: Date?,
         createdIDPhoto: CreatedIDPhoto? = nil
     ) {
@@ -20,7 +20,7 @@ extension SourcePhoto {
         
         self.id = id
         
-        self.imageURL = imageURL
+        self.imageFileName = imageFileName
         self.shotDate = shotDate
         
         self.createdIDPhoto = createdIDPhoto
