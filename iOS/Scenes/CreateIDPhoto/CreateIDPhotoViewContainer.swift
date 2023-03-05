@@ -11,6 +11,7 @@ import Vision
 import CoreImage
 import CoreImage.CIFilterBuiltins
 import VideoToolbox
+import UniformTypeIdentifiers
 
 struct CreateIDPhotoViewContainer: View {
     @Environment(\.dismiss) var dismiss
@@ -28,10 +29,15 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
-    init(
-        sourcePhotoRecord: SourcePhoto,
-        sourceUIImage: UIImage?
-    ) {
+    private var libraryRootDirectoryURL: URL? {
+        return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
+    }
+    
+    private var createdPhotosDirectoryURL: URL? {
+        return fetchCreatedPhotosDirectoryURL()
+    }
+    
+    init(sourcePhotoRecord: SourcePhoto, sourceUIImage: UIImage?) {
         
         _sourcePhotoRecord = .init(wrappedValue: sourcePhotoRecord)
         
@@ -111,6 +117,16 @@ struct CreateIDPhotoViewContainer: View {
     //
     //    }
     
+    func handleTapDoneButton() -> Void {
+        do {
+            try saveGeneratedImageToCreatedPhotosDirectory()
+            
+            dismiss()
+        } catch {
+            print(error)
+        }
+    }
+    
     var body: some View {
         ZStack {
             if #available(iOS 16, *) {
@@ -122,6 +138,7 @@ struct CreateIDPhotoViewContainer: View {
                         showDiscardViewConfirmationDialog()
                     }
                 )
+                .onTapDoneButton(action: handleTapDoneButton)
                 .toolbar(.hidden)
             } else {
                 CreateIDPhotoView(
@@ -132,6 +149,7 @@ struct CreateIDPhotoViewContainer: View {
                         showDiscardViewConfirmationDialog()
                     }
                 )
+                .onTapDoneButton(action: handleTapDoneButton)
                 .navigationBarHidden(true)
             }
         }
@@ -165,6 +183,87 @@ struct CreateIDPhotoViewContainer: View {
             ) {
                 Text("保存せずに終了")
             }
+        }
+    }
+}
+
+extension CreateIDPhotoViewContainer {
+    private func fetchCreatedPhotosDirectoryURL() -> URL? {
+        
+        let fileManager: FileManager = .default
+        
+        guard let libraryRootDirectoryURL = libraryRootDirectoryURL else { return nil }
+        
+        let createdPhotosDirectoryURL: URL = libraryRootDirectoryURL.appendingPathComponent("CreatedPhotos", conformingTo: .directory)
+        
+        var objcTrue: ObjCBool = .init(true)
+        
+        let isCreatedPhotosDirectoryExists: Bool = fileManager.fileExists(atPath: createdPhotosDirectoryURL.path, isDirectory: &objcTrue)
+        
+        if isCreatedPhotosDirectoryExists {
+            return createdPhotosDirectoryURL
+        }
+        
+        do {
+            try fileManager.createDirectory(at: createdPhotosDirectoryURL, withIntermediateDirectories: true)
+            
+            return createdPhotosDirectoryURL
+        } catch {
+            print(error)
+            
+            return nil
+        }
+    }
+}
+
+extension CreateIDPhotoViewContainer {
+    
+    func saveGeneratedImageToCreatedPhotosDirectory() throws -> Void {
+        
+        guard let createdPhotosDirectoryURL = createdPhotosDirectoryURL else { return }
+        
+        guard let generatedCIImage: CIImage = visionIDPhotoGenerator.generatedIDPhoto else { return }
+        
+        let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
+        
+        let saveFileUTType: UTType = isHEICSupported ? .heic : .jpeg
+        
+        let saveFileName: String = ProcessInfo.processInfo.globallyUniqueString
+        
+        let saveFilePathURL: URL = createdPhotosDirectoryURL
+            .appendingPathComponent(saveFileName, conformingTo: saveFileUTType)
+        
+        let ciContext: CIContext = .init()
+        
+        if saveFileUTType == .jpeg {
+            do {
+                let jpegData: Data? = ciContext
+                    .jpegRepresentation(
+                        of: generatedCIImage,
+                        colorSpace: generatedCIImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                    )
+                
+                guard let jpegData = jpegData else { return }
+                
+                try jpegData.write(to: saveFilePathURL)
+            } catch {
+                throw error
+            }
+        }
+        
+        do {
+            let heicData: Data? = ciContext
+                .heifRepresentation(
+                    of: generatedCIImage,
+                    format: .RGBA8,
+                    colorSpace: generatedCIImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                )
+            
+            guard let heicData = heicData else { return }
+            
+            try heicData.write(to: saveFilePathURL)
+        } catch {
+            throw error
         }
     }
 }
