@@ -14,7 +14,8 @@ extension SourcePhoto {
         id: UUID = .init(),
         imageFileName: String?,
         shotDate: Date?,
-        createdIDPhoto: CreatedIDPhoto? = nil
+        createdIDPhoto: CreatedIDPhoto? = nil,
+        savedDirectory: SavedFilePath? = nil
     ) {
         self.init(context: context)
         
@@ -24,5 +25,6 @@ extension SourcePhoto {
         self.shotDate = shotDate
         
         self.createdIDPhoto = createdIDPhoto
+        self.savedDirectory = savedDirectory
     }
 }
