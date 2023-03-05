@@ -34,7 +34,15 @@ struct CreateIDPhotoView: View {
     
     var onTapDismissButton: (() -> Void)? = nil
 
-    var onTapDoneButton: (() -> Void)? = nil
+    private(set) var onTapDoneButtonCallback: (() -> Void)? = nil
+    
+    func onTapDoneButton(action: @escaping () -> Void) -> Self {
+        var view = self
+        
+        view.onTapDoneButtonCallback = action
+        
+        return view
+    }
     
     var body: some View {
         VStack(alignment: .center) {
@@ -166,7 +174,7 @@ struct CreateIDPhotoView: View {
                     
                     Button(
                         action: {
-                            onTapDoneButton?()
+                            onTapDoneButtonCallback?()
                         }
                     ) {
                         Image(systemName: "checkmark")
