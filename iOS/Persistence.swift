@@ -27,7 +27,9 @@ struct PersistenceController {
                 
                 let imageFileName: String = "SampleIDPhoto"
                 
-                UIImage(named: imageFileName)!.saveOnLibraryCachesForTest(fileName: imageFileName)
+                let createdFileURL: URL? = UIImage(named: imageFileName)!.saveOnLibraryCachesForTest(fileName: imageFileName)
+                
+                let createdFileNameWithExtension: String? = createdFileURL?.lastPathComponent
                 
                 let sourcePhotoSavedDirectory: SavedFilePath = .init(
                     on: viewContext,
@@ -37,7 +39,7 @@ struct PersistenceController {
                 
                 let sourcePhoto: SourcePhoto = .init(
                     on: viewContext,
-                    imageFileName: imageFileName,
+                    imageFileName: createdFileNameWithExtension,
                     shotDate: Calendar.current.date(byAdding: .month, value: -(index + 1), to: .now),
                     savedDirectory: sourcePhotoSavedDirectory
                 )
@@ -76,7 +78,7 @@ struct PersistenceController {
                 let createdIDPhoto: CreatedIDPhoto = .init(
                     on: viewContext,
                     createdAt: history.createdAt,
-                    imageFileName: imageFileName,
+                    imageFileName: createdFileNameWithExtension,
                     updatedAt: .now,
                     appliedBackgroundColor: appliedBackgroundColor,
                     appliedIDPhotoSize: appliedIDPhotoSize,
