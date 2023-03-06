@@ -12,6 +12,9 @@ import PhotosUI
 
 struct TopViewContainer: View {
     
+    private static let SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH: FileManager.SearchPathDirectory = .libraryDirectory
+    private static let SOURCE_PHOTO_SAVE_FOLDER_NAME: String = "SourcePhotos"
+    
     @Environment(\.managedObjectContext) var viewContext
     
     @FetchRequest(
@@ -35,10 +38,6 @@ struct TopViewContainer: View {
     @State private var userSelectedImageURL: URL? = nil
     
     @State private var createdSourcePhotoRecord: SourcePhoto? = nil
-    
-    private var libraryRootDirectoryURL: URL? {
-        return FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
-    }
     
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
@@ -83,7 +82,10 @@ struct TopViewContainer: View {
                 return
             }
             
-            let sourcePhotosDirectoryURL: URL? = fetchSourcePhotosDirectoryURL()
+            let sourcePhotosDirectoryURL: URL? = fetchOrCreateDirectoryURL(
+                directoryName: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_NAME,
+                relativeTo: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
+            )
             
             guard let sourcePhotosDirectoryURL: URL = sourcePhotosDirectoryURL else { return }
 
@@ -119,7 +121,10 @@ struct TopViewContainer: View {
                 return
             }
             
-            let sourcePhotosDirectoryURL: URL? = fetchSourcePhotosDirectoryURL()
+            let sourcePhotosDirectoryURL: URL? = fetchOrCreateDirectoryURL(
+                directoryName: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_NAME,
+                relativeTo: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
+            )
             
             guard let sourcePhotosDirectoryURL: URL = sourcePhotosDirectoryURL else { return }
 
@@ -163,10 +168,17 @@ struct TopViewContainer: View {
             
             let imageShotDate: Date? = dateFormatterForExif.date(from: imageShotDateString ?? "")
             
+            let sourcePhotoSavedDirectory: SavedFilePath = .init(
+                on: viewContext,
+                rootSearchPathDirectory: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH,
+                relativePathFromRootSearchPath: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_NAME
+            )
+            
             let newSourcePhoto: SourcePhoto = .init(
                 on: self.viewContext,
-                imageFileName: imageURL.absoluteString,
-                shotDate: imageShotDate ?? .now
+                imageFileName: imageURL.lastPathComponent,
+                shotDate: imageShotDate ?? .now,
+                savedDirectory: sourcePhotoSavedDirectory
             )
             
             try viewContext.save()
@@ -237,25 +249,28 @@ struct TopViewContainer: View {
 }
 
 extension TopViewContainer {
-    private func fetchSourcePhotosDirectoryURL() -> URL? {
+    private func fetchOrCreateDirectoryURL(directoryName: String, relativeTo searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
         let fileManager: FileManager = .default
         
-        guard let libraryRootDirectoryURL = libraryRootDirectoryURL else { return nil }
+        let searchPathDirectoryURL: URL? = fileManager.urls(for: searchPathDirectory, in: .userDomainMask).first
         
-        let sourcePhotosDirectoryURL: URL = libraryRootDirectoryURL.appendingPathComponent("SourcePhotos", conformingTo: .directory)
+        guard let searchPathDirectoryURL = searchPathDirectoryURL else { return nil }
+        
+        let targetDirectoryURL: URL = searchPathDirectoryURL
+            .appendingPathComponent(directoryName, conformingTo: .directory)
         
         var objcTrue: ObjCBool = .init(true)
         
-        let isSourcePhotosDirectoryExists: Bool  = fileManager.fileExists(atPath: sourcePhotosDirectoryURL.path, isDirectory: &objcTrue)
+        let isTargetDirectoryExists: Bool = fileManager.fileExists(atPath: targetDirectoryURL.path, isDirectory: &objcTrue)
         
-        if isSourcePhotosDirectoryExists {
-            return sourcePhotosDirectoryURL
+        if isTargetDirectoryExists {
+            return targetDirectoryURL
         }
         
         do {
-            try fileManager.createDirectory(at: sourcePhotosDirectoryURL, withIntermediateDirectories: true)
+            try fileManager.createDirectory(at: targetDirectoryURL, withIntermediateDirectories: true)
             
-            return sourcePhotosDirectoryURL
+            return targetDirectoryURL
         } catch {
             print(error)
             
