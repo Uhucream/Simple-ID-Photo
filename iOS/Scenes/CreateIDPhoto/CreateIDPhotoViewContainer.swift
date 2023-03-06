@@ -161,22 +161,22 @@ struct CreateIDPhotoViewContainer: View {
                 CreateIDPhotoView(
                     selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
                     selectedIDPhotoSize: $selectedIDPhotoSize,
-                    previewUIImage: $previewUIImage.animation(),
-                    onTapDismissButton: {
-                        showDiscardViewConfirmationDialog()
-                    }
+                    previewUIImage: $previewUIImage.animation()
                 )
+                .onTapDismissButton {
+                    showDiscardViewConfirmationDialog()
+                }
                 .onTapDoneButton(action: handleTapDoneButton)
                 .toolbar(.hidden)
             } else {
                 CreateIDPhotoView(
                     selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
                     selectedIDPhotoSize: $selectedIDPhotoSize,
-                    previewUIImage: $previewUIImage.animation(),
-                    onTapDismissButton: {
-                        showDiscardViewConfirmationDialog()
-                    }
+                    previewUIImage: $previewUIImage.animation()
                 )
+                .onTapDismissButton {
+                    showDiscardViewConfirmationDialog()
+                }
                 .onTapDoneButton(action: handleTapDoneButton)
                 .navigationBarHidden(true)
             }

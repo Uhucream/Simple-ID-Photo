@@ -32,9 +32,17 @@ struct CreateIDPhotoView: View {
     
     @Binding var previewUIImage: UIImage?
     
-    var onTapDismissButton: (() -> Void)? = nil
+    private(set) var onTapDismissButtonCallback: (() -> Void)? = nil
 
     private(set) var onTapDoneButtonCallback: (() -> Void)? = nil
+    
+    func onTapDismissButton(action: @escaping () -> Void) -> Self {
+        var view = self
+        
+        view.onTapDismissButtonCallback = action
+        
+        return view
+    }
     
     func onTapDoneButton(action: @escaping () -> Void) -> Self {
         var view = self
@@ -111,7 +119,7 @@ struct CreateIDPhotoView: View {
                     Button(
                         role: .destructive,
                         action: {
-                            self.onTapDismissButton?()
+                            self.onTapDismissButtonCallback?()
                         }
                     ) {
                         Label("終了", systemImage: "xmark")
