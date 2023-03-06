@@ -206,6 +206,11 @@ struct CreateIDPhotoViewContainer: View {
             Button(
                 role: .destructive,
                 action: {
+                    
+                    deleteSavedSourcePhotoImageFile()
+                    
+                    deleteSourcePhotoRecord()
+                    
                     dismiss()
                 }
             ) {
@@ -271,9 +276,70 @@ extension CreateIDPhotoViewContainer {
             print(error)
         }
     }
+    
+    func deleteSavedSourcePhotoImageFile() -> Void {
+        let sourcePhotoFileURL: URL? = parseSavedSourcePhotoImageURL()
+        
+        guard let sourcePhotoFileURL = sourcePhotoFileURL else { return }
+        
+        do {
+            try FileManager.default.removeItem(at: sourcePhotoFileURL)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteSourcePhotoRecord() -> Void {
+        do {
+            viewContext.delete(self.sourcePhotoRecord)
+            
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+    }
 }
 
 extension CreateIDPhotoViewContainer {
+    
+    func parseSavedSourcePhotoImageURL() -> URL? {
+
+        let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
+        
+        let LIBRARY_DIRECTORY_RAW_VALUE_INT64: Int64 = .init(DEFAULT_SAVE_DIRECTORY_ROOT.rawValue)
+        
+        let fileManager: FileManager = .default
+
+        let saveDestinationRootSearchDirectory: FileManager.SearchPathDirectory = .init(
+            rawValue: UInt(
+                sourcePhotoRecord.savedDirectory?.rootSearchPathDirectory ?? LIBRARY_DIRECTORY_RAW_VALUE_INT64
+            )
+        ) ?? DEFAULT_SAVE_DIRECTORY_ROOT
+        
+        let saveDestinationRootSearchDirectoryURL: URL? = fileManager.urls(
+            for: saveDestinationRootSearchDirectory,
+            in: .userDomainMask
+        ).first
+        
+        let relativePathFromRoot: String = sourcePhotoRecord.savedDirectory?.relativePathFromRootSearchPath ?? ""
+        let fileSaveDestinationURL: URL = .init(
+            fileURLWithPath: relativePathFromRoot,
+            isDirectory: true,
+            relativeTo: saveDestinationRootSearchDirectoryURL
+        )
+        
+        let sourcePhotoFileName: String? = sourcePhotoRecord.imageFileName
+        
+        guard let sourcePhotoFileName = sourcePhotoFileName else { return nil }
+        
+        let sourcePhotoFileURL: URL = fileSaveDestinationURL
+            .appendingPathComponent(sourcePhotoFileName, conformingTo: .fileURL)
+        
+        guard fileManager.fileExists(atPath: sourcePhotoFileURL.path) else { return nil }
+        
+        return sourcePhotoFileURL
+    }
+    
     private func fetchOrCreateDirectoryURL(directoryName: String, relativeTo searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
         let fileManager: FileManager = .default
         
