@@ -24,7 +24,7 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     @ViewBuilder
     func renderHistoryCard(_ createdIDPhotoHistory: CreatedIDPhoto) -> some View {
         CreatedIDPhotoHistoryCard(
-            idPhotoThumbnailImageURL: URL(string: createdIDPhotoHistory.imageFileName ?? ""),
+            createdIDPhoto: createdIDPhotoHistory,
             idPhotoSizeType: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
             createdAt: createdIDPhotoHistory.createdAt ?? .distantPast
         )

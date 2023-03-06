@@ -33,7 +33,11 @@ struct CreatedIDPhotoHistoryCard: View {
     @ScaledMetric(relativeTo: .callout) var titleScaleFactor: CGFloat = 1
     @ScaledMetric(relativeTo: .callout) var thumbnailScaleFactor: CGFloat = 1
     
-    var idPhotoThumbnailImageURL: URL?
+    @ObservedObject var createdIDPhoto: CreatedIDPhoto
+    
+    private var idPhotoThumbnailImageURL: URL? {
+        return parseImageFileURL()
+    }
     var idPhotoSizeType: IDPhotoSizeVariant
     
     var createdAt: Date
@@ -65,6 +69,35 @@ struct CreatedIDPhotoHistoryCard: View {
         }
     }
     
+    private func parseImageFileURL() -> URL? {
+        let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
+        
+        let LIBRARY_DIRECTORY_RAW_VALUE_INT64: Int64 = .init(DEFAULT_SAVE_DIRECTORY_ROOT.rawValue)
+        
+        let fileManager: FileManager = .default
+
+        let saveDestinationRootSearchDirectory: FileManager.SearchPathDirectory = FileManager.SearchPathDirectory(rawValue: .init(createdIDPhoto.savedDirectory?.rootSearchPathDirectory ?? LIBRARY_DIRECTORY_RAW_VALUE_INT64)) ?? DEFAULT_SAVE_DIRECTORY_ROOT
+        
+        let saveDestinationRootSearchDirectoryURL: URL? = fileManager.urls(for: saveDestinationRootSearchDirectory, in: .userDomainMask).first
+        
+        let relativePathFromRoot: String = createdIDPhoto.savedDirectory?.relativePathFromRootSearchPath ?? ""
+        let fileSaveDestinationURL: URL = .init(
+            fileURLWithPath: relativePathFromRoot,
+            isDirectory: true,
+            relativeTo: saveDestinationRootSearchDirectoryURL
+        )
+        
+        let createdIDPhotoFileName: String? = createdIDPhoto.imageFileName
+        
+        guard let createdIDPhotoFileName = createdIDPhotoFileName else { return nil }
+        
+        let createdIDPhotoFileURL: URL = fileSaveDestinationURL
+            .appendingPathComponent(createdIDPhotoFileName, conformingTo: .fileURL)
+        
+        guard fileManager.fileExists(atPath: createdIDPhotoFileURL.path) else { return nil }
+        
+        return createdIDPhotoFileURL
+    }
     
     var body: some View {
         if self.dynamicTypeSize.isAccessibilitySize {
@@ -168,23 +201,28 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
             createdUIImage: UIImage(named: "SampleIDPhoto")!
         )
         
+        let mockCreatedIDPhoto: CreatedIDPhoto = .init(
+            on: PersistenceController.preview.container.viewContext,
+            createdAt: mockHistory.createdAt,
+            imageFileName: "SampleIDPhoto.png",
+            updatedAt: .now
+        )
+        
         List {
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailImageURL: mockHistory.createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!,
+                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: mockHistory.idPhotoSizeType,
                 createdAt: mockHistory.createdAt
             )
             
-            //  MARK: AsyncImage のクルクルの表示確認用
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailImageURL: nil,
+                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: .original,
                 createdAt: mockHistory.createdAt
             )
             
-            //  MARK: AsyncImage の error の表示確認用
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailImageURL: .init(string: "hoge"),
+                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: .passport,
                 createdAt: mockHistory.createdAt
             )
