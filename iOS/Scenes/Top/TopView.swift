@@ -11,8 +11,10 @@ import SwiftUI
 fileprivate let gregorianCalendar: Calendar = .init(identifier: .gregorian)
 
 struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where CreatedIDPhotosResults.Element ==  CreatedIDPhoto {
-
+    
     @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
+    
+    @Binding var currentEditMode: EditMode
     
     var createdIDPhotoHistories: CreatedIDPhotosResults
     
@@ -21,6 +23,8 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     var onTapSelectFromAlbumButton: (() -> Void)?
     var onTapTakePictureButton: (() -> Void)?
     
+    private(set) var onDeleteHistoryCardCallback: (([CreatedIDPhoto]) -> Void)?
+    
     @ViewBuilder
     func renderHistoryCard(_ createdIDPhotoHistory: CreatedIDPhoto) -> some View {
         CreatedIDPhotoHistoryCard(
@@ -28,6 +32,14 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
             idPhotoSizeType: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
             createdAt: createdIDPhotoHistory.createdAt ?? .distantPast
         )
+    }
+    
+    func onDeleteHistoryCard(action: @escaping ([CreatedIDPhoto]) -> Void) -> Self {
+        var view = self
+        
+        view.onDeleteHistoryCardCallback = action
+        
+        return view
     }
     
     var body: some View {
@@ -53,6 +65,7 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .tint(.systemGray3)
+                    .disabled(currentEditMode.isEditing)
 
                     Button(action: {
                         onTapTakePictureButton?()
@@ -73,6 +86,7 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .tint(.cyan)
+                    .disabled(currentEditMode.isEditing)
                 }
                 .padding(.vertical)
             }
@@ -110,35 +124,94 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                     }
                 
                 if historiesWithinThreeMonths.count > 0 {
-                    Section {
-                        ForEach(historiesWithinThreeMonths) { history in
-                            NavigationLink(
-                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                            ) {
-                                renderHistoryCard(history)
+
+                    let onDeleteForWithinThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
+                        let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
+                            .map { deleteTargetOffset in
+                                return historiesWithinThreeMonths[deleteTargetOffset]
                             }
-                            .isDetailLink(true)
+                        
+                        self.onDeleteHistoryCardCallback?(deleteTargets)
+                    }
+                    
+                    //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
+                    if #available(iOS 16, *) {
+                        Section {
+                            ForEach(historiesWithinThreeMonths) { history in
+                                NavigationLink(
+                                    destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                ) {
+                                    renderHistoryCard(history)
+                                }
+                                .isDetailLink(true)
+                            }
+                            .onDelete(perform: onDeleteForWithinThreeMonthsSection)
+                        } header: {
+                            Text("3ヶ月以内")
                         }
-                    } header: {
-                        Text("3ヶ月以内")
+                    } else {
+                        Section {
+                            ForEach(historiesWithinThreeMonths) { history in
+                                NavigationLink(
+                                    destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                ) {
+                                    renderHistoryCard(history)
+                                }
+                                .isDetailLink(true)
+                            }
+                            .onDelete(perform: onDeleteForWithinThreeMonthsSection)
+                            //  MARK: iOS 16 だと効かない
+                            .deleteDisabled(!currentEditMode.isEditing)
+                        } header: {
+                            Text("3ヶ月以内")
+                        }
                     }
                 }
                 
                 if historiesOverThreeMonthsAgo.count > 0 {
-                    Section {
-                        ForEach(historiesOverThreeMonthsAgo) { history in
-                            NavigationLink(
-                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                            ) {
-                                renderHistoryCard(history)
+
+                    let onDeleteForOverThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
+                        let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
+                            .map { deleteTargetOffset in
+                                return historiesOverThreeMonthsAgo[deleteTargetOffset]
                             }
-                            .isDetailLink(true)
+                        
+                        self.onDeleteHistoryCardCallback?(deleteTargets)
+                    }
+                    
+                    //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
+                    if #available(iOS 16, *) {
+                        Section {
+                            ForEach(historiesOverThreeMonthsAgo) { history in
+                                NavigationLink(
+                                    destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                ) {
+                                    renderHistoryCard(history)
+                                }
+                                .isDetailLink(true)
+                            }
+                            .onDelete(perform: onDeleteForOverThreeMonthsSection)
+                        } header: {
+                            Text("それ以前")
                         }
-                    } header: {
-                        Text("それ以前")
+                    } else {
+                        Section {
+                            ForEach(historiesOverThreeMonthsAgo) { history in
+                                NavigationLink(
+                                    destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                ) {
+                                    renderHistoryCard(history)
+                                }
+                                .isDetailLink(true)
+                            }
+                            .onDelete(perform: onDeleteForOverThreeMonthsSection)
+                            //  MARK: iOS 16 だと効かない
+                            .deleteDisabled(!currentEditMode.isEditing)
+                        } header: {
+                            Text("それ以前")
+                        }
                     }
                 }
-
             }
         }
         .listStyle(.insetGrouped)
@@ -155,6 +228,7 @@ struct TopView_Previews: PreviewProvider {
         NavigationView {
             GeometryReader { geometry in
                 TopView(
+                    currentEditMode: .constant(.inactive),
                     createdIDPhotoHistories: [
                         .init(
                             on: viewContext,

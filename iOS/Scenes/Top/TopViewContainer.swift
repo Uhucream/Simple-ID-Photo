@@ -33,11 +33,16 @@ struct TopViewContainer: View {
     
     @State private var shouldShowCreateIDPhotoView: Bool = false
     
+    @State private var shouldShowDeleteConfirmDialog: Bool = false
+    
     @State private var isPhotoLoadingInProgress: Bool = false
     
     @State private var userSelectedImageURL: URL? = nil
     
     @State private var createdSourcePhotoRecord: SourcePhoto? = nil
+    
+    @State private var currentEditMode: EditMode = .inactive
+    @State private var deletingTargetHistories: [CreatedIDPhoto] = []
     
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
@@ -191,9 +196,52 @@ struct TopViewContainer: View {
         }
     }
     
+    func deleteCreatedIDPhotoRecord(_ targetCreatedIDPhoto: CreatedIDPhoto) -> Void {
+        do {
+            if let appliedBackgroundColorRecord = targetCreatedIDPhoto.appliedBackgroundColor {
+                viewContext.delete(appliedBackgroundColorRecord)
+            }
+            
+            if let faceHeightRecord = targetCreatedIDPhoto.appliedIDPhotoSize?.faceHeight {
+                viewContext.delete(faceHeightRecord)
+            }
+            
+            if let marginsAroundFaceRecord = targetCreatedIDPhoto.appliedIDPhotoSize?.marginsAroundFace {
+                viewContext.delete(marginsAroundFaceRecord)
+            }
+            
+            if let appliedIDPhotoSizeRecord = targetCreatedIDPhoto.appliedIDPhotoSize {
+                viewContext.delete(appliedIDPhotoSizeRecord)
+            }
+            
+            if let sourcePhotoSavedDirectoryRecord = targetCreatedIDPhoto.sourcePhoto?.savedDirectory {
+                viewContext.delete(sourcePhotoSavedDirectoryRecord)
+            }
+            
+            if let sourcePhotoRecord = targetCreatedIDPhoto.sourcePhoto {
+                viewContext.delete(sourcePhotoRecord)
+            }
+            
+            if let createdIDPhotoSavedDirectoryRecord = targetCreatedIDPhoto.savedDirectory {
+                viewContext.delete(createdIDPhotoSavedDirectoryRecord)
+            }
+            
+            viewContext.delete(targetCreatedIDPhoto)
+            
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func showDeleteConfirmationDialog() -> Void {
+        self.shouldShowDeleteConfirmDialog = true
+    }
+    
     var body: some View {
         ZStack {
             TopView(
+                currentEditMode: $currentEditMode,
                 createdIDPhotoHistories: createdIDPhotoHistories,
                 onTapSelectFromAlbumButton: {
                     showPicturePickerView()
@@ -202,6 +250,85 @@ struct TopViewContainer: View {
                     showCameraView()
                 }
             )
+            .onDeleteHistoryCard { deletingTargetHistories in
+                self.deletingTargetHistories = deletingTargetHistories
+                
+                self.showDeleteConfirmationDialog()
+            }
+            .confirmationDialog(
+                "本当に削除しますか？",
+                isPresented: $shouldShowDeleteConfirmDialog,
+                titleVisibility: .visible,
+                presenting: deletingTargetHistories
+            ) { deletingTargetHistories in
+                Button(
+                    role: .destructive,
+                    action: {
+                        
+                        deletingTargetHistories
+                            .forEach { deletingTargetHistory in
+                                
+                                let DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY: FileManager.SearchPathDirectory = .libraryDirectory
+                                
+                                let sourcePhotoRecord: SourcePhoto? = deletingTargetHistory.sourcePhoto
+                                let sourcePhotoFileName: String? = sourcePhotoRecord?.imageFileName
+                                
+                                let sourcePhotoSavedDirectory: SavedFilePath? = sourcePhotoRecord?.savedDirectory
+                                
+                                if
+                                    let sourcePhotoFileName = sourcePhotoFileName,
+                                    let sourcePhotoSavedDirectory = sourcePhotoSavedDirectory
+                                {
+                                 
+                                    let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                                        rawValue:  UInt(sourcePhotoSavedDirectory.rootSearchPathDirectory)
+                                    ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+                                    
+                                    deleteSavedFile(
+                                        fileName: sourcePhotoFileName,
+                                        in: sourcePhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
+                                        relativeTo: destinationRootSearchPathDirectory
+                                    )
+                                }
+                                
+                                let createdIDPhotoFileName: String? = deletingTargetHistory.imageFileName
+                                
+                                let createdIDPhotoSavedDirectory: SavedFilePath? = deletingTargetHistory.savedDirectory
+                                
+                                if
+                                    let createdIDPhotoFileName = createdIDPhotoFileName,
+                                    let createdIDPhotoSavedDirectory = createdIDPhotoSavedDirectory
+                                {
+                                 
+                                    let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                                        rawValue:  UInt(createdIDPhotoSavedDirectory.rootSearchPathDirectory)
+                                    ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+                                    
+                                    deleteSavedFile(
+                                        fileName: createdIDPhotoFileName,
+                                        in: createdIDPhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
+                                        relativeTo: destinationRootSearchPathDirectory
+                                    )
+                                }
+                                
+                                
+                                deleteCreatedIDPhotoRecord(deletingTargetHistory)
+                            }
+                    }
+                ) {
+                    Text("削除する")
+                }
+            } message: { _ in
+                Text("削除した証明写真は復元できません")
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    if createdIDPhotoHistories.count > 0 {
+                        EditButton()
+                    }
+                }
+            }
+            .environment(\.editMode, $currentEditMode)
             
             if self.isPhotoLoadingInProgress {
                 Color
@@ -249,6 +376,34 @@ struct TopViewContainer: View {
 }
 
 extension TopViewContainer {
+
+    private func deleteSavedFile(
+        fileName: String,
+        in relativeFilePathFromRoot: String,
+        relativeTo rootSearchPathDirectory: FileManager.SearchPathDirectory,
+        with fileManager: FileManager = .default
+    ) -> Void {
+        
+        let fileSaveRootDirectoryURL: URL? = fileManager.urls(for: rootSearchPathDirectory, in: .userDomainMask).first
+        
+        let fileSaveDestinationURL: URL = .init(
+            fileURLWithPath: relativeFilePathFromRoot,
+            isDirectory: true,
+            relativeTo: fileSaveRootDirectoryURL
+        )
+        
+        let savedFilePathURL: URL = fileSaveDestinationURL
+            .appendingPathComponent(fileName, conformingTo: .fileURL)
+        
+        guard fileManager.fileExists(atPath: savedFilePathURL.path) else { return }
+        
+        do {
+            try fileManager.removeItem(at: savedFilePathURL)
+        } catch {
+            print(error)
+        }
+    }
+    
     private func fetchOrCreateDirectoryURL(directoryName: String, relativeTo searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
         let fileManager: FileManager = .default
         
