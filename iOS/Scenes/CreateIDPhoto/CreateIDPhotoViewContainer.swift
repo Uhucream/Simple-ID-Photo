@@ -18,6 +18,8 @@ struct CreateIDPhotoViewContainer: View {
     static let CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH: FileManager.SearchPathDirectory = .libraryDirectory
     static let CREATED_ID_PHOTO_SAVE_FOLDER_NAME: String = "CreatedPhotos"
     
+    @Environment(\.managedObjectContext) var viewContext
+    
     @Environment(\.dismiss) var dismiss
     
     @ObservedObject var sourcePhotoRecord: SourcePhoto
@@ -130,11 +132,21 @@ struct CreateIDPhotoViewContainer: View {
             
             guard let saveDestinationDirectoryURL = saveDestinationDirectoryURL else { return }
             
-            try saveImageToSpecifiedDirectory(
+            let savedFileURL: URL? = try saveImageToSpecifiedDirectory(
                 ciImage: generatedIDPhoto,
                 fileName: saveFileName,
                 fileType: saveFileUTType,
                 to: saveDestinationDirectoryURL
+            )
+            
+            guard let savedFileURL = savedFileURL else { return }
+            
+            let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
+            
+            registerCreatedIDPhotoRecord(
+                imageFileName: imageFileNameWithPathExtension,
+                saveDirectoryPath: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
+                relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
             )
             
             dismiss()
@@ -204,6 +216,64 @@ struct CreateIDPhotoViewContainer: View {
 }
 
 extension CreateIDPhotoViewContainer {
+    func registerCreatedIDPhotoRecord(
+        imageFileName: String,
+        saveDirectoryPath: String,
+        relativeTo rootSearchPathDirectory: FileManager.SearchPathDirectory
+    ) -> Void {
+        do {
+            let appliedBackgroundColor: AppliedBackgroundColor = .init(
+                on: viewContext,
+                color: self.visionIDPhotoGenerator.idPhotoBackgroundColor
+            )
+            
+            let selectedIDPhotoSizeVariant: IDPhotoSizeVariant = self.selectedIDPhotoSize
+            
+            let appliedIDPhotoFaceHeight: AppliedIDPhotoFaceHeight = .init(
+                on: viewContext,
+                millimetersHeight: selectedIDPhotoSizeVariant.photoSize.faceHeight.value
+            )
+            
+            let appliedMarginsAroundFace: AppliedMarginsAroundFace = .init(
+                on: viewContext,
+                bottom: selectedIDPhotoSizeVariant.photoSize.marginBottom?.value ?? -1,
+                top: selectedIDPhotoSizeVariant.photoSize.marginTop.value
+            )
+            
+            let appliedIDPhotoSize: AppliedIDPhotoSize = .init(
+                on: viewContext,
+                millimetersHeight: selectedIDPhotoSizeVariant.photoSize.height.value,
+                millimetersWidth: selectedIDPhotoSizeVariant.photoSize.width.value,
+                sizeVariant: selectedIDPhotoSizeVariant,
+                faceHeight: appliedIDPhotoFaceHeight,
+                marginsAroundFace: appliedMarginsAroundFace
+            )
+            
+            let savedDirectory: SavedFilePath = .init(
+                on: viewContext,
+                rootSearchPathDirectory: rootSearchPathDirectory,
+                relativePathFromRootSearchPath: saveDirectoryPath
+            )
+            
+            CreatedIDPhoto(
+                on: viewContext,
+                createdAt: .now,
+                imageFileName: imageFileName,
+                updatedAt: .now,
+                appliedBackgroundColor: appliedBackgroundColor,
+                appliedIDPhotoSize: appliedIDPhotoSize,
+                savedDirectory: savedDirectory,
+                sourcePhoto: self.sourcePhotoRecord
+            )
+            
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+    }
+}
+
+extension CreateIDPhotoViewContainer {
     private func fetchOrCreateDirectoryURL(directoryName: String, relativeTo searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
         let fileManager: FileManager = .default
         
@@ -241,7 +311,7 @@ extension CreateIDPhotoViewContainer {
         fileName: String,
         fileType: UTType,
         to saveDestinationDirectoryURL: URL
-    ) throws -> Void {
+    ) throws -> URL? {
         
         let saveFilePathURL: URL = saveDestinationDirectoryURL
             .appendingPathComponent(fileName, conformingTo: fileType)
@@ -256,9 +326,11 @@ extension CreateIDPhotoViewContainer {
                         colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
                     )
                 
-                guard let jpegData = jpegData else { return }
+                guard let jpegData = jpegData else { return nil }
                 
                 try jpegData.write(to: saveFilePathURL)
+                
+                return saveFilePathURL
             } catch {
                 throw error
             }
@@ -272,9 +344,11 @@ extension CreateIDPhotoViewContainer {
                     colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
                 )
             
-            guard let heicData = heicData else { return }
+            guard let heicData = heicData else { return nil }
             
             try heicData.write(to: saveFilePathURL)
+            
+            return saveFilePathURL
         } catch {
             throw error
         }
