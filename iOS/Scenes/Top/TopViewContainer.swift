@@ -198,34 +198,6 @@ struct TopViewContainer: View {
     
     func deleteCreatedIDPhotoRecord(_ targetCreatedIDPhoto: CreatedIDPhoto) -> Void {
         do {
-            if let appliedBackgroundColorRecord = targetCreatedIDPhoto.appliedBackgroundColor {
-                viewContext.delete(appliedBackgroundColorRecord)
-            }
-            
-            if let faceHeightRecord = targetCreatedIDPhoto.appliedIDPhotoSize?.faceHeight {
-                viewContext.delete(faceHeightRecord)
-            }
-            
-            if let marginsAroundFaceRecord = targetCreatedIDPhoto.appliedIDPhotoSize?.marginsAroundFace {
-                viewContext.delete(marginsAroundFaceRecord)
-            }
-            
-            if let appliedIDPhotoSizeRecord = targetCreatedIDPhoto.appliedIDPhotoSize {
-                viewContext.delete(appliedIDPhotoSizeRecord)
-            }
-            
-            if let sourcePhotoSavedDirectoryRecord = targetCreatedIDPhoto.sourcePhoto?.savedDirectory {
-                viewContext.delete(sourcePhotoSavedDirectoryRecord)
-            }
-            
-            if let sourcePhotoRecord = targetCreatedIDPhoto.sourcePhoto {
-                viewContext.delete(sourcePhotoRecord)
-            }
-            
-            if let createdIDPhotoSavedDirectoryRecord = targetCreatedIDPhoto.savedDirectory {
-                viewContext.delete(createdIDPhotoSavedDirectoryRecord)
-            }
-            
             viewContext.delete(targetCreatedIDPhoto)
             
             try viewContext.save()

@@ -19,8 +19,8 @@
         <attribute name="millimetersWidth" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="sizeVariant" attributeType="Integer 32" defaultValueString="NO" usesScalarValueType="YES"/>
         <relationship name="createdIDPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CreatedIDPhoto" inverseName="appliedIDPhotoSize" inverseEntity="CreatedIDPhoto"/>
-        <relationship name="faceHeight" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AppliedIDPhotoFaceHeight" inverseName="idPhotoSize" inverseEntity="AppliedIDPhotoFaceHeight"/>
-        <relationship name="marginsAroundFace" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AppliedMarginsAroundFace" inverseName="idPhotoSize" inverseEntity="AppliedMarginsAroundFace"/>
+        <relationship name="faceHeight" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AppliedIDPhotoFaceHeight" inverseName="idPhotoSize" inverseEntity="AppliedIDPhotoFaceHeight"/>
+        <relationship name="marginsAroundFace" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AppliedMarginsAroundFace" inverseName="idPhotoSize" inverseEntity="AppliedMarginsAroundFace"/>
     </entity>
     <entity name="AppliedMarginsAroundFace" representedClassName="AppliedMarginsAroundFace" syncable="YES" codeGenerationType="class">
         <attribute name="bottom" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
@@ -33,10 +33,10 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="imageFileName" optional="YES" attributeType="String"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="appliedBackgroundColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AppliedBackgroundColor" inverseName="createdIDPhoto" inverseEntity="AppliedBackgroundColor"/>
-        <relationship name="appliedIDPhotoSize" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AppliedIDPhotoSize" inverseName="createdIDPhoto" inverseEntity="AppliedIDPhotoSize"/>
-        <relationship name="savedDirectory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SavedFilePath" inverseName="createdIDPhoto" inverseEntity="SavedFilePath"/>
-        <relationship name="sourcePhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SourcePhoto" inverseName="createdIDPhoto" inverseEntity="SourcePhoto"/>
+        <relationship name="appliedBackgroundColor" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AppliedBackgroundColor" inverseName="createdIDPhoto" inverseEntity="AppliedBackgroundColor"/>
+        <relationship name="appliedIDPhotoSize" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AppliedIDPhotoSize" inverseName="createdIDPhoto" inverseEntity="AppliedIDPhotoSize"/>
+        <relationship name="savedDirectory" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SavedFilePath" inverseName="createdIDPhoto" inverseEntity="SavedFilePath"/>
+        <relationship name="sourcePhoto" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePhoto" inverseName="createdIDPhoto" inverseEntity="SourcePhoto"/>
     </entity>
     <entity name="CustomIDPhotoFaceSize" representedClassName="CustomIDPhotoFaceSize" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -68,6 +68,6 @@
         <attribute name="imageFileName" optional="YES" attributeType="String"/>
         <attribute name="shotDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="createdIDPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CreatedIDPhoto" inverseName="sourcePhoto" inverseEntity="CreatedIDPhoto"/>
-        <relationship name="savedDirectory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SavedFilePath" inverseName="sourcePhoto" inverseEntity="SavedFilePath"/>
+        <relationship name="savedDirectory" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SavedFilePath" inverseName="sourcePhoto" inverseEntity="SavedFilePath"/>
     </entity>
 </model>
