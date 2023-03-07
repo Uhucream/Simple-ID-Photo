@@ -12,15 +12,49 @@ struct IDPhotoDetailViewContainer: View {
     
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
     
+    private func parseCreatedIDPhotoFileURL() -> URL? {
+        let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
+        
+        let LIBRARY_DIRECTORY_RAW_VALUE_INT64: Int64 = .init(DEFAULT_SAVE_DIRECTORY_ROOT.rawValue)
+        
+        let fileManager: FileManager = .default
+        
+        let fileSaveDestinationRootSearchDirectory: FileManager.SearchPathDirectory = .init(
+            rawValue: UInt(
+                self.createdIDPhoto.savedDirectory?.rootSearchPathDirectory ?? LIBRARY_DIRECTORY_RAW_VALUE_INT64
+            )
+        ) ?? DEFAULT_SAVE_DIRECTORY_ROOT
+        
+        let saveDestinationRootSearchDirectoryPathURL: URL? = fileManager.urls(
+            for: fileSaveDestinationRootSearchDirectory,
+            in: .userDomainMask
+        ).first
+        
+        let relativePathFromRoot: String = createdIDPhoto.savedDirectory?.relativePathFromRootSearchPath ?? ""
+        let fileSaveDestinationURL: URL = .init(
+            fileURLWithPath: relativePathFromRoot,
+            isDirectory: true,
+            relativeTo: saveDestinationRootSearchDirectoryPathURL
+        )
+        
+        let savedPhotoFileName: String? = createdIDPhoto.imageFileName
+        
+        guard let savedPhotoFileName = savedPhotoFileName else { return nil }
+        
+        let savedPhotoFileURL: URL = fileSaveDestinationURL
+            .appendingPathComponent(savedPhotoFileName, conformingTo: .fileURL)
+        
+        guard fileManager.fileExists(atPath: savedPhotoFileURL.path) else { return nil }
+        
+        return savedPhotoFileURL
+    }
+    
     var body: some View {
         VStack {
             IDPhotoDetailView(
                 idPhotoImageURL: Binding<URL?>(
                     get: {
-                        let imageURLString: String? = createdIDPhoto.imageFileName
-                        let imageURL: URL? = .init(string: imageURLString ?? "")
-                        
-                        return imageURL
+                        return parseCreatedIDPhotoFileURL()
                     },
                     set: { (newImageURL) in
                         self.createdIDPhoto.imageFileName = newImageURL?.absoluteString
