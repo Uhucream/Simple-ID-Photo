@@ -34,6 +34,7 @@ struct TopViewContainer: View {
     @State private var shouldShowCreateIDPhotoView: Bool = false
     
     @State private var shouldShowDeleteConfirmDialog: Bool = false
+    @State private var shouldShowDeleteAllConfirmDialog: Bool = false
     
     @State private var isPhotoLoadingInProgress: Bool = false
     
@@ -206,6 +207,54 @@ struct TopViewContainer: View {
         }
     }
     
+    func deleteCreatedIDPhotoAndSavedFiles(_ targetCreatedIDPhoto: CreatedIDPhoto) -> Void {
+
+        let DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY: FileManager.SearchPathDirectory = .libraryDirectory
+        
+        let sourcePhotoRecord: SourcePhoto? = targetCreatedIDPhoto.sourcePhoto
+        let sourcePhotoFileName: String? = sourcePhotoRecord?.imageFileName
+        
+        let sourcePhotoSavedDirectory: SavedFilePath? = sourcePhotoRecord?.savedDirectory
+        
+        if
+            let sourcePhotoFileName = sourcePhotoFileName,
+            let sourcePhotoSavedDirectory = sourcePhotoSavedDirectory
+        {
+         
+            let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                rawValue:  UInt(sourcePhotoSavedDirectory.rootSearchPathDirectory)
+            ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+            
+            deleteSavedFile(
+                fileName: sourcePhotoFileName,
+                in: sourcePhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
+                relativeTo: destinationRootSearchPathDirectory
+            )
+        }
+        
+        let createdIDPhotoFileName: String? = targetCreatedIDPhoto.imageFileName
+        
+        let createdIDPhotoSavedDirectory: SavedFilePath? = targetCreatedIDPhoto.savedDirectory
+        
+        if
+            let createdIDPhotoFileName = createdIDPhotoFileName,
+            let createdIDPhotoSavedDirectory = createdIDPhotoSavedDirectory
+        {
+         
+            let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                rawValue:  UInt(createdIDPhotoSavedDirectory.rootSearchPathDirectory)
+            ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+            
+            deleteSavedFile(
+                fileName: createdIDPhotoFileName,
+                in: createdIDPhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
+                relativeTo: destinationRootSearchPathDirectory
+            )
+        }
+
+        deleteCreatedIDPhotoRecord(targetCreatedIDPhoto)
+    }
+    
     func showDeleteConfirmationDialog() -> Void {
         self.shouldShowDeleteConfirmDialog = true
     }
@@ -236,55 +285,29 @@ struct TopViewContainer: View {
                 Button(
                     role: .destructive,
                     action: {
-                        
                         deletingTargetHistories
                             .forEach { deletingTargetHistory in
-                                
-                                let DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY: FileManager.SearchPathDirectory = .libraryDirectory
-                                
-                                let sourcePhotoRecord: SourcePhoto? = deletingTargetHistory.sourcePhoto
-                                let sourcePhotoFileName: String? = sourcePhotoRecord?.imageFileName
-                                
-                                let sourcePhotoSavedDirectory: SavedFilePath? = sourcePhotoRecord?.savedDirectory
-                                
-                                if
-                                    let sourcePhotoFileName = sourcePhotoFileName,
-                                    let sourcePhotoSavedDirectory = sourcePhotoSavedDirectory
-                                {
-                                 
-                                    let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
-                                        rawValue:  UInt(sourcePhotoSavedDirectory.rootSearchPathDirectory)
-                                    ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
-                                    
-                                    deleteSavedFile(
-                                        fileName: sourcePhotoFileName,
-                                        in: sourcePhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
-                                        relativeTo: destinationRootSearchPathDirectory
-                                    )
-                                }
-                                
-                                let createdIDPhotoFileName: String? = deletingTargetHistory.imageFileName
-                                
-                                let createdIDPhotoSavedDirectory: SavedFilePath? = deletingTargetHistory.savedDirectory
-                                
-                                if
-                                    let createdIDPhotoFileName = createdIDPhotoFileName,
-                                    let createdIDPhotoSavedDirectory = createdIDPhotoSavedDirectory
-                                {
-                                 
-                                    let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
-                                        rawValue:  UInt(createdIDPhotoSavedDirectory.rootSearchPathDirectory)
-                                    ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
-                                    
-                                    deleteSavedFile(
-                                        fileName: createdIDPhotoFileName,
-                                        in: createdIDPhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
-                                        relativeTo: destinationRootSearchPathDirectory
-                                    )
-                                }
-                                
-                                
-                                deleteCreatedIDPhotoRecord(deletingTargetHistory)
+                                deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
+                            }
+                    }
+                ) {
+                    Text("削除する")
+                }
+            } message: { _ in
+                Text("削除した証明写真は復元できません")
+            }
+            .confirmationDialog(
+                "本当にすべて削除しますか？",
+                isPresented: $shouldShowDeleteAllConfirmDialog,
+                titleVisibility: .visible,
+                presenting: createdIDPhotoHistories
+            ) { createdAllHistories in
+                Button(
+                    role: .destructive,
+                    action: {
+                        createdAllHistories
+                            .forEach { deletingTargetHistory in
+                                deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
                             }
                     }
                 ) {
@@ -299,8 +322,25 @@ struct TopViewContainer: View {
                         EditButton()
                     }
                 }
+                
+                ToolbarItem(placement: .bottomBar) {
+                    if currentEditMode.isEditing {
+                        Button(
+                            action: {
+                                shouldShowDeleteAllConfirmDialog = true
+                            }
+                        ) {
+                            Text("すべて消去")
+                        }
+                    }
+                }
             }
             .environment(\.editMode, $currentEditMode)
+            .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
+                guard newHistoriesCount == 0 else { return }
+                
+                self.currentEditMode = .inactive
+            }
             
             if self.isPhotoLoadingInProgress {
                 Color
