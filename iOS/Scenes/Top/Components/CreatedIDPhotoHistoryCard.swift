@@ -35,12 +35,29 @@ struct CreatedIDPhotoHistoryCard: View {
     
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
     
+    @State private var createdAtRelativeLabel: String
+
     private var idPhotoThumbnailImageURL: URL? {
         return parseImageFileURL()
     }
     var idPhotoSizeType: IDPhotoSizeVariant
     
     var createdAt: Date
+    
+    init(
+        createdIDPhoto: CreatedIDPhoto,
+        idPhotoSizeType: IDPhotoSizeVariant,
+        createdAt: Date
+    ) {
+        _createdIDPhoto = .init(wrappedValue: createdIDPhoto)
+        
+        _createdAtRelativeLabel = .init(
+            initialValue: relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
+        )
+        
+        self.idPhotoSizeType = idPhotoSizeType
+        self.createdAt = createdAt
+    }
     
     @ViewBuilder
     func renderTitle() -> some View {
@@ -111,8 +128,11 @@ struct CreatedIDPhotoHistoryCard: View {
                         .font(.subheadline)
                         .fontWeight(.medium)
                     
-                    Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
+                    Text(createdAtRelativeLabel)
                         .font(.caption2)
+                        .onAppear {
+                            self.createdAtRelativeLabel = relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
+                        }
                 }
                 .foregroundColor(.secondaryLabel)
             }
@@ -183,8 +203,11 @@ struct CreatedIDPhotoHistoryCard: View {
                         .font(.subheadline)
                         .fontWeight(.medium)
                     
-                    Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
+                    Text(createdAtRelativeLabel)
                         .font(.caption2)
+                        .onAppear {
+                            self.createdAtRelativeLabel = relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
+                        }
                 }
                 .foregroundColor(.secondaryLabel)
             }
