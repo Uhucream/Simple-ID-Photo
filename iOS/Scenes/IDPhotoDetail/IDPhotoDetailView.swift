@@ -161,7 +161,7 @@ struct IDPhotoDetailView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(Date(), style: .date)
                             
-                            Text(relativeDateTimeFormatter.localizedString(for: Date().addingTimeInterval(-10000000), relativeTo: .now))
+                            Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
                                 .font(.caption2)
                         }
                     }
