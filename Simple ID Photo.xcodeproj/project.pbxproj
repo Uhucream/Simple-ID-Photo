@@ -17,7 +17,6 @@
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
 		472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */; };
 		4730700529837F0400EAEC14 /* Percentage in Frameworks */ = {isa = PBXBuildFile; productRef = 4730700429837F0400EAEC14 /* Percentage */; };
-		47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
 		475FB236296FD5000059796F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB235296FD5000059796F /* UIImage+.swift */; };
 		475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB237296FD6300059796F /* CreateIDPhotoViewContainer.swift */; };
@@ -28,6 +27,7 @@
 		47868953297F7EC100952BFD /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47868952297F7EC100952BFD /* BlurView.swift */; };
 		478689552980216600952BFD /* IDPhotoSizePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478689542980216600952BFD /* IDPhotoSizePicker.swift */; };
 		478689572980CECE00952BFD /* CGImagePropertyOrientation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478689562980CECE00952BFD /* CGImagePropertyOrientation+.swift */; };
+		4788D96E29B8338F00CFE1DE /* VisionFrameworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4788D96D29B8338F00CFE1DE /* VisionFrameworkHelper.swift */; };
 		478A420429AA3E7300626316 /* IDPhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478A420329AA3E7300626316 /* IDPhotoDetailView.swift */; };
 		478DB92529AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478DB92429AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift */; };
 		479573E2296C1B1400B98881 /* IDPhotoSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479573E1296C1B1400B98881 /* IDPhotoSizePickerView.swift */; };
@@ -100,7 +100,6 @@
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
 		472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSaveViewContainer.swift; sourceTree = "<group>"; };
-		47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionIDPhotoGenerator.swift; sourceTree = "<group>"; };
 		4759F3DB29B2D7120045D821 /* 2023_03_04_10_31_Rename_GeneratedIDPhoto_to_CreatedIDPhoto.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2023_03_04_10_31_Rename_GeneratedIDPhoto_to_CreatedIDPhoto.xcdatamodel; sourceTree = "<group>"; };
 		475DFA5F29B4783E00F2183C /* 2023_03_05_16_11_Change_Saving_Image_Method_From_URL_To_File_Name.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2023_03_05_16_11_Change_Saving_Image_Method_From_URL_To_File_Name.xcdatamodel; sourceTree = "<group>"; };
 		475FB231296FD47F0059796F /* CreateIDPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIDPhotoView.swift; sourceTree = "<group>"; };
@@ -113,6 +112,7 @@
 		47868952297F7EC100952BFD /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		478689542980216600952BFD /* IDPhotoSizePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSizePicker.swift; sourceTree = "<group>"; };
 		478689562980CECE00952BFD /* CGImagePropertyOrientation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImagePropertyOrientation+.swift"; sourceTree = "<group>"; };
+		4788D96D29B8338F00CFE1DE /* VisionFrameworkHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionFrameworkHelper.swift; sourceTree = "<group>"; };
 		478A420329AA3E7300626316 /* IDPhotoDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoDetailView.swift; sourceTree = "<group>"; };
 		478DB92429AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoDetailViewContainer.swift; sourceTree = "<group>"; };
 		479573E1296C1B1400B98881 /* IDPhotoSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSizePickerView.swift; sourceTree = "<group>"; };
@@ -289,6 +289,14 @@
 				475FB235296FD5000059796F /* UIImage+.swift */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		4788D96C29B8338F00CFE1DE /* VisionFramework */ = {
+			isa = PBXGroup;
+			children = (
+				4788D96D29B8338F00CFE1DE /* VisionFrameworkHelper.swift */,
+			);
+			path = VisionFramework;
 			sourceTree = "<group>";
 		};
 		478A420229AA3E7300626316 /* IDPhotoDetail */ = {
@@ -483,9 +491,9 @@
 		47D9040D2969141300DD4FAF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				4788D96C29B8338F00CFE1DE /* VisionFramework */,
 				47B91A4B29A8565700754657 /* UIPrintPageRenderer */,
 				47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */,
-				47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -690,10 +698,10 @@
 				47CDB2BA29A5070F007FDE8E /* Measurement<UnitLength>+.swift in Sources */,
 				478DB92529AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift in Sources */,
 				475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */,
+				4788D96E29B8338F00CFE1DE /* VisionFrameworkHelper.swift in Sources */,
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */,
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
-				47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */,
 				4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */,
 				475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */,
 				47C49B71296831E600F2BF35 /* RootView.swift in Sources */,

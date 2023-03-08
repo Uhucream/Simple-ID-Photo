@@ -24,12 +24,19 @@ struct CreateIDPhotoViewContainer: View {
     
     @ObservedObject var sourcePhotoRecord: SourcePhoto
     
-    @ObservedObject var visionIDPhotoGenerator: VisionIDPhotoGenerator
+    var visionFrameWorkHelper: VisionFrameworkHelper
+    
+    var sourceImage: UIImage?
     
     @State private var previewUIImage: UIImage? = nil
     @State private var sourceImageOrientation: UIImage.Orientation
     
+    @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSize: IDPhotoSizeVariant = .original
+    
+    @State private var sourceImageWithBackgroundColor: CIImage?
+    
+    @State private var detectedFaceRect: CGRect = .zero
     
     @State private var croppingRect: CGRect = .zero
     
@@ -39,7 +46,9 @@ struct CreateIDPhotoViewContainer: View {
         
         _sourcePhotoRecord = .init(wrappedValue: sourcePhotoRecord)
         
-        self.visionIDPhotoGenerator = .init(
+        self.sourceImage = sourceUIImage
+        
+        self.visionFrameWorkHelper = .init(
             sourceCIImage: sourceUIImage?.ciImage(),
             sourceImageOrientation: .init(sourceUIImage?.imageOrientation ?? .up)
         )
@@ -57,12 +66,36 @@ struct CreateIDPhotoViewContainer: View {
         self.previewUIImage = newImage
     }
     
+    func setIDPhotoWithBackgroundColor(with backgroundColor: Color) async -> Void {
+        do {
+            guard let sourceImage = sourceImage else { return }
+            
+            let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourceImage.size)
+            
+            guard let solidColorBackgroundCIImage = solidColorBackgroundUIImage?.ciImage() else { return }
+            
+            let generatedImage: CIImage? = try await visionFrameWorkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
+            
+            guard let generatedImage = generatedImage else { return }
+            guard let generatedUIImage = generatedImage.uiImage(orientation: self.sourceImageOrientation) else { return }
+            
+            Task { @MainActor in
+                self.sourceImageWithBackgroundColor = generatedImage
+                
+                self.previewUIImage = generatedUIImage
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     func cropImage() -> Void {
-
-        guard let generatedCIImage: CIImage = visionIDPhotoGenerator.generatedIDPhoto else { return }
+        
+        guard let sourceImageWithBackgroundColor = sourceImageWithBackgroundColor else { return }
         
         if selectedIDPhotoSize == .original {
-            self.previewUIImage = generatedCIImage.uiImage(orientation: .up)
+
+            self.previewUIImage = sourceImageWithBackgroundColor.uiImage(orientation: self.sourceImageOrientation)
             
             return
         }
@@ -73,25 +106,23 @@ struct CreateIDPhotoViewContainer: View {
             return
         }
         
-        let faceRectWithHair: CGRect = visionIDPhotoGenerator.faceWithHairRectangle
-        
-        if faceRectWithHair == .zero { return }
+        if self.detectedFaceRect == .zero { return }
         
         let faceHeightRatio: Double = selectedIDPhotoSize.photoSize.faceHeight.value / selectedIDPhotoSize.photoSize.height.value
         
         let idPhotoAspectRatio: Double = selectedIDPhotoSize.photoSize.width.value / selectedIDPhotoSize.photoSize.height.value
         
-        let idPhotoHeight: CGFloat = faceRectWithHair.height / faceHeightRatio
+        let idPhotoHeight: CGFloat = self.detectedFaceRect.height / faceHeightRatio
         let idPhotoWidth: CGFloat = idPhotoHeight * idPhotoAspectRatio
         
         let marginTopRatio: Double = selectedIDPhotoSize.photoSize.marginTop.value / selectedIDPhotoSize.photoSize.height.value
         
         let marginTop: CGFloat = idPhotoHeight * marginTopRatio
         
-        let remainderWidthOfFaceAndPhoto: CGFloat = idPhotoWidth - faceRectWithHair.size.width
+        let remainderWidthOfFaceAndPhoto: CGFloat = idPhotoWidth - self.detectedFaceRect.size.width
         
-        let originXOfCroppingRect: CGFloat = faceRectWithHair.origin.x - (remainderWidthOfFaceAndPhoto / 2)
-        let originYOfCroppingRect: CGFloat = (faceRectWithHair.maxY + marginTop) - idPhotoHeight
+        let originXOfCroppingRect: CGFloat = self.detectedFaceRect.origin.x - (remainderWidthOfFaceAndPhoto / 2)
+        let originYOfCroppingRect: CGFloat = (self.detectedFaceRect.maxY + marginTop) - idPhotoHeight
         
         let croppingRect: CGRect = .init(
             origin: CGPoint(
@@ -106,7 +137,7 @@ struct CreateIDPhotoViewContainer: View {
         
         self.croppingRect = croppingRect
         
-        let croppedImage = generatedCIImage.cropped(to: croppingRect)
+        let croppedImage = sourceImageWithBackgroundColor.cropped(to: croppingRect)
         
         self.previewUIImage = croppedImage.uiImage(orientation: self.sourceImageOrientation)
     }
@@ -117,7 +148,7 @@ struct CreateIDPhotoViewContainer: View {
     
     func handleTapDoneButton() -> Void {
         do {
-            guard let generatedIDPhoto = visionIDPhotoGenerator.generatedIDPhoto else { return }
+            guard let generatedIDPhoto = sourceImageWithBackgroundColor else { return }
             
             let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
             
@@ -159,7 +190,7 @@ struct CreateIDPhotoViewContainer: View {
         ZStack {
             if #available(iOS 16, *) {
                 CreateIDPhotoView(
-                    selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
+                    selectedBackgroundColor: $selectedBackgroundColor,
                     selectedIDPhotoSize: $selectedIDPhotoSize,
                     previewUIImage: $previewUIImage.animation()
                 )
@@ -170,7 +201,7 @@ struct CreateIDPhotoViewContainer: View {
                 .toolbar(.hidden)
             } else {
                 CreateIDPhotoView(
-                    selectedBackgroundColor: $visionIDPhotoGenerator.idPhotoBackgroundColor,
+                    selectedBackgroundColor: $selectedBackgroundColor,
                     selectedIDPhotoSize: $selectedIDPhotoSize,
                     previewUIImage: $previewUIImage.animation()
                 )
@@ -182,19 +213,21 @@ struct CreateIDPhotoViewContainer: View {
             }
         }
         .task {
-            try? await visionIDPhotoGenerator.performPersonSegmentationRequest()
-            
-            try? await visionIDPhotoGenerator.performHumanRectanglesAndFaceLandmarksRequest()
+            await setIDPhotoWithBackgroundColor(with: self.selectedBackgroundColor)
         }
-        .onChange(of: visionIDPhotoGenerator.idPhotoBackgroundColor)  { _ in
-            Task {
-                try? await visionIDPhotoGenerator.performPersonSegmentationRequest()
+        .task {
+            let detectedRect: CGRect? = try? await visionFrameWorkHelper.detectFaceIncludingHairRectangle()
+            
+            guard let detectedRect = detectedRect else { return }
+            
+            Task { @MainActor in
+                self.detectedFaceRect = detectedRect
             }
         }
-        .onChange(of: visionIDPhotoGenerator.generatedIDPhoto) { newGeneratedIDPhoto in
-            guard let newGeneratedIDPhotoUIImage: UIImage = newGeneratedIDPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
-            
-            self.refreshPreviewImage(newImage: newGeneratedIDPhotoUIImage)
+        .onChange(of: selectedBackgroundColor)  { newSelectedBackgroundColor in
+            Task {
+                await setIDPhotoWithBackgroundColor(with: newSelectedBackgroundColor)
+            }
         }
         .onChange(of: self.selectedIDPhotoSize) { _ in
             self.cropImage()
@@ -229,7 +262,7 @@ extension CreateIDPhotoViewContainer {
         do {
             let appliedBackgroundColor: AppliedBackgroundColor = .init(
                 on: viewContext,
-                color: self.visionIDPhotoGenerator.idPhotoBackgroundColor
+                color: self.selectedBackgroundColor
             )
             
             let selectedIDPhotoSizeVariant: IDPhotoSizeVariant = self.selectedIDPhotoSize
