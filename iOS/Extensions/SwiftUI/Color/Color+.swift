@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 extension Color {
     init(_ hex: UInt, alpha: Double = 1) {
@@ -94,7 +95,9 @@ extension Color {
 extension Color {
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
         
-        guard let cgColor = cgColor else { return nil }
+        let uiColorFromSelf: UIColor = .init(self)
+        
+        let cgColor: CGColor = uiColorFromSelf.cgColor
         
         guard let cgColorComponents: [CGFloat] = cgColor.components else { return nil }
         
