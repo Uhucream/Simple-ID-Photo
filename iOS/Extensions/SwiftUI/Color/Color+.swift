@@ -92,8 +92,10 @@ extension Color {
     static let fixedBrown = Color(uiColor: UIColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0))
 }
 
+typealias RGBAColorComponents = (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
+
 extension Color {
-    var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
+    var rgba: RGBAColorComponents? {
         
         let uiColorFromSelf: UIColor = .init(self)
         
