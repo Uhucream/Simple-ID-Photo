@@ -12,7 +12,6 @@
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
 		472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */; };
 		4730700529837F0400EAEC14 /* Percentage in Frameworks */ = {isa = PBXBuildFile; productRef = 4730700429837F0400EAEC14 /* Percentage */; };
-		47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
 		475FB236296FD5000059796F /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB235296FD5000059796F /* UIImage+.swift */; };
 		475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB237296FD6300059796F /* CreateIDPhotoViewContainer.swift */; };
@@ -88,7 +87,6 @@
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
 		472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSaveViewContainer.swift; sourceTree = "<group>"; };
-		47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionIDPhotoGenerator.swift; sourceTree = "<group>"; };
 		475FB231296FD47F0059796F /* CreateIDPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIDPhotoView.swift; sourceTree = "<group>"; };
 		475FB235296FD5000059796F /* UIImage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		475FB237296FD6300059796F /* CreateIDPhotoViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIDPhotoViewContainer.swift; sourceTree = "<group>"; };
@@ -455,7 +453,6 @@
 				4788D96929B826C900CFE1DE /* VisionFramework */,
 				47B91A4B29A8565700754657 /* UIPrintPageRenderer */,
 				47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */,
-				47494BC02973EF0C0008C15E /* VisionIDPhotoGenerator.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -654,7 +651,6 @@
 				475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */,
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
-				47494BC12973EF0C0008C15E /* VisionIDPhotoGenerator.swift in Sources */,
 				4788D96B29B826C900CFE1DE /* VisionFrameworkHelper.swift in Sources */,
 				4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */,
 				475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */,
