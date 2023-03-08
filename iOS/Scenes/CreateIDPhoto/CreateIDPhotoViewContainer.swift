@@ -24,7 +24,7 @@ struct CreateIDPhotoViewContainer: View {
     
     @ObservedObject var sourcePhotoRecord: SourcePhoto
     
-    var visionFrameWorkHelper: VisionFrameworkHelper
+    var visionFrameworkHelper: VisionFrameworkHelper
     
     var sourceImage: UIImage?
     
@@ -48,7 +48,7 @@ struct CreateIDPhotoViewContainer: View {
         
         self.sourceImage = sourceUIImage
         
-        self.visionFrameWorkHelper = .init(
+        self.visionFrameworkHelper = .init(
             sourceCIImage: sourceUIImage?.ciImage(),
             sourceImageOrientation: .init(sourceUIImage?.imageOrientation ?? .up)
         )
@@ -74,7 +74,7 @@ struct CreateIDPhotoViewContainer: View {
             
             guard let solidColorBackgroundCIImage = solidColorBackgroundUIImage?.ciImage() else { return }
             
-            let generatedImage: CIImage? = try await visionFrameWorkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
+            let generatedImage: CIImage? = try await visionFrameworkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
             
             guard let generatedImage = generatedImage else { return }
             guard let generatedUIImage = generatedImage.uiImage(orientation: self.sourceImageOrientation) else { return }
@@ -216,7 +216,7 @@ struct CreateIDPhotoViewContainer: View {
             await setIDPhotoWithBackgroundColor(with: self.selectedBackgroundColor)
         }
         .task {
-            let detectedRect: CGRect? = try? await visionFrameWorkHelper.detectFaceIncludingHairRectangle()
+            let detectedRect: CGRect? = try? await visionFrameworkHelper.detectFaceIncludingHairRectangle()
             
             guard let detectedRect = detectedRect else { return }
             
