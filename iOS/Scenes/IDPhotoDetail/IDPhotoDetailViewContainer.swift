@@ -12,6 +12,8 @@ struct IDPhotoDetailViewContainer: View {
     
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
     
+    @State private var selectedIDPhotoProcess: IDPhotoProcessSelection? = nil
+    
     private func parseCreatedIDPhotoFileURL() -> URL? {
         let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
         
@@ -49,6 +51,14 @@ struct IDPhotoDetailViewContainer: View {
         return savedPhotoFileURL
     }
     
+    private func showEditIDPhotoView(initialDisplayProcess: IDPhotoProcessSelection) -> Void {
+        self.selectedIDPhotoProcess = initialDisplayProcess
+    }
+    
+    private func dismissEditIDPhotoView() -> Void {
+        self.selectedIDPhotoProcess = nil
+    }
+    
     var body: some View {
         VStack {
             IDPhotoDetailView(
@@ -82,6 +92,21 @@ struct IDPhotoDetailViewContainer: View {
                     }
                 )
             )
+            .onTapChangeSizeButton {
+                showEditIDPhotoView(initialDisplayProcess: .size)
+            }
+            .fullScreenCover(item: $selectedIDPhotoProcess) { selectedProcess in
+                EditIDPhotoViewContainer(
+                    initialDisplayProcess: selectedProcess,
+                    editTargetCreatedIDPhoto: self.createdIDPhoto
+                )
+                .onDismiss {
+                    dismissEditIDPhotoView()
+                }
+                .onDoneSaveProcess {
+                    dismissEditIDPhotoView()
+                }
+            }
         }
     }
 }
