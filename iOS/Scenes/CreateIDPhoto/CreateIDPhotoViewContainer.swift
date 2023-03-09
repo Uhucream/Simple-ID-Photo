@@ -42,6 +42,8 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
+    private(set) var onDoneCreateIDPhotoProcessCallback: ((CreatedIDPhoto) -> Void)?
+    
     init(sourcePhotoRecord: SourcePhoto, sourceUIImage: UIImage?) {
         
         _sourcePhotoRecord = .init(wrappedValue: sourcePhotoRecord)
@@ -56,6 +58,14 @@ struct CreateIDPhotoViewContainer: View {
         _previewUIImage = State(initialValue: sourceUIImage)
 
         _sourceImageOrientation = State(initialValue: sourceUIImage?.imageOrientation ?? .up)
+    }
+    
+    func onDoneCreateIDPhotoProcess(action: @escaping (CreatedIDPhoto) -> Void) -> Self {
+        var view = self
+        
+        view.onDoneCreateIDPhotoProcessCallback = action
+        
+        return view
     }
     
     func showDiscardViewConfirmationDialog() -> Void {
@@ -174,13 +184,13 @@ struct CreateIDPhotoViewContainer: View {
             
             let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
             
-            registerCreatedIDPhotoRecord(
+            let newCreatedIDPhoto: CreatedIDPhoto = try registerCreatedIDPhotoRecord(
                 imageFileName: imageFileNameWithPathExtension,
                 saveDirectoryPath: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
                 relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
             )
             
-            dismiss()
+            onDoneCreateIDPhotoProcessCallback?(newCreatedIDPhoto)
         } catch {
             print(error)
         }
@@ -258,7 +268,7 @@ extension CreateIDPhotoViewContainer {
         imageFileName: String,
         saveDirectoryPath: String,
         relativeTo rootSearchPathDirectory: FileManager.SearchPathDirectory
-    ) -> Void {
+    ) throws -> CreatedIDPhoto {
         do {
             let appliedBackgroundColor: AppliedBackgroundColor = .init(
                 on: viewContext,
@@ -293,7 +303,7 @@ extension CreateIDPhotoViewContainer {
                 relativePathFromRootSearchPath: saveDirectoryPath
             )
             
-            CreatedIDPhoto(
+            let newCreatedIDPhotoRecord: CreatedIDPhoto = .init(
                 on: viewContext,
                 createdAt: .now,
                 imageFileName: imageFileName,
@@ -305,8 +315,10 @@ extension CreateIDPhotoViewContainer {
             )
             
             try viewContext.save()
+            
+            return newCreatedIDPhotoRecord
         } catch {
-            print(error)
+            throw error
         }
     }
     

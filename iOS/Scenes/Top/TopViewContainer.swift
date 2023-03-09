@@ -42,6 +42,9 @@ struct TopViewContainer: View {
     
     @State private var createdSourcePhotoRecord: SourcePhoto? = nil
     
+    @State private var displayTargetIDPhotoDetailView: AnyView? = nil
+    @State private var navigationLinkSelectionForIDPhotoDetailView: Int? = nil
+    
     @State private var currentEditMode: EditMode = .inactive
     @State private var deletingTargetHistories: [CreatedIDPhoto] = []
     
@@ -51,6 +54,18 @@ struct TopViewContainer: View {
     
     func showCameraView() -> Void {
         shouldShowCameraView = true
+    }
+    
+    func showIDPhotoDetailView(displayingCreatedIDPhoto: CreatedIDPhoto) -> Void {
+        self.displayTargetIDPhotoDetailView = AnyView(
+            IDPhotoDetailViewContainer(createdIDPhoto: displayingCreatedIDPhoto)
+        )
+        
+        self.navigationLinkSelectionForIDPhotoDetailView = 0
+    }
+    
+    func dismissCreateIDPhotoView() -> Void {
+        self.createdSourcePhotoRecord = nil
     }
     
     func setPictureURLFromPHPickerSelectedItem(
@@ -373,7 +388,22 @@ struct TopViewContainer: View {
                     sourcePhotoRecord: sourcePhotoRecord,
                     sourceUIImage: orientationFixedUIImage
                 )
+                .onDoneCreateIDPhotoProcess { newCreatedIDPhoto in
+                    self.dismissCreateIDPhotoView()
+                    
+                    self.showIDPhotoDetailView(displayingCreatedIDPhoto: newCreatedIDPhoto)
+                }
             }
+        }
+        .background {
+            NavigationLink(
+                destination: displayTargetIDPhotoDetailView,
+                tag: 0,
+                selection: $navigationLinkSelectionForIDPhotoDetailView
+            ) {
+                EmptyView()
+            }
+            .hidden()
         }
         .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
 
