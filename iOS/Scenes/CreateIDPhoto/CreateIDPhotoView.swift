@@ -13,12 +13,12 @@ struct IDPhotoBackgroundColor {
     let color: Color
 }
 
+enum IDPhotoProcessSelection {
+    case backgroundColor
+    case size
+}
+
 struct CreateIDPhotoView: View {
-    private enum IDPhotoProcessSelection {
-        case backgroundColor
-        case size
-    }
-    
     private let BACKGROUND_COLORS: [Color] = [
         .idPhotoBackgroundColors.blue,
         .idPhotoBackgroundColors.gray
