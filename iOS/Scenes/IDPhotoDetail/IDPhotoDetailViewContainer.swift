@@ -90,6 +90,13 @@ struct IDPhotoDetailViewContainer: View {
                     set: { (newDate) in
                         createdIDPhoto.createdAt = newDate
                     }
+                ),
+                updatedAt: Binding<Date>(
+                    get: {
+                        return self.createdIDPhoto.updatedAt ?? .now
+                    }, set: { _ in
+                        
+                    }
                 )
             )
             .onTapChangeSizeButton {

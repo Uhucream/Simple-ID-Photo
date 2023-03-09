@@ -26,6 +26,8 @@ struct IDPhotoDetailView: View {
     
     @Binding var createdAt: Date
     
+    @Binding var updatedAt: Date
+    
     private(set) var onTapChangeSizeButtonCallback: (() -> Void)?
     
     private(set) var onTapPrintButtonCallback: (() -> Void)?
@@ -100,6 +102,8 @@ struct IDPhotoDetailView: View {
                     
                     let imageMaxWidth: CGFloat = 250
                     
+                    let asyncImageRenderingID: String = "\(updatedAt)"
+                    
                     AsyncImage(
                         url: idPhotoImageURL
                     ) { asyncImagePhase in
@@ -134,6 +138,7 @@ struct IDPhotoDetailView: View {
                         }
                     }
                     .frame(maxWidth: imageMaxWidth)
+                    .id(asyncImageRenderingID)
                     
                     VStack(alignment: .center, spacing: 0) {
                         renderPhotoSizeLabel()
@@ -225,7 +230,8 @@ struct IDPhotoDetailView_Previews: PreviewProvider {
                 mockHistoriesData[0].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!
             ),
             idPhotoSizeType: .constant(IDPhotoSizeVariant.w30_h40),
-            createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!)
+            createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!),
+            updatedAt: .constant(.now)
         )
     }
 }
