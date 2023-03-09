@@ -95,6 +95,29 @@ struct IDPhotoDetailViewContainer: View {
             .onTapChangeSizeButton {
                 showEditIDPhotoView(initialDisplayProcess: .size)
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    Menu {
+                        Button(
+                            action: {
+                                showEditIDPhotoView(initialDisplayProcess: .backgroundColor)
+                            }
+                        ) {
+                            Label("背景色を変更", systemImage: "paintbrush")
+                        }
+
+                        Button(
+                            action: {
+                                showEditIDPhotoView(initialDisplayProcess: .size)
+                            }
+                        ) {
+                            Label("サイズを変更", systemImage: "person.crop.rectangle")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+            }
             .fullScreenCover(item: $selectedIDPhotoProcess) { selectedProcess in
                 EditIDPhotoViewContainer(
                     initialDisplayProcess: selectedProcess,
