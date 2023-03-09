@@ -21,7 +21,18 @@ struct EditIDPhotoViewContainer: View {
     
     @ObservedObject var editTargetCreatedIDPhoto: CreatedIDPhoto
     
+    private var visionFrameworkHelper: VisionFrameworkHelper {
+        
+        let helper: VisionFrameworkHelper = .init(
+            sourceCIImage: sourcePhotoCIImage,
+            sourceImageOrientation: .init(self.sourceImageOrientation)
+        )
+
+        return helper
+    }
+    
     @State private var sourcePhotoFileURL: URL? = nil
+    @State private var sourcePhotoCIImage: CIImage? = nil
     @State private var sourceImageOrientation: UIImage.Orientation = .up
     
     @State private var previewUIImage: UIImage? = nil
@@ -116,6 +127,23 @@ struct EditIDPhotoViewContainer: View {
         shouldShowDiscardViewConfirmationDialog = true
     }
     
+    func paintImageBackgroundColor(
+        sourceImage: CIImage,
+        backgroundColor: Color
+    ) async throws -> CIImage? {
+        do {
+            let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourceImage.extent.size)
+            
+            guard let solidColorBackgroundCIImage = solidColorBackgroundUIImage?.ciImage() else { return nil }
+            
+            let generatedImage: CIImage? = try await visionFrameworkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
+            
+            return generatedImage
+        } catch {
+            throw error
+        }
+    }
+    
     var body: some View {
         EditIDPhotoView(
             selectedProcess: $currentSelectedProcess,
@@ -158,6 +186,45 @@ struct EditIDPhotoViewContainer: View {
             }
         } message: {
             Text("加えた変更は保存されません")
+        }
+        .task {
+            guard let sourcePhotoRecord = self.editTargetCreatedIDPhoto.sourcePhoto else { return }
+            
+            guard let sourcePhotoFileName = sourcePhotoRecord.imageFileName else { return }
+            
+            guard let sourcePhotoSavedFilePath = sourcePhotoRecord.savedDirectory else { return }
+            
+            let sourcePhotoFileURL: URL? = self.parseSavedFileURL(
+                fileName: sourcePhotoFileName,
+                savedFilePath: sourcePhotoSavedFilePath
+            )
+            
+            guard let sourcePhotoFileURL = sourcePhotoFileURL else { return }
+            
+            let uiImageFromURL: UIImage = .init(url: sourcePhotoFileURL)
+            let orientationFixedUIImage: UIImage? = uiImageFromURL.orientationFixed()
+            
+            self.sourcePhotoCIImage = orientationFixedUIImage?.ciImage()
+            
+            self.sourcePhotoFileURL = sourcePhotoFileURL
+        }
+        .onReceive(
+            Just(selectedBackgroundColor)
+        ) { newSelectedBackgroundColor in
+            Task {
+                guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                
+                let paintedSourcePhoto: CIImage? = try await paintImageBackgroundColor(
+                    sourceImage: sourcePhotoCIImage,
+                    backgroundColor: newSelectedBackgroundColor
+                )
+                
+                guard let paintedSourcePhotoUIImage: UIImage = paintedSourcePhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                
+                Task { @MainActor in
+                    self.previewUIImage = paintedSourcePhotoUIImage
+                }
+            }
         }
         .onReceive(
             Just(selectedIDPhotoSizeVariant)
