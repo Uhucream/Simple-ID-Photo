@@ -40,6 +40,8 @@ struct EditIDPhotoViewContainer: View {
     @State private var sourcePhotoFileURL: URL? = nil
     @State private var sourcePhotoCIImage: CIImage? = nil
     @State private var sourceImageOrientation: UIImage.Orientation = .up
+
+    @State private var originalSizeIDPhoto: CIImage? = nil
     
     @State private var previewUIImage: UIImage? = nil
     
@@ -307,21 +309,43 @@ struct EditIDPhotoViewContainer: View {
             
             self.sourcePhotoFileURL = sourcePhotoFileURL
         }
+        .task {
+            guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+            
+            let originalAppliedBackgroundColor: AppliedBackgroundColor? = editTargetCreatedIDPhoto.appliedBackgroundColor
+            
+            let composedCIImage: CIImage? = await composeIDPhoto(
+                sourcePhoto: sourcePhotoCIImage,
+                idPhotoSizeVariant: .original,
+                backgroundColor: Color(
+                    red: originalAppliedBackgroundColor?.red ?? 0,
+                    green: originalAppliedBackgroundColor?.green ?? 0,
+                    blue: originalAppliedBackgroundColor?.blue ?? 0,
+                    opacity: originalAppliedBackgroundColor?.alpha ?? 0
+                )
+            )
+            
+            Task { @MainActor in
+                self.originalSizeIDPhoto = composedCIImage
+            }
+        }
         .onReceive(
-            Just(selectedBackgroundColor)
-        ) { newSelectedBackgroundColor in
+            Just(selectedIDPhotoSizeVariant)
+                .combineLatest(Just(selectedBackgroundColor))
+        ) { newSelectedSizeVariant, newSelectedBackgroundColor in
             Task {
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
-                let paintedSourcePhoto: CIImage? = try await paintImageBackgroundColor(
-                    sourceImage: sourcePhotoCIImage,
+                let composedIDPhoto: CIImage? = await self.composeIDPhoto(
+                    sourcePhoto: sourcePhotoCIImage,
+                    idPhotoSizeVariant: newSelectedSizeVariant,
                     backgroundColor: newSelectedBackgroundColor
                 )
                 
-                guard let paintedSourcePhotoUIImage: UIImage = paintedSourcePhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                guard let composedIDPhotoUIImage: UIImage = composedIDPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
                 
                 Task { @MainActor in
-                    self.previewUIImage = paintedSourcePhotoUIImage
+                    self.previewUIImage = composedIDPhotoUIImage
                 }
             }
         }
