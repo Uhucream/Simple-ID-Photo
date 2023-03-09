@@ -21,4 +21,34 @@ extension CIImage {
 
         return UIImage(cgImage: cgImage, scale: 1.0, orientation: orientation)
     }
+    
+    func jpegData(
+        ciContext: CIContext = .init(),
+        colorSpace: CGColorSpace
+    ) -> Data? {
+        
+        let jpegData: Data? = ciContext
+            .jpegRepresentation(
+                of: self,
+                colorSpace: colorSpace
+            )
+        
+        return jpegData
+    }
+    
+    func heifData(
+        ciContext: CIContext = .init(),
+        format: CIFormat,
+        colorSpace: CGColorSpace
+    ) -> Data? {
+        
+        let heifData: Data? = ciContext
+            .heifRepresentation(
+                of: self,
+                format: format,
+                colorSpace: colorSpace
+            )
+        
+        return heifData
+    }
 }
