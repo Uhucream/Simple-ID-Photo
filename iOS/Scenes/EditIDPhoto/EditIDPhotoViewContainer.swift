@@ -19,6 +19,8 @@ struct EditIDPhotoViewContainer: View {
         .idPhotoBackgroundColors.gray
     ]
     
+    @Environment(\.managedObjectContext) private var viewContext
+    
     @ObservedObject var editTargetCreatedIDPhoto: CreatedIDPhoto
     
     private var visionFrameworkHelper: VisionFrameworkHelper {
@@ -36,6 +38,8 @@ struct EditIDPhotoViewContainer: View {
             try await detectFaceRect() ?? .zero
         }
     }
+    
+    @State private var originalCreatedIDPhotoFileURL: URL? = nil
     
     @State private var sourcePhotoFileURL: URL? = nil
     @State private var sourcePhotoCIImage: CIImage? = nil
@@ -82,6 +86,8 @@ struct EditIDPhotoViewContainer: View {
             )
             
             guard let createdIDPhotoParsedURL = createdIDPhotoParsedURL else { return }
+            
+            _originalCreatedIDPhotoFileURL = State(initialValue: createdIDPhotoParsedURL)
             
             let createdIDPhotoUIImage: UIImage = .init(url: createdIDPhotoParsedURL)
             
@@ -270,7 +276,59 @@ struct EditIDPhotoViewContainer: View {
             onDismissCallback?()
         }
         .onTapDoneButton {
-            onDoneSaveProcessCallback?()
+            Task {
+                do {
+                    
+                    let fileManager: FileManager = .default
+                    
+                    guard let originalCreatedIDPhotoFileURL = self.originalCreatedIDPhotoFileURL else { return }
+                    
+                    let originalCreatedIDPhotoFileBaseName: String = originalCreatedIDPhotoFileURL
+                        .deletingPathExtension()
+                        .lastPathComponent
+                    
+                    let originalCreatedIDPhotoFileUTType: UTType? = UTType(filenameExtension: originalCreatedIDPhotoFileURL.pathExtension)
+                    
+                    guard let originalCreatedIDPhotoFileUTType = originalCreatedIDPhotoFileUTType else { return }
+                    
+                    guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                    
+                    let composedIDPhoto: CIImage? = await composeIDPhoto(
+                        sourcePhoto: sourcePhotoCIImage,
+                        idPhotoSizeVariant: self.selectedIDPhotoSizeVariant,
+                        backgroundColor: self.selectedBackgroundColor
+                    )
+                    
+                    guard let composedIDPhoto = composedIDPhoto else { return }
+                    
+                    let createdNewIDPhotoURL: URL?  = try createImageFile(
+                        image: composedIDPhoto,
+                        fileName: originalCreatedIDPhotoFileBaseName,
+                        fileType: originalCreatedIDPhotoFileUTType,
+                        saveDestination: fileManager.temporaryDirectory
+                    )
+                    
+                    guard let createdNewIDPhotoURL = createdNewIDPhotoURL else { return }
+                    
+                    try fileManager.replaceItemAt(originalCreatedIDPhotoFileURL, withItemAt: createdNewIDPhotoURL)
+                    
+                    let appliedColor: Color? = isBackgroundColorChanged ? self.selectedBackgroundColor : nil
+                    
+                    let appliedSizeVariant: IDPhotoSizeVariant? = isIDPhotoSizeChanged ? self.selectedIDPhotoSizeVariant : nil
+                    
+                    try updateTargetCreatedIDPhotoRecord(
+                        idPhotoBackgroundColor: appliedColor,
+                        idPhotoSizeVariant: appliedSizeVariant,
+                        idPhotoSize: appliedSizeVariant?.photoSize
+                    )
+                    
+                    viewContext.refresh(self.editTargetCreatedIDPhoto, mergeChanges: true)
+                    
+                    onDoneSaveProcessCallback?()
+                } catch {
+                    print(error)
+                }
+            }
         }
         .confirmationDialog(
             "編集を終了しますか？",
@@ -440,6 +498,48 @@ extension EditIDPhotoViewContainer {
             try heifData?.write(to: filePathURL)
             
             return filePathURL
+        } catch {
+            throw error
+        }
+    }
+}
+
+// MARK: Core Data 更新関連
+extension EditIDPhotoViewContainer {
+    func updateTargetCreatedIDPhotoRecord(
+        idPhotoBackgroundColor: Color?,
+        idPhotoSizeVariant: IDPhotoSizeVariant?,
+        idPhotoSize: IDPhotoSize?
+    ) throws -> Void {
+        do {
+            if idPhotoBackgroundColor == nil &&
+                idPhotoSizeVariant == nil &&
+                idPhotoSize == nil {
+                return
+            }
+            
+            if let appliedBackgroundColor = idPhotoBackgroundColor {
+                editTargetCreatedIDPhoto.appliedBackgroundColor = .init(
+                    on: viewContext,
+                    color: appliedBackgroundColor
+                )
+            }
+            
+            if
+                let appliedIDPhotoSizeVariant = idPhotoSizeVariant,
+                let appliedIDPhotoSize = idPhotoSize
+            {
+                editTargetCreatedIDPhoto.appliedIDPhotoSize = .init(
+                    on: viewContext,
+                    millimetersHeight: appliedIDPhotoSize.height.value,
+                    millimetersWidth: appliedIDPhotoSize.width.value,
+                    sizeVariant: appliedIDPhotoSizeVariant
+                )
+            }
+            
+            editTargetCreatedIDPhoto.updatedAt = .now
+            
+            try viewContext.save()
         } catch {
             throw error
         }
