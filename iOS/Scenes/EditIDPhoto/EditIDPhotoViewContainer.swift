@@ -206,6 +206,43 @@ struct EditIDPhotoViewContainer: View {
     //
     //    }
     
+    func composeIDPhoto(
+        sourcePhoto: CIImage,
+        idPhotoSizeVariant: IDPhotoSizeVariant,
+        backgroundColor: Color
+    ) async -> CIImage? {
+        do {
+            let paintedSourcePhoto: CIImage? = try await paintImageBackgroundColor(
+                sourceImage: sourcePhoto,
+                backgroundColor: backgroundColor
+            )
+            
+            if idPhotoSizeVariant == .original {
+                return paintedSourcePhoto
+            }
+            
+//            if idPhotoSizeVariant == .passport {
+//                let croppedImage: CIImage? = cropingImageAsPassportSize(sourceImage: paintedSourcePhoto)
+//
+//                return croppedImage
+//            }
+
+            if idPhotoSizeVariant == .passport {
+                return nil
+            }
+            
+            guard let paintedSourcePhoto = paintedSourcePhoto else { return nil }
+            
+            let croppedImage: CIImage? = await croppingImage(sourceImage: paintedSourcePhoto, sizeVariant: idPhotoSizeVariant)
+            
+            return croppedImage
+        } catch {
+            print(error)
+            
+            return nil
+        }
+    }
+    
     var body: some View {
         EditIDPhotoView(
             selectedProcess: $currentSelectedProcess,
