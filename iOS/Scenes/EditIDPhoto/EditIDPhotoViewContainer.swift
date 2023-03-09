@@ -31,6 +31,12 @@ struct EditIDPhotoViewContainer: View {
         return helper
     }
     
+    private var detectedFaceRect: CGRect {
+        get async throws {
+            try await detectFaceRect() ?? .zero
+        }
+    }
+    
     @State private var sourcePhotoFileURL: URL? = nil
     @State private var sourcePhotoCIImage: CIImage? = nil
     @State private var sourceImageOrientation: UIImage.Orientation = .up
@@ -127,6 +133,16 @@ struct EditIDPhotoViewContainer: View {
         shouldShowDiscardViewConfirmationDialog = true
     }
     
+    func detectFaceRect() async throws -> CGRect? {
+        do {
+            let detectedRect: CGRect? = try await visionFrameworkHelper.detectFaceIncludingHairRectangle()
+            
+            return detectedRect
+        } catch {
+            throw error
+        }
+    }
+    
     func paintImageBackgroundColor(
         sourceImage: CIImage,
         backgroundColor: Color
@@ -143,6 +159,52 @@ struct EditIDPhotoViewContainer: View {
             throw error
         }
     }
+    
+    func croppingImage(
+        sourceImage: CIImage,
+        sizeVariant: IDPhotoSizeVariant
+    ) async -> CIImage? {
+        
+        guard let detectedFaceRect = try? await detectedFaceRect else { return nil }
+        
+        if detectedFaceRect == .zero { return nil }
+        
+        let faceHeightRatio: Double = sizeVariant.photoSize.faceHeight.value / sizeVariant.photoSize.height.value
+        
+        let idPhotoAspectRatio: Double = sizeVariant.photoSize.width.value / sizeVariant.photoSize.height.value
+        
+        let idPhotoHeight: CGFloat = detectedFaceRect.height / faceHeightRatio
+        let idPhotoWidth: CGFloat = idPhotoHeight * idPhotoAspectRatio
+        
+        let marginTopRatio: Double = sizeVariant.photoSize.marginTop.value / sizeVariant.photoSize.height.value
+        
+        let marginTop: CGFloat = idPhotoHeight * marginTopRatio
+        
+        let remainderWidthOfFaceAndPhoto: CGFloat = idPhotoWidth - detectedFaceRect.size.width
+        
+        let originXOfCroppingRect: CGFloat = detectedFaceRect.origin.x - (remainderWidthOfFaceAndPhoto / 2)
+        let originYOfCroppingRect: CGFloat = (detectedFaceRect.maxY + marginTop) - idPhotoHeight
+        
+        let croppingRect: CGRect = .init(
+            origin: CGPoint(
+                x: originXOfCroppingRect,
+                y: originYOfCroppingRect
+            ),
+            size: CGSize(
+                width: idPhotoWidth,
+                height: idPhotoHeight
+            )
+        )
+        
+        let croppedImage = sourceImage.cropped(to: croppingRect)
+        
+        return croppedImage
+    }
+    
+    //  TODO: パスポートサイズの対応
+    //    func cropingImageAsPassportSize(sourceImage: CIImage) -> Void {
+    //
+    //    }
     
     var body: some View {
         EditIDPhotoView(
