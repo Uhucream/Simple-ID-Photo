@@ -429,8 +429,8 @@ extension CreateIDPhotoViewContainer {
         
         let ciContext: CIContext = .init()
         
-        if fileType == .jpeg {
-            do {
+        do {
+            if fileType == .jpeg {
                 let jpegData: Data? = ciImage.jpegData(
                     ciContext: ciContext,
                     colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
@@ -441,12 +441,8 @@ extension CreateIDPhotoViewContainer {
                 try jpegData.write(to: saveFilePathURL)
                 
                 return saveFilePathURL
-            } catch {
-                throw error
             }
-        }
-        
-        do {
+            
             let heicData: Data? = ciImage.heifData(
                 ciContext: ciContext,
                 format: .RGBA8,
