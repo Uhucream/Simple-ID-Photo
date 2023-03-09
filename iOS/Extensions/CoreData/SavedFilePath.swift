@@ -28,3 +28,35 @@ extension SavedFilePath {
         newRecord.sourcePhoto = sourcePhoto
     }
 }
+
+extension SavedFilePath {
+    func parseToDirectoryFileURL(
+        defaultRootSearchPathDirectory: FileManager.SearchPathDirectory = .libraryDirectory,
+        fileManager: FileManager = .default
+    ) -> URL? {
+        
+        let rootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+            rawValue: UInt(rootSearchPathDirectory)
+        ) ?? defaultRootSearchPathDirectory
+        
+        let rootSearchPathDirectoryURL: URL? = fileManager.urls(
+            for: rootSearchPathDirectory,
+            in: .userDomainMask
+        ).first
+        
+        guard let rootSearchPathDirectoryURL = rootSearchPathDirectoryURL else { return nil }
+        
+        guard let relativePathFromRootSearchPath = relativePathFromRootSearchPath else { return nil }
+        
+        let directoryURL: URL = rootSearchPathDirectoryURL
+            .appendingPathComponent(relativePathFromRootSearchPath, conformingTo: .fileURL)
+        
+        var objcTrue: ObjCBool = .init(true)
+        
+        let isDirectoryExists: Bool = fileManager.fileExists(atPath: directoryURL.path, isDirectory: &objcTrue)
+        
+        guard isDirectoryExists else { return nil }
+        
+        return directoryURL
+    }
+}
