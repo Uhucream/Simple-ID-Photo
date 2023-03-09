@@ -13,9 +13,13 @@ struct IDPhotoBackgroundColor {
     let color: Color
 }
 
-enum IDPhotoProcessSelection {
+enum IDPhotoProcessSelection: Int, Identifiable {
     case backgroundColor
     case size
+    
+    var id: Int {
+        return self.rawValue
+    }
 }
 
 struct CreateIDPhotoView: View {
