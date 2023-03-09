@@ -404,6 +404,48 @@ extension EditIDPhotoViewContainer {
     }
 }
 
+//  MARK: ファイル操作関連
+extension EditIDPhotoViewContainer {
+    
+    func createImageFile(
+        fileManager: FileManager = .default,
+        image: CIImage,
+        fileName: String,
+        fileType: UTType,
+        saveDestination: URL
+    ) throws -> URL? {
+        do {
+            let ciContext: CIContext = .init()
+            
+            let filePathURL: URL = saveDestination
+                .appendingPathComponent(fileName, conformingTo: fileType)
+            
+            if fileType == .jpeg {
+                let jpegData: Data? = image.jpegData(
+                    ciContext: ciContext,
+                    colorSpace: image.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                )
+                
+                try jpegData?.write(to: filePathURL)
+                
+                return filePathURL
+            }
+            
+            let heifData: Data? = image.heifData(
+                ciContext: ciContext,
+                format: .RGBA8,
+                colorSpace: image.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+            )
+            
+            try heifData?.write(to: filePathURL)
+            
+            return filePathURL
+        } catch {
+            throw error
+        }
+    }
+}
+
 struct EditIDPhotoViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         
