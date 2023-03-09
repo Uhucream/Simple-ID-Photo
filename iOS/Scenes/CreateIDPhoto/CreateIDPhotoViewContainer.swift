@@ -431,11 +431,10 @@ extension CreateIDPhotoViewContainer {
         
         if fileType == .jpeg {
             do {
-                let jpegData: Data? = ciContext
-                    .jpegRepresentation(
-                        of: ciImage,
-                        colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
-                    )
+                let jpegData: Data? = ciImage.jpegData(
+                    ciContext: ciContext,
+                    colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                )
                 
                 guard let jpegData = jpegData else { return nil }
                 
@@ -448,12 +447,11 @@ extension CreateIDPhotoViewContainer {
         }
         
         do {
-            let heicData: Data? = ciContext
-                .heifRepresentation(
-                    of: ciImage,
-                    format: .RGBA8,
-                    colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
-                )
+            let heicData: Data? = ciImage.heifData(
+                ciContext: ciContext,
+                format: .RGBA8,
+                colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+            )
             
             guard let heicData = heicData else { return nil }
             
