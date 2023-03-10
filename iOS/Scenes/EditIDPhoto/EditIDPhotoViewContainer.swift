@@ -45,8 +45,6 @@ struct EditIDPhotoViewContainer: View {
     @State private var sourcePhotoCIImage: CIImage? = nil
     @State private var sourceImageOrientation: UIImage.Orientation = .up
 
-    @State private var originalSizeIDPhoto: CIImage? = nil
-    
     @State private var previewUIImage: UIImage? = nil
     
     @State private var currentSelectedProcess: IDPhotoProcessSelection = .backgroundColor
@@ -366,26 +364,6 @@ struct EditIDPhotoViewContainer: View {
             self.sourcePhotoCIImage = orientationFixedUIImage?.ciImage()
             
             self.sourcePhotoFileURL = sourcePhotoFileURL
-        }
-        .task {
-            guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
-            
-            let originalAppliedBackgroundColor: AppliedBackgroundColor? = editTargetCreatedIDPhoto.appliedBackgroundColor
-            
-            let composedCIImage: CIImage? = await composeIDPhoto(
-                sourcePhoto: sourcePhotoCIImage,
-                idPhotoSizeVariant: .original,
-                backgroundColor: Color(
-                    red: originalAppliedBackgroundColor?.red ?? 0,
-                    green: originalAppliedBackgroundColor?.green ?? 0,
-                    blue: originalAppliedBackgroundColor?.blue ?? 0,
-                    opacity: originalAppliedBackgroundColor?.alpha ?? 0
-                )
-            )
-            
-            Task { @MainActor in
-                self.originalSizeIDPhoto = composedCIImage
-            }
         }
         .onReceive(
             Just(selectedIDPhotoSizeVariant)
