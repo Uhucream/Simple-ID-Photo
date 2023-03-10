@@ -27,11 +27,15 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     
     @ViewBuilder
     func renderHistoryCard(_ createdIDPhotoHistory: CreatedIDPhoto) -> some View {
+        
+        let currentRenderingID: String = "\(createdIDPhotoHistory.id ?? .init())\(createdIDPhotoHistory.updatedAt ?? .now)"
+        
         CreatedIDPhotoHistoryCard(
             createdIDPhoto: createdIDPhotoHistory,
             idPhotoSizeType: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
             createdAt: createdIDPhotoHistory.createdAt ?? .distantPast
         )
+        .id(currentRenderingID)
     }
     
     func onDeleteHistoryCard(action: @escaping ([CreatedIDPhoto]) -> Void) -> Self {
