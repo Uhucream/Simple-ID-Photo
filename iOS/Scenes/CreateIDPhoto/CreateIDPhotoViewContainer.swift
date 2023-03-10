@@ -22,14 +22,22 @@ struct CreateIDPhotoViewContainer: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var sourcePhotoRecord: SourcePhoto
+    var visionFrameworkHelper: VisionFrameworkHelper {
+        .init(
+            sourceCIImage: sourcePhotoCIImage,
+            sourceImageOrientation: .init(sourceImageOrientation)
+        )
+    }
     
-    var visionFrameworkHelper: VisionFrameworkHelper
+    var sourcePhotoTemporaryURL: URL
     
-    var sourceImage: UIImage?
+    var sourcePhotoCIImage: CIImage? {
+        return .init(contentsOf: sourcePhotoTemporaryURL)
+    }
+    
+    var sourceImageOrientation: UIImage.Orientation
     
     @State private var previewUIImage: UIImage? = nil
-    @State private var sourceImageOrientation: UIImage.Orientation
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSize: IDPhotoSizeVariant = .original
@@ -44,20 +52,16 @@ struct CreateIDPhotoViewContainer: View {
     
     private(set) var onDoneCreateIDPhotoProcessCallback: ((CreatedIDPhoto) -> Void)?
     
-    init(sourcePhotoRecord: SourcePhoto, sourceUIImage: UIImage?) {
+    init(sourcePhotoURL: URL) {
         
-        _sourcePhotoRecord = .init(wrappedValue: sourcePhotoRecord)
+        self.sourcePhotoTemporaryURL = sourcePhotoURL
         
-        self.sourceImage = sourceUIImage
+        let uiImageFromURL: UIImage = .init(url: sourcePhotoURL)
+        let orientationFixedUIImage: UIImage? = uiImageFromURL.orientationFixed()
         
-        self.visionFrameworkHelper = .init(
-            sourceCIImage: sourceUIImage?.ciImage(),
-            sourceImageOrientation: .init(sourceUIImage?.imageOrientation ?? .up)
-        )
+        self.sourceImageOrientation = orientationFixedUIImage?.imageOrientation ?? .up
         
-        _previewUIImage = State(initialValue: sourceUIImage)
-
-        _sourceImageOrientation = State(initialValue: sourceUIImage?.imageOrientation ?? .up)
+        _previewUIImage = State(initialValue: orientationFixedUIImage)
     }
     
     func onDoneCreateIDPhotoProcess(action: @escaping (CreatedIDPhoto) -> Void) -> Self {
@@ -78,9 +82,9 @@ struct CreateIDPhotoViewContainer: View {
     
     func setIDPhotoWithBackgroundColor(with backgroundColor: Color) async -> Void {
         do {
-            guard let sourceImage = sourceImage else { return }
+            guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
             
-            let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourceImage.size)
+            let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourcePhotoCIImage.extent.size)
             
             guard let solidColorBackgroundCIImage = solidColorBackgroundUIImage?.ciImage() else { return }
             
@@ -158,6 +162,8 @@ struct CreateIDPhotoViewContainer: View {
     
     func handleTapDoneButton() -> Void {
         do {
+            guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+
             guard let generatedIDPhoto = sourceImageWithBackgroundColor else { return }
             
             let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
@@ -184,10 +190,62 @@ struct CreateIDPhotoViewContainer: View {
             
             let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
             
+            var dateFormatterForExif: DateFormatter {
+                
+                let formatter: DateFormatter = .init()
+                
+                formatter.locale = NSLocale.system
+                formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
+                
+                return formatter
+            }
+            
+            let sourcePhotoProperties: [String: Any] = sourcePhotoCIImage.properties
+            let sourcePhotoExif: [String: Any]? = sourcePhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
+            
+            let sourcePhotoShotDateString: String? = sourcePhotoExif?[kCGImagePropertyExifDateTimeOriginal as String] as? String
+            
+            let sourcePhotoShotDate: Date? = dateFormatterForExif.date(from: sourcePhotoShotDateString ?? "")
+            
+            let sourcePhotoSaveDirectoryRootPath: FileManager.SearchPathDirectory = .libraryDirectory
+            let sourcePhotoSaveDirectoryRelativePath: String = "SourcePhotos"
+            
+            let fileManager: FileManager = .default
+            
+            let libraryDirectoryURL: URL = try fileManager.url(
+                for: sourcePhotoSaveDirectoryRootPath,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            )
+            
+            let sourcePhotoPermanentURL: URL = libraryDirectoryURL
+                .appendingPathComponent(sourcePhotoSaveDirectoryRelativePath, conformingTo: .fileURL)
+                .appendingPathComponent(sourcePhotoTemporaryURL.lastPathComponent, conformingTo: .fileURL)
+            
+            try fileManager.copyItem(
+                at: sourcePhotoTemporaryURL,
+                to: sourcePhotoPermanentURL
+            )
+            
+            let sourcePhotoSavedDirectory: SavedFilePath = .init(
+                on: viewContext,
+                rootSearchPathDirectory: sourcePhotoSaveDirectoryRootPath,
+                relativePathFromRootSearchPath: sourcePhotoSaveDirectoryRelativePath
+            )
+            
+            let newSourcePhotoRecord: SourcePhoto = .init(
+                on: viewContext,
+                imageFileName: sourcePhotoTemporaryURL.lastPathComponent,
+                shotDate: sourcePhotoShotDate,
+                savedDirectory: sourcePhotoSavedDirectory
+            )
+            
             let newCreatedIDPhoto: CreatedIDPhoto = try registerCreatedIDPhotoRecord(
                 imageFileName: imageFileNameWithPathExtension,
                 saveDirectoryPath: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
-                relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
+                relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH,
+                sourcePhotoRecord: newSourcePhotoRecord
             )
             
             onDoneCreateIDPhotoProcessCallback?(newCreatedIDPhoto)
@@ -250,9 +308,7 @@ struct CreateIDPhotoViewContainer: View {
                 role: .destructive,
                 action: {
                     
-                    deleteSavedSourcePhotoImageFile()
-                    
-                    deleteSourcePhotoRecord()
+                    deleteTemporarySavedSourcePhotoFile()
                     
                     dismiss()
                 }
@@ -267,7 +323,8 @@ extension CreateIDPhotoViewContainer {
     func registerCreatedIDPhotoRecord(
         imageFileName: String,
         saveDirectoryPath: String,
-        relativeTo rootSearchPathDirectory: FileManager.SearchPathDirectory
+        relativeTo rootSearchPathDirectory: FileManager.SearchPathDirectory,
+        sourcePhotoRecord: SourcePhoto
     ) throws -> CreatedIDPhoto {
         do {
             let appliedBackgroundColor: AppliedBackgroundColor = .init(
@@ -311,7 +368,7 @@ extension CreateIDPhotoViewContainer {
                 appliedBackgroundColor: appliedBackgroundColor,
                 appliedIDPhotoSize: appliedIDPhotoSize,
                 savedDirectory: savedDirectory,
-                sourcePhoto: self.sourcePhotoRecord
+                sourcePhoto: sourcePhotoRecord
             )
             
             try viewContext.save()
@@ -322,23 +379,9 @@ extension CreateIDPhotoViewContainer {
         }
     }
     
-    func deleteSavedSourcePhotoImageFile() -> Void {
-        let sourcePhotoFileURL: URL? = parseSavedSourcePhotoImageURL()
-        
-        guard let sourcePhotoFileURL = sourcePhotoFileURL else { return }
-        
+    func deleteTemporarySavedSourcePhotoFile() -> Void {
         do {
-            try FileManager.default.removeItem(at: sourcePhotoFileURL)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func deleteSourcePhotoRecord() -> Void {
-        do {
-            viewContext.delete(self.sourcePhotoRecord)
-            
-            try viewContext.save()
+            try FileManager.default.removeItem(at: sourcePhotoTemporaryURL)
         } catch {
             print(error)
         }
@@ -346,44 +389,6 @@ extension CreateIDPhotoViewContainer {
 }
 
 extension CreateIDPhotoViewContainer {
-    
-    func parseSavedSourcePhotoImageURL() -> URL? {
-
-        let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
-        
-        let LIBRARY_DIRECTORY_RAW_VALUE_INT64: Int64 = .init(DEFAULT_SAVE_DIRECTORY_ROOT.rawValue)
-        
-        let fileManager: FileManager = .default
-
-        let saveDestinationRootSearchDirectory: FileManager.SearchPathDirectory = .init(
-            rawValue: UInt(
-                sourcePhotoRecord.savedDirectory?.rootSearchPathDirectory ?? LIBRARY_DIRECTORY_RAW_VALUE_INT64
-            )
-        ) ?? DEFAULT_SAVE_DIRECTORY_ROOT
-        
-        let saveDestinationRootSearchDirectoryURL: URL? = fileManager.urls(
-            for: saveDestinationRootSearchDirectory,
-            in: .userDomainMask
-        ).first
-        
-        let relativePathFromRoot: String = sourcePhotoRecord.savedDirectory?.relativePathFromRootSearchPath ?? ""
-        let fileSaveDestinationURL: URL = .init(
-            fileURLWithPath: relativePathFromRoot,
-            isDirectory: true,
-            relativeTo: saveDestinationRootSearchDirectoryURL
-        )
-        
-        let sourcePhotoFileName: String? = sourcePhotoRecord.imageFileName
-        
-        guard let sourcePhotoFileName = sourcePhotoFileName else { return nil }
-        
-        let sourcePhotoFileURL: URL = fileSaveDestinationURL
-            .appendingPathComponent(sourcePhotoFileName, conformingTo: .fileURL)
-        
-        guard fileManager.fileExists(atPath: sourcePhotoFileURL.path) else { return nil }
-        
-        return sourcePhotoFileURL
-    }
     
     private func fetchOrCreateDirectoryURL(directoryName: String, relativeTo searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
         let fileManager: FileManager = .default
@@ -464,16 +469,11 @@ struct CreateIDPhotoViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         let sampleUIImage: UIImage = UIImage(named: "TimCook")!
         
-        let sourcePhotoMockRecord: SourcePhoto = .init(
-            on: PersistenceController.preview.container.viewContext,
-            imageFileName: sampleUIImage.saveOnLibraryCachesForTest(fileName: "TimCook")!.absoluteString,
-            shotDate: .now.addingTimeInterval(-10000)
-        )
+        let sampleImageURL: URL = sampleUIImage.saveOnLibraryCachesForTest(fileName: "TimCook")!
         
         NavigationView {
             CreateIDPhotoViewContainer(
-                sourcePhotoRecord: sourcePhotoMockRecord,
-                sourceUIImage: sampleUIImage
+                sourcePhotoURL: sampleImageURL
             )
         }
     }

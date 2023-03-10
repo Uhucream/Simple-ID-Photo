@@ -12,9 +12,6 @@ import PhotosUI
 
 struct TopViewContainer: View {
     
-    private static let SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH: FileManager.SearchPathDirectory = .libraryDirectory
-    private static let SOURCE_PHOTO_SAVE_FOLDER_NAME: String = "SourcePhotos"
-    
     @Environment(\.managedObjectContext) var viewContext
     
     @FetchRequest(
@@ -40,8 +37,6 @@ struct TopViewContainer: View {
     
     @State private var userSelectedImageURL: URL? = nil
     
-    @State private var createdSourcePhotoRecord: SourcePhoto? = nil
-    
     @State private var displayTargetIDPhotoDetailView: AnyView? = nil
     @State private var navigationLinkSelectionForIDPhotoDetailView: Int? = nil
     
@@ -65,7 +60,7 @@ struct TopViewContainer: View {
     }
     
     func dismissCreateIDPhotoView() -> Void {
-        self.createdSourcePhotoRecord = nil
+        self.shouldShowCreateIDPhotoView = false
     }
     
     func setPictureURLFromPHPickerSelectedItem(
@@ -103,20 +98,16 @@ struct TopViewContainer: View {
                 return
             }
             
-            let sourcePhotosDirectoryURL: URL? = fetchOrCreateDirectoryURL(
-                directoryName: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_NAME,
-                relativeTo: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
-            )
+            let fileManager: FileManager = .default
             
-            guard let sourcePhotosDirectoryURL: URL = sourcePhotosDirectoryURL else { return }
-
-            let fileName = ProcessInfo.processInfo.globallyUniqueString
-
-            let newFileURL: URL = sourcePhotosDirectoryURL
-                .appendingPathComponent(fileName)
+            let temporaryDirectoryURL: URL = fileManager.temporaryDirectory
+            let newFileName: String = ProcessInfo.processInfo.globallyUniqueString
+            
+            let newFileURL: URL = temporaryDirectoryURL
+                .appendingPathComponent(newFileName, conformingTo: .fileURL)
                 .appendingPathExtension(url.pathExtension)
             
-            try? FileManager.default.copyItem(at: url, to: newFileURL)
+            try? fileManager.copyItem(at: url, to: newFileURL)
             
             self.userSelectedImageURL = newFileURL
             
@@ -142,20 +133,16 @@ struct TopViewContainer: View {
                 return
             }
             
-            let sourcePhotosDirectoryURL: URL? = fetchOrCreateDirectoryURL(
-                directoryName: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_NAME,
-                relativeTo: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
-            )
+            let fileManager: FileManager = .default
             
-            guard let sourcePhotosDirectoryURL: URL = sourcePhotosDirectoryURL else { return }
-
-            let fileName = ProcessInfo.processInfo.globallyUniqueString
-
-            let newFileURL: URL = sourcePhotosDirectoryURL
-                .appendingPathComponent(fileName)
+            let temporaryDirectoryURL: URL = fileManager.temporaryDirectory
+            let newFileName: String = ProcessInfo.processInfo.globallyUniqueString
+            
+            let newFileURL: URL = temporaryDirectoryURL
+                .appendingPathComponent(newFileName, conformingTo: .fileURL)
                 .appendingPathExtension(url.pathExtension)
-
-            try? FileManager.default.copyItem(at: url, to: newFileURL)
+            
+            try? fileManager.copyItem(at: url, to: newFileURL)
 
             self.userSelectedImageURL = newFileURL
             
@@ -163,53 +150,6 @@ struct TopViewContainer: View {
         }
 
         return true
-    }
-    
-    func registerNewSourcePhotoRecord(
-        imageURL: URL
-    ) -> SourcePhoto? {
-        do {
-            
-            let ciImageFromURL: CIImage? = .init(contentsOf: imageURL)
-            
-            let imageProperties: [String: Any]? = ciImageFromURL?.properties
-            let imageExif = imageProperties?[kCGImagePropertyExifDictionary as String] as? [String: Any]
-            
-            let imageShotDateString: String? = imageExif?[kCGImagePropertyExifDateTimeOriginal as String] as? String
-            
-            var dateFormatterForExif: DateFormatter {
-                
-                let formatter: DateFormatter = .init()
-                
-                formatter.locale = NSLocale.system
-                formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
-                
-                return formatter
-            }
-            
-            let imageShotDate: Date? = dateFormatterForExif.date(from: imageShotDateString ?? "")
-            
-            let sourcePhotoSavedDirectory: SavedFilePath = .init(
-                on: viewContext,
-                rootSearchPathDirectory: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH,
-                relativePathFromRootSearchPath: TopViewContainer.SOURCE_PHOTO_SAVE_FOLDER_NAME
-            )
-            
-            let newSourcePhoto: SourcePhoto = .init(
-                on: self.viewContext,
-                imageFileName: imageURL.lastPathComponent,
-                shotDate: imageShotDate ?? .now,
-                savedDirectory: sourcePhotoSavedDirectory
-            )
-            
-            try viewContext.save()
-            
-            return newSourcePhoto
-        } catch {
-            print(error)
-            
-            return nil
-        }
     }
     
     func deleteCreatedIDPhotoRecord(_ targetCreatedIDPhoto: CreatedIDPhoto) -> Void {
@@ -379,14 +319,10 @@ struct TopViewContainer: View {
             //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
             CameraView(pictureURL: $userSelectedImageURL)
         }
-        .fullScreenCover(item: $createdSourcePhotoRecord) { sourcePhotoRecord in
-            if let pictureURL = userSelectedImageURL,
-               let uiimageFromURL = UIImage(url: pictureURL),
-               let orientationFixedUIImage = uiimageFromURL.orientationFixed()
-            {
+        .fullScreenCover(isPresented: $shouldShowCreateIDPhotoView) {
+            if let userSelectedImageURL = userSelectedImageURL {
                 CreateIDPhotoViewContainer(
-                    sourcePhotoRecord: sourcePhotoRecord,
-                    sourceUIImage: orientationFixedUIImage
+                    sourcePhotoURL: userSelectedImageURL
                 )
                 .onDoneCreateIDPhotoProcess { newCreatedIDPhoto in
                     self.dismissCreateIDPhotoView()
@@ -407,11 +343,9 @@ struct TopViewContainer: View {
         }
         .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
 
-            guard let newUserSelectedImageURL = newUserSelectedImageURL else { return }
+            let isSelectedImageURLNotNil: Bool = newUserSelectedImageURL != nil
             
-            let newSourcePhotoRecord: SourcePhoto? = registerNewSourcePhotoRecord(imageURL: newUserSelectedImageURL)
-            
-            self.createdSourcePhotoRecord = newSourcePhotoRecord
+            self.shouldShowCreateIDPhotoView = isSelectedImageURLNotNil
         }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
     }
@@ -443,35 +377,6 @@ extension TopViewContainer {
             try fileManager.removeItem(at: savedFilePathURL)
         } catch {
             print(error)
-        }
-    }
-    
-    private func fetchOrCreateDirectoryURL(directoryName: String, relativeTo searchPathDirectory: FileManager.SearchPathDirectory) -> URL? {
-        let fileManager: FileManager = .default
-        
-        let searchPathDirectoryURL: URL? = fileManager.urls(for: searchPathDirectory, in: .userDomainMask).first
-        
-        guard let searchPathDirectoryURL = searchPathDirectoryURL else { return nil }
-        
-        let targetDirectoryURL: URL = searchPathDirectoryURL
-            .appendingPathComponent(directoryName, conformingTo: .directory)
-        
-        var objcTrue: ObjCBool = .init(true)
-        
-        let isTargetDirectoryExists: Bool = fileManager.fileExists(atPath: targetDirectoryURL.path, isDirectory: &objcTrue)
-        
-        if isTargetDirectoryExists {
-            return targetDirectoryURL
-        }
-        
-        do {
-            try fileManager.createDirectory(at: targetDirectoryURL, withIntermediateDirectories: true)
-            
-            return targetDirectoryURL
-        } catch {
-            print(error)
-            
-            return nil
         }
     }
 }
