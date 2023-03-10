@@ -37,7 +37,7 @@
 		479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC7F29696E0500C02BB7 /* InfoPlist.strings */; };
 		479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC8129696FF900C02BB7 /* TopViewContainer.swift */; };
 		479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC832969754800C02BB7 /* PicturePickerView.swift */; };
-		47A865AC29B48799002BE3F9 /* SavedFilePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A865AB29B48799002BE3F9 /* SavedFilePath.swift */; };
+		47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */; };
 		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
 		47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B91A4C29A8567100754657 /* PrintPageRenderer.swift */; };
 		47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1C7BE297E3B4700A22EAB /* CIImage+.swift */; };
@@ -126,7 +126,7 @@
 		479BBC8029696E0900C02BB7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		479BBC8129696FF900C02BB7 /* TopViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewContainer.swift; sourceTree = "<group>"; };
 		479BBC832969754800C02BB7 /* PicturePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePickerView.swift; sourceTree = "<group>"; };
-		47A865AB29B48799002BE3F9 /* SavedFilePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFilePath.swift; sourceTree = "<group>"; };
+		47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+.swift"; sourceTree = "<group>"; };
 		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
 		47B91A4C29A8567100754657 /* PrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintPageRenderer.swift; sourceTree = "<group>"; };
 		47C1C7BE297E3B4700A22EAB /* CIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+.swift"; sourceTree = "<group>"; };
@@ -335,7 +335,7 @@
 			isa = PBXGroup;
 			children = (
 				47AB8B9529AF7355008C753F /* ConvenienceInitializer */,
-				47A865AB29B48799002BE3F9 /* SavedFilePath.swift */,
+				47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -682,7 +682,7 @@
 				47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */,
 				472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */,
 				478A420429AA3E7300626316 /* IDPhotoDetailView.swift in Sources */,
-				47A865AC29B48799002BE3F9 /* SavedFilePath.swift in Sources */,
+				47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */,
 				47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */,
 				475FB236296FD5000059796F /* UIImage+.swift in Sources */,
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
