@@ -10,9 +10,15 @@ import SwiftUI
 
 struct IDPhotoDetailViewContainer: View {
     
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @Environment(\.dismiss) private var dismiss
+    
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
     
     @State private var selectedIDPhotoProcess: IDPhotoProcessSelection? = nil
+    
+    @State private var shouldShowDeleteConfirmationDialog: Bool = false
     
     private func parseCreatedIDPhotoFileURL() -> URL? {
         let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
@@ -55,8 +61,57 @@ struct IDPhotoDetailViewContainer: View {
         self.selectedIDPhotoProcess = initialDisplayProcess
     }
     
+    private func showDeleteConfirmationDialog() -> Void {
+        self.shouldShowDeleteConfirmationDialog = true
+    }
+    
     private func dismissEditIDPhotoView() -> Void {
         self.selectedIDPhotoProcess = nil
+    }
+    
+    private func onTapDeleteButton() -> Void {
+        do {
+            let DEFAULT_SAVE_ROOT_SEARCH_PATH_DIRECTORY: FileManager.SearchPathDirectory = .libraryDirectory
+            
+            if let sourcePhotoRecord: SourcePhoto = createdIDPhoto.sourcePhoto {
+
+                guard let sourcePhotoSavedDirectory: SavedFilePath = sourcePhotoRecord.savedDirectory else { return }
+                
+                let sourcePhotoSavedRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                    rawValue: UInt(sourcePhotoSavedDirectory.rootSearchPathDirectory)
+                ) ?? DEFAULT_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+                
+                guard let sourcePhotoFileName: String = sourcePhotoRecord.imageFileName else { return }
+                guard let relativePathFromRoot: String = sourcePhotoSavedDirectory.relativePathFromRootSearchPath else { return }
+                
+                try deleteSavedFile(
+                    fileName: sourcePhotoFileName,
+                    in: relativePathFromRoot,
+                    relativeTo: sourcePhotoSavedRootSearchPathDirectory
+                )
+            }
+            
+            guard let createdIDPhotoSavedDirectory: SavedFilePath = createdIDPhoto.savedDirectory else { return }
+            
+            let createdIDPhotoSavedRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                rawValue: UInt(createdIDPhotoSavedDirectory.rootSearchPathDirectory)
+            ) ?? DEFAULT_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+            
+            guard let createdIDPhotoFileName: String = createdIDPhoto.imageFileName else { return }
+            guard let relativePathFromRoot: String = createdIDPhotoSavedDirectory.relativePathFromRootSearchPath else { return }
+            
+            try deleteSavedFile(
+                fileName: createdIDPhotoFileName,
+                in: relativePathFromRoot,
+                relativeTo: createdIDPhotoSavedRootSearchPathDirectory
+            )
+            
+            try deleteThisCreatedIDPhoto()
+            
+            dismiss()
+        } catch {
+            print(error)
+        }
     }
     
     var body: some View {
@@ -102,6 +157,22 @@ struct IDPhotoDetailViewContainer: View {
             .onTapChangeSizeButton {
                 showEditIDPhotoView(initialDisplayProcess: .size)
             }
+            .confirmationDialog(
+                "本当に削除しますか？",
+                isPresented: $shouldShowDeleteConfirmationDialog,
+                titleVisibility: .visible
+            ) {
+                Button(
+                    role: .destructive,
+                    action: {
+                        onTapDeleteButton()
+                    }
+                ) {
+                    Text("削除する")
+                }
+            } message: {
+                Text("削除した証明写真は復元できません")
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Menu {
@@ -120,6 +191,17 @@ struct IDPhotoDetailViewContainer: View {
                         ) {
                             Label("サイズを変更", systemImage: "person.crop.rectangle")
                         }
+                        
+                        Divider()
+                        
+                        Button(
+                            role: .destructive,
+                            action: {
+                                showDeleteConfirmationDialog()
+                            }
+                        ) {
+                            Label("削除", systemImage: "trash")
+                        }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                     }
@@ -137,6 +219,47 @@ struct IDPhotoDetailViewContainer: View {
                     dismissEditIDPhotoView()
                 }
             }
+        }
+    }
+}
+
+extension IDPhotoDetailViewContainer {
+    private func deleteSavedFile(
+        fileName: String,
+        in relativeFilePathFromRoot: String,
+        relativeTo rootSearchPathDirectory: FileManager.SearchPathDirectory,
+        with fileManager: FileManager = .default
+    ) throws -> Void {
+        
+        let fileSaveRootDirectoryURL: URL? = fileManager.urls(for: rootSearchPathDirectory, in: .userDomainMask).first
+        
+        let fileSaveDestinationURL: URL = .init(
+            fileURLWithPath: relativeFilePathFromRoot,
+            isDirectory: true,
+            relativeTo: fileSaveRootDirectoryURL
+        )
+        
+        let savedFilePathURL: URL = fileSaveDestinationURL
+            .appendingPathComponent(fileName, conformingTo: .fileURL)
+        
+        guard fileManager.fileExists(atPath: savedFilePathURL.path) else { return }
+        
+        do {
+            try fileManager.removeItem(at: savedFilePathURL)
+        } catch {
+            throw error
+        }
+    }
+}
+
+extension IDPhotoDetailViewContainer {
+    func deleteThisCreatedIDPhoto() throws -> Void {
+        do {
+            viewContext.delete(self.createdIDPhoto)
+            
+            try viewContext.save()
+        } catch {
+            throw error
         }
     }
 }
