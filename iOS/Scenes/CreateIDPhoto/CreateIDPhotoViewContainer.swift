@@ -264,7 +264,7 @@ struct CreateIDPhotoViewContainer: View {
                     .appendingPathComponent(sourcePhotoSaveDirectoryRelativePath, conformingTo: .fileURL)
                     .appendingPathComponent(sourcePhotoTemporaryURL.lastPathComponent, conformingTo: .fileURL)
                 
-                try fileManager.copyItem(
+                try fileManager.moveItem(
                     at: sourcePhotoTemporaryURL,
                     to: sourcePhotoPermanentURL
                 )
