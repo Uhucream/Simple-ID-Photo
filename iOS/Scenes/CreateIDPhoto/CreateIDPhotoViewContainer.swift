@@ -288,7 +288,7 @@ struct CreateIDPhotoViewContainer: View {
                 let sourcePhotoPermanentURL: URL = sourcePhotoSaveDestinationURL
                     .appendingPathComponent(sourcePhotoTemporaryURL.lastPathComponent, conformingTo: .fileURL)
                 
-                try fileManager.moveItem(
+                try fileManager.copyItem(
                     at: sourcePhotoTemporaryURL,
                     to: sourcePhotoPermanentURL
                 )
