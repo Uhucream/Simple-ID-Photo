@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 import Vision
 import CoreImage
 import CoreImage.CIFilterBuiltins
@@ -22,29 +23,31 @@ struct CreateIDPhotoViewContainer: View {
     
     @Environment(\.dismiss) var dismiss
     
-    var visionFrameworkHelper: VisionFrameworkHelper {
+    private var sourcePhotoTemporaryURL: URL
+    
+    private var sourcePhotoCIImage: CIImage? {
+        return .init(contentsOf: sourcePhotoTemporaryURL)
+    }
+    
+    private var sourceImageOrientation: UIImage.Orientation
+    
+    private var visionFrameworkHelper: VisionFrameworkHelper {
         .init(
             sourceCIImage: sourcePhotoCIImage,
             sourceImageOrientation: .init(sourceImageOrientation)
         )
     }
     
-    var sourcePhotoTemporaryURL: URL
-    
-    var sourcePhotoCIImage: CIImage? {
-        return .init(contentsOf: sourcePhotoTemporaryURL)
+    private var detectedFaceRect: CGRect {
+        get async throws {
+            try await detectingFaceRect() ?? .zero
+        }
     }
-    
-    var sourceImageOrientation: UIImage.Orientation
     
     @State private var previewUIImage: UIImage? = nil
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
-    @State private var selectedIDPhotoSize: IDPhotoSizeVariant = .original
-    
-    @State private var sourceImageWithBackgroundColor: CIImage?
-    
-    @State private var detectedFaceRect: CGRect = .zero
+    @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
     
     @State private var croppingRect: CGRect = .zero
     
@@ -76,67 +79,61 @@ struct CreateIDPhotoViewContainer: View {
         shouldShowDiscardViewConfirmationDialog = true
     }
     
+    func detectingFaceRect() async throws -> CGRect? {
+        do {
+            let detectedRect: CGRect? = try await visionFrameworkHelper.detectFaceIncludingHairRectangle()
+            
+            return detectedRect
+        } catch {
+            throw error
+        }
+    }
+    
     func refreshPreviewImage(newImage: UIImage) -> Void {
         self.previewUIImage = newImage
     }
     
-    func setIDPhotoWithBackgroundColor(with backgroundColor: Color) async -> Void {
+    func paintingImageBackgroundColor(
+        sourceImage: CIImage,
+        backgroundColor: Color
+    ) async throws -> CIImage? {
         do {
-            guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+            let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourceImage.extent.size)
             
-            let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourcePhotoCIImage.extent.size)
-            
-            guard let solidColorBackgroundCIImage = solidColorBackgroundUIImage?.ciImage() else { return }
+            guard let solidColorBackgroundCIImage = solidColorBackgroundUIImage?.ciImage() else { return nil }
             
             let generatedImage: CIImage? = try await visionFrameworkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
             
-            guard let generatedImage = generatedImage else { return }
-            guard let generatedUIImage = generatedImage.uiImage(orientation: self.sourceImageOrientation) else { return }
-            
-            Task { @MainActor in
-                self.sourceImageWithBackgroundColor = generatedImage
-                
-                self.previewUIImage = generatedUIImage
-            }
+            return generatedImage
         } catch {
-            print(error)
+            throw error
         }
     }
     
-    func cropImage() -> Void {
+    func croppingImage(
+        sourceImage: CIImage,
+        sizeVariant: IDPhotoSizeVariant
+    ) async -> CIImage? {
         
-        guard let sourceImageWithBackgroundColor = sourceImageWithBackgroundColor else { return }
+        guard let detectedFaceRect = try? await detectedFaceRect else { return nil }
         
-        if selectedIDPhotoSize == .original {
-
-            self.previewUIImage = sourceImageWithBackgroundColor.uiImage(orientation: self.sourceImageOrientation)
-            
-            return
-        }
+        if detectedFaceRect == .zero { return nil }
         
-        if selectedIDPhotoSize == .passport {
-//            cropImageAsPassportSize()
-            
-            return
-        }
+        let faceHeightRatio: Double = sizeVariant.photoSize.faceHeight.value / sizeVariant.photoSize.height.value
         
-        if self.detectedFaceRect == .zero { return }
+        let idPhotoAspectRatio: Double = sizeVariant.photoSize.width.value / sizeVariant.photoSize.height.value
         
-        let faceHeightRatio: Double = selectedIDPhotoSize.photoSize.faceHeight.value / selectedIDPhotoSize.photoSize.height.value
-        
-        let idPhotoAspectRatio: Double = selectedIDPhotoSize.photoSize.width.value / selectedIDPhotoSize.photoSize.height.value
-        
-        let idPhotoHeight: CGFloat = self.detectedFaceRect.height / faceHeightRatio
+        let idPhotoHeight: CGFloat = detectedFaceRect.height / faceHeightRatio
         let idPhotoWidth: CGFloat = idPhotoHeight * idPhotoAspectRatio
         
-        let marginTopRatio: Double = selectedIDPhotoSize.photoSize.marginTop.value / selectedIDPhotoSize.photoSize.height.value
+        let marginTopRatio: Double = sizeVariant.photoSize.marginTop.value / sizeVariant.photoSize.height.value
         
         let marginTop: CGFloat = idPhotoHeight * marginTopRatio
         
-        let remainderWidthOfFaceAndPhoto: CGFloat = idPhotoWidth - self.detectedFaceRect.size.width
+        let remainderWidthOfFaceAndPhoto: CGFloat = idPhotoWidth - detectedFaceRect.size.width
         
-        let originXOfCroppingRect: CGFloat = self.detectedFaceRect.origin.x - (remainderWidthOfFaceAndPhoto / 2)
-        let originYOfCroppingRect: CGFloat = (self.detectedFaceRect.maxY + marginTop) - idPhotoHeight
+        let originXOfCroppingRect: CGFloat = detectedFaceRect.origin.x - (remainderWidthOfFaceAndPhoto / 2)
+        let originYOfCroppingRect: CGFloat = (detectedFaceRect.maxY + marginTop) - idPhotoHeight
         
         let croppingRect: CGRect = .init(
             origin: CGPoint(
@@ -149,108 +146,153 @@ struct CreateIDPhotoViewContainer: View {
             )
         )
         
-        self.croppingRect = croppingRect
+        let croppedImage = sourceImage.cropped(to: croppingRect)
         
-        let croppedImage = sourceImageWithBackgroundColor.cropped(to: croppingRect)
-        
-        self.previewUIImage = croppedImage.uiImage(orientation: self.sourceImageOrientation)
+        return croppedImage
     }
     
-    //    func cropImageAsPassportSize() -> Void {
+    //  TODO: パスポートサイズの対応
+    //    func cropingImageAsPassportSize(sourceImage: CIImage) -> Void {
     //
     //    }
     
-    func handleTapDoneButton() -> Void {
+    func composeIDPhoto(
+        sourcePhoto: CIImage,
+        idPhotoSizeVariant: IDPhotoSizeVariant,
+        backgroundColor: Color
+    ) async -> CIImage? {
         do {
-            guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
-
-            guard let generatedIDPhoto = sourceImageWithBackgroundColor else { return }
-            
-            let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
-            
-            let saveFileUTType: UTType = isHEICSupported ? .heic : .jpeg
-            
-            let saveFileName: String = ProcessInfo.processInfo.globallyUniqueString
-            
-            let saveDestinationDirectoryURL: URL? = fetchOrCreateDirectoryURL(
-                directoryName: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
-                relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
+            let paintedSourcePhoto: CIImage? = try await paintingImageBackgroundColor(
+                sourceImage: sourcePhoto,
+                backgroundColor: backgroundColor
             )
             
-            guard let saveDestinationDirectoryURL = saveDestinationDirectoryURL else { return }
-            
-            let savedFileURL: URL? = try saveImageToSpecifiedDirectory(
-                ciImage: generatedIDPhoto,
-                fileName: saveFileName,
-                fileType: saveFileUTType,
-                to: saveDestinationDirectoryURL
-            )
-            
-            guard let savedFileURL = savedFileURL else { return }
-            
-            let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
-            
-            var dateFormatterForExif: DateFormatter {
-                
-                let formatter: DateFormatter = .init()
-                
-                formatter.locale = NSLocale.system
-                formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
-                
-                return formatter
+            if idPhotoSizeVariant == .original {
+                return paintedSourcePhoto
             }
             
-            let sourcePhotoProperties: [String: Any] = sourcePhotoCIImage.properties
-            let sourcePhotoExif: [String: Any]? = sourcePhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
+            //            if idPhotoSizeVariant == .passport {
+            //                let croppedImage: CIImage? = cropingImageAsPassportSize(sourceImage: paintedSourcePhoto)
+            //
+            //                return croppedImage
+            //            }
             
-            let sourcePhotoShotDateString: String? = sourcePhotoExif?[kCGImagePropertyExifDateTimeOriginal as String] as? String
+            if idPhotoSizeVariant == .passport {
+                return nil
+            }
             
-            let sourcePhotoShotDate: Date? = dateFormatterForExif.date(from: sourcePhotoShotDateString ?? "")
+            guard let paintedSourcePhoto = paintedSourcePhoto else { return nil }
             
-            let sourcePhotoSaveDirectoryRootPath: FileManager.SearchPathDirectory = .libraryDirectory
-            let sourcePhotoSaveDirectoryRelativePath: String = "SourcePhotos"
+            let croppedImage: CIImage? = await croppingImage(sourceImage: paintedSourcePhoto, sizeVariant: idPhotoSizeVariant)
             
-            let fileManager: FileManager = .default
-            
-            let libraryDirectoryURL: URL = try fileManager.url(
-                for: sourcePhotoSaveDirectoryRootPath,
-                in: .userDomainMask,
-                appropriateFor: nil,
-                create: true
-            )
-            
-            let sourcePhotoPermanentURL: URL = libraryDirectoryURL
-                .appendingPathComponent(sourcePhotoSaveDirectoryRelativePath, conformingTo: .fileURL)
-                .appendingPathComponent(sourcePhotoTemporaryURL.lastPathComponent, conformingTo: .fileURL)
-            
-            try fileManager.copyItem(
-                at: sourcePhotoTemporaryURL,
-                to: sourcePhotoPermanentURL
-            )
-            
-            let sourcePhotoSavedDirectory: SavedFilePath = .init(
-                on: viewContext,
-                rootSearchPathDirectory: sourcePhotoSaveDirectoryRootPath,
-                relativePathFromRootSearchPath: sourcePhotoSaveDirectoryRelativePath
-            )
-            
-            let newSourcePhotoRecord: SourcePhoto = .init(
-                on: viewContext,
-                imageFileName: sourcePhotoTemporaryURL.lastPathComponent,
-                shotDate: sourcePhotoShotDate,
-                savedDirectory: sourcePhotoSavedDirectory
-            )
-            
-            let newCreatedIDPhoto: CreatedIDPhoto = try registerCreatedIDPhotoRecord(
-                imageFileName: imageFileNameWithPathExtension,
-                saveDirectoryPath: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
-                relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH,
-                sourcePhotoRecord: newSourcePhotoRecord
-            )
-            
-            onDoneCreateIDPhotoProcessCallback?(newCreatedIDPhoto)
+            return croppedImage
         } catch {
             print(error)
+            
+            return nil
+        }
+    }
+    
+    func handleTapDoneButton() -> Void {
+        Task {
+            do {
+                
+                guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                
+                let composedIDPhoto: CIImage? = await self.composeIDPhoto(
+                    sourcePhoto: sourcePhotoCIImage,
+                    idPhotoSizeVariant: self.selectedIDPhotoSizeVariant,
+                    backgroundColor: self.selectedBackgroundColor
+                )
+                
+                guard let composedIDPhoto = composedIDPhoto else { return }
+                
+                let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
+                
+                let saveFileUTType: UTType = isHEICSupported ? .heic : .jpeg
+                
+                let saveFileName: String = ProcessInfo.processInfo.globallyUniqueString
+                
+                let saveDestinationDirectoryURL: URL? = fetchOrCreateDirectoryURL(
+                    directoryName: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
+                    relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
+                )
+                
+                guard let saveDestinationDirectoryURL = saveDestinationDirectoryURL else { return }
+                
+                let savedFileURL: URL? = try saveImageToSpecifiedDirectory(
+                    ciImage: composedIDPhoto,
+                    fileName: saveFileName,
+                    fileType: saveFileUTType,
+                    to: saveDestinationDirectoryURL
+                )
+                
+                guard let savedFileURL = savedFileURL else { return }
+                
+                let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
+                
+                var dateFormatterForExif: DateFormatter {
+                    
+                    let formatter: DateFormatter = .init()
+                    
+                    formatter.locale = NSLocale.system
+                    formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
+                    
+                    return formatter
+                }
+                
+                let sourcePhotoProperties: [String: Any] = sourcePhotoCIImage.properties
+                let sourcePhotoExif: [String: Any]? = sourcePhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
+                
+                let sourcePhotoShotDateString: String? = sourcePhotoExif?[kCGImagePropertyExifDateTimeOriginal as String] as? String
+                
+                let sourcePhotoShotDate: Date? = dateFormatterForExif.date(from: sourcePhotoShotDateString ?? "")
+                
+                let sourcePhotoSaveDirectoryRootPath: FileManager.SearchPathDirectory = .libraryDirectory
+                let sourcePhotoSaveDirectoryRelativePath: String = "SourcePhotos"
+                
+                let fileManager: FileManager = .default
+                
+                let libraryDirectoryURL: URL = try fileManager.url(
+                    for: sourcePhotoSaveDirectoryRootPath,
+                    in: .userDomainMask,
+                    appropriateFor: nil,
+                    create: true
+                )
+                
+                let sourcePhotoPermanentURL: URL = libraryDirectoryURL
+                    .appendingPathComponent(sourcePhotoSaveDirectoryRelativePath, conformingTo: .fileURL)
+                    .appendingPathComponent(sourcePhotoTemporaryURL.lastPathComponent, conformingTo: .fileURL)
+                
+                try fileManager.copyItem(
+                    at: sourcePhotoTemporaryURL,
+                    to: sourcePhotoPermanentURL
+                )
+                
+                let sourcePhotoSavedDirectory: SavedFilePath = .init(
+                    on: viewContext,
+                    rootSearchPathDirectory: sourcePhotoSaveDirectoryRootPath,
+                    relativePathFromRootSearchPath: sourcePhotoSaveDirectoryRelativePath
+                )
+                
+                let newSourcePhotoRecord: SourcePhoto = .init(
+                    on: viewContext,
+                    imageFileName: sourcePhotoTemporaryURL.lastPathComponent,
+                    shotDate: sourcePhotoShotDate,
+                    savedDirectory: sourcePhotoSavedDirectory
+                )
+                
+                let newCreatedIDPhoto: CreatedIDPhoto = try registerCreatedIDPhotoRecord(
+                    imageFileName: imageFileNameWithPathExtension,
+                    saveDirectoryPath: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
+                    relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH,
+                    sourcePhotoRecord: newSourcePhotoRecord
+                )
+                
+                onDoneCreateIDPhotoProcessCallback?(newCreatedIDPhoto)
+            } catch {
+                print(error)
+            }
         }
     }
     
@@ -259,7 +301,7 @@ struct CreateIDPhotoViewContainer: View {
             if #available(iOS 16, *) {
                 CreateIDPhotoView(
                     selectedBackgroundColor: $selectedBackgroundColor,
-                    selectedIDPhotoSize: $selectedIDPhotoSize,
+                    selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation()
                 )
                 .onTapDismissButton {
@@ -270,7 +312,7 @@ struct CreateIDPhotoViewContainer: View {
             } else {
                 CreateIDPhotoView(
                     selectedBackgroundColor: $selectedBackgroundColor,
-                    selectedIDPhotoSize: $selectedIDPhotoSize,
+                    selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation()
                 )
                 .onTapDismissButton {
@@ -280,25 +322,25 @@ struct CreateIDPhotoViewContainer: View {
                 .navigationBarHidden(true)
             }
         }
-        .task {
-            await setIDPhotoWithBackgroundColor(with: self.selectedBackgroundColor)
-        }
-        .task {
-            let detectedRect: CGRect? = try? await visionFrameworkHelper.detectFaceIncludingHairRectangle()
-            
-            guard let detectedRect = detectedRect else { return }
-            
-            Task { @MainActor in
-                self.detectedFaceRect = detectedRect
-            }
-        }
-        .onChange(of: selectedBackgroundColor)  { newSelectedBackgroundColor in
+        .onReceive(
+            Just(selectedIDPhotoSizeVariant)
+                .combineLatest(Just(selectedBackgroundColor))
+        ) { newSelectedSizeVariant, newSelectedBackgroundColor in
             Task {
-                await setIDPhotoWithBackgroundColor(with: newSelectedBackgroundColor)
+                guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                
+                let composedIDPhoto: CIImage? = await self.composeIDPhoto(
+                    sourcePhoto: sourcePhotoCIImage,
+                    idPhotoSizeVariant: newSelectedSizeVariant,
+                    backgroundColor: newSelectedBackgroundColor
+                )
+                
+                guard let composedIDPhotoUIImage: UIImage = composedIDPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                
+                Task { @MainActor in
+                    self.previewUIImage = composedIDPhotoUIImage
+                }
             }
-        }
-        .onChange(of: self.selectedIDPhotoSize) { _ in
-            self.cropImage()
         }
         .confirmationDialog(
             "証明写真作成を終了",
@@ -332,7 +374,7 @@ extension CreateIDPhotoViewContainer {
                 color: self.selectedBackgroundColor
             )
             
-            let selectedIDPhotoSizeVariant: IDPhotoSizeVariant = self.selectedIDPhotoSize
+            let selectedIDPhotoSizeVariant: IDPhotoSizeVariant = self.selectedIDPhotoSizeVariant
             
             let appliedIDPhotoFaceHeight: AppliedIDPhotoFaceHeight = .init(
                 on: viewContext,
