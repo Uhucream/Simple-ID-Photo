@@ -15,6 +15,8 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     
     @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
+    @State private var isDroppingItemTargeted: Bool = false
+    
     @Binding var currentEditMode: EditMode
     
     var createdIDPhotoHistories: CreatedIDPhotosResults
@@ -110,128 +112,160 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
             .listRowBackground(Color.systemGroupedBackground)
             
             Group {
-                if createdIDPhotoHistories.count == 0 {
-                    VStack(alignment: .center) {
-                        Spacer()
-                        
-                        Text("作成された証明写真がありません")
-                            .foregroundColor(.secondaryLabel)
-                            .frame(maxWidth: .infinity)
-                        
-                        Spacer()
-                    }
-                    .aspectRatio(3 / 4, contentMode: .fit)
-                    .listRowBackground(Color.systemGroupedBackground)
+                if isDroppingItemTargeted {
+                    Color.cyan
+                        .opacity(0.8)
+                        .overlay {
+                            ZStack {
+                                Rectangle()
+                                    .stroke(
+                                        Color.white,
+                                        style: StrokeStyle(
+                                            lineWidth: 4,
+                                            lineCap: .round,
+                                            lineJoin: .round,
+                                            dash: [28, 28]
+                                        )
+                                    )
+                                
+                                Text("証明写真の元となる画像をドロップ")
+                                    .font(.subheadline)
+                                    .fontWeight(.black)
+                                    .foregroundColor(.white)
+                                    .padding()
+                            }
+                            .padding()
+                        }
+                        .opacity(0.8)
+                        .aspectRatio(3 / 4, contentMode: .fit)
+                        .listRowBackground(Color.systemGroupedBackground)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 } else {
-                    
-                    let historiesWithinThreeMonths: [CreatedIDPhoto] = createdIDPhotoHistories
-                        .filter { generatedIDPhoto in
-                            let startOfShotDate: Date = gregorianCalendar.startOfDay(for: generatedIDPhoto.sourcePhoto?.shotDate ?? .distantPast)
-                            
-                            let elapsedMonths: Int = gregorianCalendar.dateComponents([.month], from: startOfShotDate, to: self.today).month!
-                            
-                            return elapsedMonths <= 3
-                        }
-                    
-                    let historiesOverThreeMonthsAgo: [CreatedIDPhoto] = createdIDPhotoHistories
-                        .filter { (history) -> Bool in
-                            let isHistoryContainedOnThreeMonthsHistories: Bool = historiesWithinThreeMonths.contains(history)
-                            
-                            return !isHistoryContainedOnThreeMonthsHistories
-                        }
-                    
-                    if historiesWithinThreeMonths.count > 0 {
-                        
-                        let onDeleteForWithinThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
-                            let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
-                                .map { deleteTargetOffset in
-                                    return historiesWithinThreeMonths[deleteTargetOffset]
-                                }
-                            
-                            self.onDeleteHistoryCardCallback?(deleteTargets)
-                        }
-                        
-                        //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
-                        if #available(iOS 16, *) {
-                            Section {
-                                ForEach(historiesWithinThreeMonths) { history in
-                                    NavigationLink(
-                                        destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                    ) {
-                                        renderHistoryCard(history)
-                                    }
-                                    .isDetailLink(true)
-                                }
-                                .onDelete(perform: onDeleteForWithinThreeMonthsSection)
-                            } header: {
-                                Text("3ヶ月以内")
+                    Group {
+                        if createdIDPhotoHistories.count == 0 {
+                            VStack(alignment: .center) {
+                                Spacer()
+                                
+                                Text("作成された証明写真がありません")
+                                    .foregroundColor(.secondaryLabel)
+                                    .frame(maxWidth: .infinity)
+                                
+                                Spacer()
                             }
+                            .aspectRatio(3 / 4, contentMode: .fit)
+                            .listRowBackground(Color.systemGroupedBackground)
                         } else {
-                            Section {
-                                ForEach(historiesWithinThreeMonths) { history in
-                                    NavigationLink(
-                                        destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                    ) {
-                                        renderHistoryCard(history)
-                                    }
-                                    .isDetailLink(true)
-                                }
-                                .onDelete(perform: onDeleteForWithinThreeMonthsSection)
-                                //  MARK: iOS 16 だと効かない
-                                .deleteDisabled(!currentEditMode.isEditing)
-                            } header: {
-                                Text("3ヶ月以内")
-                            }
-                        }
-                    }
-                    
-                    if historiesOverThreeMonthsAgo.count > 0 {
-                        
-                        let onDeleteForOverThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
-                            let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
-                                .map { deleteTargetOffset in
-                                    return historiesOverThreeMonthsAgo[deleteTargetOffset]
+                            
+                            let historiesWithinThreeMonths: [CreatedIDPhoto] = createdIDPhotoHistories
+                                .filter { generatedIDPhoto in
+                                    let startOfShotDate: Date = gregorianCalendar.startOfDay(for: generatedIDPhoto.sourcePhoto?.shotDate ?? .distantPast)
+                                    
+                                    let elapsedMonths: Int = gregorianCalendar.dateComponents([.month], from: startOfShotDate, to: self.today).month!
+                                    
+                                    return elapsedMonths <= 3
                                 }
                             
-                            self.onDeleteHistoryCardCallback?(deleteTargets)
-                        }
-                        
-                        //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
-                        if #available(iOS 16, *) {
-                            Section {
-                                ForEach(historiesOverThreeMonthsAgo) { history in
-                                    NavigationLink(
-                                        destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                    ) {
-                                        renderHistoryCard(history)
-                                    }
-                                    .isDetailLink(true)
+                            let historiesOverThreeMonthsAgo: [CreatedIDPhoto] = createdIDPhotoHistories
+                                .filter { (history) -> Bool in
+                                    let isHistoryContainedOnThreeMonthsHistories: Bool = historiesWithinThreeMonths.contains(history)
+                                    
+                                    return !isHistoryContainedOnThreeMonthsHistories
                                 }
-                                .onDelete(perform: onDeleteForOverThreeMonthsSection)
-                            } header: {
-                                Text("それ以前")
+                            
+                            if historiesWithinThreeMonths.count > 0 {
+                                
+                                let onDeleteForWithinThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
+                                    let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
+                                        .map { deleteTargetOffset in
+                                            return historiesWithinThreeMonths[deleteTargetOffset]
+                                        }
+                                    
+                                    self.onDeleteHistoryCardCallback?(deleteTargets)
+                                }
+                                
+                                //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
+                                if #available(iOS 16, *) {
+                                    Section {
+                                        ForEach(historiesWithinThreeMonths) { history in
+                                            NavigationLink(
+                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                            ) {
+                                                renderHistoryCard(history)
+                                            }
+                                            .isDetailLink(true)
+                                        }
+                                        .onDelete(perform: onDeleteForWithinThreeMonthsSection)
+                                    } header: {
+                                        Text("3ヶ月以内")
+                                    }
+                                } else {
+                                    Section {
+                                        ForEach(historiesWithinThreeMonths) { history in
+                                            NavigationLink(
+                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                            ) {
+                                                renderHistoryCard(history)
+                                            }
+                                            .isDetailLink(true)
+                                        }
+                                        .onDelete(perform: onDeleteForWithinThreeMonthsSection)
+                                        //  MARK: iOS 16 だと効かない
+                                        .deleteDisabled(!currentEditMode.isEditing)
+                                    } header: {
+                                        Text("3ヶ月以内")
+                                    }
+                                }
                             }
-                        } else {
-                            Section {
-                                ForEach(historiesOverThreeMonthsAgo) { history in
-                                    NavigationLink(
-                                        destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                    ) {
-                                        renderHistoryCard(history)
-                                    }
-                                    .isDetailLink(true)
+                            
+                            if historiesOverThreeMonthsAgo.count > 0 {
+                                
+                                let onDeleteForOverThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
+                                    let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
+                                        .map { deleteTargetOffset in
+                                            return historiesOverThreeMonthsAgo[deleteTargetOffset]
+                                        }
+                                    
+                                    self.onDeleteHistoryCardCallback?(deleteTargets)
                                 }
-                                .onDelete(perform: onDeleteForOverThreeMonthsSection)
-                                //  MARK: iOS 16 だと効かない
-                                .deleteDisabled(!currentEditMode.isEditing)
-                            } header: {
-                                Text("それ以前")
+                                
+                                //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
+                                if #available(iOS 16, *) {
+                                    Section {
+                                        ForEach(historiesOverThreeMonthsAgo) { history in
+                                            NavigationLink(
+                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                            ) {
+                                                renderHistoryCard(history)
+                                            }
+                                            .isDetailLink(true)
+                                        }
+                                        .onDelete(perform: onDeleteForOverThreeMonthsSection)
+                                    } header: {
+                                        Text("それ以前")
+                                    }
+                                } else {
+                                    Section {
+                                        ForEach(historiesOverThreeMonthsAgo) { history in
+                                            NavigationLink(
+                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                            ) {
+                                                renderHistoryCard(history)
+                                            }
+                                            .isDetailLink(true)
+                                        }
+                                        .onDelete(perform: onDeleteForOverThreeMonthsSection)
+                                        //  MARK: iOS 16 だと効かない
+                                        .deleteDisabled(!currentEditMode.isEditing)
+                                    } header: {
+                                        Text("それ以前")
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            .onDrop(of: dropAllowedFileUTTypes, isTargeted: .constant(false)) { itemProviders in
+            .onDrop(of: dropAllowedFileUTTypes, isTargeted: $isDroppingItemTargeted) { itemProviders in
                 return onDropFileCallback?(itemProviders) ?? false
             }
         }
