@@ -219,6 +219,7 @@ struct TopViewContainer: View {
             TopView(
                 currentEditMode: $currentEditMode,
                 createdIDPhotoHistories: createdIDPhotoHistories,
+                dropAllowedFileUTTypes: [.image],
                 onTapSelectFromAlbumButton: {
                     showPicturePickerView()
                 },
@@ -231,6 +232,7 @@ struct TopViewContainer: View {
                 
                 self.showDeleteConfirmationDialog()
             }
+            .onDropFile(action: setPictureURLFromDroppedItem)
             .confirmationDialog(
                 "本当に削除しますか？",
                 isPresented: $shouldShowDeleteConfirmDialog,
