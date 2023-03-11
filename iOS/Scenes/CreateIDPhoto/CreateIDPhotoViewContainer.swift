@@ -162,10 +162,16 @@ struct CreateIDPhotoViewContainer: View {
         backgroundColor: Color
     ) async -> CIImage? {
         do {
-            let paintedSourcePhoto: CIImage? = try await paintingImageBackgroundColor(
-                sourceImage: sourcePhoto,
-                backgroundColor: backgroundColor
-            )
+            let paintedSourcePhoto: CIImage? = try await {
+                if backgroundColor == .clear {
+                    return sourcePhoto
+                }
+                
+                return try await paintingImageBackgroundColor(
+                    sourceImage: sourcePhoto,
+                    backgroundColor: backgroundColor
+                )
+            }()
             
             if idPhotoSizeVariant == .original {
                 return paintedSourcePhoto
