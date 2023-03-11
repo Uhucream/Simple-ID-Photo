@@ -278,15 +278,14 @@ struct CreateIDPhotoViewContainer: View {
                 
                 let fileManager: FileManager = .default
                 
-                let libraryDirectoryURL: URL = try fileManager.url(
-                    for: sourcePhotoSaveDirectoryRootPath,
-                    in: .userDomainMask,
-                    appropriateFor: nil,
-                    create: true
+                let sourcePhotoSaveDestinationURL: URL? = fetchOrCreateDirectoryURL(
+                    directoryName: "SourcePhotos",
+                    relativeTo: .libraryDirectory
                 )
                 
-                let sourcePhotoPermanentURL: URL = libraryDirectoryURL
-                    .appendingPathComponent(sourcePhotoSaveDirectoryRelativePath, conformingTo: .fileURL)
+                guard let sourcePhotoSaveDestinationURL = sourcePhotoSaveDestinationURL else { return }
+                
+                let sourcePhotoPermanentURL: URL = sourcePhotoSaveDestinationURL
                     .appendingPathComponent(sourcePhotoTemporaryURL.lastPathComponent, conformingTo: .fileURL)
                 
                 try fileManager.moveItem(
