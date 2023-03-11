@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Percentage
 
 fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
     let formatter: RelativeDateTimeFormatter = .init()
@@ -20,10 +21,12 @@ struct IDPhotoDetailView: View {
     
     @Environment(\.colorScheme) var currentColorScheme
     
-    @Binding var idPhotoUIImage: UIImage
+    @Binding var idPhotoImageURL: URL?
     @Binding var idPhotoSizeType: IDPhotoSizeVariant
     
     @Binding var createdAt: Date
+    
+    @Binding var updatedAt: Date
     
     private(set) var onTapChangeSizeButtonCallback: (() -> Void)?
     
@@ -86,16 +89,56 @@ struct IDPhotoDetailView: View {
         Form {
             Section {
                 VStack(alignment: .center, spacing: 28) {
-                    Image("SampleIDPhoto")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 250)
-                        .background {
-                            Rectangle()
-                                .fill(currentColorScheme == .light ? Color.gray.opacity(0.2) : Color.fixedWhite.opacity(0.4))
-                                .shadow(color: .black.opacity(0.5), radius: 8)
-                                .blur(radius: 4)
+                    
+                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
+                    
+                    let createdIDPhotoAspectRatio: CGFloat = {
+                        if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
+                            return 3 / 4
                         }
+                        
+                        return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
+                    }()
+                    
+                    let imageMaxWidth: CGFloat = 250
+                    
+                    let asyncImageRenderingID: String = "\(updatedAt)"
+                    
+                    AsyncImage(
+                        url: idPhotoImageURL
+                    ) { asyncImagePhase in
+                        if let loadedImage = asyncImagePhase.image {
+                            loadedImage
+                                .resizable()
+                                .scaledToFit()
+                                .background {
+                                    Rectangle()
+                                        .fill(currentColorScheme == .light ? Color.gray.opacity(0.2) : Color.fixedWhite.opacity(0.4))
+                                        .shadow(color: .black.opacity(0.5), radius: 8)
+                                        .blur(radius: 4)
+                                }
+                        } else {
+                            Rectangle()
+                                .fill(Color(uiColor: .systemFill))
+                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                                .overlay(.ultraThinMaterial)
+                                .overlay {
+                                    Group {
+                                        if let _ = asyncImagePhase.error {
+                                            Image(systemName: "questionmark.square.dashed")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundColor(.systemGray)
+                                        } else {
+                                            ProgressView()
+                                        }
+                                    }
+                                    .frame(maxWidth: 40%.of(imageMaxWidth))
+                                }
+                        }
+                    }
+                    .frame(maxWidth: imageMaxWidth)
+                    .id(asyncImageRenderingID)
                     
                     VStack(alignment: .center, spacing: 0) {
                         renderPhotoSizeLabel()
@@ -183,9 +226,12 @@ struct IDPhotoDetailView: View {
 struct IDPhotoDetailView_Previews: PreviewProvider {
     static var previews: some View {
         IDPhotoDetailView(
-            idPhotoUIImage: .constant(UIImage(named: "SampleIDPhoto")!),
+            idPhotoImageURL: .constant(
+                mockHistoriesData[0].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!
+            ),
             idPhotoSizeType: .constant(IDPhotoSizeVariant.w30_h40),
-            createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!)
+            createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!),
+            updatedAt: .constant(.now)
         )
     }
 }

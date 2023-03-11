@@ -8,11 +8,13 @@
 
 import Foundation
 
-public enum IDPhotoSizeVariant: CaseIterable {
+public enum IDPhotoSizeVariant: Int, CaseIterable {
     
     case original
     
     case passport
+    
+    case custom
     
     case w24_h30
     case w25_h30
@@ -52,6 +54,16 @@ public enum IDPhotoSizeVariant: CaseIterable {
             let marginBottom: Measurement<UnitLength> = .init(value: 7, unit: .millimeters)
             
             return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: marginTop, marginBottom: marginBottom)
+            
+        case .custom:
+            let width: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            let height: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            
+            let faceHeight: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            
+            let marginTop: Measurement<UnitLength> = .init(value: .zero, unit: .millimeters)
+            
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: marginTop)
             
         case .w24_h30:
             let width: Measurement<UnitLength> = .init(value: 24, unit: .millimeters)
@@ -153,6 +165,9 @@ extension IDPhotoSizeVariant {
                 "宅地建物取引士資格試験",
                 "国外運転免許申請 (2022年5月13日~)"
             ]
+            
+        case .custom:
+            return []
             
         case .w24_h30:
             return [

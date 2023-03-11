@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import UIKit
 
 struct PersistenceController {
     static let shared = PersistenceController()
@@ -15,6 +16,76 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
+        
+        let mockHistoriesDataWithIndices = zip(
+            mockHistoriesData.indices,
+            mockHistoriesData
+        )
+        
+        mockHistoriesDataWithIndices
+            .forEach { (index: Int, history: CreatedIDPhotoDetail) in
+                
+                let imageFileName: String = "SampleIDPhoto"
+                
+                let createdFileURL: URL? = UIImage(named: imageFileName)!.saveOnLibraryCachesForTest(fileName: imageFileName)
+                
+                let createdFileNameWithExtension: String? = createdFileURL?.lastPathComponent
+                
+                let sourcePhotoSavedDirectory: SavedFilePath = .init(
+                    on: viewContext,
+                    rootSearchPathDirectory: .cachesDirectory,
+                    relativePathFromRootSearchPath: ""
+                )
+                
+                let sourcePhoto: SourcePhoto = .init(
+                    on: viewContext,
+                    imageFileName: createdFileNameWithExtension,
+                    shotDate: Calendar.current.date(byAdding: .month, value: -(index + 1), to: .now),
+                    savedDirectory: sourcePhotoSavedDirectory
+                )
+                
+                let appliedBackgroundColor: AppliedBackgroundColor = .init(
+                    on: viewContext,
+                    color: .idPhotoBackgroundColors.blue
+                )
+                
+                let appliedIDPhotoFaceHeight: AppliedIDPhotoFaceHeight = .init(
+                    on: viewContext,
+                    millimetersHeight: history.idPhotoSizeType.photoSize.faceHeight.value
+                )
+                
+                let appliedMarginsAroundFace: AppliedMarginsAroundFace = .init(
+                    on: viewContext,
+                    bottom: history.idPhotoSizeType.photoSize.marginBottom?.value ?? -1,
+                    top: history.idPhotoSizeType.photoSize.marginTop.value
+                )
+                
+                let appliedIDPhotoSize: AppliedIDPhotoSize = .init(
+                    on: viewContext,
+                    millimetersHeight: history.idPhotoSizeType.photoSize.height.value,
+                    millimetersWidth: history.idPhotoSizeType.photoSize.width.value,
+                    sizeVariant: history.idPhotoSizeType,
+                    faceHeight: appliedIDPhotoFaceHeight,
+                    marginsAroundFace: appliedMarginsAroundFace
+                )
+                
+                let createdIDPhotoSavedDirectory: SavedFilePath = .init(
+                    on: viewContext,
+                    rootSearchPathDirectory: .cachesDirectory,
+                    relativePathFromRootSearchPath: ""
+                )
+                
+                let createdIDPhoto: CreatedIDPhoto = .init(
+                    on: viewContext,
+                    createdAt: history.createdAt,
+                    imageFileName: createdFileNameWithExtension,
+                    updatedAt: .now,
+                    appliedBackgroundColor: appliedBackgroundColor,
+                    appliedIDPhotoSize: appliedIDPhotoSize,
+                    savedDirectory: createdIDPhotoSavedDirectory,
+                    sourcePhoto: sourcePhoto
+                )
+            }
         
         do {
             try viewContext.save()

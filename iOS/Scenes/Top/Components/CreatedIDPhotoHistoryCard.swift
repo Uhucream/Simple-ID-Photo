@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Percentage
 
 fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
     let formatter: RelativeDateTimeFormatter = .init()
@@ -32,10 +33,31 @@ struct CreatedIDPhotoHistoryCard: View {
     @ScaledMetric(relativeTo: .callout) var titleScaleFactor: CGFloat = 1
     @ScaledMetric(relativeTo: .callout) var thumbnailScaleFactor: CGFloat = 1
     
-    var idPhotoThumbnailUIImage: UIImage
+    @ObservedObject var createdIDPhoto: CreatedIDPhoto
+    
+    @State private var createdAtRelativeLabel: String
+
+    private var idPhotoThumbnailImageURL: URL? {
+        return parseImageFileURL()
+    }
     var idPhotoSizeType: IDPhotoSizeVariant
     
     var createdAt: Date
+    
+    init(
+        createdIDPhoto: CreatedIDPhoto,
+        idPhotoSizeType: IDPhotoSizeVariant,
+        createdAt: Date
+    ) {
+        _createdIDPhoto = .init(wrappedValue: createdIDPhoto)
+        
+        _createdAtRelativeLabel = .init(
+            initialValue: relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
+        )
+        
+        self.idPhotoSizeType = idPhotoSizeType
+        self.createdAt = createdAt
+    }
     
     @ViewBuilder
     func renderTitle() -> some View {
@@ -64,6 +86,35 @@ struct CreatedIDPhotoHistoryCard: View {
         }
     }
     
+    private func parseImageFileURL() -> URL? {
+        let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
+        
+        let LIBRARY_DIRECTORY_RAW_VALUE_INT64: Int64 = .init(DEFAULT_SAVE_DIRECTORY_ROOT.rawValue)
+        
+        let fileManager: FileManager = .default
+
+        let saveDestinationRootSearchDirectory: FileManager.SearchPathDirectory = FileManager.SearchPathDirectory(rawValue: .init(createdIDPhoto.savedDirectory?.rootSearchPathDirectory ?? LIBRARY_DIRECTORY_RAW_VALUE_INT64)) ?? DEFAULT_SAVE_DIRECTORY_ROOT
+        
+        let saveDestinationRootSearchDirectoryURL: URL? = fileManager.urls(for: saveDestinationRootSearchDirectory, in: .userDomainMask).first
+        
+        let relativePathFromRoot: String = createdIDPhoto.savedDirectory?.relativePathFromRootSearchPath ?? ""
+        let fileSaveDestinationURL: URL = .init(
+            fileURLWithPath: relativePathFromRoot,
+            isDirectory: true,
+            relativeTo: saveDestinationRootSearchDirectoryURL
+        )
+        
+        let createdIDPhotoFileName: String? = createdIDPhoto.imageFileName
+        
+        guard let createdIDPhotoFileName = createdIDPhotoFileName else { return nil }
+        
+        let createdIDPhotoFileURL: URL = fileSaveDestinationURL
+            .appendingPathComponent(createdIDPhotoFileName, conformingTo: .fileURL)
+        
+        guard fileManager.fileExists(atPath: createdIDPhotoFileURL.path) else { return nil }
+        
+        return createdIDPhotoFileURL
+    }
     
     var body: some View {
         if self.dynamicTypeSize.isAccessibilitySize {
@@ -77,20 +128,65 @@ struct CreatedIDPhotoHistoryCard: View {
                         .font(.subheadline)
                         .fontWeight(.medium)
                     
-                    Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
+                    Text(createdAtRelativeLabel)
                         .font(.caption2)
+                        .onAppear {
+                            self.createdAtRelativeLabel = relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
+                        }
                 }
                 .foregroundColor(.secondaryLabel)
             }
         } else {
             HStack(alignment: .center) {
                 HStack(alignment: .center) {
-                    Image(uiImage: idPhotoThumbnailUIImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 50 * thumbnailScaleFactor, alignment: .top)
-                        .clipped()
-                        .shadow(radius: 0.8)
+
+                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
+                    
+                    let createdIDPhotoAspectRatio: CGFloat = {
+                        if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
+                            return 3 / 4
+                        }
+                        
+                        return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
+                    }()
+                    
+                    let imageMaxWidth: CGFloat = 50 * thumbnailScaleFactor
+                    
+                    AsyncImage(
+                        url: idPhotoThumbnailImageURL
+                    ) { asyncImagePhase in
+                        
+                        if let loadedImage = asyncImagePhase.image {
+                            
+                            loadedImage
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .clipped()
+                                .shadow(radius: 0.8)
+                            
+                        } else {
+                            
+                            Rectangle()
+                                .fill(Color.clear)
+                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                                .overlay(.ultraThinMaterial)
+                                .overlay {
+                                    Group {
+                                        if let _ = asyncImagePhase.error {
+                                            Image(systemName: "questionmark.square.dashed")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundColor(.systemGray)
+                                        } else {
+                                            ProgressView()
+                                        }
+                                    }
+                                    .frame(maxWidth: 40%.of(imageMaxWidth))
+                                }
+
+                        }
+                    }
+                    .frame(maxWidth: imageMaxWidth, alignment: .top)
                     
                     renderTitle()
                         .font(.callout)
@@ -107,8 +203,11 @@ struct CreatedIDPhotoHistoryCard: View {
                         .font(.subheadline)
                         .fontWeight(.medium)
                     
-                    Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
+                    Text(createdAtRelativeLabel)
                         .font(.caption2)
+                        .onAppear {
+                            self.createdAtRelativeLabel = relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
+                        }
                 }
                 .foregroundColor(.secondaryLabel)
             }
@@ -125,21 +224,28 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
             createdUIImage: UIImage(named: "SampleIDPhoto")!
         )
         
+        let mockCreatedIDPhoto: CreatedIDPhoto = .init(
+            on: PersistenceController.preview.container.viewContext,
+            createdAt: mockHistory.createdAt,
+            imageFileName: "SampleIDPhoto.png",
+            updatedAt: .now
+        )
+        
         List {
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailUIImage: mockHistory.createdUIImage,
+                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: mockHistory.idPhotoSizeType,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailUIImage: mockHistory.createdUIImage,
+                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: .original,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
-                idPhotoThumbnailUIImage: mockHistory.createdUIImage,
+                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: .passport,
                 createdAt: mockHistory.createdAt
             )

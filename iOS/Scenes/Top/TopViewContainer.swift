@@ -1,9 +1,9 @@
 //
 //  TopViewContainer.swift
 //  Simple ID Photo
-//  
+//
 //  Created by TakashiUshikoshi on 2023/01/07
-//  
+//
 //
 
 import SwiftUI
@@ -11,17 +11,37 @@ import UniformTypeIdentifiers
 import PhotosUI
 
 struct TopViewContainer: View {
+    
+    @Environment(\.managedObjectContext) var viewContext
+    
+    @FetchRequest(
+        entity: CreatedIDPhoto.entity(),
+        sortDescriptors: [
+            .init(
+                keyPath: \CreatedIDPhoto.createdAt,
+                ascending: false
+            )
+        ]
+    ) var createdIDPhotoHistories: FetchedResults<CreatedIDPhoto>
+    
     @State private var shouldShowPicturePickerView: Bool = false
     
     @State private var shouldShowCameraView: Bool = false
     
     @State private var shouldShowCreateIDPhotoView: Bool = false
     
+    @State private var shouldShowDeleteConfirmDialog: Bool = false
+    @State private var shouldShowDeleteAllConfirmDialog: Bool = false
+    
     @State private var isPhotoLoadingInProgress: Bool = false
     
-    @State private var pictureURL: URL? = nil
+    @State private var userSelectedImageURL: URL? = nil
     
-    @State private var createdIDPhotoHistories: [CreatedIDPhotoDetail] = mockHistoriesData
+    @State private var displayTargetIDPhotoDetailView: AnyView? = nil
+    @State private var navigationLinkSelectionForIDPhotoDetailView: Int? = nil
+    
+    @State private var currentEditMode: EditMode = .inactive
+    @State private var deletingTargetHistories: [CreatedIDPhoto] = []
     
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
@@ -29,6 +49,18 @@ struct TopViewContainer: View {
     
     func showCameraView() -> Void {
         shouldShowCameraView = true
+    }
+    
+    func showIDPhotoDetailView(displayingCreatedIDPhoto: CreatedIDPhoto) -> Void {
+        self.displayTargetIDPhotoDetailView = AnyView(
+            IDPhotoDetailViewContainer(createdIDPhoto: displayingCreatedIDPhoto)
+        )
+        
+        self.navigationLinkSelectionForIDPhotoDetailView = 0
+    }
+    
+    func dismissCreateIDPhotoView() -> Void {
+        self.shouldShowCreateIDPhotoView = false
     }
     
     func setPictureURLFromPHPickerSelectedItem(
@@ -66,13 +98,18 @@ struct TopViewContainer: View {
                 return
             }
             
-            let fileName = "\(Int(Date().timeIntervalSince1970)).\(url.pathExtension)"
+            let fileManager: FileManager = .default
             
-            let newFileURL: URL = .init(fileURLWithPath: NSTemporaryDirectory() + fileName)
+            let temporaryDirectoryURL: URL = fileManager.temporaryDirectory
+            let newFileName: String = ProcessInfo.processInfo.globallyUniqueString
             
-            try? FileManager.default.copyItem(at: url, to: newFileURL)
+            let newFileURL: URL = temporaryDirectoryURL
+                .appendingPathComponent(newFileName, conformingTo: .fileURL)
+                .appendingPathExtension(url.pathExtension)
             
-            self.pictureURL = newFileURL
+            try? fileManager.copyItem(at: url, to: newFileURL)
+            
+            self.userSelectedImageURL = newFileURL
             
             self.isPhotoLoadingInProgress = false
         }
@@ -95,14 +132,19 @@ struct TopViewContainer: View {
             guard let url = url else {
                 return
             }
+            
+            let fileManager: FileManager = .default
+            
+            let temporaryDirectoryURL: URL = fileManager.temporaryDirectory
+            let newFileName: String = ProcessInfo.processInfo.globallyUniqueString
+            
+            let newFileURL: URL = temporaryDirectoryURL
+                .appendingPathComponent(newFileName, conformingTo: .fileURL)
+                .appendingPathExtension(url.pathExtension)
+            
+            try? fileManager.copyItem(at: url, to: newFileURL)
 
-            let fileName = "\(Int(Date().timeIntervalSince1970)).\(url.pathExtension)"
-
-            let newFileURL: URL = .init(fileURLWithPath: NSTemporaryDirectory() + fileName)
-
-            try? FileManager.default.copyItem(at: url, to: newFileURL)
-
-            self.pictureURL = newFileURL
+            self.userSelectedImageURL = newFileURL
             
             self.isPhotoLoadingInProgress = false
         }
@@ -110,10 +152,73 @@ struct TopViewContainer: View {
         return true
     }
     
+    func deleteCreatedIDPhotoRecord(_ targetCreatedIDPhoto: CreatedIDPhoto) -> Void {
+        do {
+            viewContext.delete(targetCreatedIDPhoto)
+            
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteCreatedIDPhotoAndSavedFiles(_ targetCreatedIDPhoto: CreatedIDPhoto) -> Void {
+
+        let DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY: FileManager.SearchPathDirectory = .libraryDirectory
+        
+        let sourcePhotoRecord: SourcePhoto? = targetCreatedIDPhoto.sourcePhoto
+        let sourcePhotoFileName: String? = sourcePhotoRecord?.imageFileName
+        
+        let sourcePhotoSavedDirectory: SavedFilePath? = sourcePhotoRecord?.savedDirectory
+        
+        if
+            let sourcePhotoFileName = sourcePhotoFileName,
+            let sourcePhotoSavedDirectory = sourcePhotoSavedDirectory
+        {
+         
+            let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                rawValue:  UInt(sourcePhotoSavedDirectory.rootSearchPathDirectory)
+            ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+            
+            deleteSavedFile(
+                fileName: sourcePhotoFileName,
+                in: sourcePhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
+                relativeTo: destinationRootSearchPathDirectory
+            )
+        }
+        
+        let createdIDPhotoFileName: String? = targetCreatedIDPhoto.imageFileName
+        
+        let createdIDPhotoSavedDirectory: SavedFilePath? = targetCreatedIDPhoto.savedDirectory
+        
+        if
+            let createdIDPhotoFileName = createdIDPhotoFileName,
+            let createdIDPhotoSavedDirectory = createdIDPhotoSavedDirectory
+        {
+         
+            let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
+                rawValue:  UInt(createdIDPhotoSavedDirectory.rootSearchPathDirectory)
+            ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+            
+            deleteSavedFile(
+                fileName: createdIDPhotoFileName,
+                in: createdIDPhotoSavedDirectory.relativePathFromRootSearchPath ?? "",
+                relativeTo: destinationRootSearchPathDirectory
+            )
+        }
+
+        deleteCreatedIDPhotoRecord(targetCreatedIDPhoto)
+    }
+    
+    func showDeleteConfirmationDialog() -> Void {
+        self.shouldShowDeleteConfirmDialog = true
+    }
+    
     var body: some View {
         ZStack {
             TopView(
-                createdIDPhotoHistories: $createdIDPhotoHistories,
+                currentEditMode: $currentEditMode,
+                createdIDPhotoHistories: createdIDPhotoHistories,
                 onTapSelectFromAlbumButton: {
                     showPicturePickerView()
                 },
@@ -121,6 +226,76 @@ struct TopViewContainer: View {
                     showCameraView()
                 }
             )
+            .onDeleteHistoryCard { deletingTargetHistories in
+                self.deletingTargetHistories = deletingTargetHistories
+                
+                self.showDeleteConfirmationDialog()
+            }
+            .confirmationDialog(
+                "本当に削除しますか？",
+                isPresented: $shouldShowDeleteConfirmDialog,
+                titleVisibility: .visible,
+                presenting: deletingTargetHistories
+            ) { deletingTargetHistories in
+                Button(
+                    role: .destructive,
+                    action: {
+                        deletingTargetHistories
+                            .forEach { deletingTargetHistory in
+                                deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
+                            }
+                    }
+                ) {
+                    Text("削除する")
+                }
+            } message: { _ in
+                Text("削除した証明写真は復元できません")
+            }
+            .confirmationDialog(
+                "本当にすべて削除しますか？",
+                isPresented: $shouldShowDeleteAllConfirmDialog,
+                titleVisibility: .visible,
+                presenting: createdIDPhotoHistories
+            ) { createdAllHistories in
+                Button(
+                    role: .destructive,
+                    action: {
+                        createdAllHistories
+                            .forEach { deletingTargetHistory in
+                                deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
+                            }
+                    }
+                ) {
+                    Text("削除する")
+                }
+            } message: { _ in
+                Text("削除した証明写真は復元できません")
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    if createdIDPhotoHistories.count > 0 {
+                        EditButton()
+                    }
+                }
+                
+                ToolbarItem(placement: .bottomBar) {
+                    if currentEditMode.isEditing {
+                        Button(
+                            action: {
+                                shouldShowDeleteAllConfirmDialog = true
+                            }
+                        ) {
+                            Text("すべて消去")
+                        }
+                    }
+                }
+            }
+            .environment(\.editMode, $currentEditMode)
+            .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
+                guard newHistoriesCount == 0 else { return }
+                
+                self.currentEditMode = .inactive
+            }
             
             if self.isPhotoLoadingInProgress {
                 Color
@@ -137,37 +312,72 @@ struct TopViewContainer: View {
                 .onPickerDelegatePickerFuncInvoked { (phpickerViewController, phpickerResults) in
                     setPictureURLFromPHPickerSelectedItem(phpickerViewController: phpickerViewController, phpickerResults: phpickerResults)
                     
-                    Task(priority: .userInitiated) {
-                        do {
-                            let oneMillisecond: UInt64 = 1_000_000
-                            
-                            self.shouldShowPicturePickerView = false
-                            
-                            //  MARK: これがないと、すぐに fullScreenCover が表示されてしまい、一瞬画面が真っ黒になる
-                            try await Task.sleep(nanoseconds: oneMillisecond * 90)
-                            
-                            self.shouldShowCreateIDPhotoView = true
-                        } catch {
-                            print(error)
-                        }
-                    }
+                    self.shouldShowPicturePickerView = false
                 }
         }
         .fullScreenCover(isPresented: $shouldShowCameraView) {
             //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
-            CameraView(pictureURL: $pictureURL)
+            CameraView(pictureURL: $userSelectedImageURL)
         }
         .fullScreenCover(isPresented: $shouldShowCreateIDPhotoView) {
-            if let pictureURL = pictureURL,
-               let uiimageFromURL = UIImage(url: pictureURL),
-               let orientationFixedUIImage = uiimageFromURL.orientationFixed()
-            {
+            if let userSelectedImageURL = userSelectedImageURL {
                 CreateIDPhotoViewContainer(
-                    sourceUIImage: orientationFixedUIImage
+                    sourcePhotoURL: userSelectedImageURL
                 )
+                .onDoneCreateIDPhotoProcess { newCreatedIDPhoto in
+                    self.dismissCreateIDPhotoView()
+                    
+                    self.showIDPhotoDetailView(displayingCreatedIDPhoto: newCreatedIDPhoto)
+                }
             }
         }
+        .background {
+            NavigationLink(
+                destination: displayTargetIDPhotoDetailView,
+                tag: 0,
+                selection: $navigationLinkSelectionForIDPhotoDetailView
+            ) {
+                EmptyView()
+            }
+            .hidden()
+        }
+        .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
+
+            let isSelectedImageURLNotNil: Bool = newUserSelectedImageURL != nil
+            
+            self.shouldShowCreateIDPhotoView = isSelectedImageURLNotNil
+        }
         .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
+    }
+}
+
+extension TopViewContainer {
+
+    private func deleteSavedFile(
+        fileName: String,
+        in relativeFilePathFromRoot: String,
+        relativeTo rootSearchPathDirectory: FileManager.SearchPathDirectory,
+        with fileManager: FileManager = .default
+    ) -> Void {
+        
+        let fileSaveRootDirectoryURL: URL? = fileManager.urls(for: rootSearchPathDirectory, in: .userDomainMask).first
+        
+        let fileSaveDestinationURL: URL = .init(
+            fileURLWithPath: relativeFilePathFromRoot,
+            isDirectory: true,
+            relativeTo: fileSaveRootDirectoryURL
+        )
+        
+        let savedFilePathURL: URL = fileSaveDestinationURL
+            .appendingPathComponent(fileName, conformingTo: .fileURL)
+        
+        guard fileManager.fileExists(atPath: savedFilePathURL.path) else { return }
+        
+        do {
+            try fileManager.removeItem(at: savedFilePathURL)
+        } catch {
+            print(error)
+        }
     }
 }
 
@@ -189,6 +399,7 @@ struct TopViewContainer_Previews: PreviewProvider {
                         screenSizeHelper.updateScreenSize(screenWidth: screenSize.width, screenHeight: screenSize.height)
                     }
             }
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
             .environmentObject(screenSizeHelper)
         }
     }

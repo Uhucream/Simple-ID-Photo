@@ -21,7 +21,18 @@ struct IDPhotoBackgroundColorPicker: View {
                     .aspectRatio(1.0, contentMode: .fit)
                     .padding(4)
                     .overlay {
-                        if color == selectedBackgroundColor {
+                        
+                        let colorComponents: RGBAColorComponents? = color.rgba
+                        let selectedColorComponents: RGBAColorComponents? = selectedBackgroundColor.rgba
+                        
+                        let isRedSameValue: Bool = colorComponents?.red == selectedColorComponents?.red
+                        let isGreenSameValue: Bool = colorComponents?.green == selectedColorComponents?.green
+                        let isBlueSameValue: Bool = colorComponents?.blue == selectedColorComponents?.blue
+                        let isAlphaSameValue: Bool = colorComponents?.alpha == selectedColorComponents?.alpha
+                        
+                        let isSelected: Bool = isRedSameValue && isGreenSameValue && isBlueSameValue && isAlphaSameValue
+                        
+                        if isSelected {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.tintColor, lineWidth: 2)
                         }

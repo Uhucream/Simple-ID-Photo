@@ -46,7 +46,7 @@
         <attribute name="top" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="idPhotoSize" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CustomIDPhotoSize" inverseName="marginsAroundFace" inverseEntity="CustomIDPhotoSize"/>
     </entity>
-    <entity name="GeneratedIDPhoto" representedClassName="GeneratedIDPhoto" syncable="YES" codeGenerationType="class">
+    <entity name="GeneratedIDPhoto" representedClassName="GeneratedIDPhoto" elementID="GeneratedIDPhoto" versionHashModifier="1" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="imageURL" optional="YES" attributeType="String"/>

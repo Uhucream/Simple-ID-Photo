@@ -1,40 +1,26 @@
 //
-//  CreateIDPhotoView.swift
+//  EditIDPhotoView.swift
 //  Simple ID Photo
 //  
-//  Created by TakashiUshikoshi on 2023/01/09
+//  Created by TakashiUshikoshi on 2023/03/07
 //  
 //
 
 import SwiftUI
 
-struct IDPhotoBackgroundColor {
-    let name: String
-    let color: Color
-}
+struct EditIDPhotoView: View {
 
-enum IDPhotoProcessSelection: Int, Identifiable {
-    case backgroundColor
-    case size
-    
-    var id: Int {
-        return self.rawValue
-    }
-}
-
-struct CreateIDPhotoView: View {
-    private let BACKGROUND_COLORS: [Color] = [
-        .idPhotoBackgroundColors.blue,
-        .idPhotoBackgroundColors.gray
-    ]
-    
-    @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor
+    @Binding var selectedProcess: IDPhotoProcessSelection
     
     @Binding var selectedBackgroundColor: Color
     
     @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
     
     @Binding var previewUIImage: UIImage?
+    
+    @Binding var shouldDisableDoneButton: Bool
+    
+    var availableBackgroundColors: [Color]
     
     private(set) var onTapDismissButtonCallback: (() -> Void)? = nil
 
@@ -70,7 +56,7 @@ struct CreateIDPhotoView: View {
                             .fontWeight(.light)
                     }
                 }
-                .font(Font.subheadline)
+                .font(.subheadline)
                 .foregroundColor(.white)
                 .transaction { transaction in
                     transaction.animation = .none
@@ -103,7 +89,7 @@ struct CreateIDPhotoView: View {
                             Spacer()
                             
                             IDPhotoBackgroundColorPicker(
-                                availableBackgroundColors: BACKGROUND_COLORS,
+                                availableBackgroundColors: self.availableBackgroundColors,
                                 selectedBackgroundColor: $selectedBackgroundColor
                             )
                             
@@ -194,6 +180,7 @@ struct CreateIDPhotoView: View {
                     }
                     .tint(.yellow)
                     .controlSize(.mini)
+                    .disabled(shouldDisableDoneButton)
                 }
                 .frame(maxHeight: 28)
                 .padding(.vertical)
@@ -202,25 +189,31 @@ struct CreateIDPhotoView: View {
         }
         .background {
             Color
-                .fixedBlack
-                .overlay {
-                    BlurView(blurStyle: .systemChromeMaterialDark)
-                }
+                .black
+                .overlay(.bar)
+                .environment(\.colorScheme, .dark)
                 .edgesIgnoringSafeArea(.all)
         }
     }
 }
 
-struct CreateIDPhotoView_Previews: PreviewProvider {
+struct EditIDPhotoView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateIDPhotoView(
+        EditIDPhotoView(
+            selectedProcess: .constant(.backgroundColor),
             selectedBackgroundColor: .constant(
                 Color.idPhotoBackgroundColors.blue
             ),
             selectedIDPhotoSize: .constant(.original),
             previewUIImage: .constant(
-                .init(named: "TimCook")
-            )
+                .init(named: "SampleIDPhoto")
+            ),
+            shouldDisableDoneButton: .constant(true),
+            availableBackgroundColors: [
+                .idPhotoBackgroundColors.blue,
+                .idPhotoBackgroundColors.gray
+            ]
         )
+        .previewDisplayName("Edit ID Photo View")
     }
 }
