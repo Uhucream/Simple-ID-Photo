@@ -164,16 +164,10 @@ struct CreateIDPhotoViewContainer: View {
         backgroundColor: Color
     ) async -> CIImage? {
         do {
-            let paintedSourcePhoto: CIImage? = try await {
-                if backgroundColor == .clear {
-                    return sourcePhoto
-                }
-                
-                return try await paintingImageBackgroundColor(
-                    sourceImage: sourcePhoto,
-                    backgroundColor: backgroundColor
-                )
-            }()
+            let paintedSourcePhoto: CIImage? = try await paintingImageBackgroundColor(
+                sourceImage: sourcePhoto,
+                backgroundColor: backgroundColor
+            )
             
             if idPhotoSizeVariant == .original {
                 return paintedSourcePhoto
@@ -364,6 +358,18 @@ struct CreateIDPhotoViewContainer: View {
         ) { newSelectedSizeVariant, newSelectedBackgroundColor in
             Task {
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                
+                if newSelectedBackgroundColor == .clear {
+                    let croppedPhoto: CIImage? = await croppingImage(sourceImage: sourcePhotoCIImage, sizeVariant: newSelectedSizeVariant)
+                    
+                    guard let croppedPhotoUIImage = croppedPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                    
+                    Task { @MainActor in
+                        self.previewUIImage = croppedPhotoUIImage
+                    }
+                    
+                    return
+                }
                 
                 let composedIDPhoto: CIImage? = await self.composeIDPhoto(
                     sourcePhoto: sourcePhotoCIImage,
