@@ -25,7 +25,9 @@ enum IDPhotoProcessSelection: Int, Identifiable {
 struct CreateIDPhotoView: View {
     private let BACKGROUND_COLORS: [Color] = [
         .idPhotoBackgroundColors.blue,
-        .idPhotoBackgroundColors.gray
+        .idPhotoBackgroundColors.gray,
+        .idPhotoBackgroundColors.white,
+        .idPhotoBackgroundColors.brown,
     ]
     
     @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor

@@ -212,6 +212,12 @@ struct CreateIDPhotoViewContainer: View {
             
         case .idPhotoBackgroundColors.gray:
             return "グレー"
+            
+        case .idPhotoBackgroundColors.white:
+            return "白"
+            
+        case .idPhotoBackgroundColors.brown:
+            return "茶"
 
         default:
             return ""
