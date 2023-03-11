@@ -49,6 +49,8 @@ struct CreateIDPhotoViewContainer: View {
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
     
+    @State private var selectedBackgroundColorLabel: String = ""
+    
     @State private var croppingRect: CGRect = .zero
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
@@ -199,6 +201,23 @@ struct CreateIDPhotoViewContainer: View {
         }
     }
     
+    func generateBackgroundColorLabel(_ color: Color) -> String {
+        switch color {
+
+        case .clear:
+            return "背景色なし"
+            
+        case .idPhotoBackgroundColors.blue:
+            return "青"
+            
+        case .idPhotoBackgroundColors.gray:
+            return "グレー"
+
+        default:
+            return ""
+        }
+    }
+    
     func handleTapDoneButton() -> Void {
         Task {
             do {
@@ -307,6 +326,7 @@ struct CreateIDPhotoViewContainer: View {
             if #available(iOS 16, *) {
                 CreateIDPhotoView(
                     selectedBackgroundColor: $selectedBackgroundColor,
+                    selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation()
                 )
@@ -318,6 +338,7 @@ struct CreateIDPhotoViewContainer: View {
             } else {
                 CreateIDPhotoView(
                     selectedBackgroundColor: $selectedBackgroundColor,
+                    selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation()
                 )
@@ -327,6 +348,9 @@ struct CreateIDPhotoViewContainer: View {
                 .onTapDoneButton(action: handleTapDoneButton)
                 .navigationBarHidden(true)
             }
+        }
+        .onReceive(Just(selectedBackgroundColor)) { newSelectedBackgroundColor in
+            self.selectedBackgroundColorLabel = generateBackgroundColorLabel(newSelectedBackgroundColor)
         }
         .onReceive(
             Just(selectedIDPhotoSizeVariant)
