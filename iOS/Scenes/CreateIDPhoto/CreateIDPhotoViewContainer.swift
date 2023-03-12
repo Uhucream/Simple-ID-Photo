@@ -29,12 +29,28 @@ struct CreateIDPhotoViewContainer: View {
         return .init(contentsOf: sourcePhotoTemporaryURL)
     }
     
-    private var sourceImageOrientation: UIImage.Orientation
+    private var orientationFixedSourceUIImage: UIImage? {
+        let uiImageFromURL: UIImage = .init(url: sourcePhotoTemporaryURL)
+        
+        let orientationFixedImage: UIImage? = uiImageFromURL.orientationFixed()
+        
+        return orientationFixedImage
+    }
+    
+    private var sourceImageOrientation: UIImage.Orientation {
+        let uiImageFromURL: UIImage = .init(url: sourcePhotoTemporaryURL)
+        
+        let orientationFixedImage: UIImage? = uiImageFromURL.orientationFixed()
+        
+        let orientation: UIImage.Orientation = orientationFixedImage?.imageOrientation ?? .up
+        
+        return orientation
+    }
     
     private var visionFrameworkHelper: VisionFrameworkHelper {
         .init(
-            sourceCIImage: sourcePhotoCIImage,
-            sourceImageOrientation: .init(sourceImageOrientation)
+            sourceCIImage: orientationFixedSourceUIImage?.ciImage(),
+            sourceImageOrientation: .init(orientationFixedSourceUIImage?.imageOrientation ?? .up)
         )
     }
     
@@ -61,12 +77,7 @@ struct CreateIDPhotoViewContainer: View {
         
         self.sourcePhotoTemporaryURL = sourcePhotoURL
         
-        let uiImageFromURL: UIImage = .init(url: sourcePhotoURL)
-        let orientationFixedUIImage: UIImage? = uiImageFromURL.orientationFixed()
-        
-        self.sourceImageOrientation = orientationFixedUIImage?.imageOrientation ?? .up
-        
-        _previewUIImage = State(initialValue: orientationFixedUIImage)
+        _previewUIImage = State(initialValue: orientationFixedSourceUIImage)
     }
     
     func onDoneCreateIDPhotoProcess(action: @escaping (CreatedIDPhoto) -> Void) -> Self {
@@ -164,10 +175,20 @@ struct CreateIDPhotoViewContainer: View {
         backgroundColor: Color
     ) async -> CIImage? {
         do {
-            let paintedSourcePhoto: CIImage? = try await paintingImageBackgroundColor(
-                sourceImage: sourcePhoto,
-                backgroundColor: backgroundColor
-            )
+            var paintedSourcePhoto: CIImage? {
+                get async throws {
+                    if backgroundColor == .clear {
+                        return sourcePhoto
+                    }
+                    
+                    return try await paintingImageBackgroundColor(
+                        sourceImage: sourcePhoto,
+                        backgroundColor: backgroundColor
+                    )
+                }
+            }
+            
+            guard let paintedSourcePhoto = try await paintedSourcePhoto else { return nil }
             
             if idPhotoSizeVariant == .original {
                 return paintedSourcePhoto
@@ -182,8 +203,6 @@ struct CreateIDPhotoViewContainer: View {
             if idPhotoSizeVariant == .passport {
                 return nil
             }
-            
-            guard let paintedSourcePhoto = paintedSourcePhoto else { return nil }
             
             let croppedImage: CIImage? = await croppingImage(sourceImage: paintedSourcePhoto, sizeVariant: idPhotoSizeVariant)
             
@@ -224,8 +243,10 @@ struct CreateIDPhotoViewContainer: View {
                 
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
+                guard let orientationFixedSourceUIImage = orientationFixedSourceUIImage else { return }
+                
                 let composedIDPhoto: CIImage? = await self.composeIDPhoto(
-                    sourcePhoto: sourcePhotoCIImage,
+                    sourcePhoto: orientationFixedSourceUIImage.ciImage() ?? sourcePhotoCIImage,
                     idPhotoSizeVariant: self.selectedIDPhotoSizeVariant,
                     backgroundColor: self.selectedBackgroundColor
                 )
@@ -356,22 +377,13 @@ struct CreateIDPhotoViewContainer: View {
                 .combineLatest(Just(selectedBackgroundColor))
         ) { newSelectedSizeVariant, newSelectedBackgroundColor in
             Task {
+                
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
-                if newSelectedBackgroundColor == .clear {
-                    let croppedPhoto: CIImage? = await croppingImage(sourceImage: sourcePhotoCIImage, sizeVariant: newSelectedSizeVariant)
-                    
-                    guard let croppedPhotoUIImage = croppedPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
-                    
-                    Task { @MainActor in
-                        self.previewUIImage = croppedPhotoUIImage
-                    }
-                    
-                    return
-                }
+                guard let orientationFixedSourceUIImage = orientationFixedSourceUIImage else { return }
                 
                 let composedIDPhoto: CIImage? = await self.composeIDPhoto(
-                    sourcePhoto: sourcePhotoCIImage,
+                    sourcePhoto: orientationFixedSourceUIImage.ciImage() ?? sourcePhotoCIImage,
                     idPhotoSizeVariant: newSelectedSizeVariant,
                     backgroundColor: newSelectedBackgroundColor
                 )
