@@ -70,6 +70,7 @@
 		47CDB2BA29A5070F007FDE8E /* Measurement<UnitLength>+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */; };
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
+		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */; };
 /* End PBXBuildFile section */
 
@@ -150,6 +151,7 @@
 		47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Measurement<UnitLength>+.swift"; sourceTree = "<group>"; };
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
+		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+ConvenienceInitializer.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -443,6 +445,7 @@
 				472EA52229BA123500463D32 /* EditIDPhoto */,
 				478A420229AA3E7300626316 /* IDPhotoDetail */,
 				472BCF06299E120A007D9BC3 /* ConfirmSave */,
+				47F9084F29BDAB06000F7394 /* Settings */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -523,6 +526,22 @@
 				4778B34A29A7421600F35EE0 /* SwiftUI */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		47F9084F29BDAB06000F7394 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				47F9085029BDAB16000F7394 /* SettingsTop */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		47F9085029BDAB16000F7394 /* SettingsTop */ = {
+			isa = PBXGroup;
+			children = (
+				47F9085129BDAB2D000F7394 /* SettingsTopView.swift */,
+			);
+			path = SettingsTop;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -685,6 +704,7 @@
 				47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */,
 				47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */,
 				475FB236296FD5000059796F /* UIImage+.swift in Sources */,
+				47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */,
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
 				4707215029B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift in Sources */,
