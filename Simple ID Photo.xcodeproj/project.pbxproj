@@ -71,6 +71,7 @@
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
+		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */; };
 /* End PBXBuildFile section */
 
@@ -152,6 +153,7 @@
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
+		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+ConvenienceInitializer.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -532,6 +534,7 @@
 			isa = PBXGroup;
 			children = (
 				47F9085029BDAB16000F7394 /* SettingsTop */,
+				47F9085329BDAD68000F7394 /* SettingsAbout */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -542,6 +545,14 @@
 				47F9085129BDAB2D000F7394 /* SettingsTopView.swift */,
 			);
 			path = SettingsTop;
+			sourceTree = "<group>";
+		};
+		47F9085329BDAD68000F7394 /* SettingsAbout */ = {
+			isa = PBXGroup;
+			children = (
+				47F9085429BDAD88000F7394 /* SettingsAboutView.swift */,
+			);
+			path = SettingsAbout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -706,6 +717,7 @@
 				475FB236296FD5000059796F /* UIImage+.swift in Sources */,
 				47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */,
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
+				47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
 				4707215029B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift in Sources */,
 				47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */,
