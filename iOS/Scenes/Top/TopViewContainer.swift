@@ -225,6 +225,7 @@ struct TopViewContainer: View {
     }
     
     var body: some View {
+        //  MARK: navigationTitle や toolbar より上のレイヤーに ProgressView をかぶせたいので、ZStack の内側に NavigationView を配置
         ZStack {
             NavigationView {
                 Group {
