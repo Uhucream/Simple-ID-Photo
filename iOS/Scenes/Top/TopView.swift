@@ -280,38 +280,36 @@ struct TopView_Previews: PreviewProvider {
         
         let viewContext = PersistenceController.preview.container.viewContext
         
-        NavigationView {
-            GeometryReader { geometry in
-                TopView(
-                    currentEditMode: .constant(.inactive),
-                    createdIDPhotoHistories: [
-                        .init(
-                            on: viewContext,
-                            createdAt: .distantPast,
-                            imageFileName: mockHistoriesData[3].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!.absoluteString,
-                            updatedAt: .now
-                        ),
-                        .init(
-                            on: viewContext,
-                            createdAt: .distantPast,
-                            imageFileName: "",
-                            updatedAt: .now
-                        )
-                    ],
-                    dropAllowedFileUTTypes: [.image]
-                )
-                .onAppear {
-                    screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)
-                    screenSizeHelper.updateScreenSize(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
-                }
-                .onChange(of: geometry.safeAreaInsets) { (safeAreaInsets: EdgeInsets) in
-                    screenSizeHelper.updateSafeAreaInsets(safeAreaInsets)
-                }
-                .onChange(of: geometry.size) { (screenSize: CGSize) in
-                    screenSizeHelper.updateScreenSize(screenWidth: screenSize.width, screenHeight: screenSize.height)
-                }
+        GeometryReader { geometry in
+            TopView(
+                currentEditMode: .constant(.inactive),
+                createdIDPhotoHistories: [
+                    .init(
+                        on: viewContext,
+                        createdAt: .distantPast,
+                        imageFileName: mockHistoriesData[3].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!.absoluteString,
+                        updatedAt: .now
+                    ),
+                    .init(
+                        on: viewContext,
+                        createdAt: .distantPast,
+                        imageFileName: "",
+                        updatedAt: .now
+                    )
+                ],
+                dropAllowedFileUTTypes: [.image]
+            )
+            .onAppear {
+                screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)
+                screenSizeHelper.updateScreenSize(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
             }
-            .environmentObject(screenSizeHelper)
+            .onChange(of: geometry.safeAreaInsets) { (safeAreaInsets: EdgeInsets) in
+                screenSizeHelper.updateSafeAreaInsets(safeAreaInsets)
+            }
+            .onChange(of: geometry.size) { (screenSize: CGSize) in
+                screenSizeHelper.updateScreenSize(screenWidth: screenSize.width, screenHeight: screenSize.height)
+            }
         }
+        .environmentObject(screenSizeHelper)
     }
 }
