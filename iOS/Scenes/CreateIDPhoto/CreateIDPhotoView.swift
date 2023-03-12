@@ -95,7 +95,6 @@ struct CreateIDPhotoView: View {
                         }
                 }
             }
-            .frame(maxHeight: 280)
             
             Spacer()
             
