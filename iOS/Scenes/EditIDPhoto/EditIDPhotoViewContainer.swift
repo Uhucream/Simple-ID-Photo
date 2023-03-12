@@ -16,7 +16,9 @@ struct EditIDPhotoViewContainer: View {
     
     private let BACKGROUND_COLORS: [Color] = [
         .idPhotoBackgroundColors.blue,
-        .idPhotoBackgroundColors.gray
+        .idPhotoBackgroundColors.gray,
+        .idPhotoBackgroundColors.white,
+        .idPhotoBackgroundColors.brown
     ]
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -369,6 +371,9 @@ struct EditIDPhotoViewContainer: View {
             Just(selectedIDPhotoSizeVariant)
                 .combineLatest(Just(selectedBackgroundColor))
         ) { newSelectedSizeVariant, newSelectedBackgroundColor in
+            
+            guard hasAnyModifications else { return }
+            
             Task {
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
