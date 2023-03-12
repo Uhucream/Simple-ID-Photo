@@ -220,10 +220,20 @@ struct EditIDPhotoViewContainer: View {
         backgroundColor: Color
     ) async -> CIImage? {
         do {
-            let paintedSourcePhoto: CIImage? = try await paintImageBackgroundColor(
-                sourceImage: sourcePhoto,
-                backgroundColor: backgroundColor
-            )
+            var paintedSourcePhoto: CIImage? {
+                get async throws {
+                    if backgroundColor == .clear {
+                        return sourcePhoto
+                    }
+                    
+                    return try await paintImageBackgroundColor(
+                        sourceImage: sourcePhoto,
+                        backgroundColor: backgroundColor
+                    )
+                }
+            }
+            
+            guard let paintedSourcePhoto = try await paintedSourcePhoto else { return nil }
             
             if idPhotoSizeVariant == .original {
                 return paintedSourcePhoto
@@ -238,8 +248,6 @@ struct EditIDPhotoViewContainer: View {
             if idPhotoSizeVariant == .passport {
                 return nil
             }
-            
-            guard let paintedSourcePhoto = paintedSourcePhoto else { return nil }
             
             let croppedImage: CIImage? = await croppingImage(sourceImage: paintedSourcePhoto, sizeVariant: idPhotoSizeVariant)
             
