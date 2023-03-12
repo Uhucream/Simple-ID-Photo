@@ -267,6 +267,7 @@ extension IDPhotoDetailViewContainer {
 struct IDPhotoDetailViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
+            
             let mockCreatedIDPhoto: CreatedIDPhoto = .init(
                 on: PersistenceController.preview.container.viewContext,
                 createdAt: .now.addingTimeInterval(-1000),
@@ -274,7 +275,21 @@ struct IDPhotoDetailViewContainer_Previews: PreviewProvider {
                 updatedAt: .now
             )
             
-            IDPhotoDetailViewContainer(createdIDPhoto: mockCreatedIDPhoto)
+            let screenSizeHelper: ScreenSizeHelper = .shared
+            
+            GeometryReader { geometry in
+                
+                let screenSize: CGSize = geometry.size
+                
+                IDPhotoDetailViewContainer(createdIDPhoto: mockCreatedIDPhoto)
+                    .onAppear {
+                        screenSizeHelper.updateScreenSize(screenSize)
+                    }
+                    .onChange(of: screenSize) { newSize in
+                        screenSizeHelper.updateScreenSize(newSize)
+                    }
+                    .environmentObject(screenSizeHelper)
+            }
         }
     }
 }

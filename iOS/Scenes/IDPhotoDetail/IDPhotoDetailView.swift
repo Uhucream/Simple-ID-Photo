@@ -21,6 +21,8 @@ struct IDPhotoDetailView: View {
     
     @Environment(\.colorScheme) var currentColorScheme
     
+    @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
+    
     @Binding var idPhotoImageURL: URL?
     @Binding var idPhotoSizeType: IDPhotoSizeVariant
     
@@ -100,7 +102,9 @@ struct IDPhotoDetailView: View {
                         return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
                     }()
                     
-                    let imageMaxWidth: CGFloat = 250
+                    let screenWidth: CGFloat = screenSizeHelper.screenSize.width
+                    
+                    let imageMaxWidth: CGFloat = 50%.of(screenWidth)
                     
                     let asyncImageRenderingID: String = "\(updatedAt)"
                     
@@ -225,13 +229,28 @@ struct IDPhotoDetailView: View {
 
 struct IDPhotoDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        IDPhotoDetailView(
-            idPhotoImageURL: .constant(
-                mockHistoriesData[0].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!
-            ),
-            idPhotoSizeType: .constant(IDPhotoSizeVariant.w30_h40),
-            createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!),
-            updatedAt: .constant(.now)
-        )
+        
+        let screenSizeHelper: ScreenSizeHelper = .shared
+        
+        GeometryReader { geometry in
+            
+            let screenSize: CGSize = geometry.size
+            
+            IDPhotoDetailView(
+                idPhotoImageURL: .constant(
+                    mockHistoriesData[0].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!
+                ),
+                idPhotoSizeType: .constant(IDPhotoSizeVariant.w30_h40),
+                createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!),
+                updatedAt: .constant(.now)
+            )
+            .onAppear {
+                screenSizeHelper.updateScreenSize(screenSize)
+            }
+            .onChange(of: screenSize) { newSize in
+                screenSizeHelper.updateScreenSize(newSize)
+            }
+            .environmentObject(screenSizeHelper)
+        }
     }
 }
