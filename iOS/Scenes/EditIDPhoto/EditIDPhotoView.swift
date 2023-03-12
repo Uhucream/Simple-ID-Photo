@@ -13,6 +13,7 @@ struct EditIDPhotoView: View {
     @Binding var selectedProcess: IDPhotoProcessSelection
     
     @Binding var selectedBackgroundColor: Color
+    @Binding var selectedBackgroundColorLabel: String
     
     @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
     
@@ -85,38 +86,47 @@ struct EditIDPhotoView: View {
             VStack(spacing: 0) {
                 ZStack {
                     if self.selectedProcess == .backgroundColor {
-                        HStack {
-                            Spacer()
+                        VStack {
+                            Text(selectedBackgroundColorLabel)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 4))
+                                .environment(\.colorScheme, .dark)
                             
-                            HStack(spacing: 12) {
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(.clear)
-                                    .aspectRatio(1.0, contentMode: .fit)
-                                    .overlay(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 4))
-                                    .padding(4)
-                                    .overlay {
-                                        if selectedBackgroundColor == .clear {
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.tintColor, lineWidth: 2)
-                                        }
-                                    }
-                                    .overlay {
-                                        Image(systemName: "nosign")
-                                            .foregroundColor(.white)
-                                    }
-                                    .frame(maxHeight: 40)
-                                    .environment(\.colorScheme, .dark)
-                                    .onTapGesture {
-                                        self.selectedBackgroundColor = .clear
-                                    }
+                            HStack {
+                                Spacer()
                                 
-                                IDPhotoBackgroundColorPicker(
-                                    availableBackgroundColors: self.availableBackgroundColors,
-                                    selectedBackgroundColor: $selectedBackgroundColor
-                                )
+                                HStack(spacing: 12) {
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(.clear)
+                                        .aspectRatio(1.0, contentMode: .fit)
+                                        .overlay(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 4))
+                                        .padding(4)
+                                        .overlay {
+                                            if selectedBackgroundColor == .clear {
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .stroke(Color.tintColor, lineWidth: 2)
+                                            }
+                                        }
+                                        .overlay {
+                                            Image(systemName: "nosign")
+                                                .foregroundColor(.white)
+                                        }
+                                        .frame(maxHeight: 40)
+                                        .environment(\.colorScheme, .dark)
+                                        .onTapGesture {
+                                            self.selectedBackgroundColor = .clear
+                                        }
+                                    
+                                    IDPhotoBackgroundColorPicker(
+                                        availableBackgroundColors: self.availableBackgroundColors,
+                                        selectedBackgroundColor: $selectedBackgroundColor
+                                    )
+                                }
+                                
+                                Spacer()
                             }
-                            
-                            Spacer()
                         }
                     }
                     
@@ -227,6 +237,7 @@ struct EditIDPhotoView_Previews: PreviewProvider {
             selectedBackgroundColor: .constant(
                 Color.idPhotoBackgroundColors.blue
             ),
+            selectedBackgroundColorLabel: .constant("青"),
             selectedIDPhotoSize: .constant(.original),
             previewUIImage: .constant(
                 .init(named: "SampleIDPhoto")

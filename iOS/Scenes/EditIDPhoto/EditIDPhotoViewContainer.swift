@@ -54,6 +54,8 @@ struct EditIDPhotoViewContainer: View {
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
     
+    @State private var selectedBackgroundColorLabel: String = ""
+    
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
     @State private var isBackgroundColorChanged: Bool = false
@@ -99,14 +101,17 @@ struct EditIDPhotoViewContainer: View {
         let appliedIDPhotoSize: AppliedIDPhotoSize? = editTargetCreatedIDPhoto.appliedIDPhotoSize
         
         if let appliedBackgroundColor = appliedBackgroundColor {
-            _selectedBackgroundColor = State(
-                initialValue: Color(
-                    red: appliedBackgroundColor.red,
-                    green: appliedBackgroundColor.green,
-                    blue: appliedBackgroundColor.blue,
-                    opacity: appliedBackgroundColor.alpha
-                )
+            
+            let colorFromEntity: Color = .init(
+                red: appliedBackgroundColor.red,
+                green: appliedBackgroundColor.green,
+                blue: appliedBackgroundColor.blue,
+                opacity: appliedBackgroundColor.alpha
             )
+            
+            _selectedBackgroundColorLabel = State(initialValue: generateBackgroundColorLabel(colorFromEntity))
+            
+            _selectedBackgroundColor = State(initialValue: colorFromEntity)
         }
         
         if let appliedIDPhotoSize = appliedIDPhotoSize {
@@ -259,10 +264,58 @@ struct EditIDPhotoViewContainer: View {
         }
     }
     
+    func generateBackgroundColorLabel(_ color: Color) -> String {
+        
+        let colorRGBA: RGBAColorComponents? = color.rgba
+        
+        if
+            let colorRGBA = colorRGBA,
+            let clearRGBA = Color.clear.rgba,
+            colorRGBA == clearRGBA
+        {
+            return "背景色なし"
+        }
+        
+        if
+            let colorRGBA = colorRGBA,
+            let blueRGBA = Color.idPhotoBackgroundColors.blue.rgba,
+            colorRGBA == blueRGBA
+        {
+            return "青"
+        }
+        
+        if
+            let colorRGBA = colorRGBA,
+            let grayRGBA = Color.idPhotoBackgroundColors.gray.rgba,
+            colorRGBA == grayRGBA
+        {
+            return "グレー"
+        }
+        
+        if
+            let colorRGBA = colorRGBA,
+            let whiteRGBA = Color.idPhotoBackgroundColors.white.rgba,
+            colorRGBA == whiteRGBA
+        {
+            return "白"
+        }
+        
+        if
+            let colorRGBA = colorRGBA,
+            let brownRGBA = Color.idPhotoBackgroundColors.brown.rgba,
+            colorRGBA == brownRGBA
+        {
+            return "茶"
+        }
+        
+        return "不明"
+    }
+    
     var body: some View {
         EditIDPhotoView(
             selectedProcess: $currentSelectedProcess,
             selectedBackgroundColor: $selectedBackgroundColor,
+            selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
             selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
             previewUIImage: $previewUIImage,
             shouldDisableDoneButton: Binding<Bool>(
@@ -397,6 +450,9 @@ struct EditIDPhotoViewContainer: View {
                     self.previewUIImage = composedIDPhotoUIImage
                 }
             }
+        }
+        .onReceive(Just(selectedBackgroundColor)) { newSelectedBackgroundColor in
+            self.selectedBackgroundColorLabel = generateBackgroundColorLabel(newSelectedBackgroundColor)
         }
         .onReceive(
             Just(selectedIDPhotoSizeVariant)
