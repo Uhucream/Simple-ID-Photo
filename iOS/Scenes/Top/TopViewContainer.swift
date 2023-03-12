@@ -24,6 +24,8 @@ struct TopViewContainer: View {
         ]
     ) var createdIDPhotoHistories: FetchedResults<CreatedIDPhoto>
     
+    @State private var shouldShowSettingsView: Bool = false
+    
     @State private var shouldShowPicturePickerView: Bool = false
     
     @State private var shouldShowCameraView: Bool = false
@@ -43,6 +45,10 @@ struct TopViewContainer: View {
     @State private var currentEditMode: EditMode = .inactive
     @State private var deletingTargetHistories: [CreatedIDPhoto] = []
     
+    func showSettingsView() -> Void {
+        shouldShowSettingsView = true
+    }
+    
     func showPicturePickerView() -> Void {
         shouldShowPicturePickerView = true
     }
@@ -57,6 +63,10 @@ struct TopViewContainer: View {
         )
         
         self.navigationLinkSelectionForIDPhotoDetailView = 0
+    }
+    
+    func dismissSettingsView() -> Void {
+        shouldShowSettingsView = false
     }
     
     func dismissCreateIDPhotoView() -> Void {
@@ -274,6 +284,17 @@ struct TopViewContainer: View {
                 Text("削除した証明写真は復元できません")
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(
+                        action: {
+                            showSettingsView()
+                        }
+                    ) {
+                        Label("設定", systemImage: "gearshape")
+                            .labelStyle(.iconOnly)
+                    }
+                }
+                
                 ToolbarItem(placement: .primaryAction) {
                     if createdIDPhotoHistories.count > 0 {
                         EditButton()
@@ -307,6 +328,23 @@ struct TopViewContainer: View {
                     .overlay {
                         ProgressView()
                     }
+            }
+        }
+        .sheet(isPresented: $shouldShowSettingsView) {
+            NavigationView {
+                SettingsTopView()
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button(
+                                action: {
+                                    dismissSettingsView()
+                                }
+                            ) {
+                                Text("閉じる")
+                            }
+                        }
+                }
             }
         }
         .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
