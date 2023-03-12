@@ -227,23 +227,88 @@ struct TopViewContainer: View {
     var body: some View {
         ZStack {
             NavigationView {
-                TopView(
-                    currentEditMode: $currentEditMode,
-                    createdIDPhotoHistories: createdIDPhotoHistories,
-                    dropAllowedFileUTTypes: [.image],
-                    onTapSelectFromAlbumButton: {
-                        showPicturePickerView()
-                    },
-                    onTapTakePictureButton: {
-                        showCameraView()
+                Group {
+                    TopView(
+                        currentEditMode: $currentEditMode,
+                        createdIDPhotoHistories: createdIDPhotoHistories,
+                        dropAllowedFileUTTypes: [.image],
+                        onTapSelectFromAlbumButton: {
+                            showPicturePickerView()
+                        },
+                        onTapTakePictureButton: {
+                            showCameraView()
+                        }
+                    )
+                    .onDeleteHistoryCard { deletingTargetHistories in
+                        self.deletingTargetHistories = deletingTargetHistories
+                        
+                        self.showDeleteConfirmationDialog()
                     }
-                )
-                .onDeleteHistoryCard { deletingTargetHistories in
-                    self.deletingTargetHistories = deletingTargetHistories
-                    
-                    self.showDeleteConfirmationDialog()
+                    .onDropFile(action: setPictureURLFromDroppedItem)
+                    .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
+                        guard newHistoriesCount == 0 else { return }
+                        
+                        self.currentEditMode = .inactive
+                    }
+                    .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
+                        
+                        let isSelectedImageURLNotNil: Bool = newUserSelectedImageURL != nil
+                        
+                        self.shouldShowCreateIDPhotoView = isSelectedImageURLNotNil
+                    }
                 }
-                .onDropFile(action: setPictureURLFromDroppedItem)
+                .background {
+                    NavigationLink(
+                        destination: displayTargetIDPhotoDetailView,
+                        tag: 0,
+                        selection: $navigationLinkSelectionForIDPhotoDetailView
+                    ) {
+                        EmptyView()
+                    }
+                    .hidden()
+                }
+                .sheet(isPresented: $shouldShowSettingsView) {
+                    NavigationView {
+                        SettingsTopView()
+                            .navigationTitle("設定")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button(
+                                        action: {
+                                            dismissSettingsView()
+                                        }
+                                    ) {
+                                        Text("閉じる")
+                                    }
+                                }
+                            }
+                    }
+                }
+                .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
+                    PicturePickerView()
+                        .onPickerDelegatePickerFuncInvoked { (phpickerViewController, phpickerResults) in
+                            setPictureURLFromPHPickerSelectedItem(phpickerViewController: phpickerViewController, phpickerResults: phpickerResults)
+                            
+                            self.shouldShowPicturePickerView = false
+                        }
+                }
+                .fullScreenCover(isPresented: $shouldShowCameraView) {
+                    //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
+                    CameraView(pictureURL: $userSelectedImageURL)
+                }
+                .fullScreenCover(isPresented: $shouldShowCreateIDPhotoView) {
+                    if let userSelectedImageURL = userSelectedImageURL {
+                        CreateIDPhotoViewContainer(
+                            sourcePhotoURL: userSelectedImageURL
+                        )
+                        .onDoneCreateIDPhotoProcess { newCreatedIDPhoto in
+                            self.dismissCreateIDPhotoView()
+                            
+                            self.showIDPhotoDetailView(displayingCreatedIDPhoto: newCreatedIDPhoto)
+                        }
+                    }
+                }
                 .confirmationDialog(
                     "本当に削除しますか？",
                     isPresented: $shouldShowDeleteConfirmDialog,
@@ -315,11 +380,6 @@ struct TopViewContainer: View {
                     }
                 }
                 .environment(\.editMode, $currentEditMode)
-                .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
-                    guard newHistoriesCount == 0 else { return }
-                    
-                    self.currentEditMode = .inactive
-                }
             }
             
             if self.isPhotoLoadingInProgress {
@@ -331,64 +391,6 @@ struct TopViewContainer: View {
                         ProgressView()
                     }
             }
-        }
-        .sheet(isPresented: $shouldShowSettingsView) {
-            NavigationView {
-                SettingsTopView()
-                    .navigationTitle("設定")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button(
-                                action: {
-                                    dismissSettingsView()
-                                }
-                            ) {
-                                Text("閉じる")
-                            }
-                        }
-                }
-            }
-        }
-        .fullScreenCover(isPresented: $shouldShowPicturePickerView) {
-            PicturePickerView()
-                .onPickerDelegatePickerFuncInvoked { (phpickerViewController, phpickerResults) in
-                    setPictureURLFromPHPickerSelectedItem(phpickerViewController: phpickerViewController, phpickerResults: phpickerResults)
-                    
-                    self.shouldShowPicturePickerView = false
-                }
-        }
-        .fullScreenCover(isPresented: $shouldShowCameraView) {
-            //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
-            CameraView(pictureURL: $userSelectedImageURL)
-        }
-        .fullScreenCover(isPresented: $shouldShowCreateIDPhotoView) {
-            if let userSelectedImageURL = userSelectedImageURL {
-                CreateIDPhotoViewContainer(
-                    sourcePhotoURL: userSelectedImageURL
-                )
-                .onDoneCreateIDPhotoProcess { newCreatedIDPhoto in
-                    self.dismissCreateIDPhotoView()
-                    
-                    self.showIDPhotoDetailView(displayingCreatedIDPhoto: newCreatedIDPhoto)
-                }
-            }
-        }
-        .background {
-            NavigationLink(
-                destination: displayTargetIDPhotoDetailView,
-                tag: 0,
-                selection: $navigationLinkSelectionForIDPhotoDetailView
-            ) {
-                EmptyView()
-            }
-            .hidden()
-        }
-        .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
-
-            let isSelectedImageURLNotNil: Bool = newUserSelectedImageURL != nil
-            
-            self.shouldShowCreateIDPhotoView = isSelectedImageURLNotNil
         }
     }
 }
