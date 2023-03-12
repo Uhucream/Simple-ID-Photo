@@ -7,6 +7,58 @@
 //
 
 import SwiftUI
+import Photos
+import Percentage
+
+enum SavingStatus {
+    case inProgress
+    case succeeded
+    case failed
+}
+
+fileprivate struct SavingProgressView: View {
+    
+    @Binding var savingStatus: SavingStatus
+    
+    var body: some View {
+        Group {
+            GeometryReader { geometry in
+                if savingStatus == .inProgress {
+                    ProgressView("保存しています")
+                        .foregroundColor(.label)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                }
+                
+                if savingStatus == .succeeded {
+                    VStack(spacing: 16) {
+                        Image(systemName: "checkmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 30%.of(geometry.size.height))
+                        
+                        Text("保存しました!")
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                }
+                
+                if savingStatus == .failed {
+                    VStack(spacing: 16) {
+                        Image(systemName: "exclamationmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 30%.of(geometry.size.height))
+                        
+                        Text("失敗しました")
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                }
+            }
+            .font(.title3)
+        }
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .aspectRatio(1, contentMode: .fit)
+    }
+}
 
 struct IDPhotoDetailViewContainer: View {
     
@@ -14,11 +66,16 @@ struct IDPhotoDetailViewContainer: View {
 
     @Environment(\.dismiss) private var dismiss
     
+    @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
+    
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
     
     @State private var selectedIDPhotoProcess: IDPhotoProcessSelection? = nil
     
     @State private var shouldShowDeleteConfirmationDialog: Bool = false
+    
+    @State private var shouldShowProgressView: Bool = false
+    @State private var savingStatus: SavingStatus = .inProgress
     
     private func parseCreatedIDPhotoFileURL() -> URL? {
         let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
@@ -157,6 +214,46 @@ struct IDPhotoDetailViewContainer: View {
             .onTapChangeSizeButton {
                 showEditIDPhotoView(initialDisplayProcess: .size)
             }
+            .onTapSaveImageButton {
+                Task {
+                    do {
+                        self.shouldShowProgressView = true
+                        
+                        try await saveImageToCameraRoll()
+                        
+                        self.savingStatus = .succeeded
+                        
+                        try await Task.sleep(milliseconds: 1200)
+                        
+                        self.shouldShowProgressView = false
+                    } catch {
+                        
+                        self.savingStatus = .failed
+                        
+                        try await Task.sleep(milliseconds: 1200)
+                        
+                        self.shouldShowProgressView = false
+                        
+                        print(error)
+                    }
+                }
+            }
+            .overlay {
+                ZStack {
+                    if shouldShowProgressView {
+                        Color.black
+                            .opacity(0.3)
+                            .environment(\.colorScheme, .dark)
+
+                        SavingProgressView(savingStatus: $savingStatus)
+                            .frame(width: 40%.of(screenSizeHelper.screenSize.width), alignment: .center)
+                    }
+                }
+                .frame(maxHeight: .infinity, alignment: .center)
+                .edgesIgnoringSafeArea(.all)
+                .animation(shouldShowProgressView ? .none : .easeOut, value: shouldShowProgressView)
+                .transition(.opacity)
+            }
             .confirmationDialog(
                 "本当に削除しますか？",
                 isPresented: $shouldShowDeleteConfirmationDialog,
@@ -219,6 +316,25 @@ struct IDPhotoDetailViewContainer: View {
                     dismissEditIDPhotoView()
                 }
             }
+        }
+    }
+}
+
+extension IDPhotoDetailViewContainer {
+    private func saveImageToCameraRoll() async throws -> Void {
+        do {
+            
+            let createdIDPhotoFileURL: URL? = parseCreatedIDPhotoFileURL()
+            
+            guard let createdIDPhotoFileURL = createdIDPhotoFileURL else { return }
+            
+            let photoLibrary: PHPhotoLibrary = .shared()
+            
+            try await photoLibrary.performChanges({
+                PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: createdIDPhotoFileURL)
+            })
+        } catch {
+            throw error
         }
     }
 }
