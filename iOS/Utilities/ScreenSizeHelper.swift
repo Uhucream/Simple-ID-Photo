@@ -12,8 +12,7 @@ import SwiftUI
 final class ScreenSizeHelper: ObservableObject {
     static var shared: ScreenSizeHelper = .init()
     
-    @Published private(set) var screenWidth: CGFloat = .zero
-    @Published private(set) var screenHeight: CGFloat = .zero
+    @Published private(set) var screenSize: CGSize = .zero
     
     @Published private(set) var safeAreaInsets: EdgeInsets = .init()
     
@@ -21,8 +20,7 @@ final class ScreenSizeHelper: ObservableObject {
         self.safeAreaInsets = insets
     }
     
-    func updateScreenSize(screenWidth: CGFloat, screenHeight: CGFloat) {
-        self.screenWidth = screenWidth
-        self.screenHeight = screenHeight
+    func updateScreenSize(_ screenSize: CGSize) {
+        self.screenSize = screenSize
     }
 }

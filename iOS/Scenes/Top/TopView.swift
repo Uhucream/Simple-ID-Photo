@@ -301,13 +301,13 @@ struct TopView_Previews: PreviewProvider {
             )
             .onAppear {
                 screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)
-                screenSizeHelper.updateScreenSize(screenWidth: geometry.size.width, screenHeight: geometry.size.height)
+                screenSizeHelper.updateScreenSize(geometry.size)
             }
             .onChange(of: geometry.safeAreaInsets) { (safeAreaInsets: EdgeInsets) in
                 screenSizeHelper.updateSafeAreaInsets(safeAreaInsets)
             }
             .onChange(of: geometry.size) { (screenSize: CGSize) in
-                screenSizeHelper.updateScreenSize(screenWidth: screenSize.width, screenHeight: screenSize.height)
+                screenSizeHelper.updateScreenSize(screenSize)
             }
         }
         .environmentObject(screenSizeHelper)

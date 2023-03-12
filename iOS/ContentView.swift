@@ -20,22 +20,14 @@ struct ContentView: View {
                     screenSizeHelper
                         .updateSafeAreaInsets(rootGeometry.safeAreaInsets)
                     
-                    screenSizeHelper
-                        .updateScreenSize(
-                            screenWidth: rootGeometry.size.width,
-                            screenHeight: rootGeometry.size.height
-                        )
+                    screenSizeHelper.updateScreenSize(rootGeometry.size)
                 }
                 .onChange(of: rootGeometry.safeAreaInsets) { newSafeAreaInsets in
                     screenSizeHelper
                         .updateSafeAreaInsets(newSafeAreaInsets)
                 }
                 .onChange(of: rootGeometry.size) { (screenSize: CGSize) -> Void in
-                    screenSizeHelper
-                        .updateScreenSize(
-                            screenWidth: screenSize.width,
-                            screenHeight: screenSize.height
-                        )
+                    screenSizeHelper.updateScreenSize(screenSize)
                 }
         }
     }
