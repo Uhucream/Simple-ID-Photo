@@ -333,6 +333,7 @@ struct TopViewContainer: View {
         .sheet(isPresented: $shouldShowSettingsView) {
             NavigationView {
                 SettingsTopView()
+                    .navigationTitle("設定")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
