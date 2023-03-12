@@ -432,22 +432,20 @@ struct TopViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         let screenSizeHelper: ScreenSizeHelper = .shared
         
-        NavigationView {
-            GeometryReader { geometry in
-                TopViewContainer()
-                    .onAppear {
-                        screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)
-                        screenSizeHelper.updateScreenSize(geometry.size)
-                    }
-                    .onChange(of: geometry.safeAreaInsets) { (safeAreaInsets: EdgeInsets) in
-                        screenSizeHelper.updateSafeAreaInsets(safeAreaInsets)
-                    }
-                    .onChange(of: geometry.size) { (screenSize: CGSize) in
-                        screenSizeHelper.updateScreenSize(screenSize)
-                    }
-            }
-            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-            .environmentObject(screenSizeHelper)
+        GeometryReader { geometry in
+            TopViewContainer()
+                .onAppear {
+                    screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)
+                    screenSizeHelper.updateScreenSize(geometry.size)
+                }
+                .onChange(of: geometry.safeAreaInsets) { (safeAreaInsets: EdgeInsets) in
+                    screenSizeHelper.updateSafeAreaInsets(safeAreaInsets)
+                }
+                .onChange(of: geometry.size) { (screenSize: CGSize) in
+                    screenSizeHelper.updateScreenSize(screenSize)
+                }
         }
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(screenSizeHelper)
     }
 }
