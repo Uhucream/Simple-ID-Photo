@@ -26,7 +26,9 @@ struct SettingsTopView: View {
         Form {
             
             Section {
-                Text("\(bundleDisplayName) について")
+                NavigationLink(destination: SettingsAboutView()) {
+                    Text("\(bundleDisplayName) について")
+                }
             }
             
             Section {
