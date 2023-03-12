@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import Photos
 import PhotosUI
 
 struct TopViewContainer: View {
@@ -244,6 +245,28 @@ struct TopViewContainer: View {
                         self.deletingTargetHistories = deletingTargetHistories
                         
                         self.showDeleteConfirmationDialog()
+                    }
+                    .onTapSaveImageButton { saveTargetCreatedIDPhoto in
+                        Task {
+                            do {
+                                let savedIDPhotoFileName: String? = saveTargetCreatedIDPhoto.imageFileName
+                                
+                                let savedDirectoryURL: URL? = saveTargetCreatedIDPhoto.savedDirectory?.parseToDirectoryFileURL()
+                                
+                                guard let savedIDPhotoFileName = savedIDPhotoFileName else { return }
+                                
+                                guard let savedDirectoryURL = savedDirectoryURL else { return }
+                                
+                                let savedIDPhotoFileURL: URL = savedDirectoryURL
+                                    .appendingPathComponent(savedIDPhotoFileName, conformingTo: .fileURL)
+                                
+                                try await PHPhotoLibrary.shared().performChanges({
+                                    PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: savedIDPhotoFileURL)
+                                })
+                            } catch {
+                                print(error)
+                            }
+                        }
                     }
                     .onDropFile(action: setPictureURLFromDroppedItem)
                     .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in

@@ -27,6 +27,8 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     var onTapSelectFromAlbumButton: (() -> Void)?
     var onTapTakePictureButton: (() -> Void)?
     
+    private(set) var onTapSaveImageButtonCallback: ((CreatedIDPhoto) -> Void)?
+    
     private(set) var onDeleteHistoryCardCallback: (([CreatedIDPhoto]) -> Void)?
     
     private(set) var onDropFileCallback: (([NSItemProvider]) -> Bool)?
@@ -48,6 +50,14 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
         var view = self
         
         view.onDeleteHistoryCardCallback = action
+        
+        return view
+    }
+    
+    func onTapSaveImageButton(action: @escaping (CreatedIDPhoto) -> Void) -> Self {
+        var view = self
+        
+        view.onTapSaveImageButtonCallback = action
         
         return view
     }
@@ -193,6 +203,15 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                                                 renderHistoryCard(history)
                                             }
                                             .isDetailLink(true)
+                                            .contextMenu {
+                                                Button(
+                                                    action: {
+                                                        onTapSaveImageButtonCallback?(history)
+                                                    }
+                                                ) {
+                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
+                                                }
+                                            }
                                         }
                                         .onDelete(perform: onDeleteForWithinThreeMonthsSection)
                                     } header: {
@@ -207,6 +226,15 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                                                 renderHistoryCard(history)
                                             }
                                             .isDetailLink(true)
+                                            .contextMenu {
+                                                Button(
+                                                    action: {
+                                                        onTapSaveImageButtonCallback?(history)
+                                                    }
+                                                ) {
+                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
+                                                }
+                                            }
                                         }
                                         .onDelete(perform: onDeleteForWithinThreeMonthsSection)
                                         //  MARK: iOS 16 だと効かない
@@ -238,6 +266,15 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                                                 renderHistoryCard(history)
                                             }
                                             .isDetailLink(true)
+                                            .contextMenu {
+                                                Button(
+                                                    action: {
+                                                        onTapSaveImageButtonCallback?(history)
+                                                    }
+                                                ) {
+                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
+                                                }
+                                            }
                                         }
                                         .onDelete(perform: onDeleteForOverThreeMonthsSection)
                                     } header: {
@@ -252,6 +289,15 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                                                 renderHistoryCard(history)
                                             }
                                             .isDetailLink(true)
+                                            .contextMenu {
+                                                Button(
+                                                    action: {
+                                                        onTapSaveImageButtonCallback?(history)
+                                                    }
+                                                ) {
+                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
+                                                }
+                                            }
                                         }
                                         .onDelete(perform: onDeleteForOverThreeMonthsSection)
                                         //  MARK: iOS 16 だと効かない
