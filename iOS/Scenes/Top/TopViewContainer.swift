@@ -226,98 +226,100 @@ struct TopViewContainer: View {
     
     var body: some View {
         ZStack {
-            TopView(
-                currentEditMode: $currentEditMode,
-                createdIDPhotoHistories: createdIDPhotoHistories,
-                dropAllowedFileUTTypes: [.image],
-                onTapSelectFromAlbumButton: {
-                    showPicturePickerView()
-                },
-                onTapTakePictureButton: {
-                    showCameraView()
-                }
-            )
-            .onDeleteHistoryCard { deletingTargetHistories in
-                self.deletingTargetHistories = deletingTargetHistories
-                
-                self.showDeleteConfirmationDialog()
-            }
-            .onDropFile(action: setPictureURLFromDroppedItem)
-            .confirmationDialog(
-                "本当に削除しますか？",
-                isPresented: $shouldShowDeleteConfirmDialog,
-                titleVisibility: .visible,
-                presenting: deletingTargetHistories
-            ) { deletingTargetHistories in
-                Button(
-                    role: .destructive,
-                    action: {
-                        deletingTargetHistories
-                            .forEach { deletingTargetHistory in
-                                deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
-                            }
+            NavigationView {
+                TopView(
+                    currentEditMode: $currentEditMode,
+                    createdIDPhotoHistories: createdIDPhotoHistories,
+                    dropAllowedFileUTTypes: [.image],
+                    onTapSelectFromAlbumButton: {
+                        showPicturePickerView()
+                    },
+                    onTapTakePictureButton: {
+                        showCameraView()
                     }
-                ) {
-                    Text("削除する")
+                )
+                .onDeleteHistoryCard { deletingTargetHistories in
+                    self.deletingTargetHistories = deletingTargetHistories
+                    
+                    self.showDeleteConfirmationDialog()
                 }
-            } message: { _ in
-                Text("削除した証明写真は復元できません")
-            }
-            .confirmationDialog(
-                "本当にすべて削除しますか？",
-                isPresented: $shouldShowDeleteAllConfirmDialog,
-                titleVisibility: .visible,
-                presenting: createdIDPhotoHistories
-            ) { createdAllHistories in
-                Button(
-                    role: .destructive,
-                    action: {
-                        createdAllHistories
-                            .forEach { deletingTargetHistory in
-                                deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
-                            }
-                    }
-                ) {
-                    Text("削除する")
-                }
-            } message: { _ in
-                Text("削除した証明写真は復元できません")
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                .onDropFile(action: setPictureURLFromDroppedItem)
+                .confirmationDialog(
+                    "本当に削除しますか？",
+                    isPresented: $shouldShowDeleteConfirmDialog,
+                    titleVisibility: .visible,
+                    presenting: deletingTargetHistories
+                ) { deletingTargetHistories in
                     Button(
+                        role: .destructive,
                         action: {
-                            showSettingsView()
+                            deletingTargetHistories
+                                .forEach { deletingTargetHistory in
+                                    deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
+                                }
                         }
                     ) {
-                        Label("設定", systemImage: "gearshape")
-                            .labelStyle(.iconOnly)
+                        Text("削除する")
                     }
+                } message: { _ in
+                    Text("削除した証明写真は復元できません")
                 }
-                
-                ToolbarItem(placement: .primaryAction) {
-                    if createdIDPhotoHistories.count > 0 {
-                        EditButton()
+                .confirmationDialog(
+                    "本当にすべて削除しますか？",
+                    isPresented: $shouldShowDeleteAllConfirmDialog,
+                    titleVisibility: .visible,
+                    presenting: createdIDPhotoHistories
+                ) { createdAllHistories in
+                    Button(
+                        role: .destructive,
+                        action: {
+                            createdAllHistories
+                                .forEach { deletingTargetHistory in
+                                    deleteCreatedIDPhotoAndSavedFiles(deletingTargetHistory)
+                                }
+                        }
+                    ) {
+                        Text("削除する")
                     }
+                } message: { _ in
+                    Text("削除した証明写真は復元できません")
                 }
-                
-                ToolbarItem(placement: .bottomBar) {
-                    if currentEditMode.isEditing {
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
                         Button(
                             action: {
-                                shouldShowDeleteAllConfirmDialog = true
+                                showSettingsView()
                             }
                         ) {
-                            Text("すべて消去")
+                            Label("設定", systemImage: "gearshape")
+                                .labelStyle(.iconOnly)
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .primaryAction) {
+                        if createdIDPhotoHistories.count > 0 {
+                            EditButton()
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .bottomBar) {
+                        if currentEditMode.isEditing {
+                            Button(
+                                action: {
+                                    shouldShowDeleteAllConfirmDialog = true
+                                }
+                            ) {
+                                Text("すべて消去")
+                            }
                         }
                     }
                 }
-            }
-            .environment(\.editMode, $currentEditMode)
-            .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
-                guard newHistoriesCount == 0 else { return }
-                
-                self.currentEditMode = .inactive
+                .environment(\.editMode, $currentEditMode)
+                .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
+                    guard newHistoriesCount == 0 else { return }
+                    
+                    self.currentEditMode = .inactive
+                }
             }
             
             if self.isPhotoLoadingInProgress {
