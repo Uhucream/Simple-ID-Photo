@@ -247,6 +247,8 @@ struct TopViewContainer: View {
                     }
                     .onDropFile(action: setPictureURLFromDroppedItem)
                     .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
+                        //  MARK: これがないと、すべての履歴を削除して空になったあとに currentEditMode が編集中ステータスから切り替わらない
+                        
                         guard newHistoriesCount == 0 else { return }
                         
                         self.currentEditMode = .inactive
