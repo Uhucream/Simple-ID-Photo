@@ -387,7 +387,6 @@ struct TopViewContainer: View {
             
             self.shouldShowCreateIDPhotoView = isSelectedImageURLNotNil
         }
-        .onDrop(of: [.image], isTargeted: nil, perform: setPictureURLFromDroppedItem)
     }
 }
 
