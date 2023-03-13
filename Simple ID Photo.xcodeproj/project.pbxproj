@@ -73,6 +73,15 @@
 		47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */; };
 		47DC499829BF3ED400516D4B /* ActualSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499729BF3ED400516D4B /* ActualSize.swift */; };
 		47DC499B29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499A29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift */; };
+		47DC49A329BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */; };
+		47DC49A529BF85E900516D4B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49A429BF85E900516D4B /* ContentView.swift */; };
+		47DC49A729BF85ED00516D4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47DC49A629BF85ED00516D4B /* Assets.xcassets */; };
+		47DC49AA29BF85ED00516D4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47DC49A929BF85ED00516D4B /* Preview Assets.xcassets */; };
+		47DC49AC29BF85ED00516D4B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49AB29BF85ED00516D4B /* Persistence.swift */; };
+		47DC49AF29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49AD29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld */; };
+		47DC49BA29BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49B929BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift */; };
+		47DC49C429BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */; };
+		47DC49C629BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -93,6 +102,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 47C49B392967FB1C00F2BF35;
 			remoteInfo = "Simple ID Photo";
+		};
+		47DC49B629BF85EE00516D4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47C49B322967FB1C00F2BF35 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 47DC499F29BF85E800516D4B;
+			remoteInfo = "Simple-ID-Photo (macOS)";
+		};
+		47DC49C029BF85EF00516D4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47C49B322967FB1C00F2BF35 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 47DC499F29BF85E800516D4B;
+			remoteInfo = "Simple-ID-Photo (macOS)";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -159,6 +182,19 @@
 		47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementUnitLengthSize.swift; sourceTree = "<group>"; };
 		47DC499729BF3ED400516D4B /* ActualSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualSize.swift; sourceTree = "<group>"; };
 		47DC499A29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalPrinterPrintInteractionControllerDelegate.swift; sourceTree = "<group>"; };
+		47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo (macOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp_macOS.swift; sourceTree = "<group>"; };
+		47DC49A429BF85E900516D4B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		47DC49A629BF85ED00516D4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		47DC49A929BF85ED00516D4B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		47DC49AB29BF85ED00516D4B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		47DC49AE29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Simple_ID_Photo__macOS_.xcdatamodel; sourceTree = "<group>"; };
+		47DC49B029BF85ED00516D4B /* Simple_ID_Photo__macOS_.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Simple_ID_Photo__macOS_.entitlements; sourceTree = "<group>"; };
+		47DC49B529BF85EE00516D4B /* Tests (macOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests (macOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47DC49B929BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_Tests.swift; sourceTree = "<group>"; };
+		47DC49BF29BF85EE00516D4B /* UITests (macOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UITests (macOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITests.swift; sourceTree = "<group>"; };
+		47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -194,6 +230,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		47C49B562967FB1F00F2BF35 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC499D29BF85E800516D4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC49B229BF85EE00516D4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC49BC29BF85EE00516D4B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -372,6 +429,7 @@
 			isa = PBXGroup;
 			children = (
 				47C49B3C2967FB1C00F2BF35 /* iOS */,
+				47DC49A129BF85E900516D4B /* macOS */,
 				47C49B522967FB1E00F2BF35 /* Tests */,
 				47C49B5C2967FB1F00F2BF35 /* UITests */,
 				47C49B3B2967FB1C00F2BF35 /* Products */,
@@ -384,6 +442,9 @@
 				47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */,
 				47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */,
 				47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */,
+				47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */,
+				47DC49B529BF85EE00516D4B /* Tests (macOS).xctest */,
+				47DC49BF29BF85EE00516D4B /* UITests (macOS).xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -416,7 +477,8 @@
 		47C49B522967FB1E00F2BF35 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				47C49B532967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift */,
+				47DC49D029BF868400516D4B /* iOS */,
+				47DC49D129BF868D00516D4B /* macOS */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -424,8 +486,8 @@
 		47C49B5C2967FB1F00F2BF35 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
-				47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */,
-				47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */,
+				47DC49D229BF872100516D4B /* iOS */,
+				47DC49D329BF872900516D4B /* macOS */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -542,6 +604,62 @@
 			path = Printing;
 			sourceTree = "<group>";
 		};
+		47DC49A129BF85E900516D4B /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				47DC49A829BF85ED00516D4B /* Preview Content */,
+				47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */,
+				47DC49A429BF85E900516D4B /* ContentView.swift */,
+				47DC49A629BF85ED00516D4B /* Assets.xcassets */,
+				47DC49AB29BF85ED00516D4B /* Persistence.swift */,
+				47DC49B029BF85ED00516D4B /* Simple_ID_Photo__macOS_.entitlements */,
+				47DC49AD29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		47DC49A829BF85ED00516D4B /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				47DC49A929BF85ED00516D4B /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		47DC49D029BF868400516D4B /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				47C49B532967FB1E00F2BF35 /* Simple_ID_PhotoTests.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		47DC49D129BF868D00516D4B /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				47DC49B929BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		47DC49D229BF872100516D4B /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */,
+				47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		47DC49D329BF872900516D4B /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */,
+				47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
 		47F9084F29BDAB06000F7394 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -646,6 +764,59 @@
 			productReference = 47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		47DC499F29BF85E800516D4B /* Simple ID Photo (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 47DC49C729BF85EF00516D4B /* Build configuration list for PBXNativeTarget "Simple ID Photo (macOS)" */;
+			buildPhases = (
+				47DC499C29BF85E800516D4B /* Sources */,
+				47DC499D29BF85E800516D4B /* Frameworks */,
+				47DC499E29BF85E800516D4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Simple ID Photo (macOS)";
+			productName = "Simple-ID-Photo (macOS)";
+			productReference = 47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */;
+			productType = "com.apple.product-type.application";
+		};
+		47DC49B429BF85EE00516D4B /* Tests (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 47DC49CA29BF85EF00516D4B /* Build configuration list for PBXNativeTarget "Tests (macOS)" */;
+			buildPhases = (
+				47DC49B129BF85EE00516D4B /* Sources */,
+				47DC49B229BF85EE00516D4B /* Frameworks */,
+				47DC49B329BF85EE00516D4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				47DC49B729BF85EE00516D4B /* PBXTargetDependency */,
+			);
+			name = "Tests (macOS)";
+			productName = "Simple-ID-Photo (macOS)Tests";
+			productReference = 47DC49B529BF85EE00516D4B /* Tests (macOS).xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		47DC49BE29BF85EE00516D4B /* UITests (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 47DC49CD29BF85EF00516D4B /* Build configuration list for PBXNativeTarget "UITests (macOS)" */;
+			buildPhases = (
+				47DC49BB29BF85EE00516D4B /* Sources */,
+				47DC49BC29BF85EE00516D4B /* Frameworks */,
+				47DC49BD29BF85EE00516D4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				47DC49C129BF85EF00516D4B /* PBXTargetDependency */,
+			);
+			name = "UITests (macOS)";
+			productName = "Simple-ID-Photo (macOS)UITests";
+			productReference = 47DC49BF29BF85EE00516D4B /* UITests (macOS).xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -653,7 +824,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1410;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					47C49B392967FB1C00F2BF35 = {
@@ -666,6 +837,17 @@
 					47C49B582967FB1F00F2BF35 = {
 						CreatedOnToolsVersion = 14.1;
 						TestTargetID = 47C49B392967FB1C00F2BF35;
+					};
+					47DC499F29BF85E800516D4B = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					47DC49B429BF85EE00516D4B = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 47DC499F29BF85E800516D4B;
+					};
+					47DC49BE29BF85EE00516D4B = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 47DC499F29BF85E800516D4B;
 					};
 				};
 			};
@@ -688,8 +870,11 @@
 			projectRoot = "";
 			targets = (
 				47C49B392967FB1C00F2BF35 /* Simple ID Photo */,
+				47DC499F29BF85E800516D4B /* Simple ID Photo (macOS) */,
 				47C49B4E2967FB1E00F2BF35 /* Tests (iOS) */,
+				47DC49B429BF85EE00516D4B /* Tests (macOS) */,
 				47C49B582967FB1F00F2BF35 /* UITests (iOS) */,
+				47DC49BE29BF85EE00516D4B /* UITests (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -715,6 +900,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		47C49B572967FB1F00F2BF35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC499E29BF85E800516D4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47DC49AA29BF85ED00516D4B /* Preview Assets.xcassets in Resources */,
+				47DC49A729BF85ED00516D4B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC49B329BF85EE00516D4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC49BD29BF85EE00516D4B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -797,6 +1005,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		47DC499C29BF85E800516D4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47DC49AC29BF85ED00516D4B /* Persistence.swift in Sources */,
+				47DC49A529BF85E900516D4B /* ContentView.swift in Sources */,
+				47DC49A329BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift in Sources */,
+				47DC49AF29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC49B129BF85EE00516D4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47DC49BA29BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47DC49BB29BF85EE00516D4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47DC49C629BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift in Sources */,
+				47DC49C429BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -809,6 +1045,16 @@
 			isa = PBXTargetDependency;
 			target = 47C49B392967FB1C00F2BF35 /* Simple ID Photo */;
 			targetProxy = 47C49B5A2967FB1F00F2BF35 /* PBXContainerItemProxy */;
+		};
+		47DC49B729BF85EE00516D4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 47DC499F29BF85E800516D4B /* Simple ID Photo (macOS) */;
+			targetProxy = 47DC49B629BF85EE00516D4B /* PBXContainerItemProxy */;
+		};
+		47DC49C129BF85EF00516D4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 47DC499F29BF85E800516D4B /* Simple ID Photo (macOS) */;
+			targetProxy = 47DC49C029BF85EF00516D4B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1096,6 +1342,148 @@
 			};
 			name = Release;
 		};
+		47DC49C829BF85EF00516D4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/Simple_ID_Photo__macOS_.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
+				DEVELOPMENT_TEAM = V94VRHKNZJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		47DC49C929BF85EF00516D4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/Simple_ID_Photo__macOS_.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
+				DEVELOPMENT_TEAM = V94VRHKNZJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		47DC49CB29BF85EF00516D4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V94VRHKNZJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo--macOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Simple-ID-Photo (macOS).app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Simple-ID-Photo (macOS)";
+			};
+			name = Debug;
+		};
+		47DC49CC29BF85EF00516D4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V94VRHKNZJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo--macOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Simple-ID-Photo (macOS).app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Simple-ID-Photo (macOS)";
+			};
+			name = Release;
+		};
+		47DC49CE29BF85EF00516D4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V94VRHKNZJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo--macOS-UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Simple-ID-Photo (macOS)";
+			};
+			name = Debug;
+		};
+		47DC49CF29BF85EF00516D4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V94VRHKNZJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo--macOS-UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Simple-ID-Photo (macOS)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1131,6 +1519,33 @@
 			buildConfigurations = (
 				47C49B6A2967FB1F00F2BF35 /* Debug */,
 				47C49B6B2967FB1F00F2BF35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		47DC49C729BF85EF00516D4B /* Build configuration list for PBXNativeTarget "Simple ID Photo (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47DC49C829BF85EF00516D4B /* Debug */,
+				47DC49C929BF85EF00516D4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		47DC49CA29BF85EF00516D4B /* Build configuration list for PBXNativeTarget "Tests (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47DC49CB29BF85EF00516D4B /* Debug */,
+				47DC49CC29BF85EF00516D4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		47DC49CD29BF85EF00516D4B /* Build configuration list for PBXNativeTarget "UITests (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47DC49CE29BF85EF00516D4B /* Debug */,
+				47DC49CF29BF85EF00516D4B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1234,6 +1649,16 @@
 			);
 			currentVersion = 475DFA5F29B4783E00F2183C /* 2023_03_05_16_11_Change_Saving_Image_Method_From_URL_To_File_Name.xcdatamodel */;
 			path = SimpleIDPhoto.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		47DC49AD29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				47DC49AE29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodel */,
+			);
+			currentVersion = 47DC49AE29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodel */;
+			path = Simple_ID_Photo__macOS_.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
