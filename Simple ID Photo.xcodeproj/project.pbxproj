@@ -77,7 +77,7 @@
 		47DC499B29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499A29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift */; };
 		47DC49A329BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */; };
 		47DC49A529BF85E900516D4B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49A429BF85E900516D4B /* ContentView.swift */; };
-		47DC49A729BF85ED00516D4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47DC49A629BF85ED00516D4B /* Assets.xcassets */; };
+		47DC49A729BF85ED00516D4B /* Assets.macOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */; };
 		47DC49AA29BF85ED00516D4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47DC49A929BF85ED00516D4B /* Preview Assets.xcassets */; };
 		47DC49AC29BF85ED00516D4B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49AB29BF85ED00516D4B /* Persistence.swift */; };
 		47DC49AF29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49AD29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld */; };
@@ -188,7 +188,7 @@
 		47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo (macOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp_macOS.swift; sourceTree = "<group>"; };
 		47DC49A429BF85E900516D4B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		47DC49A629BF85ED00516D4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.macOS.xcassets; sourceTree = "<group>"; };
 		47DC49A929BF85ED00516D4B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		47DC49AB29BF85ED00516D4B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		47DC49AE29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Simple_ID_Photo__macOS_.xcdatamodel; sourceTree = "<group>"; };
@@ -613,7 +613,7 @@
 				47DC49A829BF85ED00516D4B /* Preview Content */,
 				47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */,
 				47DC49A429BF85E900516D4B /* ContentView.swift */,
-				47DC49A629BF85ED00516D4B /* Assets.xcassets */,
+				47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */,
 				47DC49AB29BF85ED00516D4B /* Persistence.swift */,
 				47DC49B029BF85ED00516D4B /* macOS.entitlements */,
 				47DC49AD29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld */,
@@ -941,7 +941,7 @@
 			files = (
 				47DC49AA29BF85ED00516D4B /* Preview Assets.xcassets in Resources */,
 				4727166D29BF92DD000246DD /* Assets.xcassets in Resources */,
-				47DC49A729BF85ED00516D4B /* Assets.xcassets in Resources */,
+				47DC49A729BF85ED00516D4B /* Assets.macOS.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
