@@ -74,6 +74,8 @@ struct IDPhotoDetailViewContainer: View {
     
     @State private var shouldShowDeleteConfirmationDialog: Bool = false
     
+    @State private var shouldShowChoosePrintMethodDialog: Bool = false
+    
     @State private var shouldShowProgressView: Bool = false
     @State private var savingStatus: SavingStatus = .inProgress
     
@@ -120,6 +122,10 @@ struct IDPhotoDetailViewContainer: View {
     
     private func showDeleteConfirmationDialog() -> Void {
         self.shouldShowDeleteConfirmationDialog = true
+    }
+    
+    private func showChoosePrintMethodDialog() -> Void {
+        self.shouldShowChoosePrintMethodDialog = true
     }
     
     private func dismissEditIDPhotoView() -> Void {
@@ -214,6 +220,9 @@ struct IDPhotoDetailViewContainer: View {
             .onTapChangeSizeButton {
                 showEditIDPhotoView(initialDisplayProcess: .size)
             }
+            .onTapPrintButton {
+                showChoosePrintMethodDialog()
+            }
             .onTapSaveImageButton {
                 Task {
                     do {
@@ -253,6 +262,27 @@ struct IDPhotoDetailViewContainer: View {
                 .edgesIgnoringSafeArea(.all)
                 .animation(shouldShowProgressView ? .none : .easeOut, value: shouldShowProgressView)
                 .transition(.opacity)
+            }
+            .confirmationDialog(
+                "印刷方法を選択してください",
+                isPresented: $shouldShowChoosePrintMethodDialog,
+                titleVisibility: .visible
+            ) {
+                Button(
+                    action: {
+                        
+                    }
+                ) {
+                    Text("家庭用プリンターで印刷 (推奨)")
+                }
+                
+                Button(
+                    action: {
+                        
+                    }
+                ) {
+                    Text("コンビニ で印刷")
+                }
             }
             .confirmationDialog(
                 "本当に削除しますか？",
