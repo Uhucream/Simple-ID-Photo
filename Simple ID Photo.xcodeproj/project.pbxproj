@@ -41,7 +41,7 @@
 		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
 		47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B91A4C29A8567100754657 /* PrintPageRenderer.swift */; };
 		47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1C7BE297E3B4700A22EAB /* CIImage+.swift */; };
-		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */; };
+		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */; };
 		47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3F2967FB1C00F2BF35 /* ContentView.swift */; };
 		47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B412967FB1E00F2BF35 /* Assets.xcassets */; };
 		47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47C49B442967FB1E00F2BF35 /* Preview Assets.xcassets */; };
@@ -159,8 +159,8 @@
 		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
 		47B91A4C29A8567100754657 /* PrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintPageRenderer.swift; sourceTree = "<group>"; };
 		47C1C7BE297E3B4700A22EAB /* CIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+.swift"; sourceTree = "<group>"; };
-		47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp.swift; sourceTree = "<group>"; };
+		47C49B3A2967FB1C00F2BF35 /* Simple ID Photo (iOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo (iOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp_iOS.swift; sourceTree = "<group>"; };
 		47C49B3F2967FB1C00F2BF35 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		47C49B412967FB1E00F2BF35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47C49B442967FB1E00F2BF35 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -439,7 +439,7 @@
 		47C49B3B2967FB1C00F2BF35 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */,
+				47C49B3A2967FB1C00F2BF35 /* Simple ID Photo (iOS).app */,
 				47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */,
 				47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */,
 				47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */,
@@ -458,7 +458,7 @@
 				47C49B6E296831BB00F2BF35 /* Scenes */,
 				47C49B912968497A00F2BF35 /* ViewComponents */,
 				47C49B6C2968017A00F2BF35 /* Resources */,
-				47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift */,
+				47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */,
 				47C49B3F2967FB1C00F2BF35 /* ContentView.swift */,
 				47C49B462967FB1E00F2BF35 /* Persistence.swift */,
 				47C49B482967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld */,
@@ -696,9 +696,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		47C49B392967FB1C00F2BF35 /* Simple ID Photo */ = {
+		47C49B392967FB1C00F2BF35 /* Simple ID Photo (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 47C49B632967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID Photo" */;
+			buildConfigurationList = 47C49B632967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID Photo (iOS)" */;
 			buildPhases = (
 				47C49B362967FB1C00F2BF35 /* Sources */,
 				47C49B372967FB1C00F2BF35 /* Frameworks */,
@@ -708,7 +708,7 @@
 			);
 			dependencies = (
 			);
-			name = "Simple ID Photo";
+			name = "Simple ID Photo (iOS)";
 			packageProductDependencies = (
 				47C49B79296847CE00F2BF35 /* FirebaseAnalytics */,
 				47C49B7B296847CE00F2BF35 /* FirebaseAnalyticsSwift */,
@@ -725,7 +725,7 @@
 				4730700429837F0400EAEC14 /* Percentage */,
 			);
 			productName = "Simple ID Photo";
-			productReference = 47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */;
+			productReference = 47C49B3A2967FB1C00F2BF35 /* Simple ID Photo (iOS).app */;
 			productType = "com.apple.product-type.application";
 		};
 		47C49B4E2967FB1E00F2BF35 /* Tests (iOS) */ = {
@@ -869,7 +869,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				47C49B392967FB1C00F2BF35 /* Simple ID Photo */,
+				47C49B392967FB1C00F2BF35 /* Simple ID Photo (iOS) */,
 				47DC499F29BF85E800516D4B /* Simple ID Photo (macOS) */,
 				47C49B4E2967FB1E00F2BF35 /* Tests (iOS) */,
 				47DC49B429BF85EE00516D4B /* Tests (macOS) */,
@@ -955,7 +955,7 @@
 				47DC499829BF3ED400516D4B /* ActualSize.swift in Sources */,
 				47C7894929AB3A44003D7763 /* CreatedIDPhotoDetail.swift in Sources */,
 				47694A772993E9A800C447CA /* Animation+.swift in Sources */,
-				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp.swift in Sources */,
+				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift in Sources */,
 				479573E2296C1B1400B98881 /* IDPhotoSizePickerView.swift in Sources */,
 				478689572980CECE00952BFD /* CGImagePropertyOrientation+.swift in Sources */,
 				472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */,
@@ -1038,12 +1038,12 @@
 /* Begin PBXTargetDependency section */
 		47C49B512967FB1E00F2BF35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 47C49B392967FB1C00F2BF35 /* Simple ID Photo */;
+			target = 47C49B392967FB1C00F2BF35 /* Simple ID Photo (iOS) */;
 			targetProxy = 47C49B502967FB1E00F2BF35 /* PBXContainerItemProxy */;
 		};
 		47C49B5B2967FB1F00F2BF35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 47C49B392967FB1C00F2BF35 /* Simple ID Photo */;
+			target = 47C49B392967FB1C00F2BF35 /* Simple ID Photo (iOS) */;
 			targetProxy = 47C49B5A2967FB1F00F2BF35 /* PBXContainerItemProxy */;
 		};
 		47DC49B729BF85EE00516D4B /* PBXTargetDependency */ = {
@@ -1496,7 +1496,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		47C49B632967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID Photo" */ = {
+		47C49B632967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID Photo (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				47C49B642967FB1F00F2BF35 /* Debug */,

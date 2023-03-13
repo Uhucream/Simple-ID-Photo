@@ -1,5 +1,5 @@
 //
-//  SimpleIDPhotoApp.swift
+//  SimpleIDPhotoApp_iOS.swift
 //  Simple ID Photo
 //  
 //  Created by TakashiUshikoshi on 2023/01/06
@@ -19,7 +19,7 @@ let projectGlobalMeasurementFormatter: MeasurementFormatter = {
 }()
 
 @main
-struct SimpleIDPhotoApp: App {
+struct SimpleIDPhotoApp_iOS: App {
     let persistenceController = PersistenceController.shared
     
     let screenSizeHelper: ScreenSizeHelper = .shared

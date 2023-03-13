@@ -1,6 +1,6 @@
 //
 //  PrintPageRenderer.swift
-//  Simple ID Photo
+//  Simple ID Photo (iOS)
 //  
 //  Created by TakashiUshikoshi on 2023/02/24
 //  
