@@ -270,7 +270,7 @@ struct IDPhotoDetailViewContainer: View {
             ) {
                 Button(
                     action: {
-                        
+                        setupAndShowPrintInteractionController()
                     }
                 ) {
                     Text("家庭用プリンターで印刷 (推奨)")
@@ -347,6 +347,66 @@ struct IDPhotoDetailViewContainer: View {
                 }
             }
         }
+    }
+}
+
+extension IDPhotoDetailViewContainer {
+    private func setupAndShowPrintInteractionController() -> Void {
+        
+        let appliedIDPhotoSize: AppliedIDPhotoSize? = createdIDPhoto.appliedIDPhotoSize
+        
+        let idPhotoMillimetersWidth: Double? = appliedIDPhotoSize?.millimetersWidth
+        let idPhotoMillimetersHeight: Double? = appliedIDPhotoSize?.millimetersHeight
+        
+        guard
+            let idPhotoMillimetersWidth = idPhotoMillimetersWidth,
+            let idPhotoMillimetersHeight = idPhotoMillimetersHeight
+        else { return }
+        
+        let printingIDPhotoActualSize: ActualSize = .init(
+            width: .init(value: idPhotoMillimetersWidth, unit: .millimeters),
+            height: .init(value: idPhotoMillimetersHeight, unit: .millimeters)
+        )
+        
+        let printingIDPhotoCGSize: CGSize = printingIDPhotoActualSize.cgSize(pixelDensity: PrintPageRenderer.APPLE_PRINT_PIXEL_DENSITY)
+        
+        guard let createdIDPhotoFileURL: URL = parseCreatedIDPhotoFileURL() else { return }
+        
+        let printingIDPhotoUIImage: UIImage = .init(url: createdIDPhotoFileURL)
+        
+        let printingIDPhotoUIImageView: UIImageView = .init(image: printingIDPhotoUIImage)
+        
+        printingIDPhotoUIImageView.frame = .init(origin: .zero, size: printingIDPhotoCGSize)
+        
+        let printFormatter: UIViewPrintFormatter = printingIDPhotoUIImageView.viewPrintFormatter()
+        
+        let printPageRenderer: PrintPageRenderer = .init()
+        
+        printPageRenderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
+        
+        printPageRenderer.onDrawPage = { (_, printableRect) in
+
+            let idPhotoHorizontalPadding: CGFloat = (printableRect.width - printingIDPhotoCGSize.width) / 2
+            let idPhotoVerticalPadding: CGFloat = (printableRect.height - printingIDPhotoCGSize.height) / 2
+
+            //  printableRect のど真ん中に描画したいので、insetBy を使用して生成
+            let idPhotoPrintAreaCGRect: CGRect = printableRect.insetBy(dx: idPhotoHorizontalPadding, dy: idPhotoVerticalPadding)
+
+            printingIDPhotoUIImage.draw(in: idPhotoPrintAreaCGRect)
+        }
+        
+        let printInfo: UIPrintInfo = .printInfo()
+        
+        printInfo.orientation = .portrait
+        
+        let printInteractionController: UIPrintInteractionController = .shared
+        
+        printInteractionController.showsPaperOrientation = false
+        printInteractionController.showsNumberOfCopies = false
+        printInteractionController.printInfo = printInfo
+        printInteractionController.printPageRenderer = printPageRenderer
+        
+        printInteractionController.present(animated: true)
     }
 }
 
