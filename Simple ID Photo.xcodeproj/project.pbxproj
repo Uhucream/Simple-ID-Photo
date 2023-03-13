@@ -272,6 +272,23 @@
 			path = Firebase;
 			sourceTree = "<group>";
 		};
+		4727166E29BF9421000246DD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4727166F29BF942C000246DD /* AssetsFiles */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4727166F29BF942C000246DD /* AssetsFiles */ = {
+			isa = PBXGroup;
+			children = (
+				47DC49A829BF85ED00516D4B /* Preview Content */,
+				47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */,
+			);
+			path = AssetsFiles;
+			sourceTree = "<group>";
+		};
 		4728DA3F297EA7240056767F /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,10 +627,9 @@
 		47DC49A129BF85E900516D4B /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				47DC49A829BF85ED00516D4B /* Preview Content */,
+				4727166E29BF9421000246DD /* Resources */,
 				47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */,
 				47DC49A429BF85E900516D4B /* ContentView.swift */,
-				47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */,
 				47DC49AB29BF85ED00516D4B /* Persistence.swift */,
 				47DC49B029BF85ED00516D4B /* macOS.entitlements */,
 				47DC49AD29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld */,
@@ -1382,7 +1398,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Resources/AssetsFiles/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -1414,7 +1430,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Resources/AssetsFiles/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
