@@ -70,6 +70,7 @@
 		47CDB2BA29A5070F007FDE8E /* Measurement<UnitLength>+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */; };
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
+		47DC497929BEFDF000516D4B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 47DC497829BEFDF000516D4B /* GoogleMobileAds */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -170,6 +171,7 @@
 				47C49B7C296847CE00F2BF35 /* FirebaseAnalyticsSwift in Frameworks */,
 				47C49B8A296847CE00F2BF35 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				47C49B7E296847CE00F2BF35 /* FirebaseAuth in Frameworks */,
+				47DC497929BEFDF000516D4B /* GoogleMobileAds in Frameworks */,
 				47C49B8C296847CE00F2BF35 /* FirebaseFirestoreSwift in Frameworks */,
 				47C49B82296847CE00F2BF35 /* FirebaseCrashlytics in Frameworks */,
 				47C49B88296847CE00F2BF35 /* FirebaseFirestore in Frameworks */,
@@ -596,6 +598,7 @@
 				47C49B8D296847CE00F2BF35 /* FirebaseStorage */,
 				47C49B8F296847CE00F2BF35 /* FirebaseStorageCombine-Community */,
 				4730700429837F0400EAEC14 /* Percentage */,
+				47DC497829BEFDF000516D4B /* GoogleMobileAds */,
 			);
 			productName = "Simple ID Photo";
 			productReference = 47C49B3A2967FB1C00F2BF35 /* Simple ID Photo.app */;
@@ -673,6 +676,7 @@
 			packageReferences = (
 				47C49B78296847CE00F2BF35 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				4730700329837F0400EAEC14 /* XCRemoteSwiftPackageReference "Percentage" */,
+				47DC497729BEFDF000516D4B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 47C49B3B2967FB1C00F2BF35 /* Products */;
 			projectDirPath = "";
@@ -1140,6 +1144,14 @@
 				kind = branch;
 			};
 		};
+		47DC497729BEFDF000516D4B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1207,6 +1219,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 47C49B78296847CE00F2BF35 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
+		};
+		47DC497829BEFDF000516D4B /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47DC497729BEFDF000516D4B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 
