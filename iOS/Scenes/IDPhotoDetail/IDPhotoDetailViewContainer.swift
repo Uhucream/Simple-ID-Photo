@@ -281,7 +281,7 @@ struct IDPhotoDetailViewContainer: View {
                         
                     }
                 ) {
-                    Text("コンビニ で印刷")
+                    Text("コンビニで印刷")
                 }
             }
             .confirmationDialog(
