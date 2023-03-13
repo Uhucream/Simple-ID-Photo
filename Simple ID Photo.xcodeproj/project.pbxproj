@@ -71,6 +71,10 @@
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 		47DC497929BEFDF000516D4B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 47DC497829BEFDF000516D4B /* GoogleMobileAds */; };
+		47DC497F29BF0A6200516D4B /* EnvironmentValues_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 47DC497E29BF0A6200516D4B /* EnvironmentValues_Release.xcconfig */; };
+		47DC498129BF0B4E00516D4B /* EnvironmentValues_Release-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 47DC498029BF0B4E00516D4B /* EnvironmentValues_Release-Local.xcconfig */; };
+		47DC498729BF0D1900516D4B /* EnvironmentValues_Debug-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 47DC498629BF0D1900516D4B /* EnvironmentValues_Debug-Local.xcconfig */; };
+		47DC498829BF0D2300516D4B /* EnvironmentValues_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 47DC498229BF0CA500516D4B /* EnvironmentValues_Debug.xcconfig */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -155,6 +159,10 @@
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		47DC497A29BF013F00516D4B /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		47DC497E29BF0A6200516D4B /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
+		47DC498029BF0B4E00516D4B /* EnvironmentValues_Release-Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "EnvironmentValues_Release-Local.xcconfig"; sourceTree = "<group>"; };
+		47DC498229BF0CA500516D4B /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
+		47DC498629BF0D1900516D4B /* EnvironmentValues_Debug-Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "EnvironmentValues_Debug-Local.xcconfig"; sourceTree = "<group>"; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -374,6 +382,7 @@
 		47C49B312967FB1C00F2BF35 = {
 			isa = PBXGroup;
 			children = (
+				47DC497D29BF0A2900516D4B /* Shared */,
 				47C49B3C2967FB1C00F2BF35 /* iOS */,
 				47C49B522967FB1E00F2BF35 /* Tests */,
 				47C49B5C2967FB1F00F2BF35 /* UITests */,
@@ -537,6 +546,41 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		47DC497D29BF0A2900516D4B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				47DC498329BF0CB100516D4B /* EnvironmentValues */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		47DC498329BF0CB100516D4B /* EnvironmentValues */ = {
+			isa = PBXGroup;
+			children = (
+				47DC498529BF0CC200516D4B /* Debug */,
+				47DC498429BF0CBA00516D4B /* Release */,
+			);
+			path = EnvironmentValues;
+			sourceTree = "<group>";
+		};
+		47DC498429BF0CBA00516D4B /* Release */ = {
+			isa = PBXGroup;
+			children = (
+				47DC497E29BF0A6200516D4B /* EnvironmentValues_Release.xcconfig */,
+				47DC498029BF0B4E00516D4B /* EnvironmentValues_Release-Local.xcconfig */,
+			);
+			path = Release;
+			sourceTree = "<group>";
+		};
+		47DC498529BF0CC200516D4B /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				47DC498229BF0CA500516D4B /* EnvironmentValues_Debug.xcconfig */,
+				47DC498629BF0D1900516D4B /* EnvironmentValues_Debug-Local.xcconfig */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
 		47F9084F29BDAB06000F7394 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,10 +740,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47DC498729BF0D1900516D4B /* EnvironmentValues_Debug-Local.xcconfig in Resources */,
+				47DC498129BF0B4E00516D4B /* EnvironmentValues_Release-Local.xcconfig in Resources */,
+				47DC497F29BF0A6200516D4B /* EnvironmentValues_Release.xcconfig in Resources */,
 				4778B34629A7396000F35EE0 /* Colors.xcassets in Resources */,
 				47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */,
 				479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.xcassets in Resources */,
+				47DC498829BF0D2300516D4B /* EnvironmentValues_Debug.xcconfig in Resources */,
 				479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -830,6 +878,7 @@
 /* Begin XCBuildConfiguration section */
 		47C49B612967FB1F00F2BF35 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47DC498229BF0CA500516D4B /* EnvironmentValues_Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -891,6 +940,7 @@
 		};
 		47C49B622967FB1F00F2BF35 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47DC497E29BF0A6200516D4B /* EnvironmentValues_Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

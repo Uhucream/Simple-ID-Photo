@@ -102,3 +102,5 @@ iOSInjectionProject/
 # Firebase
 
 GoogleService-Info.plist
+
+EnvironmentValues*-Local.xcconfig
