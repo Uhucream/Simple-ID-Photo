@@ -962,6 +962,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "証明写真を作成するためにカメラを使用します。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "作成した証明写真の保存に使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -995,6 +996,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "証明写真を作成するためにカメラを使用します。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "作成した証明写真の保存に使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
