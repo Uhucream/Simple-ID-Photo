@@ -273,7 +273,7 @@ struct IDPhotoDetailViewContainer: View {
                         setupAndShowPrintInteractionController()
                     }
                 ) {
-                    Text("家庭用プリンターで印刷 (推奨)")
+                    Text("プリンターで印刷 (推奨)")
                 }
                 
                 Button(
