@@ -72,6 +72,7 @@
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 		47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */; };
 		47DC499829BF3ED400516D4B /* ActualSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499729BF3ED400516D4B /* ActualSize.swift */; };
+		47DC499B29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499A29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -157,6 +158,7 @@
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementUnitLengthSize.swift; sourceTree = "<group>"; };
 		47DC499729BF3ED400516D4B /* ActualSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualSize.swift; sourceTree = "<group>"; };
+		47DC499A29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalPrinterPrintInteractionControllerDelegate.swift; sourceTree = "<group>"; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -366,14 +368,6 @@
 			path = ConvenienceInitializer;
 			sourceTree = "<group>";
 		};
-		47B91A4B29A8565700754657 /* UIPrintPageRenderer */ = {
-			isa = PBXGroup;
-			children = (
-				47B91A4C29A8567100754657 /* PrintPageRenderer.swift */,
-			);
-			path = UIPrintPageRenderer;
-			sourceTree = "<group>";
-		};
 		47C49B312967FB1C00F2BF35 = {
 			isa = PBXGroup;
 			children = (
@@ -518,8 +512,8 @@
 		47D9040D2969141300DD4FAF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				47DC499929BF57D500516D4B /* Printing */,
 				4788D96C29B8338F00CFE1DE /* VisionFramework */,
-				47B91A4B29A8565700754657 /* UIPrintPageRenderer */,
 				47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */,
 			);
 			path = Utilities;
@@ -537,6 +531,15 @@
 				4778B34A29A7421600F35EE0 /* SwiftUI */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		47DC499929BF57D500516D4B /* Printing */ = {
+			isa = PBXGroup;
+			children = (
+				47B91A4C29A8567100754657 /* PrintPageRenderer.swift */,
+				47DC499A29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift */,
+			);
+			path = Printing;
 			sourceTree = "<group>";
 		};
 		47F9084F29BDAB06000F7394 /* Settings */ = {
@@ -731,6 +734,7 @@
 				472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */,
 				478A420429AA3E7300626316 /* IDPhotoDetailView.swift in Sources */,
 				47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */,
+				47DC499B29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift in Sources */,
 				47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */,
 				475FB236296FD5000059796F /* UIImage+.swift in Sources */,
 				47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */,
