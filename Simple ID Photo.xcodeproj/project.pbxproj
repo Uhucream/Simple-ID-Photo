@@ -154,6 +154,7 @@
 		47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Measurement<UnitLength>+.swift"; sourceTree = "<group>"; };
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
+		47DC497A29BF013F00516D4B /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -438,6 +439,7 @@
 				47013AEA296C004C000A0D89 /* Firebase */,
 				479BBC532969534400C02BB7 /* Localizations */,
 				4778B34029A7359E00F35EE0 /* AssetsFiles */,
+				47DC497A29BF013F00516D4B /* Info-iOS.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -953,6 +955,7 @@
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS/Resources/Info-iOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
 				INFOPLIST_KEY_NSCameraUsageDescription = "証明写真を作成するためにカメラを使用します。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "作成した証明写真の保存に使用します。";
@@ -986,6 +989,7 @@
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS/Resources/Info-iOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
 				INFOPLIST_KEY_NSCameraUsageDescription = "証明写真を作成するためにカメラを使用します。";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "作成した証明写真の保存に使用します。";
