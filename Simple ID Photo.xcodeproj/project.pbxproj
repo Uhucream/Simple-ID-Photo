@@ -177,7 +177,7 @@
 		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
 		47B91A4C29A8567100754657 /* PrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintPageRenderer.swift; sourceTree = "<group>"; };
 		47C1C7BE297E3B4700A22EAB /* CIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+.swift"; sourceTree = "<group>"; };
-		47C49B3A2967FB1C00F2BF35 /* Simple ID Photo (iOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo (iOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleIDPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp_iOS.swift; sourceTree = "<group>"; };
 		47C49B3F2967FB1C00F2BF35 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		47C49B412967FB1E00F2BF35 /* Assets.iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.iOS.xcassets; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 		47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementUnitLengthSize.swift; sourceTree = "<group>"; };
 		47DC499729BF3ED400516D4B /* ActualSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualSize.swift; sourceTree = "<group>"; };
 		47DC499A29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalPrinterPrintInteractionControllerDelegate.swift; sourceTree = "<group>"; };
-		47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple ID Photo (macOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47DC49A029BF85E800516D4B /* SimpleIDPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleIDPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47DC49A229BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp_macOS.swift; sourceTree = "<group>"; };
 		47DC49A429BF85E900516D4B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.macOS.xcassets; sourceTree = "<group>"; };
@@ -491,10 +491,10 @@
 		47C49B3B2967FB1C00F2BF35 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				47C49B3A2967FB1C00F2BF35 /* Simple ID Photo (iOS).app */,
+				47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */,
 				47C49B4F2967FB1E00F2BF35 /* Tests (iOS).xctest */,
 				47C49B592967FB1F00F2BF35 /* UITests (iOS).xctest */,
-				47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */,
+				47DC49A029BF85E800516D4B /* SimpleIDPhoto.app */,
 				47DC49B529BF85EE00516D4B /* Tests (macOS).xctest */,
 				47DC49BF29BF85EE00516D4B /* UITests (macOS).xctest */,
 			);
@@ -818,7 +818,7 @@
 				4796EC5329C03B10007C2980 /* Percentage */,
 			);
 			productName = "Simple ID Photo";
-			productReference = 47C49B3A2967FB1C00F2BF35 /* Simple ID Photo (iOS).app */;
+			productReference = 47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */;
 			productType = "com.apple.product-type.application";
 		};
 		47C49B4E2967FB1E00F2BF35 /* Tests (iOS) */ = {
@@ -871,7 +871,7 @@
 			);
 			name = "Simple ID Photo (macOS)";
 			productName = "Simple-ID-Photo (macOS)";
-			productReference = 47DC49A029BF85E800516D4B /* Simple ID Photo (macOS).app */;
+			productReference = 47DC49A029BF85E800516D4B /* SimpleIDPhoto.app */;
 			productType = "com.apple.product-type.application";
 		};
 		47DC49B429BF85EE00516D4B /* Tests (macOS) */ = {
@@ -1319,7 +1319,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SimpleIDPhoto;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1354,7 +1354,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SimpleIDPhoto;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1465,7 +1465,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SimpleIDPhoto;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1498,7 +1498,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SimpleIDPhoto;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
