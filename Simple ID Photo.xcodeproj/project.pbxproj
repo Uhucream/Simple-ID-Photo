@@ -202,6 +202,8 @@
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
 		47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+ConvenienceInitializer.swift"; sourceTree = "<group>"; };
+		47FC2D6129C0346D00F865A4 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
+		47FC2D6229C0354200F865A4 /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -482,6 +484,7 @@
 				47C49B3F2967FB1C00F2BF35 /* ContentView.swift */,
 				47C49B462967FB1E00F2BF35 /* Persistence.swift */,
 				47C49B482967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld */,
+				47FC2D6129C0346D00F865A4 /* Info-iOS.plist */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				47DC49AB29BF85ED00516D4B /* Persistence.swift */,
 				47DC49B029BF85ED00516D4B /* macOS.entitlements */,
 				47DC49AD29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld */,
+				47FC2D6229C0354200F865A4 /* Info-macOS.plist */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -1253,6 +1257,7 @@
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS/Info-iOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "証明写真を作成するためにカメラを使用します。";
@@ -1287,6 +1292,7 @@
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS/Info-iOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "証明写真を作成するためにカメラを使用します。";
@@ -1403,6 +1409,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS/Info-macOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -1435,6 +1442,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS/Info-macOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "簡単証明写真";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
