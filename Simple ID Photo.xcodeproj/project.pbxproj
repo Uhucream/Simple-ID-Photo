@@ -1611,8 +1611,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:sindresorhus/Percentage.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
 			};
 		};
 		47C49B78296847CE00F2BF35 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
