@@ -138,60 +138,57 @@ struct CreatedIDPhotoHistoryCard: View {
             }
         } else {
             HStack(alignment: .center) {
-                HStack(alignment: .center) {
 
-                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
-                    
-                    let createdIDPhotoAspectRatio: CGFloat = {
-                        if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
-                            return 3 / 4
-                        }
-                        
-                        return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
-                    }()
-                    
-                    let imageMaxWidth: CGFloat = 50 * thumbnailScaleFactor
-                    
-                    AsyncImage(
-                        url: idPhotoThumbnailImageURL
-                    ) { asyncImagePhase in
-                        
-                        if let loadedImage = asyncImagePhase.image {
-                            
-                            loadedImage
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .clipped()
-                                .shadow(radius: 0.8)
-                            
-                        } else {
-                            
-                            Rectangle()
-                                .fill(Color.clear)
-                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
-                                .overlay(.ultraThinMaterial)
-                                .overlay {
-                                    Group {
-                                        if let _ = asyncImagePhase.error {
-                                            Image(systemName: "questionmark.square.dashed")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .foregroundColor(.systemGray)
-                                        } else {
-                                            ProgressView()
-                                        }
-                                    }
-                                    .frame(maxWidth: 40%.of(imageMaxWidth))
-                                }
-
-                        }
+                let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
+                
+                let createdIDPhotoAspectRatio: CGFloat = {
+                    if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
+                        return 3 / 4
                     }
-                    .frame(maxWidth: imageMaxWidth, alignment: .top)
                     
-                    renderTitle()
-                        .font(.callout)
-                        .lineLimit(1)
+                    return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
+                }()
+                
+                let imageHeight: CGFloat = 48 * thumbnailScaleFactor
+                
+                AsyncImage(
+                    url: idPhotoThumbnailImageURL
+                ) { asyncImagePhase in
+                    
+                    if let loadedImage = asyncImagePhase.image {
+                        
+                        loadedImage
+                            .resizable()
+                            .shadow(radius: 0.8)
+                            .scaledToFill()
+                            .frame(width: imageHeight, height: imageHeight)
+                        
+                    } else {
+                        
+                        Rectangle()
+                            .fill(Color.clear)
+                            .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                            .overlay(.ultraThinMaterial)
+                            .overlay {
+                                Group {
+                                    if let _ = asyncImagePhase.error {
+                                        Image(systemName: "questionmark.square.dashed")
+                                            .resizable()
+                                            .foregroundColor(.systemGray)
+                                    } else {
+                                        ProgressView()
+                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                                    }
+                                }
+                            }
+
+                    }
                 }
+                .aspectRatio(1, contentMode: .fit)
+                
+                renderTitle()
+                    .font(.callout)
+                    .lineLimit(1)
                 
                 Spacer()
                 
