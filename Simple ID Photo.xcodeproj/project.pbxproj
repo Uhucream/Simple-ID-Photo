@@ -66,6 +66,7 @@
 		479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC7F29696E0500C02BB7 /* InfoPlist.strings */; };
 		479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC8129696FF900C02BB7 /* TopViewContainer.swift */; };
 		479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC832969754800C02BB7 /* PicturePickerView.swift */; };
+		479C37EF29C19E2D003D860C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 479C37EE29C19E2D003D860C /* GoogleMobileAds */; };
 		47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */; };
 		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
 		47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B91A4C29A8567100754657 /* PrintPageRenderer.swift */; };
@@ -226,6 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				479C37EF29C19E2D003D860C /* GoogleMobileAds in Frameworks */,
 				4796EC3B29C03964007C2980 /* FirebaseFunctions in Frameworks */,
 				4796EC3129C03964007C2980 /* FirebaseDatabaseSwift in Frameworks */,
 				4796EC4129C03964007C2980 /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
@@ -816,6 +818,7 @@
 				4796EC4E29C03964007C2980 /* FirebaseStorage */,
 				4796EC5029C03964007C2980 /* FirebaseStorageCombine-Community */,
 				4796EC5329C03B10007C2980 /* Percentage */,
+				479C37EE29C19E2D003D860C /* GoogleMobileAds */,
 			);
 			productName = "Simple ID Photo";
 			productReference = 47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */;
@@ -957,6 +960,7 @@
 			packageReferences = (
 				4796EC1B29C03964007C2980 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				4796EC5229C03B10007C2980 /* XCRemoteSwiftPackageReference "Percentage" */,
+				479C37ED29C19E2D003D860C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 47C49B3B2967FB1C00F2BF35 /* Products */;
 			projectDirPath = "";
@@ -1674,6 +1678,14 @@
 				kind = branch;
 			};
 		};
+		479C37ED29C19E2D003D860C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1816,6 +1828,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4796EC5229C03B10007C2980 /* XCRemoteSwiftPackageReference "Percentage" */;
 			productName = Percentage;
+		};
+		479C37EE29C19E2D003D860C /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 479C37ED29C19E2D003D860C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 
