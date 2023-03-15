@@ -75,6 +75,7 @@
 		479C37FC29C1A046003D860C /* EnvironmentValues_Debug-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F529C1A045003D860C /* EnvironmentValues_Debug-Local.xcconfig */; };
 		479C37FD29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */; };
 		479C37FE29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */; };
+		479C380429C1A196003D860C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C380329C1A196003D860C /* AppDelegate.swift */; };
 		47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */; };
 		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
 		47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B91A4C29A8567100754657 /* PrintPageRenderer.swift */; };
@@ -186,6 +187,7 @@
 		479C37F329C1A045003D860C /* EnvironmentValues_Release-Local.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "EnvironmentValues_Release-Local.xcconfig"; sourceTree = "<group>"; };
 		479C37F529C1A045003D860C /* EnvironmentValues_Debug-Local.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "EnvironmentValues_Debug-Local.xcconfig"; sourceTree = "<group>"; };
 		479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
+		479C380329C1A196003D860C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+.swift"; sourceTree = "<group>"; };
 		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
 		47B91A4C29A8567100754657 /* PrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintPageRenderer.swift; sourceTree = "<group>"; };
@@ -551,6 +553,7 @@
 				47C49B6E296831BB00F2BF35 /* Scenes */,
 				47C49B912968497A00F2BF35 /* ViewComponents */,
 				47C49B6C2968017A00F2BF35 /* Resources */,
+				479C380329C1A196003D860C /* AppDelegate.swift */,
 				47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */,
 				47C49B3F2967FB1C00F2BF35 /* ContentView.swift */,
 				47C49B462967FB1E00F2BF35 /* Persistence.swift */,
@@ -1121,6 +1124,7 @@
 				47C49B4A2967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld in Sources */,
 				47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */,
 				479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */,
+				479C380429C1A196003D860C /* AppDelegate.swift in Sources */,
 				47868951297F6CDC00952BFD /* IDPhotoBackgroundColorPicker.swift in Sources */,
 				47CDB2BA29A5070F007FDE8E /* Measurement<UnitLength>+.swift in Sources */,
 				478DB92529AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift in Sources */,
