@@ -198,7 +198,7 @@ struct TopViewContainer: View {
             let sourcePhotoFileName = sourcePhotoFileName,
             let sourcePhotoSavedDirectory = sourcePhotoSavedDirectory
         {
-         
+            
             let destinationRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
                 rawValue:  UInt(sourcePhotoSavedDirectory.rootSearchPathDirectory)
             ) ?? DEFAULT_FILE_SAVE_ROOT_SEARCH_PATH_DIRECTORY
@@ -237,67 +237,115 @@ struct TopViewContainer: View {
         self.shouldShowDeleteConfirmDialog = true
     }
     
+    @ViewBuilder
+    private func renderTopView() -> some View {
+        if #available(iOS 16, *) {
+            TopView_iOS16(
+                nativeAdObject: .constant(adLoadingHelper.nativeAd),
+                currentEditMode: $currentEditMode,
+                createdIDPhotoHistories: createdIDPhotoHistories,
+                dropAllowedFileUTTypes: [.image],
+                onTapSelectFromAlbumButton: {
+                    showPicturePickerView()
+                },
+                onTapTakePictureButton: {
+                    showCameraView()
+                }
+            )
+            .onDeleteHistoryCard { deletingTargetHistories in
+                self.deletingTargetHistories = deletingTargetHistories
+                
+                self.showDeleteConfirmationDialog()
+            }
+            .onTapSaveImageButton { saveTargetCreatedIDPhoto in
+                Task {
+                    do {
+                        let savedIDPhotoFileName: String? = saveTargetCreatedIDPhoto.imageFileName
+                        
+                        let savedDirectoryURL: URL? = saveTargetCreatedIDPhoto.savedDirectory?.parseToDirectoryFileURL()
+                        
+                        guard let savedIDPhotoFileName = savedIDPhotoFileName else { return }
+                        
+                        guard let savedDirectoryURL = savedDirectoryURL else { return }
+                        
+                        let savedIDPhotoFileURL: URL = savedDirectoryURL
+                            .appendingPathComponent(savedIDPhotoFileName, conformingTo: .fileURL)
+                        
+                        try await PHPhotoLibrary.shared().performChanges({
+                            PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: savedIDPhotoFileURL)
+                        })
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            .onDropFile(action: setPictureURLFromDroppedItem)
+        } else {
+            TopView_iOS15(
+                nativeAdObject: .constant(adLoadingHelper.nativeAd),
+                currentEditMode: $currentEditMode,
+                createdIDPhotoHistories: createdIDPhotoHistories,
+                dropAllowedFileUTTypes: [.image],
+                onTapSelectFromAlbumButton: {
+                    showPicturePickerView()
+                },
+                onTapTakePictureButton: {
+                    showCameraView()
+                }
+            )
+            .onDeleteHistoryCard { deletingTargetHistories in
+                self.deletingTargetHistories = deletingTargetHistories
+                
+                self.showDeleteConfirmationDialog()
+            }
+            .onTapSaveImageButton { saveTargetCreatedIDPhoto in
+                Task {
+                    do {
+                        let savedIDPhotoFileName: String? = saveTargetCreatedIDPhoto.imageFileName
+                        
+                        let savedDirectoryURL: URL? = saveTargetCreatedIDPhoto.savedDirectory?.parseToDirectoryFileURL()
+                        
+                        guard let savedIDPhotoFileName = savedIDPhotoFileName else { return }
+                        
+                        guard let savedDirectoryURL = savedDirectoryURL else { return }
+                        
+                        let savedIDPhotoFileURL: URL = savedDirectoryURL
+                            .appendingPathComponent(savedIDPhotoFileName, conformingTo: .fileURL)
+                        
+                        try await PHPhotoLibrary.shared().performChanges({
+                            PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: savedIDPhotoFileURL)
+                        })
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            .onDropFile(action: setPictureURLFromDroppedItem)
+        }
+    }
+    
     var body: some View {
         //  MARK: navigationTitle や toolbar より上のレイヤーに ProgressView をかぶせたいので、ZStack の内側に NavigationView を配置
         ZStack {
             NavigationView {
                 Group {
-                    TopView(
-                        nativeAdObject: .constant(adLoadingHelper.nativeAd),
-                        currentEditMode: $currentEditMode,
-                        createdIDPhotoHistories: createdIDPhotoHistories,
-                        dropAllowedFileUTTypes: [.image],
-                        onTapSelectFromAlbumButton: {
-                            showPicturePickerView()
-                        },
-                        onTapTakePictureButton: {
-                            showCameraView()
+                    renderTopView()
+                        .onAppear{
+                            adLoadingHelper.refreshAd()
                         }
-                    )
-                    .onDeleteHistoryCard { deletingTargetHistories in
-                        self.deletingTargetHistories = deletingTargetHistories
-                        
-                        self.showDeleteConfirmationDialog()
-                    }
-                    .onTapSaveImageButton { saveTargetCreatedIDPhoto in
-                        Task {
-                            do {
-                                let savedIDPhotoFileName: String? = saveTargetCreatedIDPhoto.imageFileName
-                                
-                                let savedDirectoryURL: URL? = saveTargetCreatedIDPhoto.savedDirectory?.parseToDirectoryFileURL()
-                                
-                                guard let savedIDPhotoFileName = savedIDPhotoFileName else { return }
-                                
-                                guard let savedDirectoryURL = savedDirectoryURL else { return }
-                                
-                                let savedIDPhotoFileURL: URL = savedDirectoryURL
-                                    .appendingPathComponent(savedIDPhotoFileName, conformingTo: .fileURL)
-                                
-                                try await PHPhotoLibrary.shared().performChanges({
-                                    PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: savedIDPhotoFileURL)
-                                })
-                            } catch {
-                                print(error)
-                            }
+                        .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
+                            //  MARK: これがないと、すべての履歴を削除して空になったあとに currentEditMode が編集中ステータスから切り替わらない
+                            
+                            guard newHistoriesCount == 0 else { return }
+                            
+                            self.currentEditMode = .inactive
                         }
-                    }
-                    .onDropFile(action: setPictureURLFromDroppedItem)
-                    .onAppear{
-                        adLoadingHelper.refreshAd()
-                    }
-                    .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
-                        //  MARK: これがないと、すべての履歴を削除して空になったあとに currentEditMode が編集中ステータスから切り替わらない
-                        
-                        guard newHistoriesCount == 0 else { return }
-                        
-                        self.currentEditMode = .inactive
-                    }
-                    .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
-                        
-                        let isSelectedImageURLNotNil: Bool = newUserSelectedImageURL != nil
-                        
-                        self.shouldShowCreateIDPhotoView = isSelectedImageURLNotNil
-                    }
+                        .onChange(of: userSelectedImageURL) { newUserSelectedImageURL in
+                            
+                            let isSelectedImageURLNotNil: Bool = newUserSelectedImageURL != nil
+                            
+                            self.shouldShowCreateIDPhotoView = isSelectedImageURLNotNil
+                        }
                 }
                 .background {
                     NavigationLink(

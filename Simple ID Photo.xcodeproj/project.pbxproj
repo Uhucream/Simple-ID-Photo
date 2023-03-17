@@ -17,6 +17,8 @@
 		4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */; };
 		4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */; };
 		4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */; };
+		4727C34E29C467A9000C9D90 /* TopView_iOS16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C34B29C467A9000C9D90 /* TopView_iOS16.swift */; };
+		4727C34F29C467A9000C9D90 /* TopView_iOS15.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C34D29C467A9000C9D90 /* TopView_iOS15.swift */; };
 		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
@@ -93,7 +95,6 @@
 		47C49B5E2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */; };
 		47C49B602967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */; };
 		47C49B71296831E600F2BF35 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B70296831E600F2BF35 /* RootView.swift */; };
-		47C49B742968326200F2BF35 /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B732968326200F2BF35 /* TopView.swift */; };
 		47C49B94296849A700F2BF35 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B93296849A700F2BF35 /* CameraView.swift */; };
 		47C7894929AB3A44003D7763 /* CreatedIDPhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C7894829AB3A44003D7763 /* CreatedIDPhotoDetail.swift */; };
 		47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C7894B29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift */; };
@@ -162,6 +163,8 @@
 		4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListAdvertisementCard.xib; sourceTree = "<group>"; };
 		4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAdvertisementCard.swift; sourceTree = "<group>"; };
 		4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdMobListCellAssets.xcassets; sourceTree = "<group>"; };
+		4727C34B29C467A9000C9D90 /* TopView_iOS16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopView_iOS16.swift; sourceTree = "<group>"; };
+		4727C34D29C467A9000C9D90 /* TopView_iOS15.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopView_iOS15.swift; sourceTree = "<group>"; };
 		4728DA43297ECC180056767F /* IDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSize.swift; sourceTree = "<group>"; };
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
@@ -212,7 +215,6 @@
 		47C49B5D2967FB1F00F2BF35 /* Simple_ID_PhotoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITests.swift; sourceTree = "<group>"; };
 		47C49B5F2967FB1F00F2BF35 /* Simple_ID_PhotoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_PhotoUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		47C49B70296831E600F2BF35 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		47C49B732968326200F2BF35 /* TopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
 		47C49B93296849A700F2BF35 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		47C7894829AB3A44003D7763 /* CreatedIDPhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedIDPhotoDetail.swift; sourceTree = "<group>"; };
 		47C7894B29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedIDPhotoHistoryCard.swift; sourceTree = "<group>"; };
@@ -361,6 +363,31 @@
 				4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */,
 			);
 			path = Native;
+			sourceTree = "<group>";
+		};
+		4727C34929C467A9000C9D90 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4727C34A29C467A9000C9D90 /* iOS 16 */,
+				4727C34C29C467A9000C9D90 /* iOS 15 */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4727C34A29C467A9000C9D90 /* iOS 16 */ = {
+			isa = PBXGroup;
+			children = (
+				4727C34B29C467A9000C9D90 /* TopView_iOS16.swift */,
+			);
+			path = "iOS 16";
+			sourceTree = "<group>";
+		};
+		4727C34C29C467A9000C9D90 /* iOS 15 */ = {
+			isa = PBXGroup;
+			children = (
+				4727C34D29C467A9000C9D90 /* TopView_iOS15.swift */,
+			);
+			path = "iOS 15";
 			sourceTree = "<group>";
 		};
 		4728DA3F297EA7240056767F /* Entities */ = {
@@ -650,8 +677,8 @@
 		47C49B722968324A00F2BF35 /* Top */ = {
 			isa = PBXGroup;
 			children = (
+				4727C34929C467A9000C9D90 /* View */,
 				47C7894D29AB3CEA003D7763 /* Components */,
-				47C49B732968326200F2BF35 /* TopView.swift */,
 				479BBC8129696FF900C02BB7 /* TopViewContainer.swift */,
 			);
 			path = Top;
@@ -1127,6 +1154,7 @@
 				47F9085D29BDD913000F7394 /* Task+.swift in Sources */,
 				4707215229B02A0800BD8535 /* AppliedIDPhotoSize+.swift in Sources */,
 				47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */,
+				4727C34E29C467A9000C9D90 /* TopView_iOS16.swift in Sources */,
 				472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */,
 				478A420429AA3E7300626316 /* IDPhotoDetailView.swift in Sources */,
 				47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */,
@@ -1155,6 +1183,7 @@
 				478689552980216600952BFD /* IDPhotoSizePicker.swift in Sources */,
 				47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */,
 				47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */,
+				4727C34F29C467A9000C9D90 /* TopView_iOS15.swift in Sources */,
 				479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */,
 				4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */,
 				47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */,
@@ -1169,7 +1198,6 @@
 				478DB92529AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift in Sources */,
 				475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */,
 				4788D96E29B8338F00CFE1DE /* VisionFrameworkHelper.swift in Sources */,
-				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */,
 				4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */,
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
