@@ -1,8 +1,8 @@
 //
-//  TopView.swift
+//  TopView_iOS16.swift
 //  Simple ID Photo (iOS)
 //  
-//  Created by TakashiUshikoshi on 2023/01/06
+//  Created by TakashiUshikoshi on 2023/03/17
 //  
 //
 
@@ -12,7 +12,8 @@ import GoogleMobileAds
 
 fileprivate let gregorianCalendar: Calendar = .init(identifier: .gregorian)
 
-struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where CreatedIDPhotosResults.Element ==  CreatedIDPhoto {
+@available(iOS 16, *)
+struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where CreatedIDPhotosResults.Element ==  CreatedIDPhoto {
     
     @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
@@ -198,55 +199,27 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                                     self.onDeleteHistoryCardCallback?(deleteTargets)
                                 }
                                 
-                                //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
-                                if #available(iOS 16, *) {
-                                    Section {
-                                        ForEach(historiesWithinThreeMonths) { history in
-                                            NavigationLink(
-                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                            ) {
-                                                renderHistoryCard(history)
-                                            }
-                                            .isDetailLink(true)
-                                            .contextMenu {
-                                                Button(
-                                                    action: {
-                                                        onTapSaveImageButtonCallback?(history)
-                                                    }
-                                                ) {
-                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
+                                Section {
+                                    ForEach(historiesWithinThreeMonths) { history in
+                                        NavigationLink(
+                                            destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                        ) {
+                                            renderHistoryCard(history)
+                                        }
+                                        .isDetailLink(true)
+                                        .contextMenu {
+                                            Button(
+                                                action: {
+                                                    onTapSaveImageButtonCallback?(history)
                                                 }
+                                            ) {
+                                                Label("画像を保存", systemImage: "square.and.arrow.down")
                                             }
                                         }
-                                        .onDelete(perform: onDeleteForWithinThreeMonthsSection)
-                                    } header: {
-                                        Text("3ヶ月以内")
                                     }
-                                } else {
-                                    Section {
-                                        ForEach(historiesWithinThreeMonths) { history in
-                                            NavigationLink(
-                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                            ) {
-                                                renderHistoryCard(history)
-                                            }
-                                            .isDetailLink(true)
-                                            .contextMenu {
-                                                Button(
-                                                    action: {
-                                                        onTapSaveImageButtonCallback?(history)
-                                                    }
-                                                ) {
-                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
-                                                }
-                                            }
-                                        }
-                                        .onDelete(perform: onDeleteForWithinThreeMonthsSection)
-                                        //  MARK: iOS 16 だと効かない
-                                        .deleteDisabled(!currentEditMode.isEditing)
-                                    } header: {
-                                        Text("3ヶ月以内")
-                                    }
+                                    .onDelete(perform: onDeleteForWithinThreeMonthsSection)
+                                } header: {
+                                    Text("3ヶ月以内")
                                 }
                             }
                             
@@ -271,55 +244,27 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                                     self.onDeleteHistoryCardCallback?(deleteTargets)
                                 }
                                 
-                                //  MARK:  iOS 16 だと .deleteDisabled() の引数が動的な Bool の場合に常に無効化されてしまうので条件分岐
-                                if #available(iOS 16, *) {
-                                    Section {
-                                        ForEach(historiesOverThreeMonthsAgo) { history in
-                                            NavigationLink(
-                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                            ) {
-                                                renderHistoryCard(history)
-                                            }
-                                            .isDetailLink(true)
-                                            .contextMenu {
-                                                Button(
-                                                    action: {
-                                                        onTapSaveImageButtonCallback?(history)
-                                                    }
-                                                ) {
-                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
+                                Section {
+                                    ForEach(historiesOverThreeMonthsAgo) { history in
+                                        NavigationLink(
+                                            destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
+                                        ) {
+                                            renderHistoryCard(history)
+                                        }
+                                        .isDetailLink(true)
+                                        .contextMenu {
+                                            Button(
+                                                action: {
+                                                    onTapSaveImageButtonCallback?(history)
                                                 }
+                                            ) {
+                                                Label("画像を保存", systemImage: "square.and.arrow.down")
                                             }
                                         }
-                                        .onDelete(perform: onDeleteForOverThreeMonthsSection)
-                                    } header: {
-                                        Text("それ以前")
                                     }
-                                } else {
-                                    Section {
-                                        ForEach(historiesOverThreeMonthsAgo) { history in
-                                            NavigationLink(
-                                                destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                            ) {
-                                                renderHistoryCard(history)
-                                            }
-                                            .isDetailLink(true)
-                                            .contextMenu {
-                                                Button(
-                                                    action: {
-                                                        onTapSaveImageButtonCallback?(history)
-                                                    }
-                                                ) {
-                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
-                                                }
-                                            }
-                                        }
-                                        .onDelete(perform: onDeleteForOverThreeMonthsSection)
-                                        //  MARK: iOS 16 だと効かない
-                                        .deleteDisabled(!currentEditMode.isEditing)
-                                    } header: {
-                                        Text("それ以前")
-                                    }
+                                    .onDelete(perform: onDeleteForOverThreeMonthsSection)
+                                } header: {
+                                    Text("それ以前")
                                 }
                             }
                         }
@@ -335,7 +280,8 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     }
 }
 
-struct TopView_Previews: PreviewProvider {
+@available(iOS 16, *)
+struct TopView_iOS16_Previews: PreviewProvider {
     static var previews: some View {
         let screenSizeHelper: ScreenSizeHelper = .shared
         
@@ -348,7 +294,7 @@ struct TopView_Previews: PreviewProvider {
         let adLoadingHelper: NativeAdLoadingHelper = .init(advertisementUnitID: adUnitID)
         
         GeometryReader { geometry in
-            TopView(
+            TopView_iOS16(
                 nativeAdObject: Binding<GADNativeAd?>(
                     get: {
                         return adLoadingHelper.nativeAd
