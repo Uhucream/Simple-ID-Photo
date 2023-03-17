@@ -20,9 +20,6 @@ let projectGlobalMeasurementFormatter: MeasurementFormatter = {
 
 @main
 struct SimpleIDPhotoApp_iOS: App {
-    
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
     let persistenceController = PersistenceController.shared
     
     let screenSizeHelper: ScreenSizeHelper = .shared
