@@ -2,10 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AdMobListCellUnitID</key>
+	<string>$(GAD_LIST_CELL_AD_UNIT_ID)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>$(GAD_APPLICATION_IDENTIFIER)</string>
+	<key>GADNativeAdValidatorEnabled</key>
+	<string>$(GAD_SHOULD_SHOW_AD_VALIDATOR)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-		<key>GADApplicationIdentifier</key>
-	<string>$(GAD_APPLICATION_IDENTIFIER)</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

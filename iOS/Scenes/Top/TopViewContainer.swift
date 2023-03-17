@@ -15,6 +15,8 @@ struct TopViewContainer: View {
     
     @Environment(\.managedObjectContext) var viewContext
     
+    @ObservedObject private var adLoadingHelper: NativeAdLoadingHelper
+    
     @FetchRequest(
         entity: CreatedIDPhoto.entity(),
         sortDescriptors: [
@@ -45,6 +47,16 @@ struct TopViewContainer: View {
     
     @State private var currentEditMode: EditMode = .inactive
     @State private var deletingTargetHistories: [CreatedIDPhoto] = []
+    
+    init() {
+        let adUnitID: String = {
+            return Bundle.main.object(forInfoDictionaryKey: "AdMobListCellUnitID") as? String ?? ""
+        }()
+        
+        _adLoadingHelper = .init(
+            initialValue: NativeAdLoadingHelper(advertisementUnitID: adUnitID)
+        )
+    }
     
     func showSettingsView() -> Void {
         shouldShowSettingsView = true
@@ -231,6 +243,7 @@ struct TopViewContainer: View {
             NavigationView {
                 Group {
                     TopView(
+                        nativeAdObject: .constant(adLoadingHelper.nativeAd),
                         currentEditMode: $currentEditMode,
                         createdIDPhotoHistories: createdIDPhotoHistories,
                         dropAllowedFileUTTypes: [.image],
@@ -269,6 +282,9 @@ struct TopViewContainer: View {
                         }
                     }
                     .onDropFile(action: setPictureURLFromDroppedItem)
+                    .onAppear{
+                        adLoadingHelper.refreshAd()
+                    }
                     .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
                         //  MARK: これがないと、すべての履歴を削除して空になったあとに currentEditMode が編集中ステータスから切り替わらない
                         

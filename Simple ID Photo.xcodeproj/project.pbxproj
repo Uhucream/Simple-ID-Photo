@@ -14,6 +14,9 @@
 		4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215729B02A8E00BD8535 /* SourcePhoto+.swift */; };
 		4727166C29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
 		4727166D29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
+		4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */; };
+		4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */; };
+		4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */; };
 		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
@@ -109,6 +112,7 @@
 		47DC49BA29BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49B929BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift */; };
 		47DC49C429BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */; };
 		47DC49C629BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */; };
+		47E9DAE829C4286000659744 /* NativeAdLoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -155,6 +159,9 @@
 		4707215529B02A7200BD8535 /* CreatedIDPhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CreatedIDPhoto+.swift"; sourceTree = "<group>"; };
 		4707215729B02A8E00BD8535 /* SourcePhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SourcePhoto+.swift"; sourceTree = "<group>"; };
 		4727166B29BF92DD000246DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListAdvertisementCard.xib; sourceTree = "<group>"; };
+		4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAdvertisementCard.swift; sourceTree = "<group>"; };
+		4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdMobListCellAssets.xcassets; sourceTree = "<group>"; };
 		4728DA43297ECC180056767F /* IDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSize.swift; sourceTree = "<group>"; };
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
@@ -228,6 +235,7 @@
 		47DC49BF29BF85EE00516D4B /* UITests (macOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UITests (macOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITests.swift; sourceTree = "<group>"; };
 		47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdLoadingHelper.swift; sourceTree = "<group>"; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -335,6 +343,24 @@
 				47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */,
 			);
 			path = AssetsFiles;
+			sourceTree = "<group>";
+		};
+		4727C33929C43FC0000C9D90 /* AdMob */ = {
+			isa = PBXGroup;
+			children = (
+				4727C33A29C43FC0000C9D90 /* Native */,
+			);
+			path = AdMob;
+			sourceTree = "<group>";
+		};
+		4727C33A29C43FC0000C9D90 /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */,
+				4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */,
+				4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */,
+			);
+			path = Native;
 			sourceTree = "<group>";
 		};
 		4728DA3F297EA7240056767F /* Entities */ = {
@@ -645,6 +671,7 @@
 		47C49B922968498B00F2BF35 /* RepresentedViews */ = {
 			isa = PBXGroup;
 			children = (
+				4727C33929C43FC0000C9D90 /* AdMob */,
 				47C49B93296849A700F2BF35 /* CameraView.swift */,
 				479BBC832969754800C02BB7 /* PicturePickerView.swift */,
 				47868952297F7EC100952BFD /* BlurView.swift */,
@@ -671,6 +698,7 @@
 		47D9040D2969141300DD4FAF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				47E9DAE629C4284D00659744 /* AdMob */,
 				47DC499929BF57D500516D4B /* Printing */,
 				4788D96C29B8338F00CFE1DE /* VisionFramework */,
 				47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */,
@@ -781,6 +809,14 @@
 				47DC49EC29BF91EF00516D4B /* AssetsFiles */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		47E9DAE629C4284D00659744 /* AdMob */ = {
+			isa = PBXGroup;
+			children = (
+				47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */,
+			);
+			path = AdMob;
 			sourceTree = "<group>";
 		};
 		47F9084F29BDAB06000F7394 /* Settings */ = {
@@ -1029,9 +1065,11 @@
 				479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.iOS.xcassets in Resources */,
 				479C37FD29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */,
+				4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */,
 				479C37F929C1A046003D860C /* EnvironmentValues_Release-Local.xcconfig in Resources */,
 				4727166C29BF92DD000246DD /* Assets.xcassets in Resources */,
 				479C37F729C1A045003D860C /* EnvironmentValues_Release.xcconfig in Resources */,
+				4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */,
 				479C37FB29C1A046003D860C /* EnvironmentValues_Debug-Local.xcconfig in Resources */,
 				479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */,
 			);
@@ -1121,6 +1159,7 @@
 				4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */,
 				47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */,
 				4707215629B02A7200BD8535 /* CreatedIDPhoto+.swift in Sources */,
+				47E9DAE829C4286000659744 /* NativeAdLoadingHelper.swift in Sources */,
 				47C49B4A2967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld in Sources */,
 				47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */,
 				479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */,
@@ -1132,6 +1171,7 @@
 				4788D96E29B8338F00CFE1DE /* VisionFrameworkHelper.swift in Sources */,
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */,
+				4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */,
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
 				4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */,
 				475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */,
