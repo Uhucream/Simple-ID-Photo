@@ -14,6 +14,9 @@
 		4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215729B02A8E00BD8535 /* SourcePhoto+.swift */; };
 		4727166C29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
 		4727166D29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
+		4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */; };
+		4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */; };
+		4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */; };
 		4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA43297ECC180056767F /* IDPhotoSize.swift */; };
 		4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
@@ -156,6 +159,9 @@
 		4707215529B02A7200BD8535 /* CreatedIDPhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CreatedIDPhoto+.swift"; sourceTree = "<group>"; };
 		4707215729B02A8E00BD8535 /* SourcePhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SourcePhoto+.swift"; sourceTree = "<group>"; };
 		4727166B29BF92DD000246DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListAdvertisementCard.xib; sourceTree = "<group>"; };
+		4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAdvertisementCard.swift; sourceTree = "<group>"; };
+		4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdMobListCellAssets.xcassets; sourceTree = "<group>"; };
 		4728DA43297ECC180056767F /* IDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSize.swift; sourceTree = "<group>"; };
 		4728DA45297ECE260056767F /* IDPhotoSizeVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeVariant.swift; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
@@ -337,6 +343,24 @@
 				47DC49A629BF85ED00516D4B /* Assets.macOS.xcassets */,
 			);
 			path = AssetsFiles;
+			sourceTree = "<group>";
+		};
+		4727C33929C43FC0000C9D90 /* AdMob */ = {
+			isa = PBXGroup;
+			children = (
+				4727C33A29C43FC0000C9D90 /* Native */,
+			);
+			path = AdMob;
+			sourceTree = "<group>";
+		};
+		4727C33A29C43FC0000C9D90 /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */,
+				4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */,
+				4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */,
+			);
+			path = Native;
 			sourceTree = "<group>";
 		};
 		4728DA3F297EA7240056767F /* Entities */ = {
@@ -647,6 +671,7 @@
 		47C49B922968498B00F2BF35 /* RepresentedViews */ = {
 			isa = PBXGroup;
 			children = (
+				4727C33929C43FC0000C9D90 /* AdMob */,
 				47C49B93296849A700F2BF35 /* CameraView.swift */,
 				479BBC832969754800C02BB7 /* PicturePickerView.swift */,
 				47868952297F7EC100952BFD /* BlurView.swift */,
@@ -1040,9 +1065,11 @@
 				479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.iOS.xcassets in Resources */,
 				479C37FD29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */,
+				4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */,
 				479C37F929C1A046003D860C /* EnvironmentValues_Release-Local.xcconfig in Resources */,
 				4727166C29BF92DD000246DD /* Assets.xcassets in Resources */,
 				479C37F729C1A045003D860C /* EnvironmentValues_Release.xcconfig in Resources */,
+				4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */,
 				479C37FB29C1A046003D860C /* EnvironmentValues_Debug-Local.xcconfig in Resources */,
 				479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */,
 			);
@@ -1144,6 +1171,7 @@
 				4788D96E29B8338F00CFE1DE /* VisionFrameworkHelper.swift in Sources */,
 				47C49B742968326200F2BF35 /* TopView.swift in Sources */,
 				4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */,
+				4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */,
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
 				4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */,
 				475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */,
