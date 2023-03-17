@@ -109,6 +109,7 @@
 		47DC49BA29BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49B929BF85EE00516D4B /* Simple_ID_Photo__macOS_Tests.swift */; };
 		47DC49C429BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */; };
 		47DC49C629BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */; };
+		47E9DAE829C4286000659744 /* NativeAdLoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -228,6 +229,7 @@
 		47DC49BF29BF85EE00516D4B /* UITests (macOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UITests (macOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITests.swift; sourceTree = "<group>"; };
 		47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdLoadingHelper.swift; sourceTree = "<group>"; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -671,6 +673,7 @@
 		47D9040D2969141300DD4FAF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				47E9DAE629C4284D00659744 /* AdMob */,
 				47DC499929BF57D500516D4B /* Printing */,
 				4788D96C29B8338F00CFE1DE /* VisionFramework */,
 				47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */,
@@ -781,6 +784,14 @@
 				47DC49EC29BF91EF00516D4B /* AssetsFiles */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		47E9DAE629C4284D00659744 /* AdMob */ = {
+			isa = PBXGroup;
+			children = (
+				47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */,
+			);
+			path = AdMob;
 			sourceTree = "<group>";
 		};
 		47F9084F29BDAB06000F7394 /* Settings */ = {
@@ -1121,6 +1132,7 @@
 				4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */,
 				47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */,
 				4707215629B02A7200BD8535 /* CreatedIDPhoto+.swift in Sources */,
+				47E9DAE829C4286000659744 /* NativeAdLoadingHelper.swift in Sources */,
 				47C49B4A2967FB1E00F2BF35 /* SimpleIDPhoto.xcdatamodeld in Sources */,
 				47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */,
 				479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */,
