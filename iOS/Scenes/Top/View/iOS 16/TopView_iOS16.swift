@@ -223,16 +223,6 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
                                 }
                             }
                             
-                            if let nativeAdObject = nativeAdObject {
-                                Section {
-                                    ListAdvertisementCard(
-                                        nativeAd: .constant(nativeAdObject)
-                                    )
-                                    .frame(minHeight: 80)
-                                }
-                                .listRowInsets(EdgeInsets())
-                            }
-                            
                             if historiesOverThreeMonthsAgo.count > 0 {
                                 
                                 let onDeleteForOverThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
@@ -266,6 +256,16 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
                                 } header: {
                                     Text("それ以前")
                                 }
+                            }
+                            
+                            if let nativeAdObject = nativeAdObject {
+                                Section {
+                                    ListAdvertisementCard(
+                                        nativeAd: .constant(nativeAdObject)
+                                    )
+                                    .frame(minHeight: 80)
+                                }
+                                .listRowInsets(EdgeInsets())
                             }
                         }
                     }
