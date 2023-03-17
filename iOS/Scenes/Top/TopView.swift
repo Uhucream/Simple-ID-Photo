@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import GoogleMobileAds
 
 fileprivate let gregorianCalendar: Calendar = .init(identifier: .gregorian)
 
@@ -16,6 +17,8 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
     @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
     @State private var isDroppingItemTargeted: Bool = false
+    
+    @Binding var nativeAdObject: GADNativeAd?
     
     @Binding var currentEditMode: EditMode
     
@@ -247,6 +250,16 @@ struct TopView<CreatedIDPhotosResults: RandomAccessCollection>: View where Creat
                                 }
                             }
                             
+                            if let nativeAdObject = nativeAdObject {
+                                Section {
+                                    ListAdvertisementCard(
+                                        nativeAd: .constant(nativeAdObject)
+                                    )
+                                    .frame(minHeight: 80)
+                                }
+                                .listRowInsets(EdgeInsets())
+                            }
+                            
                             if historiesOverThreeMonthsAgo.count > 0 {
                                 
                                 let onDeleteForOverThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
@@ -328,8 +341,21 @@ struct TopView_Previews: PreviewProvider {
         
         let viewContext = PersistenceController.preview.container.viewContext
         
+        let adUnitID: String = {
+            return Bundle.main.object(forInfoDictionaryKey: "AdMobListCellUnitID") as? String ?? ""
+        }()
+        
+        let adLoadingHelper: NativeAdLoadingHelper = .init(advertisementUnitID: adUnitID)
+        
         GeometryReader { geometry in
             TopView(
+                nativeAdObject: Binding<GADNativeAd?>(
+                    get: {
+                        return adLoadingHelper.nativeAd
+                    }, set: { _ in
+                        
+                    }
+                ),
                 currentEditMode: .constant(.inactive),
                 createdIDPhotoHistories: [
                     .init(
@@ -350,6 +376,8 @@ struct TopView_Previews: PreviewProvider {
             .onAppear {
                 screenSizeHelper.updateSafeAreaInsets(geometry.safeAreaInsets)
                 screenSizeHelper.updateScreenSize(geometry.size)
+                
+                adLoadingHelper.refreshAd()
             }
             .onChange(of: geometry.safeAreaInsets) { (safeAreaInsets: EdgeInsets) in
                 screenSizeHelper.updateSafeAreaInsets(safeAreaInsets)
