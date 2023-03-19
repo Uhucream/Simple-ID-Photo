@@ -45,6 +45,5 @@ struct SettingsTopView: View {
 struct SettingsTopView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsTopView()
-            .environment(\.locale, .init(identifier: "ja_JP"))
     }
 }
