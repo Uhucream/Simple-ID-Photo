@@ -32,7 +32,7 @@ struct SettingsTopView: View {
             }
             
             Section {
-                
+                EmptyView()
             } footer: {
                 Text("Version \(versionNumberString) (\(buildNumberString))")
                     .font(.footnote)
