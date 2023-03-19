@@ -1,7 +1,17 @@
-/* 
+/*
   InfoPlist.strings
   Simple ID Photo
 
   Created by TakashiUshikoshi on 2023/01/07.
   
 */
+
+/* Bundle display name */
+"CFBundleDisplayName" = "Simple ID Photo";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Use camera to create ID photos";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Use photo library to save created ID photos";
+
