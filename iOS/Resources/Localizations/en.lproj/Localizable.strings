@@ -1,7 +1,11 @@
-/* 
+/*
   Localizable.strings
   Simple ID Photo
 
   Created by TakashiUshikoshi on 2023/01/07.
   
 */
+
+/* No comment provided by engineer. */
+"%@ について" = "About %@";
+
