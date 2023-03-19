@@ -72,10 +72,6 @@
 		479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC8129696FF900C02BB7 /* TopViewContainer.swift */; };
 		479BBC842969754800C02BB7 /* PicturePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC832969754800C02BB7 /* PicturePickerView.swift */; };
 		479C37EF29C19E2D003D860C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 479C37EE29C19E2D003D860C /* GoogleMobileAds */; };
-		479C37F729C1A045003D860C /* EnvironmentValues_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */; };
-		479C37F829C1A046003D860C /* EnvironmentValues_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */; };
-		479C37FD29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */; };
-		479C37FE29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */; };
 		479C380429C1A196003D860C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C380329C1A196003D860C /* AppDelegate.swift */; };
 		47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */; };
 		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
@@ -167,6 +163,8 @@
 		472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSaveViewContainer.swift; sourceTree = "<group>"; };
 		472EA52329BA123500463D32 /* EditIDPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditIDPhotoView.swift; sourceTree = "<group>"; };
 		472EA52529BA15B400463D32 /* EditIDPhotoViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditIDPhotoViewContainer.swift; sourceTree = "<group>"; };
+		47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
+		47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
 		4759F3DB29B2D7120045D821 /* 2023_03_04_10_31_Rename_GeneratedIDPhoto_to_CreatedIDPhoto.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2023_03_04_10_31_Rename_GeneratedIDPhoto_to_CreatedIDPhoto.xcdatamodel; sourceTree = "<group>"; };
 		475DFA5F29B4783E00F2183C /* 2023_03_05_16_11_Change_Saving_Image_Method_From_URL_To_File_Name.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2023_03_05_16_11_Change_Saving_Image_Method_From_URL_To_File_Name.xcdatamodel; sourceTree = "<group>"; };
 		475FB231296FD47F0059796F /* CreateIDPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIDPhotoView.swift; sourceTree = "<group>"; };
@@ -189,8 +187,6 @@
 		479BBC8029696E0900C02BB7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		479BBC8129696FF900C02BB7 /* TopViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewContainer.swift; sourceTree = "<group>"; };
 		479BBC832969754800C02BB7 /* PicturePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePickerView.swift; sourceTree = "<group>"; };
-		479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
-		479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
 		479C380329C1A196003D860C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+.swift"; sourceTree = "<group>"; };
 		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
@@ -528,7 +524,7 @@
 		479C37F129C1A045003D860C /* Release */ = {
 			isa = PBXGroup;
 			children = (
-				479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */,
+				47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */,
 			);
 			path = Release;
 			sourceTree = "<group>";
@@ -536,7 +532,7 @@
 		479C37F429C1A045003D860C /* Debug */ = {
 			isa = PBXGroup;
 			children = (
-				479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */,
+				47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -1083,10 +1079,8 @@
 				47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */,
 				479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.iOS.xcassets in Resources */,
-				479C37FD29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */,
 				4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */,
 				4727166C29BF92DD000246DD /* Assets.xcassets in Resources */,
-				479C37F729C1A045003D860C /* EnvironmentValues_Release.xcconfig in Resources */,
 				4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */,
 				479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */,
 			);
@@ -1112,8 +1106,6 @@
 			files = (
 				47DC49AA29BF85ED00516D4B /* Preview Assets.xcassets in Resources */,
 				4727166D29BF92DD000246DD /* Assets.xcassets in Resources */,
-				479C37F829C1A046003D860C /* EnvironmentValues_Release.xcconfig in Resources */,
-				479C37FE29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */,
 				47DC49A729BF85ED00516D4B /* Assets.macOS.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1289,7 +1281,6 @@
 /* Begin XCBuildConfiguration section */
 		47C49B612967FB1F00F2BF35 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1351,7 +1342,6 @@
 		};
 		47C49B622967FB1F00F2BF35 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1407,6 +1397,7 @@
 		};
 		47C49B642967FB1F00F2BF35 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1445,6 +1436,7 @@
 		};
 		47C49B652967FB1F00F2BF35 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
