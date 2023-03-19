@@ -11,7 +11,7 @@ import SwiftUI
 struct SettingsTopView: View {
     
     private var bundleDisplayName: String {
-        return Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "アプリ"
+        return Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? "アプリ"
     }
     
     private var versionNumberString: String {
@@ -45,5 +45,6 @@ struct SettingsTopView: View {
 struct SettingsTopView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsTopView()
+            .environment(\.locale, .init(identifier: "ja_JP"))
     }
 }
