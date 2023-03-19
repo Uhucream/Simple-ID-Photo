@@ -6,9 +6,11 @@
 #  Created by TakashiUshikoshi on 2023/03/19.
 #
 
-if [ $CI_WORKFLOW = "iOS Internal TestFlight Deployment" ]; then
+if [[ $CI_WORKFLOW = "iOS Internal TestFlight Deployment" ]]; then
 
-    XCCONFIG_FILE=Shared/EnvironmentValues/Debug/EnvironmentValues_Debug.xcconfig
+    XCCONFIG_FILE="${CI_WORKSPACE}/Shared/EnvironmentValues/Debug/EnvironmentValues_Debug.xcconfig"
+    
+    echo .xcconfig file path is ${XCCONFIG_FILE}
 
     if [ ! -d `dirname $XCCONFIG_FILE` ]; then
     
