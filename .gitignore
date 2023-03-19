@@ -104,4 +104,4 @@ iOSInjectionProject/
 
 GoogleService-Info.plist
 
-EnvironmentValues*-Local.xcconfig
+EnvironmentValues*.xcconfig
