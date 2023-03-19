@@ -76,6 +76,7 @@
 		47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */; };
 		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
 		47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B91A4C29A8567100754657 /* PrintPageRenderer.swift */; };
+		47BB62B729C7ACE4009B0782 /* InAppPurchaseProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BB62B629C7ACE4009B0782 /* InAppPurchaseProductCard.swift */; };
 		47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1C7BE297E3B4700A22EAB /* CIImage+.swift */; };
 		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */; };
 		47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3F2967FB1C00F2BF35 /* ContentView.swift */; };
@@ -192,6 +193,7 @@
 		47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+.swift"; sourceTree = "<group>"; };
 		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
 		47B91A4C29A8567100754657 /* PrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintPageRenderer.swift; sourceTree = "<group>"; };
+		47BB62B629C7ACE4009B0782 /* InAppPurchaseProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseProductCard.swift; sourceTree = "<group>"; };
 		47C1C7BE297E3B4700A22EAB /* CIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+.swift"; sourceTree = "<group>"; };
 		47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleIDPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp_iOS.swift; sourceTree = "<group>"; };
@@ -426,6 +428,21 @@
 			path = ci_scripts;
 			sourceTree = "<group>";
 		};
+		47396B8129C71848007EADE9 /* SettingsPurchase */ = {
+			isa = PBXGroup;
+			children = (
+				47BB62B529C7ACB9009B0782 /* Components */,
+			);
+			path = SettingsPurchase;
+			sourceTree = "<group>";
+		};
+		47396B8629C74A08007EADE9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		475FB230296FD47F0059796F /* CreateIDPhoto */ = {
 			isa = PBXGroup;
 			children = (
@@ -569,6 +586,14 @@
 			path = ConvenienceInitializer;
 			sourceTree = "<group>";
 		};
+		47BB62B529C7ACB9009B0782 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				47BB62B629C7ACE4009B0782 /* InAppPurchaseProductCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		47C49B312967FB1C00F2BF35 = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +604,7 @@
 				47C49B5C2967FB1F00F2BF35 /* UITests */,
 				47396B7729C6FCDC007EADE9 /* ci_scripts */,
 				47C49B3B2967FB1C00F2BF35 /* Products */,
+				47396B8629C74A08007EADE9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -848,6 +874,7 @@
 			isa = PBXGroup;
 			children = (
 				47F9085029BDAB16000F7394 /* SettingsTop */,
+				47396B8129C71848007EADE9 /* SettingsPurchase */,
 				47F9085329BDAD68000F7394 /* SettingsAbout */,
 			);
 			path = Settings;
@@ -1152,6 +1179,7 @@
 				47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */,
 				475FB236296FD5000059796F /* UIImage+.swift in Sources */,
 				47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */,
+				47BB62B729C7ACE4009B0782 /* InAppPurchaseProductCard.swift in Sources */,
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
