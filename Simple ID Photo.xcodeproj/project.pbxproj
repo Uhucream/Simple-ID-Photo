@@ -74,10 +74,6 @@
 		479C37EF29C19E2D003D860C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 479C37EE29C19E2D003D860C /* GoogleMobileAds */; };
 		479C37F729C1A045003D860C /* EnvironmentValues_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */; };
 		479C37F829C1A046003D860C /* EnvironmentValues_Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */; };
-		479C37F929C1A046003D860C /* EnvironmentValues_Release-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F329C1A045003D860C /* EnvironmentValues_Release-Local.xcconfig */; };
-		479C37FA29C1A046003D860C /* EnvironmentValues_Release-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F329C1A045003D860C /* EnvironmentValues_Release-Local.xcconfig */; };
-		479C37FB29C1A046003D860C /* EnvironmentValues_Debug-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F529C1A045003D860C /* EnvironmentValues_Debug-Local.xcconfig */; };
-		479C37FC29C1A046003D860C /* EnvironmentValues_Debug-Local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F529C1A045003D860C /* EnvironmentValues_Debug-Local.xcconfig */; };
 		479C37FD29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */; };
 		479C37FE29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */; };
 		479C380429C1A196003D860C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479C380329C1A196003D860C /* AppDelegate.swift */; };
@@ -194,8 +190,6 @@
 		479BBC8129696FF900C02BB7 /* TopViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewContainer.swift; sourceTree = "<group>"; };
 		479BBC832969754800C02BB7 /* PicturePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePickerView.swift; sourceTree = "<group>"; };
 		479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
-		479C37F329C1A045003D860C /* EnvironmentValues_Release-Local.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "EnvironmentValues_Release-Local.xcconfig"; sourceTree = "<group>"; };
-		479C37F529C1A045003D860C /* EnvironmentValues_Debug-Local.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "EnvironmentValues_Debug-Local.xcconfig"; sourceTree = "<group>"; };
 		479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
 		479C380329C1A196003D860C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+.swift"; sourceTree = "<group>"; };
@@ -535,7 +529,6 @@
 			isa = PBXGroup;
 			children = (
 				479C37F229C1A045003D860C /* EnvironmentValues_Release.xcconfig */,
-				479C37F329C1A045003D860C /* EnvironmentValues_Release-Local.xcconfig */,
 			);
 			path = Release;
 			sourceTree = "<group>";
@@ -544,7 +537,6 @@
 			isa = PBXGroup;
 			children = (
 				479C37F629C1A045003D860C /* EnvironmentValues_Debug.xcconfig */,
-				479C37F529C1A045003D860C /* EnvironmentValues_Debug-Local.xcconfig */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -1093,11 +1085,9 @@
 				47C49B422967FB1E00F2BF35 /* Assets.iOS.xcassets in Resources */,
 				479C37FD29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */,
 				4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */,
-				479C37F929C1A046003D860C /* EnvironmentValues_Release-Local.xcconfig in Resources */,
 				4727166C29BF92DD000246DD /* Assets.xcassets in Resources */,
 				479C37F729C1A045003D860C /* EnvironmentValues_Release.xcconfig in Resources */,
 				4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */,
-				479C37FB29C1A046003D860C /* EnvironmentValues_Debug-Local.xcconfig in Resources */,
 				479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1125,8 +1115,6 @@
 				479C37F829C1A046003D860C /* EnvironmentValues_Release.xcconfig in Resources */,
 				479C37FE29C1A046003D860C /* EnvironmentValues_Debug.xcconfig in Resources */,
 				47DC49A729BF85ED00516D4B /* Assets.macOS.xcassets in Resources */,
-				479C37FC29C1A046003D860C /* EnvironmentValues_Debug-Local.xcconfig in Resources */,
-				479C37FA29C1A046003D860C /* EnvironmentValues_Release-Local.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
