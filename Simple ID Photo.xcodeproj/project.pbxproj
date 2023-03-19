@@ -165,6 +165,7 @@
 		472EA52529BA15B400463D32 /* EditIDPhotoViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditIDPhotoViewContainer.swift; sourceTree = "<group>"; };
 		47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
 		47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
+		47396B7829C6FD26007EADE9 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		4759F3DB29B2D7120045D821 /* 2023_03_04_10_31_Rename_GeneratedIDPhoto_to_CreatedIDPhoto.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2023_03_04_10_31_Rename_GeneratedIDPhoto_to_CreatedIDPhoto.xcdatamodel; sourceTree = "<group>"; };
 		475DFA5F29B4783E00F2183C /* 2023_03_05_16_11_Change_Saving_Image_Method_From_URL_To_File_Name.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2023_03_05_16_11_Change_Saving_Image_Method_From_URL_To_File_Name.xcdatamodel; sourceTree = "<group>"; };
 		475FB231296FD47F0059796F /* CreateIDPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateIDPhotoView.swift; sourceTree = "<group>"; };
@@ -417,6 +418,14 @@
 			path = EditIDPhoto;
 			sourceTree = "<group>";
 		};
+		47396B7729C6FCDC007EADE9 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				47396B7829C6FD26007EADE9 /* ci_pre_xcodebuild.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		475FB230296FD47F0059796F /* CreateIDPhoto */ = {
 			isa = PBXGroup;
 			children = (
@@ -568,6 +577,7 @@
 				47DC49A129BF85E900516D4B /* macOS */,
 				47C49B522967FB1E00F2BF35 /* Tests */,
 				47C49B5C2967FB1F00F2BF35 /* UITests */,
+				47396B7729C6FCDC007EADE9 /* ci_scripts */,
 				47C49B3B2967FB1C00F2BF35 /* Products */,
 			);
 			sourceTree = "<group>";
