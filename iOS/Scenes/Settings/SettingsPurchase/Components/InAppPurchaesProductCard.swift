@@ -13,7 +13,7 @@ struct InAppPurchaseProductCard: View {
     let productName: String
     let productDescription: String
 
-    let productPriceLabel: String
+    let purchaseButtonLabel: String
     
     private(set) var onTapPurchaseButtonCallback: (() -> Void)?
     
@@ -38,7 +38,7 @@ struct InAppPurchaseProductCard: View {
                         onTapPurchaseButtonCallback?()
                     }
                 ) {
-                    Text(productPriceLabel)
+                    Text(purchaseButtonLabel)
                         .font(.system(size: 15, weight: .bold))
                         .frame(height: 12)
                 }
@@ -70,7 +70,7 @@ struct InAppPurchaseProductCard_Previews: PreviewProvider {
             InAppPurchaseProductCard(
                 productName: "広告非表示",
                 productDescription: "広告を非表示にします",
-                productPriceLabel: numberFormatter.string(from: 200) ?? "¥0"
+                purchaseButtonLabel: numberFormatter.string(from: 200) ?? "¥0"
             )
             .previewLayout(.sizeThatFits)
             .previewDisplayName("In App Purchase Product Card")
