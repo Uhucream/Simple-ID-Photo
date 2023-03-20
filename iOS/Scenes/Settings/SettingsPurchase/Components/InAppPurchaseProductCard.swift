@@ -39,8 +39,8 @@ struct InAppPurchaseProductCard: View {
                     }
                 ) {
                     Text(productPriceLabel)
-                        .fontWeight(.bold)
-                        .frame(height: 16)
+                        .font(.system(size: 15, weight: .bold))
+                        .frame(height: 12)
                 }
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
@@ -66,12 +66,14 @@ struct InAppPurchaseProductCard_Previews: PreviewProvider {
             return formatter
         }()
         
-        InAppPurchaseProductCard(
-            productName: "広告非表示",
-            productDescription: "広告を非表示にします",
-            productPriceLabel: numberFormatter.string(from: 200) ?? "¥0"
-        )
-        .previewLayout(.sizeThatFits)
-        .previewDisplayName("In App Purchase Product Card")
+        Form {
+            InAppPurchaseProductCard(
+                productName: "広告非表示",
+                productDescription: "広告を非表示にします",
+                productPriceLabel: numberFormatter.string(from: 200) ?? "¥0"
+            )
+            .previewLayout(.sizeThatFits)
+            .previewDisplayName("In App Purchase Product Card")
+        }
     }
 }
