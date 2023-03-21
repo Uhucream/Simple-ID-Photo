@@ -9,6 +9,37 @@
 import Combine
 import StoreKit
 
+fileprivate class NonConsumableProductIdentifier {
+    
+    static let shared: NonConsumableProductIdentifier = .init()
+    
+    private init() {}
+    
+    var hideAds: String {
+        return Bundle.main.object(forInfoDictionaryKey: "InAppPurchaseHideAdsProductIdentifier") as? String ?? "com.temporary.hide_ads"
+    }
+}
+
+fileprivate class ConsumableProductIdentifier {
+    
+    static let shared: ConsumableProductIdentifier = .init()
+    
+    private init() {}
+    
+    var beer: String {
+        return Bundle.main.object(forInfoDictionaryKey: "InAppPurchaseBeerProductIdentifier") as? String ?? "com.temporary.beer"
+    }
+}
+
+fileprivate class InAppPurchaseProductIdentifier {
+    
+    private init() {}
+    
+    static let nonConsumable: NonConsumableProductIdentifier = .shared
+    
+    static let consumable: ConsumableProductIdentifier = .shared
+}
+
 public enum StoreError: Error {
     case failedVerification
 }
@@ -42,8 +73,8 @@ final class InAppPurchaseHelper: ObservableObject {
         do {
             let fetchedProducts: [Product] = try await Product.products(
                 for: [
-                    "pictures.uhucream_takashi.SimpleIDPhoto.test.hide_ads",
-                    "pictures.uhucream_takashi.SimpleIDPhoto.test.treat_item.beer"
+                    InAppPurchaseProductIdentifier.nonConsumable.hideAds,
+                    InAppPurchaseProductIdentifier.consumable.beer
                 ]
             )
             
