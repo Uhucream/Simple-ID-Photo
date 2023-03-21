@@ -76,7 +76,7 @@
 		47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */; };
 		47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */; };
 		47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B91A4C29A8567100754657 /* PrintPageRenderer.swift */; };
-		47BB62B729C7ACE4009B0782 /* InAppPurchaseProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BB62B629C7ACE4009B0782 /* InAppPurchaseProductCard.swift */; };
+		47BB62B729C7ACE4009B0782 /* InAppPurchaesProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BB62B629C7ACE4009B0782 /* InAppPurchaesProductCard.swift */; };
 		47C1C7BF297E3B4700A22EAB /* CIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1C7BE297E3B4700A22EAB /* CIImage+.swift */; };
 		47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */; };
 		47C49B402967FB1C00F2BF35 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C49B3F2967FB1C00F2BF35 /* ContentView.swift */; };
@@ -107,6 +107,7 @@
 		47DC49C429BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */; };
 		47DC49C629BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */; };
 		47E9DAE829C4286000659744 /* NativeAdLoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */; };
+		47F755AB29C7BB7600400DB6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F755AA29C7BB7600400DB6 /* StoreKit.framework */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -193,7 +194,7 @@
 		47A865AB29B48799002BE3F9 /* SavedFilePath+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+.swift"; sourceTree = "<group>"; };
 		47AB8B8A29AF606D008C753F /* AppliedBackgroundColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedBackgroundColor+.swift"; sourceTree = "<group>"; };
 		47B91A4C29A8567100754657 /* PrintPageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrintPageRenderer.swift; sourceTree = "<group>"; };
-		47BB62B629C7ACE4009B0782 /* InAppPurchaseProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseProductCard.swift; sourceTree = "<group>"; };
+		47BB62B629C7ACE4009B0782 /* InAppPurchaesProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaesProductCard.swift; sourceTree = "<group>"; };
 		47C1C7BE297E3B4700A22EAB /* CIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+.swift"; sourceTree = "<group>"; };
 		47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleIDPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C49B3D2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleIDPhotoApp_iOS.swift; sourceTree = "<group>"; };
@@ -231,6 +232,7 @@
 		47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITests.swift; sourceTree = "<group>"; };
 		47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdLoadingHelper.swift; sourceTree = "<group>"; };
+		47F755AA29C7BB7600400DB6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				4796EC5129C03964007C2980 /* FirebaseStorageCombine-Community in Frameworks */,
 				4796EC2929C03964007C2980 /* FirebaseAuth in Frameworks */,
 				4796EC3329C03964007C2980 /* FirebaseDynamicLinks in Frameworks */,
+				47F755AB29C7BB7600400DB6 /* StoreKit.framework in Frameworks */,
 				4796EC3529C03964007C2980 /* FirebaseFirestore in Frameworks */,
 				4796EC4D29C03964007C2980 /* FirebaseRemoteConfigSwift in Frameworks */,
 			);
@@ -439,6 +442,7 @@
 		47396B8629C74A08007EADE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				47F755AA29C7BB7600400DB6 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -589,7 +593,7 @@
 		47BB62B529C7ACB9009B0782 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				47BB62B629C7ACE4009B0782 /* InAppPurchaseProductCard.swift */,
+				47BB62B629C7ACE4009B0782 /* InAppPurchaesProductCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1179,7 +1183,7 @@
 				47C49B472967FB1E00F2BF35 /* Persistence.swift in Sources */,
 				475FB236296FD5000059796F /* UIImage+.swift in Sources */,
 				47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */,
-				47BB62B729C7ACE4009B0782 /* InAppPurchaseProductCard.swift in Sources */,
+				47BB62B729C7ACE4009B0782 /* InAppPurchaesProductCard.swift in Sources */,
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
