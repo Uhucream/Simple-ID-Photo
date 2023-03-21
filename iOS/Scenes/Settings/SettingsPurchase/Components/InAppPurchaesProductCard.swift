@@ -15,11 +15,29 @@ enum PurchaseButtonStyle {
 
 struct InAppPurchaseProductCard: View {
     
+    let productIcon: String?
     let productName: String
+
     let productDescription: String
 
     let purchaseButtonLabel: String
     let purchaseButtonStyle: PurchaseButtonStyle
+    
+    init(
+        productIcon: String? = nil,
+        productName: String,
+        productDescription: String,
+        purchaseButtonLabel: String,
+        purchaseButtonStyle: PurchaseButtonStyle
+    ) {
+        self.productIcon = productIcon
+        self.productName = productName
+
+        self.productDescription = productDescription
+
+        self.purchaseButtonLabel = purchaseButtonLabel
+        self.purchaseButtonStyle = purchaseButtonStyle
+    }
     
     private(set) var onTapPurchaseButtonCallback: (() -> Void)?
     
@@ -34,8 +52,17 @@ struct InAppPurchaseProductCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(productName)
+                if let productIcon = productIcon {
+                    HStack(alignment: .center, spacing: 4) {
+                        Text(productIcon)
+                    
+                        Text(productName)
+                    }
                     .font(.headline)
+                } else {
+                    Text(productName)
+                        .font(.headline)
+                }
                 
                 Spacer()
                 
@@ -92,6 +119,7 @@ struct InAppPurchaseProductCard_Previews: PreviewProvider {
         
         Form {
             InAppPurchaseProductCard(
+                productIcon: "🍺",
                 productName: "広告非表示",
                 productDescription: "広告を非表示にします",
                 purchaseButtonLabel: numberFormatter.string(from: 200) ?? "¥0",
