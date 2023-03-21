@@ -24,6 +24,11 @@ struct SettingsTopView: View {
     
     var body: some View {
         Form {
+            Section {
+                NavigationLink(destination: SettingsPurchaseViewContainer()) {
+                    Text("購入")
+                }
+            }
             
             Section {
                 NavigationLink(destination: SettingsAboutView()) {
