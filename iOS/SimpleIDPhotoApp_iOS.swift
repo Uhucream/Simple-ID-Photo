@@ -23,15 +23,18 @@ struct SimpleIDPhotoApp_iOS: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    @StateObject private var inAppPurchaseHelper: InAppPurchaseHelper = .init()
+
     let persistenceController = PersistenceController.shared
     
     let screenSizeHelper: ScreenSizeHelper = .shared
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(screenSizeHelper)
+                .environmentObject(inAppPurchaseHelper)
         }
     }
 }
