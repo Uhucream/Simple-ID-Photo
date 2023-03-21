@@ -1,0 +1,59 @@
+{
+  "identifier" : "4B7E0F46",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "200",
+      "familyShareable" : false,
+      "internalID" : "1D84B515",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "Hide Ads",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "作成履歴画面の広告が表示されなくなります",
+          "displayName" : "広告非表示",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "com.temporary.hide_ads",
+      "referenceName" : "Hide Ads",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "300",
+      "familyShareable" : false,
+      "internalID" : "67922E22",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "🍺 Beer",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "開発者にビールをご馳走します。開発の疲れを癒やす、至高の一杯。",
+          "displayName" : "🍺 ビール",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "com.temporary.beer",
+      "referenceName" : "Beer",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_locale" : "ja",
+    "_storefront" : "JPN"
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}
