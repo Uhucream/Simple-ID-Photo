@@ -29,6 +29,14 @@ fileprivate class ConsumableProductIdentifier {
     var beer: String {
         return Bundle.main.object(forInfoDictionaryKey: "InAppPurchaseBeerProductIdentifier") as? String ?? "com.temporary.beer"
     }
+    
+    var gyoza: String {
+        return Bundle.main.object(forInfoDictionaryKey: "InAppPurchaseGyozaProductIdentifier") as? String ?? "com.temporary.gyoza"
+    }
+    
+    var ramen: String {
+        return Bundle.main.object(forInfoDictionaryKey: "InAppPurchaseRamenProductIdentifier") as? String ?? "com.temporary.ramen"
+    }
 }
 
 fileprivate class InAppPurchaseProductIdentifier {
@@ -45,6 +53,10 @@ fileprivate class ConsumableProductIcon {
     private init() {}
     
     static let beer: String = "🍺"
+    
+    static let gyoza: String = "🥟"
+    
+    static let ramen: String = "🍜"
 }
 
 public enum StoreError: Error {
@@ -81,7 +93,9 @@ final class InAppPurchaseHelper: ObservableObject {
             let fetchedProducts: [Product] = try await Product.products(
                 for: [
                     InAppPurchaseProductIdentifier.nonConsumable.hideAds,
-                    InAppPurchaseProductIdentifier.consumable.beer
+                    InAppPurchaseProductIdentifier.consumable.beer,
+                    InAppPurchaseProductIdentifier.consumable.gyoza,
+                    InAppPurchaseProductIdentifier.consumable.ramen,
                 ]
             )
             
@@ -161,6 +175,14 @@ extension InAppPurchaseHelper {
     static func consumableProductIcon(of product: Product) -> String {
         if product.id == ConsumableProductIdentifier.shared.beer {
             return ConsumableProductIcon.beer
+        }
+        
+        if product.id == ConsumableProductIdentifier.shared.gyoza {
+            return ConsumableProductIcon.gyoza
+        }
+        
+        if product.id == ConsumableProductIdentifier.shared.ramen {
+            return ConsumableProductIcon.ramen
         }
         
         return ""
