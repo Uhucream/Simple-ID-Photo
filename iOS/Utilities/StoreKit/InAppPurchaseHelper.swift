@@ -74,11 +74,15 @@ final class InAppPurchaseHelper: ObservableObject {
     
     var transactionsListenerTask: Task<Void, Never>? = nil
     
+    private let keyValueStore: NSUbiquitousKeyValueStore = .default
+    
     init() {
         transactionsListenerTask = listenForTransactions()
         
         Task {
             try await loadAvailableProducts()
+            
+            refreshPurchasedProductIdentifiersForConsumableProducts()
             
             await refreshPurchasedProductIdentifiers()
         }
@@ -143,6 +147,29 @@ final class InAppPurchaseHelper: ObservableObject {
         }
     }
     
+    func refreshPurchasedProductIdentifiersForConsumableProducts() -> Void {
+        availableProducts.forEach { product in
+            let productIdentifier: String = product.id
+            
+            let productPurchasedCount: Int64 = self.keyValueStore.longLong(forKey: productIdentifier)
+            
+            guard productPurchasedCount > 0 else { return }
+            
+            purchasedProductIdentifiers.insert(productIdentifier)
+        }
+    }
+    
+    //  MARK: 非消耗型は .finish() されると Transaction.all にも含まれなくなるので、iCloud Key-Value Store に購入回数を保管する。(iCloud  なら購入アカウントと一致しているケースが大半のため。)
+    func incrementConsumableProductPurchasedCount(productIdentifier: String) -> Void {
+        let currentPurchasedCount: Int64 = self.keyValueStore.longLong(forKey: productIdentifier)
+        
+        let newPurchaseCount: Int64 = currentPurchasedCount + 1
+        
+        self.keyValueStore.set(newPurchaseCount, forKey: productIdentifier)
+        
+        self.keyValueStore.synchronize()
+    }
+    
     func purchase(_ product: Product) async throws {
         
         let result = try await product.purchase()
@@ -150,6 +177,15 @@ final class InAppPurchaseHelper: ObservableObject {
         guard case .success(let verificationResult) = result else { return }
         
         guard case .verified(let verifiedTransaction) = verificationResult else { return }
+
+        if verifiedTransaction.productType == .consumable {
+            incrementConsumableProductPurchasedCount(productIdentifier: verifiedTransaction.productID)
+            refreshPurchasedProductIdentifiersForConsumableProducts()
+            
+            await verifiedTransaction.finish()
+            
+            return
+        }
         
         await verifiedTransaction.finish()
         
