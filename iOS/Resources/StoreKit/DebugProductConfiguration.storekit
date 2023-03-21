@@ -43,6 +43,46 @@
       "productID" : "com.temporary.beer",
       "referenceName" : "Beer",
       "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "600",
+      "familyShareable" : false,
+      "internalID" : "F74F2A28",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "Ramen",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "",
+          "displayName" : "ラーメン",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "com.temporary.ramen",
+      "referenceName" : "Ramen",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "400",
+      "familyShareable" : false,
+      "internalID" : "57CD3DD6",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "Gyoza",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "",
+          "displayName" : "餃子",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "com.temporary.gyoza",
+      "referenceName" : "Gyoza",
+      "type" : "Consumable"
     }
   ],
   "settings" : {
