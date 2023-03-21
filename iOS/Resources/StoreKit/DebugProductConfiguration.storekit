@@ -31,12 +31,12 @@
       "localizations" : [
         {
           "description" : "",
-          "displayName" : "🍺 Beer",
+          "displayName" : "Beer",
           "locale" : "en_US"
         },
         {
           "description" : "開発者にビールをご馳走します。開発の疲れを癒やす、至高の一杯。",
-          "displayName" : "🍺 ビール",
+          "displayName" : "ビール",
           "locale" : "ja"
         }
       ],

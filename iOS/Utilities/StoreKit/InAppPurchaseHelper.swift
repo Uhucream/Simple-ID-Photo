@@ -40,6 +40,13 @@ fileprivate class InAppPurchaseProductIdentifier {
     static let consumable: ConsumableProductIdentifier = .shared
 }
 
+fileprivate class ConsumableProductIcon {
+    
+    private init() {}
+    
+    static let beer: String = "🍺"
+}
+
 public enum StoreError: Error {
     case failedVerification
 }
@@ -147,5 +154,15 @@ final class InAppPurchaseHelper: ObservableObject {
             //The result is verified. Return the unwrapped value.
             return verifiedResult
         }
+    }
+}
+
+extension InAppPurchaseHelper {
+    static func consumableProductIcon(of product: Product) -> String {
+        if product.id == ConsumableProductIdentifier.shared.beer {
+            return ConsumableProductIcon.beer
+        }
+        
+        return ""
     }
 }
