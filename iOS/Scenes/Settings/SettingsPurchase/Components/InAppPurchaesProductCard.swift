@@ -8,12 +8,18 @@
 
 import SwiftUI
 
+enum PurchaseButtonStyle {
+    case bordered
+    case borderedProminent
+}
+
 struct InAppPurchaseProductCard: View {
     
     let productName: String
     let productDescription: String
 
     let purchaseButtonLabel: String
+    let purchaseButtonStyle: PurchaseButtonStyle
     
     private(set) var onTapPurchaseButtonCallback: (() -> Void)?
     
@@ -33,17 +39,35 @@ struct InAppPurchaseProductCard: View {
                 
                 Spacer()
                 
-                Button(
-                    action: {
-                        onTapPurchaseButtonCallback?()
+                ZStack {
+                    if purchaseButtonStyle == .bordered {
+                        Button(
+                            action: {
+                                onTapPurchaseButtonCallback?()
+                            }
+                        ) {
+                            Text(purchaseButtonLabel)
+                                .font(.system(size: 15, weight: .bold))
+                                .frame(height: 12)
+                        }
+                        .buttonStyle(.bordered)
+                        .buttonBorderShape(.capsule)
                     }
-                ) {
-                    Text(purchaseButtonLabel)
-                        .font(.system(size: 15, weight: .bold))
-                        .frame(height: 12)
+                    
+                    if purchaseButtonStyle == .borderedProminent {
+                        Button(
+                            action: {
+                                onTapPurchaseButtonCallback?()
+                            }
+                        ) {
+                            Text(purchaseButtonLabel)
+                                .font(.system(size: 15, weight: .bold))
+                                .frame(height: 12)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
+                    }
                 }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
             }
             
             Text(productDescription)
@@ -70,7 +94,8 @@ struct InAppPurchaseProductCard_Previews: PreviewProvider {
             InAppPurchaseProductCard(
                 productName: "広告非表示",
                 productDescription: "広告を非表示にします",
-                purchaseButtonLabel: numberFormatter.string(from: 200) ?? "¥0"
+                purchaseButtonLabel: numberFormatter.string(from: 200) ?? "¥0",
+                purchaseButtonStyle: .bordered
             )
             .previewLayout(.sizeThatFits)
             .previewDisplayName("In App Purchase Product Card")
