@@ -111,7 +111,7 @@
 		47E9DAE829C4286000659744 /* NativeAdLoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */; };
 		47F41BDC29C95D5B00CEDB17 /* SettingsPurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F41BDA29C95D5A00CEDB17 /* SettingsPurchaseView.swift */; };
 		47F41BE229C9948C00CEDB17 /* SettingsPurchaseViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F41BE129C9948B00CEDB17 /* SettingsPurchaseViewContainer.swift */; };
-		47F755AB29C7BB7600400DB6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F755AA29C7BB7600400DB6 /* StoreKit.framework */; };
+		47F41BE429C9977700CEDB17 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F41BE329C9977700CEDB17 /* StoreKit.framework */; };
 		47F9085229BDAB2D000F7394 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085129BDAB2D000F7394 /* SettingsTopView.swift */; };
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
@@ -240,7 +240,7 @@
 		47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdLoadingHelper.swift; sourceTree = "<group>"; };
 		47F41BDA29C95D5A00CEDB17 /* SettingsPurchaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPurchaseView.swift; sourceTree = "<group>"; };
 		47F41BE129C9948B00CEDB17 /* SettingsPurchaseViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPurchaseViewContainer.swift; sourceTree = "<group>"; };
-		47F755AA29C7BB7600400DB6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		47F41BE329C9977700CEDB17 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		47F9085129BDAB2D000F7394 /* SettingsTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTopView.swift; sourceTree = "<group>"; };
 		47F9085429BDAD88000F7394 /* SettingsAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAboutView.swift; sourceTree = "<group>"; };
 		47F9085C29BDD913000F7394 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 				4796EC5129C03964007C2980 /* FirebaseStorageCombine-Community in Frameworks */,
 				4796EC2929C03964007C2980 /* FirebaseAuth in Frameworks */,
 				4796EC3329C03964007C2980 /* FirebaseDynamicLinks in Frameworks */,
-				47F755AB29C7BB7600400DB6 /* StoreKit.framework in Frameworks */,
+				47F41BE429C9977700CEDB17 /* StoreKit.framework in Frameworks */,
 				4796EC3529C03964007C2980 /* FirebaseFirestore in Frameworks */,
 				4796EC4D29C03964007C2980 /* FirebaseRemoteConfigSwift in Frameworks */,
 			);
@@ -452,7 +452,7 @@
 		47396B8629C74A08007EADE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				47F755AA29C7BB7600400DB6 /* StoreKit.framework */,
+				47F41BE329C9977700CEDB17 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
