@@ -15,7 +15,7 @@
           "locale" : "en_US"
         },
         {
-          "description" : "作成履歴画面の広告が表示されなくなります",
+          "description" : "作成履歴画面などに設置されている広告が表示されなくなります。",
           "displayName" : "広告非表示",
           "locale" : "ja"
         }
