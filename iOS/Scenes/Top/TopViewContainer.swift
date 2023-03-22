@@ -347,6 +347,8 @@ struct TopViewContainer: View {
                 Group {
                     renderTopView()
                         .onAppear{
+                            if appStorage.isHideAdPurchased { return }
+                            
                             adLoadingHelper.refreshAd()
                         }
                         .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
