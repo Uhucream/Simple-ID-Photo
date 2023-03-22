@@ -139,7 +139,7 @@ struct EditIDPhotoView: View {
                 
                 HStack(alignment: .center) {
                     Button(
-                        role: .destructive,
+                        role: .cancel,
                         action: {
                             self.onTapDismissButtonCallback?()
                         }
@@ -149,6 +149,8 @@ struct EditIDPhotoView: View {
                             .padding()
                     }
                     .controlSize(.mini)
+                    .tint(.white)
+                    .environment(\.colorScheme, .dark)
                     
                     Spacer()
                     
