@@ -72,6 +72,8 @@ final class InAppPurchaseHelper: ObservableObject {
     
     @Published private(set) var purchasedProductIdentifiers: Set<String> = []
     
+    private let appStorage: AppStorageStore = .shared
+    
     var transactionsListenerTask: Task<Void, Never>? = nil
     
     private let keyValueStore: NSUbiquitousKeyValueStore = .default
@@ -185,6 +187,10 @@ final class InAppPurchaseHelper: ObservableObject {
             await verifiedTransaction.finish()
             
             return
+        }
+        
+        if product.id == InAppPurchaseProductIdentifier.nonConsumable.hideAds {
+            self.appStorage.isHideAdPurchased = true
         }
         
         await verifiedTransaction.finish()
