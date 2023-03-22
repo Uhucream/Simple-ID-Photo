@@ -9,12 +9,17 @@
 import GoogleMobileAds
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    
+    private let appStorageStore: AppStorageStore = .shared
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
 
-        GADMobileAds.sharedInstance().start()
+        if !appStorageStore.isHideAdPurchased {
+            GADMobileAds.sharedInstance().start()
+        }
         
         return true
     }
