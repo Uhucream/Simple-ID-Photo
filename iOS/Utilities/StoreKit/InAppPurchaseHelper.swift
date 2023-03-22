@@ -78,6 +78,8 @@ final class InAppPurchaseHelper: ObservableObject {
     
     private let keyValueStore: NSUbiquitousKeyValueStore = .default
     
+    private var cancellable: Set<AnyCancellable> = .init()
+    
     init() {
         transactionsListenerTask = listenForTransactions()
         
@@ -87,6 +89,15 @@ final class InAppPurchaseHelper: ObservableObject {
             refreshPurchasedProductIdentifiersForConsumableProducts()
             
             await refreshPurchasedProductIdentifiers()
+            
+            $purchasedProductIdentifiers
+                .map { newIdentifiers in
+                    let isHideAdsPurchased: Bool = newIdentifiers.contains(InAppPurchaseProductIdentifier.nonConsumable.hideAds)
+                    
+                    return isHideAdsPurchased
+                }
+                .assign(to: \.appStorage.isHideAdPurchased, on: self)
+                .store(in: &cancellable)
         }
     }
     
@@ -119,6 +130,10 @@ final class InAppPurchaseHelper: ObservableObject {
                 do {
                     let transaction = try await checkVerified(result: updatesVerificationResult)
                     
+                    if transaction.revocationDate != nil {
+                        await self.removeRevocatedProductIdentifiers(transaction: transaction)
+                    }
+                    
                     await self.refreshPurchasedProductIdentifiers()
                     
                     await transaction.finish()
@@ -137,15 +152,13 @@ final class InAppPurchaseHelper: ObservableObject {
 
             guard case .verified(let verifiedTransaction) = currentEntitlement else { return }
             
-            if verifiedTransaction.productType == .consumable { return }
-            
-            let purchasedProduct: Product? = availableProducts.first { product in
-                return product.id == verifiedTransaction.productID
+            if verifiedTransaction.revocationDate != nil {
+                await removeRevocatedProductIdentifiers(transaction: verifiedTransaction)
+                
+                return
             }
             
-            guard let purchasedProduct = purchasedProduct else { return }
-            
-            self.purchasedProductIdentifiers.insert(purchasedProduct.id)
+            self.purchasedProductIdentifiers.insert(verifiedTransaction.productID)
         }
     }
     
@@ -159,6 +172,12 @@ final class InAppPurchaseHelper: ObservableObject {
             
             purchasedProductIdentifiers.insert(productIdentifier)
         }
+    }
+    
+    func removeRevocatedProductIdentifiers(transaction: Transaction) async -> Void {
+        self.purchasedProductIdentifiers.remove(transaction.productID)
+        
+        print("revocated product: \(transaction.productID)")
     }
     
     //  MARK: 非消耗型は .finish() されると Transaction.all にも含まれなくなるので、iCloud Key-Value Store に購入回数を保管する。(iCloud  なら購入アカウントと一致しているケースが大半のため。)
@@ -187,10 +206,6 @@ final class InAppPurchaseHelper: ObservableObject {
             await verifiedTransaction.finish()
             
             return
-        }
-        
-        if product.id == InAppPurchaseProductIdentifier.nonConsumable.hideAds {
-            self.appStorage.isHideAdPurchased = true
         }
         
         await verifiedTransaction.finish()

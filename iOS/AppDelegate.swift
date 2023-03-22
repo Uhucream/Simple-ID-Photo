@@ -17,9 +17,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
 
-        if !appStorageStore.isHideAdPurchased {
-            GADMobileAds.sharedInstance().start()
-        }
+        GADMobileAds.sharedInstance().start()
         
         return true
     }

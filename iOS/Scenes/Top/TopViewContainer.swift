@@ -351,6 +351,9 @@ struct TopViewContainer: View {
                             
                             adLoadingHelper.refreshAd()
                         }
+                        .onChange(of: appStorage.isHideAdPurchased) { _ in
+                            adLoadingHelper.refreshAd()
+                        }
                         .onChange(of: createdIDPhotoHistories.count) { newHistoriesCount in
                             //  MARK: これがないと、すべての履歴を削除して空になったあとに currentEditMode が編集中ステータスから切り替わらない
                             
