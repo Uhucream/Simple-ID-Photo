@@ -28,6 +28,7 @@
 		47301EB029C9ED6D007F41CA /* AppStorageKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EAF29C9ED6D007F41CA /* AppStorageKey.swift */; };
 		47301EBC29CA94C0007F41CA /* AppStorage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EBB29CA94C0007F41CA /* AppStorage+.swift */; };
 		47301EBE29CA9533007F41CA /* AppStorageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EBD29CA9533007F41CA /* AppStorageStore.swift */; };
+		47301EC229CAABDD007F41CA /* Binding+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EC129CAABDC007F41CA /* Binding+.swift */; };
 		474128B129C94EF1002E196E /* InAppPurchaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474128B029C94EF0002E196E /* InAppPurchaseHelper.swift */; };
 		474128B629C9505E002E196E /* DebugProductConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 474128B429C9505E002E196E /* DebugProductConfiguration.storekit */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
@@ -175,6 +176,7 @@
 		47301EAF29C9ED6D007F41CA /* AppStorageKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStorageKey.swift; sourceTree = "<group>"; };
 		47301EBB29CA94C0007F41CA /* AppStorage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppStorage+.swift"; sourceTree = "<group>"; };
 		47301EBD29CA9533007F41CA /* AppStorageStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStorageStore.swift; sourceTree = "<group>"; };
+		47301EC129CAABDC007F41CA /* Binding+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Binding+.swift"; sourceTree = "<group>"; };
 		47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
 		47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
 		47396B7829C6FD26007EADE9 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 				47301EBA29CA94C0007F41CA /* AppStorage */,
 				4778B34929A741F800F35EE0 /* Color */,
 				47694A762993E9A700C447CA /* Animation+.swift */,
+				47301EC129CAABDC007F41CA /* Binding+.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -1295,6 +1298,7 @@
 				4728DA44297ECC180056767F /* IDPhotoSize.swift in Sources */,
 				4778B34829A739B500F35EE0 /* Color+IDPhotoBackgroundColors.swift in Sources */,
 				475FB238296FD6300059796F /* CreateIDPhotoViewContainer.swift in Sources */,
+				47301EC229CAABDD007F41CA /* Binding+.swift in Sources */,
 				47C49B71296831E600F2BF35 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
