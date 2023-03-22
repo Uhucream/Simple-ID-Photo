@@ -15,6 +15,8 @@ struct TopViewContainer: View {
     
     @Environment(\.managedObjectContext) var viewContext
     
+    @EnvironmentObject private var appStorage: AppStorageStore
+    
     @ObservedObject private var adLoadingHelper: NativeAdLoadingHelper
     
     @FetchRequest(
@@ -241,6 +243,13 @@ struct TopViewContainer: View {
     private func renderTopView() -> some View {
         if #available(iOS 16, *) {
             TopView_iOS16(
+                shouldShowAdvertisement: Binding<Bool>(
+                    get: {
+                        return !appStorage.isHideAdPurchased
+                    },
+                    set: { _ in
+                    }
+                ),
                 nativeAdObject: .constant(adLoadingHelper.nativeAd),
                 currentEditMode: $currentEditMode,
                 createdIDPhotoHistories: createdIDPhotoHistories,
@@ -282,6 +291,13 @@ struct TopViewContainer: View {
             .onDropFile(action: setPictureURLFromDroppedItem)
         } else {
             TopView_iOS15(
+                shouldShowAdvertisement: Binding<Bool>(
+                    get: {
+                        return !appStorage.isHideAdPurchased
+                    },
+                    set: { _ in
+                    }
+                ),
                 nativeAdObject: .constant(adLoadingHelper.nativeAd),
                 currentEditMode: $currentEditMode,
                 createdIDPhotoHistories: createdIDPhotoHistories,
@@ -517,6 +533,9 @@ extension TopViewContainer {
 
 struct TopViewContainer_Previews: PreviewProvider {
     static var previews: some View {
+        
+        let appStorage: AppStorageStore = .shared
+        
         let screenSizeHelper: ScreenSizeHelper = .shared
         
         GeometryReader { geometry in
@@ -534,5 +553,6 @@ struct TopViewContainer_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         .environmentObject(screenSizeHelper)
+        .environmentObject(appStorage)
     }
 }
