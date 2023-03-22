@@ -25,6 +25,7 @@
 		472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */; };
 		472EA52429BA123700463D32 /* EditIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472EA52329BA123500463D32 /* EditIDPhotoView.swift */; };
 		472EA52629BA15B500463D32 /* EditIDPhotoViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472EA52529BA15B400463D32 /* EditIDPhotoViewContainer.swift */; };
+		47301EB029C9ED6D007F41CA /* AppStorageKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EAF29C9ED6D007F41CA /* AppStorageKey.swift */; };
 		474128B129C94EF1002E196E /* InAppPurchaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474128B029C94EF0002E196E /* InAppPurchaseHelper.swift */; };
 		474128B629C9505E002E196E /* DebugProductConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 474128B429C9505E002E196E /* DebugProductConfiguration.storekit */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
@@ -169,6 +170,7 @@
 		472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSaveViewContainer.swift; sourceTree = "<group>"; };
 		472EA52329BA123500463D32 /* EditIDPhotoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditIDPhotoView.swift; sourceTree = "<group>"; };
 		472EA52529BA15B400463D32 /* EditIDPhotoViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditIDPhotoViewContainer.swift; sourceTree = "<group>"; };
+		47301EAF29C9ED6D007F41CA /* AppStorageKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStorageKey.swift; sourceTree = "<group>"; };
 		47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
 		47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
 		47396B7829C6FD26007EADE9 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
@@ -430,6 +432,22 @@
 				472EA52529BA15B400463D32 /* EditIDPhotoViewContainer.swift */,
 			);
 			path = EditIDPhoto;
+			sourceTree = "<group>";
+		};
+		47301EAD29C9ED6D007F41CA /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				47301EAE29C9ED6D007F41CA /* AppStorage */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		47301EAE29C9ED6D007F41CA /* AppStorage */ = {
+			isa = PBXGroup;
+			children = (
+				47301EAF29C9ED6D007F41CA /* AppStorageKey.swift */,
+			);
+			path = AppStorage;
 			sourceTree = "<group>";
 		};
 		47396B7729C6FCDC007EADE9 /* ci_scripts */ = {
@@ -873,6 +891,7 @@
 		47DC49E229BF91DD00516D4B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				47301EAD29C9ED6D007F41CA /* Entities */,
 				479C37F029C1A045003D860C /* EnvironmentValues */,
 				47DC49ED29BF91F800516D4B /* Resources */,
 			);
@@ -1228,6 +1247,7 @@
 				47C49B3E2967FB1C00F2BF35 /* SimpleIDPhotoApp_iOS.swift in Sources */,
 				479573E2296C1B1400B98881 /* IDPhotoSizePickerView.swift in Sources */,
 				478689572980CECE00952BFD /* CGImagePropertyOrientation+.swift in Sources */,
+				47301EB029C9ED6D007F41CA /* AppStorageKey.swift in Sources */,
 				472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */,
 				47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */,
 				47868953297F7EC100952BFD /* BlurView.swift in Sources */,
