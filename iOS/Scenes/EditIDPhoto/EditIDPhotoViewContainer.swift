@@ -318,13 +318,7 @@ struct EditIDPhotoViewContainer: View {
             selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
             selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
             previewUIImage: $previewUIImage,
-            shouldDisableDoneButton: Binding<Bool>(
-                get: {
-                    return !hasAnyModifications
-                },
-                set: { _ in
-                }
-            ),
+            shouldDisableDoneButton: .readOnly(!hasAnyModifications),
             availableBackgroundColors: BACKGROUND_COLORS
         )
         .onTapDismissButton {

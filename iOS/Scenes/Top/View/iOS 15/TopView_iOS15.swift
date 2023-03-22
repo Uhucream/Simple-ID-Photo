@@ -300,13 +300,7 @@ struct TopView_iOS15_Previews: PreviewProvider {
         GeometryReader { geometry in
             TopView_iOS15(
                 shouldShowAdvertisement: .constant(true),
-                nativeAdObject: Binding<GADNativeAd?>(
-                    get: {
-                        return adLoadingHelper.nativeAd
-                    }, set: { _ in
-                        
-                    }
-                ),
+                nativeAdObject: .readOnly(adLoadingHelper.nativeAd),
                 currentEditMode: .constant(.inactive),
                 createdIDPhotoHistories: [
                     .init(
