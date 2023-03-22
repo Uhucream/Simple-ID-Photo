@@ -19,6 +19,8 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
     
     @State private var isDroppingItemTargeted: Bool = false
     
+    @Binding var shouldShowAdvertisement: Bool
+    
     @Binding var nativeAdObject: GADNativeAd?
     
     @Binding var currentEditMode: EditMode
@@ -258,7 +260,7 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
                                 }
                             }
                             
-                            if let nativeAdObject = nativeAdObject {
+                            if let nativeAdObject = nativeAdObject, shouldShowAdvertisement {
                                 Section {
                                     ListAdvertisementCard(
                                         nativeAd: .constant(nativeAdObject)
@@ -295,6 +297,7 @@ struct TopView_iOS16_Previews: PreviewProvider {
         
         GeometryReader { geometry in
             TopView_iOS16(
+                shouldShowAdvertisement: .constant(true),
                 nativeAdObject: Binding<GADNativeAd?>(
                     get: {
                         return adLoadingHelper.nativeAd
