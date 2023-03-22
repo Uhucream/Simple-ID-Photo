@@ -243,13 +243,7 @@ struct TopViewContainer: View {
     private func renderTopView() -> some View {
         if #available(iOS 16, *) {
             TopView_iOS16(
-                shouldShowAdvertisement: Binding<Bool>(
-                    get: {
-                        return !appStorage.isHideAdPurchased
-                    },
-                    set: { _ in
-                    }
-                ),
+                shouldShowAdvertisement: .readOnly(!appStorage.isHideAdPurchased),
                 nativeAdObject: .constant(adLoadingHelper.nativeAd),
                 currentEditMode: $currentEditMode,
                 createdIDPhotoHistories: createdIDPhotoHistories,
@@ -291,13 +285,7 @@ struct TopViewContainer: View {
             .onDropFile(action: setPictureURLFromDroppedItem)
         } else {
             TopView_iOS15(
-                shouldShowAdvertisement: Binding<Bool>(
-                    get: {
-                        return !appStorage.isHideAdPurchased
-                    },
-                    set: { _ in
-                    }
-                ),
+                shouldShowAdvertisement: .readOnly(!appStorage.isHideAdPurchased),
                 nativeAdObject: .constant(adLoadingHelper.nativeAd),
                 currentEditMode: $currentEditMode,
                 createdIDPhotoHistories: createdIDPhotoHistories,
