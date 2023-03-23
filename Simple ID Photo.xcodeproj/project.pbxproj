@@ -29,6 +29,7 @@
 		47301EBC29CA94C0007F41CA /* AppStorage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EBB29CA94C0007F41CA /* AppStorage+.swift */; };
 		47301EBE29CA9533007F41CA /* AppStorageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EBD29CA9533007F41CA /* AppStorageStore.swift */; };
 		47301EC229CAABDD007F41CA /* Binding+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EC129CAABDC007F41CA /* Binding+.swift */; };
+		47301EC429CC1851007F41CA /* GoogleService-Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = 47013AEC296C0224000A0D89 /* GoogleService-Info.plist */; };
 		474128B129C94EF1002E196E /* InAppPurchaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474128B029C94EF0002E196E /* InAppPurchaseHelper.swift */; };
 		474128B629C9505E002E196E /* DebugProductConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 474128B429C9505E002E196E /* DebugProductConfiguration.storekit */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
@@ -984,6 +985,7 @@
 				47C49B362967FB1C00F2BF35 /* Sources */,
 				47C49B372967FB1C00F2BF35 /* Frameworks */,
 				47C49B382967FB1C00F2BF35 /* Resources */,
+				47301EC529CC1AA5007F41CA /* Upload dSYM to Firebase Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -1234,11 +1236,35 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		47301EC529CC1AA5007F41CA /* Upload dSYM to Firebase Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Upload dSYM to Firebase Crashlytics";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		47C49B362967FB1C00F2BF35 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47301EC429CC1851007F41CA /* GoogleService-Info.plist in Sources */,
 				47F9085D29BDD913000F7394 /* Task+.swift in Sources */,
 				4707215229B02A0800BD8535 /* AppliedIDPhotoSize+.swift in Sources */,
 				47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */,
@@ -1520,6 +1546,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/iOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"iOS/Resources/AssetsFiles/Preview Content\"";
 				DEVELOPMENT_TEAM = V94VRHKNZJ;
 				ENABLE_PREVIEWS = YES;
