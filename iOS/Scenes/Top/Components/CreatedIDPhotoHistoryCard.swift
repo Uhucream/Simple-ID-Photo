@@ -139,83 +139,85 @@ struct CreatedIDPhotoHistoryCard: View {
         } else {
             HStack(alignment: .center) {
 
-                let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
-                
-                let createdIDPhotoAspectRatio: CGFloat = {
-                    if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
-                        return 3 / 4
-                    }
+                HStack(alignment: .center, spacing: 12) {
+                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
                     
-                    return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
-                }()
-                
-                let asyncImageContainerSideLength: CGFloat = 52 * thumbnailScaleFactor
-                
-                //  MARK: コンテナのサイズを正方形とする
-                let asyncImageContainerCGSize: CGSize = .init(
-                    width: asyncImageContainerSideLength,
-                    height: asyncImageContainerSideLength
-                )
-                
-                //  MARK: 読み込み中と読み込み後で高さが変わらないようにするため、ZStack をコンテナーとしてその中に AsyncImage を設置
-                ZStack {
-                    AsyncImage(
-                        url: idPhotoThumbnailImageURL
-                    ) { asyncImagePhase in
-                        
-                        if case .success(let loadedImage) = asyncImagePhase {
-                            GeometryReader { loadedImageGeometry in
-                                
-                                let loadedImageSize: CGSize = loadedImageGeometry.size
-                                
-                                let isPortraitImage: Bool = loadedImageSize.width < loadedImageSize.height
-                                
-                                loadedImage
-                                    .resizable()
-                                    .aspectRatio(contentMode: isPortraitImage ? .fill : .fit)
-                                    .shadow(radius: 0.8)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                            }
+                    let createdIDPhotoAspectRatio: CGFloat = {
+                        if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
+                            return 3 / 4
                         }
                         
-                        if case .empty = asyncImagePhase {
-                            Rectangle()
-                                .fill(Color.clear)
-                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
-                                .overlay(.ultraThinMaterial)
-                                .overlay {
-                                    ProgressView()
+                        return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
+                    }()
+                    
+                    let asyncImageContainerSideLength: CGFloat = 52 * thumbnailScaleFactor
+                    
+                    //  MARK: コンテナのサイズを正方形とする
+                    let asyncImageContainerCGSize: CGSize = .init(
+                        width: asyncImageContainerSideLength,
+                        height: asyncImageContainerSideLength
+                    )
+                    
+                    //  MARK: 読み込み中と読み込み後で高さが変わらないようにするため、ZStack をコンテナーとしてその中に AsyncImage を設置
+                    ZStack {
+                        AsyncImage(
+                            url: idPhotoThumbnailImageURL
+                        ) { asyncImagePhase in
+                            
+                            if case .success(let loadedImage) = asyncImagePhase {
+                                GeometryReader { loadedImageGeometry in
+                                    
+                                    let loadedImageSize: CGSize = loadedImageGeometry.size
+                                    
+                                    let isPortraitImage: Bool = loadedImageSize.width < loadedImageSize.height
+                                    
+                                    loadedImage
+                                        .resizable()
+                                        .aspectRatio(contentMode: isPortraitImage ? .fill : .fit)
+                                        .shadow(radius: 0.8)
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                                 }
-                        }
-                        
-                        if case .failure(let error) = asyncImagePhase {
-                            Rectangle()
-                                .fill(Color.clear)
-                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
-                                .overlay(.ultraThinMaterial)
-                                .overlay {
-                                    GeometryReader { geometry in
-                                        Image(systemName: "questionmark.square.dashed")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .foregroundColor(.systemGray)
-                                            .frame(width: 50%.of(geometry.size.width))
+                            }
+                            
+                            if case .empty = asyncImagePhase {
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                                    .overlay(.ultraThinMaterial)
+                                    .overlay {
+                                        ProgressView()
                                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                            .onAppear {
-                                                print(error)
-                                            }
                                     }
-                                }
+                            }
+                            
+                            if case .failure(let error) = asyncImagePhase {
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                                    .overlay(.ultraThinMaterial)
+                                    .overlay {
+                                        GeometryReader { geometry in
+                                            Image(systemName: "questionmark.square.dashed")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundColor(.systemGray)
+                                                .frame(width: 50%.of(geometry.size.width))
+                                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                                                .onAppear {
+                                                    print(error)
+                                                }
+                                        }
+                                    }
+                            }
                         }
                     }
+                    .aspectRatio(1, contentMode: .fit)
+                    .frame(width: asyncImageContainerCGSize.width, height: asyncImageContainerCGSize.height, alignment: .center)
+                    
+                    renderTitle()
+                        .font(.callout)
+                        .lineLimit(1)
                 }
-                .aspectRatio(1, contentMode: .fit)
-                .frame(width: asyncImageContainerCGSize.width, height: asyncImageContainerCGSize.height, alignment: .center)
-                
-                renderTitle()
-                    .font(.callout)
-                    .lineLimit(1)
                 
                 Spacer()
                 
