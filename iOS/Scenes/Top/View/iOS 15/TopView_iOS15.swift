@@ -49,8 +49,6 @@ struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where
             idPhotoSizeType: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
             createdAt: createdIDPhotoHistory.createdAt ?? .distantPast
         )
-        .frame(maxHeight: 60)
-        .padding(.vertical, 4)
         .id(currentRenderingID)
     }
     
