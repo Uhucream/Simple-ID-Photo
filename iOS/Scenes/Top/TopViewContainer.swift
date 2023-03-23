@@ -451,6 +451,7 @@ struct TopViewContainer: View {
                         .onCancelled { _ in
                             self.shouldShowCameraView = false
                         }
+                        .edgesIgnoringSafeArea(.all)
                 }
                 .fullScreenCover(isPresented: $shouldShowCreateIDPhotoView) {
                     if let userSelectedImageURL = userSelectedImageURL {
