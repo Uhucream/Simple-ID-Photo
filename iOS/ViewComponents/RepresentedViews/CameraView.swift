@@ -14,6 +14,16 @@ struct CameraView: UIViewControllerRepresentable {
 
     @Binding var pictureURL: URL?
 
+    private(set) var onCancelledCallback: ((UIImagePickerController) -> Void)?
+    
+    func onCancelled(action: @escaping (UIImagePickerController) -> Void) -> Self {
+        var view = self
+        
+        view.onCancelledCallback = action
+        
+        return view
+    }
+
     func makeUIViewController(context: Context) -> UIImagePickerController {
 
         let uiImagePicker = UIImagePickerController()
@@ -50,8 +60,8 @@ struct CameraView: UIViewControllerRepresentable {
             parentView.dismiss()
         }
 
-        func imagePickerControllerDidCancel(_: UIImagePickerController) {
-            parentView.dismiss()
+        func imagePickerControllerDidCancel(_ imagePickerController: UIImagePickerController) {
+            parentView.onCancelledCallback?(imagePickerController)
         }
     }
 }
