@@ -155,36 +155,40 @@ struct CreatedIDPhotoHistoryCard: View {
                     url: idPhotoThumbnailImageURL
                 ) { asyncImagePhase in
                     
-                    if let loadedImage = asyncImagePhase.image {
-                        
+                    if case .success(let loadedImage) = asyncImagePhase {
                         loadedImage
                             .resizable()
                             .shadow(radius: 0.8)
                             .scaledToFill()
                             .frame(width: imageHeight, height: imageHeight)
-                        
-                    } else {
-                        
+                    }
+                    
+                    if case .empty = asyncImagePhase {
+                        Rectangle()
+                            .fill(Color.clear)
+                            .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                            .overlay(.ultraThinMaterial)
+                            .overlay {
+                                ProgressView()
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                            }
+                    }
+                    
+                    if case .failure(_) = asyncImagePhase {
                         Rectangle()
                             .fill(Color.clear)
                             .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
                             .overlay(.ultraThinMaterial)
                             .overlay {
                                 GeometryReader { geometry in
-                                    if let _ = asyncImagePhase.error {
-                                        Image(systemName: "questionmark.square.dashed")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .foregroundColor(.systemGray)
-                                            .frame(width: 50%.of(geometry.size.width))
-                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                    } else {
-                                        ProgressView()
-                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                    }
+                                    Image(systemName: "questionmark.square.dashed")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .foregroundColor(.systemGray)
+                                        .frame(width: 50%.of(geometry.size.width))
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                                 }
                             }
-
                     }
                 }
                 .aspectRatio(1, contentMode: .fit)
