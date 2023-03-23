@@ -394,7 +394,14 @@ struct TopViewContainer: View {
                 }
                 .fullScreenCover(isPresented: $shouldShowCameraView) {
                     //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
-                    CameraView(pictureURL: $userSelectedImageURL)
+                    CameraView()
+                        .onPickedPicture { imagePickerController, imageInfo in
+                            guard let pictureURL = imageInfo[.mediaURL] as? URL else { return }
+                            
+                            self.userSelectedImageURL = pictureURL
+                            
+                            self.shouldShowCameraView = false
+                        }
                         .onCancelled { _ in
                             self.shouldShowCameraView = false
                         }
