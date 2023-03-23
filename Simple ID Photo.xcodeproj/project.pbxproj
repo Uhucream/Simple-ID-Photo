@@ -177,8 +177,8 @@
 		47301EBB29CA94C0007F41CA /* AppStorage+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppStorage+.swift"; sourceTree = "<group>"; };
 		47301EBD29CA9533007F41CA /* AppStorageStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStorageStore.swift; sourceTree = "<group>"; };
 		47301EC129CAABDC007F41CA /* Binding+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Binding+.swift"; sourceTree = "<group>"; };
-		47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Debug.xcconfig; sourceTree = "<group>"; };
-		47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentValues_Release.xcconfig; sourceTree = "<group>"; };
+		47396B7229C6FB98007EADE9 /* EnvironmentVariables_Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentVariables_Debug.xcconfig; sourceTree = "<group>"; };
+		47396B7329C6FBEA007EADE9 /* EnvironmentVariables_Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = EnvironmentVariables_Release.xcconfig; sourceTree = "<group>"; };
 		47396B7829C6FD26007EADE9 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		474128B029C94EF0002E196E /* InAppPurchaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppPurchaseHelper.swift; sourceTree = "<group>"; };
 		474128B429C9505E002E196E /* DebugProductConfiguration.storekit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DebugProductConfiguration.storekit; sourceTree = "<group>"; };
@@ -603,19 +603,19 @@
 			path = Localizations;
 			sourceTree = "<group>";
 		};
-		479C37F029C1A045003D860C /* EnvironmentValues */ = {
+		479C37F029C1A045003D860C /* EnvironmentVariables */ = {
 			isa = PBXGroup;
 			children = (
 				479C37F429C1A045003D860C /* Debug */,
 				479C37F129C1A045003D860C /* Release */,
 			);
-			path = EnvironmentValues;
+			path = EnvironmentVariables;
 			sourceTree = "<group>";
 		};
 		479C37F129C1A045003D860C /* Release */ = {
 			isa = PBXGroup;
 			children = (
-				47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */,
+				47396B7329C6FBEA007EADE9 /* EnvironmentVariables_Release.xcconfig */,
 			);
 			path = Release;
 			sourceTree = "<group>";
@@ -623,7 +623,7 @@
 		479C37F429C1A045003D860C /* Debug */ = {
 			isa = PBXGroup;
 			children = (
-				47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */,
+				47396B7229C6FB98007EADE9 /* EnvironmentVariables_Debug.xcconfig */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -909,7 +909,7 @@
 			isa = PBXGroup;
 			children = (
 				47301EAD29C9ED6D007F41CA /* Entities */,
-				479C37F029C1A045003D860C /* EnvironmentValues */,
+				479C37F029C1A045003D860C /* EnvironmentVariables */,
 				47DC49ED29BF91F800516D4B /* Resources */,
 			);
 			path = Shared;
@@ -1513,7 +1513,7 @@
 		};
 		47C49B642967FB1F00F2BF35 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 47396B7229C6FB98007EADE9 /* EnvironmentValues_Debug.xcconfig */;
+			baseConfigurationReference = 47396B7229C6FB98007EADE9 /* EnvironmentVariables_Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1553,7 +1553,7 @@
 		};
 		47C49B652967FB1F00F2BF35 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 47396B7329C6FBEA007EADE9 /* EnvironmentValues_Release.xcconfig */;
+			baseConfigurationReference = 47396B7329C6FBEA007EADE9 /* EnvironmentVariables_Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
