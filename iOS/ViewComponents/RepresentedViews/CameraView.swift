@@ -12,9 +12,17 @@ import UniformTypeIdentifiers
 struct CameraView: UIViewControllerRepresentable {
     @Environment(\.dismiss) private var dismiss
 
-    @Binding var pictureURL: URL?
-
+    private(set) var onPickedPictureCallback: ((UIImagePickerController, [UIImagePickerController.InfoKey: Any]) -> Void)?
+    
     private(set) var onCancelledCallback: ((UIImagePickerController) -> Void)?
+    
+    func onPickedPicture(action: @escaping (UIImagePickerController, [UIImagePickerController.InfoKey: Any]) -> Void) -> Self {
+        var view = self
+        
+        view.onPickedPictureCallback = action
+        
+        return view
+    }
     
     func onCancelled(action: @escaping (UIImagePickerController) -> Void) -> Self {
         var view = self
@@ -51,13 +59,7 @@ struct CameraView: UIViewControllerRepresentable {
         }
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            guard let pictureURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
-                return
-            }
-
-            parentView.pictureURL = pictureURL
-
-            parentView.dismiss()
+            parentView.onPickedPictureCallback?(picker, info)
         }
 
         func imagePickerControllerDidCancel(_ imagePickerController: UIImagePickerController) {
