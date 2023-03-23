@@ -174,7 +174,7 @@ struct CreatedIDPhotoHistoryCard: View {
                             }
                     }
                     
-                    if case .failure(_) = asyncImagePhase {
+                    if case .failure(let error) = asyncImagePhase {
                         Rectangle()
                             .fill(Color.clear)
                             .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
@@ -187,6 +187,9 @@ struct CreatedIDPhotoHistoryCard: View {
                                         .foregroundColor(.systemGray)
                                         .frame(width: 50%.of(geometry.size.width))
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                                        .onAppear {
+                                            print(error)
+                                        }
                                 }
                             }
                     }
