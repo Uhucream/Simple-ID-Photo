@@ -140,6 +140,58 @@ struct TopViewContainer: View {
         }
     }
     
+    func handlePickedPictureFromCameraView(imagePickerController: UIImagePickerController, mediaInfo: [UIImagePickerController.InfoKey: Any]) -> Void {
+        
+        let pickedPhotoUIImage: UIImage? = mediaInfo[.originalImage] as? UIImage
+        
+        let pickedPhotoMetadata: NSDictionary? = mediaInfo[.mediaMetadata] as? NSDictionary
+        
+        if let pickedPhotoUIImage = pickedPhotoUIImage {
+            
+            let cgImageFromPhoto: CGImage? = pickedPhotoUIImage.cgImage
+            
+            guard let cgImageFromPhoto = cgImageFromPhoto else { return }
+            
+            let fileManager: FileManager = .default
+            
+            let temporaryDirectoryURL: URL = fileManager.temporaryDirectory
+            let newTemporaryFileName: String = ProcessInfo.processInfo.globallyUniqueString
+            
+            let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
+            
+            let newFileUTType: UTType = isHEICSupported ? .heic : .jpeg
+            
+            let newFileURL: URL = temporaryDirectoryURL
+                .appendingPathComponent(newTemporaryFileName, conformingTo: .fileURL)
+                .appendingPathExtension(for: newFileUTType)
+            
+            let cgImageDestination: CGImageDestination? = CGImageDestinationCreateWithURL(
+                newFileURL as CFURL,
+                newFileUTType.identifier as CFString,
+                1,
+                [:] as CFDictionary?
+            )
+            
+            guard let cgImageDestination = cgImageDestination else { return }
+            
+            CGImageDestinationAddImage(
+                cgImageDestination,
+                cgImageFromPhoto,
+                pickedPhotoMetadata
+            )
+            
+            CGImageDestinationFinalize(cgImageDestination)
+            
+            let savedTemporaryFileData: Data? = try? Data(contentsOf: newFileURL)
+            
+            if savedTemporaryFileData == nil { return }
+            
+            self.userSelectedImageURL = newFileURL
+        }
+        
+        imagePickerController.dismiss(animated: true)
+    }
+    
     func setPictureURLFromDroppedItem(itemProviders: [NSItemProvider]) -> Bool {
 
         guard let itemProvider = itemProviders.first else { return false }
@@ -395,13 +447,7 @@ struct TopViewContainer: View {
                 .fullScreenCover(isPresented: $shouldShowCameraView) {
                     //  TODO: 確定後にフリーズするので、独自のカメラUIを実装する
                     CameraView()
-                        .onPickedPicture { imagePickerController, imageInfo in
-                            guard let pictureURL = imageInfo[.mediaURL] as? URL else { return }
-                            
-                            self.userSelectedImageURL = pictureURL
-                            
-                            self.shouldShowCameraView = false
-                        }
+                        .onPickedPicture(action: handlePickedPictureFromCameraView)
                         .onCancelled { _ in
                             self.shouldShowCameraView = false
                         }
