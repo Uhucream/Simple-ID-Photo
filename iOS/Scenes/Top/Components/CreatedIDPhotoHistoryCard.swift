@@ -170,12 +170,14 @@ struct CreatedIDPhotoHistoryCard: View {
                             .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
                             .overlay(.ultraThinMaterial)
                             .overlay {
-                                Group {
+                                GeometryReader { geometry in
                                     if let _ = asyncImagePhase.error {
                                         Image(systemName: "questionmark.square.dashed")
                                             .resizable()
                                             .scaledToFit()
                                             .foregroundColor(.systemGray)
+                                            .frame(width: 50%.of(geometry.size.width))
+                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                                     } else {
                                         ProgressView()
                                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
