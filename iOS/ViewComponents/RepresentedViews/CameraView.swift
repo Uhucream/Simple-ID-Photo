@@ -10,8 +10,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct CameraView: UIViewControllerRepresentable {
-    @Environment(\.dismiss) private var dismiss
-
+    
     private(set) var onPickedPictureCallback: ((UIImagePickerController, [UIImagePickerController.InfoKey: Any]) -> Void)?
     
     private(set) var onCancelledCallback: ((UIImagePickerController) -> Void)?
