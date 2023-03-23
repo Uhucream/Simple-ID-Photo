@@ -34,15 +34,16 @@ struct CameraView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
 
-        let uiImagePicker = UIImagePickerController()
-        uiImagePicker.delegate = context.coordinator
+        let imagePickerController = UIImagePickerController()
 
-        uiImagePicker.sourceType = .camera
-        uiImagePicker.mediaTypes = [UTType.image.identifier]
+        imagePickerController.delegate = context.coordinator
+
+        imagePickerController.sourceType = .camera
+        imagePickerController.mediaTypes = [UTType.image.identifier]
         
-        uiImagePicker.cameraDevice = .front
+        imagePickerController.cameraDevice = .front
 
-        return uiImagePicker
+        return imagePickerController
     }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
