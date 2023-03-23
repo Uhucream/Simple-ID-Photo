@@ -8,13 +8,13 @@
 
 if [[ $CI_WORKFLOW = "iOS Internal TestFlight Deployment" ]]; then
 
-    XCCONFIG_FILE="${CI_WORKSPACE}/Shared/EnvironmentValues/Debug/EnvironmentValues_Debug.xcconfig"
+    XCCONFIG_FILE="${CI_WORKSPACE}/Shared/EnvironmentVariables/Debug/EnvironmentVariables_Debug.xcconfig"
     
     echo .xcconfig file path is ${XCCONFIG_FILE}
 
     if [ ! -d `dirname $XCCONFIG_FILE` ]; then
     
-        echo "EnvironmentValues directory does not exist, so now creating the directory."
+        echo "EnvironmentVariables directory does not exist, so now creating the directory."
 
         mkdir -p `dirname $XCCONFIG_FILE`
         
@@ -38,10 +38,10 @@ if [[ $CI_WORKFLOW = "iOS Internal TestFlight Deployment" ]]; then
     echo "GAD_APPLICATION_IDENTIFIER = ${GAD_APPLICATION_IDENTIFIER}" >> $XCCONFIG_FILE
     echo "GAD_SHOULD_SHOW_AD_VALIDATOR = ${GAD_SHOULD_SHOW_AD_VALIDATOR}" >> $XCCONFIG_FILE
 
-    echo "IN_APP_PURCHASE_HIDE_ADS_PRODUCT_IDENTIFIER" = ${IN_APP_PURCHASE_HIDE_ADS_PRODUCT_IDENTIFIER} >> $XCCONFIG_FILE
-    echo "IN_APP_PURCHASE_BEER_PRODUCT_IDENTIFIER" = ${IN_APP_PURCHASE_BEER_PRODUCT_IDENTIFIER} >> $XCCONFIG_FILE
-    echo "IN_APP_PURCHASE_GYOZA_PRODUCT_IDENTIFIER" = ${IN_APP_PURCHASE_GYOZA_PRODUCT_IDENTIFIER} >> $XCCONFIG_FILE
-    echo "IN_APP_PURCHASE_RAMEN_PRODUCT_IDENTIFIER" = ${IN_APP_PURCHASE_RAMEN_PRODUCT_IDENTIFIER} >> $XCCONFIG_FILE
+    echo "IN_APP_PURCHASE_HIDE_ADS_PRODUCT_IDENTIFIER = ${IN_APP_PURCHASE_HIDE_ADS_PRODUCT_IDENTIFIER}" >> $XCCONFIG_FILE
+    echo "IN_APP_PURCHASE_BEER_PRODUCT_IDENTIFIER = ${IN_APP_PURCHASE_BEER_PRODUCT_IDENTIFIER}" >> $XCCONFIG_FILE
+    echo "IN_APP_PURCHASE_GYOZA_PRODUCT_IDENTIFIER = ${IN_APP_PURCHASE_GYOZA_PRODUCT_IDENTIFIER}" >> $XCCONFIG_FILE
+    echo "IN_APP_PURCHASE_RAMEN_PRODUCT_IDENTIFIER = ${IN_APP_PURCHASE_RAMEN_PRODUCT_IDENTIFIER}" >> $XCCONFIG_FILE
     
     echo "Writing environment values into .xcconfig file is done."
 fi
