@@ -42,6 +42,7 @@ struct CameraView: UIViewControllerRepresentable {
         imagePickerController.mediaTypes = [UTType.image.identifier]
         
         imagePickerController.cameraDevice = .front
+        imagePickerController.cameraFlashMode = .off
 
         return imagePickerController
     }
