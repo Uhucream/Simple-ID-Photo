@@ -258,7 +258,9 @@ struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where
                                     .onDelete(perform: onDeleteForOverThreeMonthsSection)
                                     .deleteDisabled(!currentEditMode.isEditing)
                                 } header: {
-                                    Text("それ以前")
+                                    let doesHistoriesWithInThreeMonthsExist: Bool = historiesWithinThreeMonths.count > 0
+                                    
+                                    Text(doesHistoriesWithInThreeMonthsExist ? "それ以前" : "3ヶ月以上前")
                                 }
                             }
                             
