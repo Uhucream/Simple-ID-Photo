@@ -149,52 +149,69 @@ struct CreatedIDPhotoHistoryCard: View {
                     return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
                 }()
                 
-                let imageHeight: CGFloat = 48 * thumbnailScaleFactor
+                let asyncImageContainerSideLength: CGFloat = 52 * thumbnailScaleFactor
                 
-                AsyncImage(
-                    url: idPhotoThumbnailImageURL
-                ) { asyncImagePhase in
-                    
-                    if case .success(let loadedImage) = asyncImagePhase {
-                        loadedImage
-                            .resizable()
-                            .shadow(radius: 0.8)
-                            .scaledToFill()
-                            .frame(width: imageHeight, height: imageHeight)
-                    }
-                    
-                    if case .empty = asyncImagePhase {
-                        Rectangle()
-                            .fill(Color.clear)
-                            .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
-                            .overlay(.ultraThinMaterial)
-                            .overlay {
-                                ProgressView()
+                //  MARK: コンテナのサイズを正方形とする
+                let asyncImageContainerCGSize: CGSize = .init(
+                    width: asyncImageContainerSideLength,
+                    height: asyncImageContainerSideLength
+                )
+                
+                //  MARK: 読み込み中と読み込み後で高さが変わらないようにするため、ZStack をコンテナーとしてその中に AsyncImage を設置
+                ZStack {
+                    AsyncImage(
+                        url: idPhotoThumbnailImageURL
+                    ) { asyncImagePhase in
+                        
+                        if case .success(let loadedImage) = asyncImagePhase {
+                            GeometryReader { loadedImageGeometry in
+                                
+                                let loadedImageSize: CGSize = loadedImageGeometry.size
+                                
+                                let isPortraitImage: Bool = loadedImageSize.width < loadedImageSize.height
+                                
+                                loadedImage
+                                    .resizable()
+                                    .aspectRatio(contentMode: isPortraitImage ? .fill : .fit)
+                                    .shadow(radius: 0.8)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             }
-                    }
-                    
-                    if case .failure(let error) = asyncImagePhase {
-                        Rectangle()
-                            .fill(Color.clear)
-                            .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
-                            .overlay(.ultraThinMaterial)
-                            .overlay {
-                                GeometryReader { geometry in
-                                    Image(systemName: "questionmark.square.dashed")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .foregroundColor(.systemGray)
-                                        .frame(width: 50%.of(geometry.size.width))
+                        }
+                        
+                        if case .empty = asyncImagePhase {
+                            Rectangle()
+                                .fill(Color.clear)
+                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                                .overlay(.ultraThinMaterial)
+                                .overlay {
+                                    ProgressView()
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                                        .onAppear {
-                                            print(error)
-                                        }
                                 }
-                            }
+                        }
+                        
+                        if case .failure(let error) = asyncImagePhase {
+                            Rectangle()
+                                .fill(Color.clear)
+                                .aspectRatio(createdIDPhotoAspectRatio, contentMode: .fit)
+                                .overlay(.ultraThinMaterial)
+                                .overlay {
+                                    GeometryReader { geometry in
+                                        Image(systemName: "questionmark.square.dashed")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .foregroundColor(.systemGray)
+                                            .frame(width: 50%.of(geometry.size.width))
+                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                                            .onAppear {
+                                                print(error)
+                                            }
+                                    }
+                                }
+                        }
                     }
                 }
                 .aspectRatio(1, contentMode: .fit)
+                .frame(width: asyncImageContainerCGSize.width, height: asyncImageContainerCGSize.height, alignment: .center)
                 
                 renderTitle()
                     .font(.callout)
