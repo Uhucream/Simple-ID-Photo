@@ -174,6 +174,7 @@ struct CreatedIDPhotoHistoryCard: View {
                                     if let _ = asyncImagePhase.error {
                                         Image(systemName: "questionmark.square.dashed")
                                             .resizable()
+                                            .scaledToFit()
                                             .foregroundColor(.systemGray)
                                     } else {
                                         ProgressView()
