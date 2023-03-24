@@ -374,6 +374,18 @@ extension IDPhotoDetailViewContainer {
         
         let printingIDPhotoUIImage: UIImage = .init(url: createdIDPhotoFileURL)
         
+        //  MARK: IDPhotoSizeVariant.original など、CGSize が .zero のものはサイズ調整せずに印刷する
+        if printingIDPhotoCGSize == .zero {
+            
+            let printInteractionController: UIPrintInteractionController = .shared
+            
+            printInteractionController.printingItem = printingIDPhotoUIImage
+            
+            printInteractionController.present(animated: true)
+            
+            return
+        }
+        
         let printingIDPhotoUIImageView: UIImageView = .init(image: printingIDPhotoUIImage)
         
         printingIDPhotoUIImageView.frame = .init(origin: .zero, size: printingIDPhotoCGSize)
