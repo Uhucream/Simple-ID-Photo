@@ -396,14 +396,18 @@ extension IDPhotoDetailViewContainer {
         
         printPageRenderer.addPrintFormatter(printFormatter, startingAtPageAt: 0)
         
+        printPageRenderer.onDrawPrintFormatter = { (printFormatter: UIPrintFormatter, pageIndex: Int) in
+            
+            let printingPreviewImageRect: CGRect = .init(origin: .zero, size: printingIDPhotoCGSize)
+            
+            printFormatter.draw(in: printingPreviewImageRect, forPageAt: 0)
+        }
+        
         printPageRenderer.onDrawPage = { (_, printableRect) in
 
-            let idPhotoHorizontalPadding: CGFloat = (printableRect.width - printingIDPhotoCGSize.width) / 2
-            let idPhotoVerticalPadding: CGFloat = (printableRect.height - printingIDPhotoCGSize.height) / 2
+            let idPhotoPrintAreaCGRect: CGRect = .init(origin: printableRect.origin, size: printingIDPhotoCGSize)
 
-            //  printableRect のど真ん中に描画したいので、insetBy を使用して生成
-            let idPhotoPrintAreaCGRect: CGRect = printableRect.insetBy(dx: idPhotoHorizontalPadding, dy: idPhotoVerticalPadding)
-
+            //  MARK: 印刷したものをはさみで楽に切れるようにするため、紙の左上に印刷する
             printingIDPhotoUIImage.draw(in: idPhotoPrintAreaCGRect)
         }
         
