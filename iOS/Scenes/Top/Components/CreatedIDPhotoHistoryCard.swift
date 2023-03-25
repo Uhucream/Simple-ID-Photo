@@ -215,7 +215,7 @@ struct CreatedIDPhotoHistoryCard: View {
                     .frame(width: asyncImageContainerCGSize.width, height: asyncImageContainerCGSize.height, alignment: .center)
                     
                     renderTitle()
-                        .font(.callout)
+                        .font(.headline)
                         .lineLimit(1)
                 }
                 
