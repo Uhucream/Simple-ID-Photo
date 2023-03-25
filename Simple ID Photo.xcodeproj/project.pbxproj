@@ -791,9 +791,7 @@
 			isa = PBXGroup;
 			children = (
 				4727C33929C43FC0000C9D90 /* AdMob */,
-				47C49B93296849A700F2BF35 /* CameraView.swift */,
-				479BBC832969754800C02BB7 /* PicturePickerView.swift */,
-				47868952297F7EC100952BFD /* BlurView.swift */,
+				47CFE7C829CEA7D9006B34A9 /* UIKitComponents */,
 			);
 			path = RepresentedViews;
 			sourceTree = "<group>";
@@ -812,6 +810,16 @@
 				47C7894B29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		47CFE7C829CEA7D9006B34A9 /* UIKitComponents */ = {
+			isa = PBXGroup;
+			children = (
+				47C49B93296849A700F2BF35 /* CameraView.swift */,
+				479BBC832969754800C02BB7 /* PicturePickerView.swift */,
+				47868952297F7EC100952BFD /* BlurView.swift */,
+			);
+			path = UIKitComponents;
 			sourceTree = "<group>";
 		};
 		47D9040D2969141300DD4FAF /* Utilities */ = {
