@@ -99,6 +99,7 @@
 		47C7894929AB3A44003D7763 /* CreatedIDPhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C7894829AB3A44003D7763 /* CreatedIDPhotoDetail.swift */; };
 		47C7894C29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C7894B29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift */; };
 		47CDB2BA29A5070F007FDE8E /* Measurement<UnitLength>+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */; };
+		47CFE7CA29CEA81F006B34A9 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7C929CEA81F006B34A9 /* ActivityView.swift */; };
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 		47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */; };
@@ -228,6 +229,7 @@
 		47C7894829AB3A44003D7763 /* CreatedIDPhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedIDPhotoDetail.swift; sourceTree = "<group>"; };
 		47C7894B29AB3CDD003D7763 /* CreatedIDPhotoHistoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedIDPhotoHistoryCard.swift; sourceTree = "<group>"; };
 		47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Measurement<UnitLength>+.swift"; sourceTree = "<group>"; };
+		47CFE7C929CEA81F006B34A9 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementUnitLengthSize.swift; sourceTree = "<group>"; };
@@ -818,6 +820,7 @@
 				47C49B93296849A700F2BF35 /* CameraView.swift */,
 				479BBC832969754800C02BB7 /* PicturePickerView.swift */,
 				47868952297F7EC100952BFD /* BlurView.swift */,
+				47CFE7C929CEA81F006B34A9 /* ActivityView.swift */,
 			);
 			path = UIKitComponents;
 			sourceTree = "<group>";
@@ -1304,6 +1307,7 @@
 				47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */,
 				47868953297F7EC100952BFD /* BlurView.swift in Sources */,
 				474128B129C94EF1002E196E /* InAppPurchaseHelper.swift in Sources */,
+				47CFE7CA29CEA81F006B34A9 /* ActivityView.swift in Sources */,
 				472EA52429BA123700463D32 /* EditIDPhotoView.swift in Sources */,
 				4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */,
 				472EA52629BA15B500463D32 /* EditIDPhotoViewContainer.swift in Sources */,
