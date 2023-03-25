@@ -1256,8 +1256,8 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+				"${UPLOAD_DSYM_PHASE_DSYM_FILE_PATH}",
+				"${UPLOAD_DSYM_PHASE_INFO_PLIST_FILE_PATH}",
 			);
 			name = "Upload dSYM to Firebase Crashlytics";
 			outputFileListPaths = (
