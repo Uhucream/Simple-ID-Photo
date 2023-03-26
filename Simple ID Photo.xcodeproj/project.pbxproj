@@ -28,7 +28,6 @@
 		47301EBC29CA94C0007F41CA /* AppStorage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EBB29CA94C0007F41CA /* AppStorage+.swift */; };
 		47301EBE29CA9533007F41CA /* AppStorageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EBD29CA9533007F41CA /* AppStorageStore.swift */; };
 		47301EC229CAABDD007F41CA /* Binding+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47301EC129CAABDC007F41CA /* Binding+.swift */; };
-		47301EC429CC1851007F41CA /* GoogleService-Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = 47013AEC296C0224000A0D89 /* GoogleService-Info.plist */; };
 		474128B129C94EF1002E196E /* InAppPurchaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474128B029C94EF0002E196E /* InAppPurchaseHelper.swift */; };
 		474128B629C9505E002E196E /* DebugProductConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 474128B429C9505E002E196E /* DebugProductConfiguration.storekit */; };
 		475FB233296FD47F0059796F /* CreateIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475FB231296FD47F0059796F /* CreateIDPhotoView.swift */; };
@@ -103,6 +102,7 @@
 		47CFE7D429D01CA0006B34A9 /* DetentSheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7D329D01CA0006B34A9 /* DetentSheetModifier.swift */; };
 		47CFE7D629D01CF8006B34A9 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7D529D01CF8006B34A9 /* View+.swift */; };
 		47CFE7DA29D024CC006B34A9 /* ListAdvertisementCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47CFE7D929D024CC006B34A9 /* ListAdvertisementCard.xib */; };
+		47CFE7DB29D026FC006B34A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 47013AEC296C0224000A0D89 /* GoogleService-Info.plist */; };
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 		47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */; };
@@ -1212,6 +1212,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47CFE7DB29D026FC006B34A9 /* GoogleService-Info.plist in Resources */,
 				4778B34629A7396000F35EE0 /* Colors.xcassets in Resources */,
 				47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */,
 				479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */,
@@ -1292,7 +1293,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47301EC429CC1851007F41CA /* GoogleService-Info.plist in Sources */,
 				47F9085D29BDD913000F7394 /* Task+.swift in Sources */,
 				4707215229B02A0800BD8535 /* AppliedIDPhotoSize+.swift in Sources */,
 				47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */,
