@@ -102,6 +102,7 @@
 		47CFE7CA29CEA81F006B34A9 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7C929CEA81F006B34A9 /* ActivityView.swift */; };
 		47CFE7CC29CEC169006B34A9 /* DetentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7CB29CEC169006B34A9 /* DetentSheet.swift */; };
 		47CFE7D429D01CA0006B34A9 /* DetentSheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7D329D01CA0006B34A9 /* DetentSheetModifier.swift */; };
+		47CFE7D629D01CF8006B34A9 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7D529D01CF8006B34A9 /* View+.swift */; };
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 		47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */; };
@@ -234,6 +235,7 @@
 		47CFE7C929CEA81F006B34A9 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		47CFE7CB29CEC169006B34A9 /* DetentSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetentSheet.swift; sourceTree = "<group>"; };
 		47CFE7D329D01CA0006B34A9 /* DetentSheetModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetentSheetModifier.swift; sourceTree = "<group>"; };
+		47CFE7D529D01CF8006B34A9 /* View+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementUnitLengthSize.swift; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 				4778B34929A741F800F35EE0 /* Color */,
 				47694A762993E9A700C447CA /* Animation+.swift */,
 				47301EC129CAABDC007F41CA /* Binding+.swift */,
+				47CFE7D529D01CF8006B34A9 /* View+.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -1305,6 +1308,7 @@
 				47BB62B729C7ACE4009B0782 /* InAppPurchaesProductCard.swift in Sources */,
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */,
+				47CFE7D629D01CF8006B34A9 /* View+.swift in Sources */,
 				47CFE7D429D01CA0006B34A9 /* DetentSheetModifier.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
 				4707215029B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift in Sources */,
