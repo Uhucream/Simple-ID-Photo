@@ -14,7 +14,6 @@
 		4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215729B02A8E00BD8535 /* SourcePhoto+.swift */; };
 		4727166C29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
 		4727166D29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
-		4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */; };
 		4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */; };
 		4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */; };
 		4727C34E29C467A9000C9D90 /* TopView_iOS16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C34B29C467A9000C9D90 /* TopView_iOS16.swift */; };
@@ -103,6 +102,7 @@
 		47CFE7CC29CEC169006B34A9 /* DetentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7CB29CEC169006B34A9 /* DetentSheet.swift */; };
 		47CFE7D429D01CA0006B34A9 /* DetentSheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7D329D01CA0006B34A9 /* DetentSheetModifier.swift */; };
 		47CFE7D629D01CF8006B34A9 /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CFE7D529D01CF8006B34A9 /* View+.swift */; };
+		47CFE7DA29D024CC006B34A9 /* ListAdvertisementCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47CFE7D929D024CC006B34A9 /* ListAdvertisementCard.xib */; };
 		47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */; };
 		47D9041229692E9200DD4FAF /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D9041129692E9200DD4FAF /* Color+.swift */; };
 		47DC499629BF3CA100516D4B /* MeasurementUnitLengthSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */; };
@@ -167,7 +167,6 @@
 		4707215529B02A7200BD8535 /* CreatedIDPhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CreatedIDPhoto+.swift"; sourceTree = "<group>"; };
 		4707215729B02A8E00BD8535 /* SourcePhoto+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SourcePhoto+.swift"; sourceTree = "<group>"; };
 		4727166B29BF92DD000246DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListAdvertisementCard.xib; sourceTree = "<group>"; };
 		4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAdvertisementCard.swift; sourceTree = "<group>"; };
 		4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdMobListCellAssets.xcassets; sourceTree = "<group>"; };
 		4727C34B29C467A9000C9D90 /* TopView_iOS16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopView_iOS16.swift; sourceTree = "<group>"; };
@@ -236,6 +235,7 @@
 		47CFE7CB29CEC169006B34A9 /* DetentSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetentSheet.swift; sourceTree = "<group>"; };
 		47CFE7D329D01CA0006B34A9 /* DetentSheetModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetentSheetModifier.swift; sourceTree = "<group>"; };
 		47CFE7D529D01CF8006B34A9 /* View+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
+		47CFE7D929D024CC006B34A9 /* ListAdvertisementCard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListAdvertisementCard.xib; sourceTree = "<group>"; };
 		47D9040E2969142500DD4FAF /* ScreenSizeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSizeHelper.swift; sourceTree = "<group>"; };
 		47D9041129692E9200DD4FAF /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementUnitLengthSize.swift; sourceTree = "<group>"; };
@@ -380,8 +380,8 @@
 		4727C33A29C43FC0000C9D90 /* Native */ = {
 			isa = PBXGroup;
 			children = (
-				4727C33B29C43FC0000C9D90 /* ListAdvertisementCard.xib */,
 				4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */,
+				47CFE7D929D024CC006B34A9 /* ListAdvertisementCard.xib */,
 				4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */,
 			);
 			path = Native;
@@ -1218,8 +1218,8 @@
 				47C49B422967FB1E00F2BF35 /* Assets.iOS.xcassets in Resources */,
 				4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */,
 				4727166C29BF92DD000246DD /* Assets.xcassets in Resources */,
+				47CFE7DA29D024CC006B34A9 /* ListAdvertisementCard.xib in Resources */,
 				474128B629C9505E002E196E /* DebugProductConfiguration.storekit in Resources */,
-				4727C33E29C43FC1000C9D90 /* ListAdvertisementCard.xib in Resources */,
 				479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
