@@ -221,7 +221,7 @@ struct IDPhotoDetailViewContainer: View {
                 showEditIDPhotoView(initialDisplayProcess: .size)
             }
             .onTapPrintButton {
-                showChoosePrintMethodDialog()
+                setupAndShowPrintInteractionController()
             }
             .onTapSaveImageButton {
                 Task {
