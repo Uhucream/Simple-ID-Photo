@@ -26,6 +26,18 @@ struct SettingsAboutView: View {
                             .font(.body)
                     }
                 }
+                
+                Link(destination: URL(string: "https://twitter.com/nobtakajp")!) {
+                    HStack(alignment: .center) {
+                        Image("TwitterIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxHeight: 16 * twitterIconScaleFactor)
+                        
+                        Text("@NobtakaJP")
+                            .font(.body)
+                    }
+                }
             } header: {
                 Text("Developed By")
             }
