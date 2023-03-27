@@ -8,6 +8,22 @@
 
 import SwiftUI
 
+fileprivate struct TwitterAccountCard: View {
+    
+    let userName: String
+    
+    var body: some View {
+        HStack(alignment: .center) {
+            Image("TwitterIcon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            
+            Text("@\(userName)")
+                .font(.body)
+        }
+    }
+}
+
 struct SettingsAboutView: View {
     
     @ScaledMetric(wrappedValue: 1, relativeTo: .body) private var twitterIconScaleFactor
@@ -16,27 +32,13 @@ struct SettingsAboutView: View {
         Form {
             Section {
                 Link(destination: URL(string: "https://twitter.com/Ukokkei95Toyama")!) {
-                    HStack(alignment: .center) {
-                        Image("TwitterIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 16 * twitterIconScaleFactor)
-                        
-                        Text("@Ukokkei95Toyama")
-                            .font(.body)
-                    }
+                    TwitterAccountCard(userName: "Ukokkei95Toyama")
+                        .frame(maxHeight: 16 * twitterIconScaleFactor)
                 }
                 
                 Link(destination: URL(string: "https://twitter.com/nobtakajp")!) {
-                    HStack(alignment: .center) {
-                        Image("TwitterIcon")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 16 * twitterIconScaleFactor)
-                        
-                        Text("@NobtakaJP")
-                            .font(.body)
-                    }
+                    TwitterAccountCard(userName: "NobtakaJP")
+                        .frame(maxHeight: 16 * twitterIconScaleFactor)
                 }
             } header: {
                 Text("Developed By")
