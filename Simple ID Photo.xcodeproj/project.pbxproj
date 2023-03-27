@@ -91,6 +91,7 @@
 		4796EC4F29C03964007C2980 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4796EC4E29C03964007C2980 /* FirebaseStorage */; };
 		4796EC5129C03964007C2980 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 4796EC5029C03964007C2980 /* FirebaseStorageCombine-Community */; };
 		4796EC5429C03B10007C2980 /* Percentage in Frameworks */ = {isa = PBXBuildFile; productRef = 4796EC5329C03B10007C2980 /* Percentage */; };
+		47985C9429D13D8000E68025 /* refresh_settings_bundle_acknowledgements.sh in Resources */ = {isa = PBXBuildFile; fileRef = 47985C9329D13D8000E68025 /* refresh_settings_bundle_acknowledgements.sh */; };
 		479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC7929696DCB00C02BB7 /* Localizable.strings */; };
 		479BBC7D29696E0500C02BB7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 479BBC7F29696E0500C02BB7 /* InfoPlist.strings */; };
 		479BBC8229696FF900C02BB7 /* TopViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479BBC8129696FF900C02BB7 /* TopViewContainer.swift */; };
@@ -222,6 +223,7 @@
 		478DB92429AF1A0C006424A0 /* IDPhotoDetailViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoDetailViewContainer.swift; sourceTree = "<group>"; };
 		478F83FD29D12EAE004AFC1E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		479573E1296C1B1400B98881 /* IDPhotoSizePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSizePickerView.swift; sourceTree = "<group>"; };
+		47985C9329D13D8000E68025 /* refresh_settings_bundle_acknowledgements.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = refresh_settings_bundle_acknowledgements.sh; sourceTree = "<group>"; };
 		479BBC7829696DCB00C02BB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		479BBC7A29696DD800C02BB7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		479BBC7E29696E0500C02BB7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -642,6 +644,14 @@
 			path = IDPhotoDetail;
 			sourceTree = "<group>";
 		};
+		47985C9229D13D8000E68025 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				47985C9329D13D8000E68025 /* refresh_settings_bundle_acknowledgements.sh */,
+			);
+			path = scripts;
+			sourceTree = "<group>";
+		};
 		479BBC532969534400C02BB7 /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,6 +726,7 @@
 				47C49B522967FB1E00F2BF35 /* Tests */,
 				47C49B5C2967FB1F00F2BF35 /* UITests */,
 				47396B7729C6FCDC007EADE9 /* ci_scripts */,
+				47985C9229D13D8000E68025 /* scripts */,
 				47C49B3B2967FB1C00F2BF35 /* Products */,
 				47396B8629C74A08007EADE9 /* Frameworks */,
 			);
@@ -1049,6 +1060,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 47C49B632967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID Photo (iOS)" */;
 			buildPhases = (
+				47985C9129D13D6200E68025 /* Refresh Settings.bundle Acknowledgements */,
 				47C49B362967FB1C00F2BF35 /* Sources */,
 				47C49B372967FB1C00F2BF35 /* Frameworks */,
 				47C49B382967FB1C00F2BF35 /* Resources */,
@@ -1277,6 +1289,7 @@
 				479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.iOS.xcassets in Resources */,
 				4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */,
+				47985C9429D13D8000E68025 /* refresh_settings_bundle_acknowledgements.sh in Resources */,
 				4727166C29BF92DD000246DD /* Assets.xcassets in Resources */,
 				47CFE7DA29D024CC006B34A9 /* ListAdvertisementCard.xib in Resources */,
 				474128B629C9505E002E196E /* DebugProductConfiguration.storekit in Resources */,
@@ -1345,6 +1358,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+		47985C9129D13D6200E68025 /* Refresh Settings.bundle Acknowledgements */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Refresh Settings.bundle Acknowledgements";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "scripts/refresh_settings_bundle_acknowledgements.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
