@@ -15,7 +15,7 @@ struct SettingsAboutView: View {
     var body: some View {
         Form {
             Section {
-                Link(destination: URL(string: "twitter.com/Ukokkei95Toyama")!) {
+                Link(destination: URL(string: "https://twitter.com/Ukokkei95Toyama")!) {
                     HStack(alignment: .center) {
                         Image("TwitterIcon")
                             .resizable()
