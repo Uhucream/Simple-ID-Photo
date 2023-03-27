@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import BetterSafariView
 
 fileprivate struct TwitterAccountCard: View {
     
@@ -28,8 +29,33 @@ struct SettingsAboutView: View {
     
     @ScaledMetric(wrappedValue: 1, relativeTo: .body) private var twitterIconScaleFactor
     
+    @State private var presentingPrivacyPolicyURL: URL? = nil
+    
+    func openPrivacyPolicyWithSFSafariView(_ url: URL) -> OpenURLAction.Result {
+        
+        self.presentingPrivacyPolicyURL = url
+        
+        return .handled
+    }
+    
     var body: some View {
         Form {
+            Section {
+                Link(destination: URL(string: "https://simpleidphoto.web.app/app/privacy-policy.html")!) {
+                    Text("プライバシーポリシー")
+                        .foregroundColor(.label)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .environment(\.openURL, OpenURLAction(handler: openPrivacyPolicyWithSFSafariView))
+                .background {
+                    //  MARK: Disclosure Indicator 表示用
+                    NavigationLink(destination: EmptyView()) {
+                        EmptyView()
+                    }
+                    .disabled(true)
+                }
+            }
+            
             Section {
                 Link(destination: URL(string: "https://twitter.com/Ukokkei95Toyama")!) {
                     TwitterAccountCard(userName: "Ukokkei95Toyama")
@@ -43,6 +69,15 @@ struct SettingsAboutView: View {
             } header: {
                 Text("Developed By")
             }
+        }
+        .safariView(item: $presentingPrivacyPolicyURL) { url in
+            SafariView(
+                url: url,
+                configuration: .init(
+                    entersReaderIfAvailable: false,
+                    barCollapsingEnabled: false
+                )
+            )
         }
     }
 }
