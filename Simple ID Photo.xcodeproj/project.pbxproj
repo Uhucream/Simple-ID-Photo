@@ -12,6 +12,7 @@
 		4707215429B02A2E00BD8535 /* AppliedMarginsAroundFace+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215329B02A2D00BD8535 /* AppliedMarginsAroundFace+.swift */; };
 		4707215629B02A7200BD8535 /* CreatedIDPhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215529B02A7200BD8535 /* CreatedIDPhoto+.swift */; };
 		4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215729B02A8E00BD8535 /* SourcePhoto+.swift */; };
+		47091B7429D1B90A005E4D87 /* BetterSafariView in Frameworks */ = {isa = PBXBuildFile; productRef = 47091B7329D1B90A005E4D87 /* BetterSafariView */; };
 		4727166C29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
 		4727166D29BF92DD000246DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727166B29BF92DD000246DD /* Assets.xcassets */; };
 		4727C33F29C43FC1000C9D90 /* ListAdvertisementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C33C29C43FC0000C9D90 /* ListAdvertisementCard.swift */; };
@@ -299,6 +300,7 @@
 				4796EC3129C03964007C2980 /* FirebaseDatabaseSwift in Frameworks */,
 				4796EC4729C03964007C2980 /* FirebaseMessaging in Frameworks */,
 				4796EC2B29C03964007C2980 /* FirebaseAuthCombine-Community in Frameworks */,
+				47091B7429D1B90A005E4D87 /* BetterSafariView in Frameworks */,
 				4796EC3729C03964007C2980 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				4796EC2129C03964007C2980 /* FirebaseAnalyticsSwift in Frameworks */,
 				4796EC2329C03964007C2980 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
@@ -1097,6 +1099,7 @@
 				4796EC5029C03964007C2980 /* FirebaseStorageCombine-Community */,
 				4796EC5329C03B10007C2980 /* Percentage */,
 				479C37EE29C19E2D003D860C /* GoogleMobileAds */,
+				47091B7329D1B90A005E4D87 /* BetterSafariView */,
 			);
 			productName = "Simple ID Photo";
 			productReference = 47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */;
@@ -1265,6 +1268,7 @@
 				4796EC1B29C03964007C2980 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				4796EC5229C03B10007C2980 /* XCRemoteSwiftPackageReference "Percentage" */,
 				479C37ED29C19E2D003D860C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				47091B7229D1B90A005E4D87 /* XCRemoteSwiftPackageReference "BetterSafariView" */,
 			);
 			productRefGroup = 47C49B3B2967FB1C00F2BF35 /* Products */;
 			projectDirPath = "";
@@ -2032,6 +2036,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		47091B7229D1B90A005E4D87 /* XCRemoteSwiftPackageReference "BetterSafariView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stleamist/BetterSafariView";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		4796EC1B29C03964007C2980 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -2059,6 +2071,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		47091B7329D1B90A005E4D87 /* BetterSafariView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47091B7229D1B90A005E4D87 /* XCRemoteSwiftPackageReference "BetterSafariView" */;
+			productName = BetterSafariView;
+		};
 		478F83C029D12309004AFC1E /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4796EC1B29C03964007C2980 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
