@@ -49,7 +49,10 @@ struct EditIDPhotoViewContainer: View {
             let isPassport: Bool = variant == .passport
             let isCustom: Bool = variant == .custom
             
-            return !(isPassport || isCustom)
+            //  MARK: パスポートサイズを除外している都合上、通常の w35_45 だけ表示すると混乱を招く可能性があるので除外
+            let is35_45: Bool = variant == .w35_h45
+            
+            return !(isPassport || isCustom || is35_45)
         }
         
         return variantsWithoutPassportAndCustom
