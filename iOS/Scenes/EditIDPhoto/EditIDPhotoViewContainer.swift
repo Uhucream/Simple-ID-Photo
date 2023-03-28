@@ -319,7 +319,8 @@ struct EditIDPhotoViewContainer: View {
             selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
             previewUIImage: $previewUIImage,
             shouldDisableDoneButton: .readOnly(!hasAnyModifications),
-            availableBackgroundColors: BACKGROUND_COLORS
+            availableBackgroundColors: BACKGROUND_COLORS,
+            availableSizeVariants: IDPhotoSizeVariant.allCases
         )
         .onTapDismissButton {
             if hasAnyModifications {

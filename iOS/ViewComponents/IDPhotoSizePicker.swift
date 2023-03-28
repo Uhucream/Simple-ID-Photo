@@ -9,32 +9,23 @@
 import SwiftUI
 
 struct IDPhotoSizePicker: View {
-    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
     
-    private func renderSelectionLabelText(_ sizeVariant: IDPhotoSizeVariant) -> Text {
-        if sizeVariant == .original {
-            return Text("オリジナル")
-        }
-        
-        if sizeVariant == .passport {
-            return Text("パスポート (35 x 45 mm)")
-        }
-        
-        let photoWidth: Int = Int(sizeVariant.photoSize.width.value)
-        
-        return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: sizeVariant.photoSize.height))")
-    }
+    var availableSizeVariants: [IDPhotoSizeVariant]
+    
+    var renderSelectonLabel: (IDPhotoSizeVariant) -> Text
+    
+    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
     
     var body: some View {
         HStack {
             ScrollViewReader { scrollViewProxy in
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 4) {
-                        ForEach(IDPhotoSizeVariant.allCases, id: \.self) { sizeSelection in
+                        ForEach(availableSizeVariants, id: \.self) { sizeSelection in
                             let isSelected: Bool = self.selectedIDPhotoSize == sizeSelection
                             
                             ZStack {
-                                renderSelectionLabelText(sizeSelection)
+                                renderSelectonLabel(sizeSelection)
                                     .font(.system(size: 14.0, design: .rounded))
                                     .fontWeight(.regular)
                             }
@@ -62,7 +53,10 @@ struct IDPhotoSizePicker: View {
                     }
                     .padding()
                     .onAppear {
-                        if selectedIDPhotoSize == .original {
+                        
+                        let currentSelectedVariantIndex: Int = availableSizeVariants.firstIndex(of: self.selectedIDPhotoSize) ?? 0
+                        
+                        if currentSelectedVariantIndex == 0 {
                             return
                         }
                         
@@ -76,7 +70,25 @@ struct IDPhotoSizePicker: View {
 
 struct IDPhotoSizePicker_Previews: PreviewProvider {
     static var previews: some View {
-        IDPhotoSizePicker(selectedIDPhotoSize: .constant(.original))
-            .previewLayout(.sizeThatFits)
+        let renderVariantLabel: (IDPhotoSizeVariant) -> Text = { (variant: IDPhotoSizeVariant) in
+            if variant == .original {
+                return Text("オリジナル")
+            }
+            
+            if variant == .passport {
+                return Text("パスポート (35 x 45 mm)")
+            }
+            
+            let photoWidth: Int = Int(variant.photoSize.width.value)
+            
+            return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: variant.photoSize.height))")
+        }
+        
+        IDPhotoSizePicker(
+            availableSizeVariants: IDPhotoSizeVariant.allCases,
+            renderSelectonLabel: renderVariantLabel,
+            selectedIDPhotoSize: .constant(.original)
+        )
+        .previewLayout(.sizeThatFits)
     }
 }

@@ -348,7 +348,8 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
-                    previewUIImage: $previewUIImage.animation()
+                    previewUIImage: $previewUIImage.animation(),
+                    availableSizeVariants: IDPhotoSizeVariant.allCases
                 )
                 .onTapDismissButton {
                     showDiscardViewConfirmationDialog()
@@ -360,7 +361,8 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
-                    previewUIImage: $previewUIImage.animation()
+                    previewUIImage: $previewUIImage.animation(),
+                    availableSizeVariants: IDPhotoSizeVariant.allCases
                 )
                 .onTapDismissButton {
                     showDiscardViewConfirmationDialog()

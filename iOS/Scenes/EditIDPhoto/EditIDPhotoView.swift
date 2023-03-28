@@ -23,6 +23,8 @@ struct EditIDPhotoView: View {
     
     var availableBackgroundColors: [Color]
     
+    var availableSizeVariants: [IDPhotoSizeVariant]
+    
     private(set) var onTapDismissButtonCallback: (() -> Void)? = nil
 
     private(set) var onTapDoneButtonCallback: (() -> Void)? = nil
@@ -41,6 +43,20 @@ struct EditIDPhotoView: View {
         view.onTapDoneButtonCallback = action
         
         return view
+    }
+    
+    func renderSizeVariantLabel(_ variant: IDPhotoSizeVariant) -> Text {
+        if variant == .original {
+            return Text("オリジナル")
+        }
+        
+        if variant == .passport {
+            return Text("パスポート (35 x 45 mm)")
+        }
+        
+        let photoWidth: Int = Int(variant.photoSize.width.value)
+        
+        return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: variant.photoSize.height))")
     }
     
     var body: some View {
@@ -130,7 +146,11 @@ struct EditIDPhotoView: View {
                     }
                     
                     if self.selectedProcess == .size {
-                        IDPhotoSizePicker(selectedIDPhotoSize: $selectedIDPhotoSize)
+                        IDPhotoSizePicker(
+                            availableSizeVariants: availableSizeVariants,
+                            renderSelectonLabel: renderSizeVariantLabel,
+                            selectedIDPhotoSize: $selectedIDPhotoSize
+                        )
                     }
                 }
                 .transaction { transaction in
@@ -247,7 +267,8 @@ struct EditIDPhotoView_Previews: PreviewProvider {
             availableBackgroundColors: [
                 .idPhotoBackgroundColors.blue,
                 .idPhotoBackgroundColors.gray
-            ]
+            ],
+            availableSizeVariants: IDPhotoSizeVariant.allCases
         )
         .previewDisplayName("Edit ID Photo View")
     }
