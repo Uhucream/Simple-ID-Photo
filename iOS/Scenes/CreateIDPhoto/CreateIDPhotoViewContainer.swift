@@ -60,6 +60,20 @@ struct CreateIDPhotoViewContainer: View {
         }
     }
     
+    private var availableIDPhotoSizeVariants: [IDPhotoSizeVariant] {
+        let allVariants: [IDPhotoSizeVariant] = IDPhotoSizeVariant.allCases
+        
+        let variantsWithoutPassportAndCustom = allVariants.filter { variant in
+            
+            let isPassport: Bool = variant == .passport
+            let isCustom: Bool = variant == .custom
+            
+            return !(isPassport || isCustom)
+        }
+        
+        return variantsWithoutPassportAndCustom
+    }
+    
     @State private var previewUIImage: UIImage? = nil
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
@@ -349,7 +363,7 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation(),
-                    availableSizeVariants: IDPhotoSizeVariant.allCases
+                    availableSizeVariants: availableIDPhotoSizeVariants
                 )
                 .onTapDismissButton {
                     showDiscardViewConfirmationDialog()
@@ -362,7 +376,7 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation(),
-                    availableSizeVariants: IDPhotoSizeVariant.allCases
+                    availableSizeVariants: availableIDPhotoSizeVariants
                 )
                 .onTapDismissButton {
                     showDiscardViewConfirmationDialog()

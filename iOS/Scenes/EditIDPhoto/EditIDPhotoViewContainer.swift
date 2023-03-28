@@ -41,6 +41,20 @@ struct EditIDPhotoViewContainer: View {
         }
     }
     
+    private var availableIDPhotoSizeVariants: [IDPhotoSizeVariant] {
+        let allVariants: [IDPhotoSizeVariant] = IDPhotoSizeVariant.allCases
+        
+        let variantsWithoutPassportAndCustom = allVariants.filter { variant in
+            
+            let isPassport: Bool = variant == .passport
+            let isCustom: Bool = variant == .custom
+            
+            return !(isPassport || isCustom)
+        }
+        
+        return variantsWithoutPassportAndCustom
+    }
+    
     @State private var originalCreatedIDPhotoFileURL: URL? = nil
     
     @State private var sourcePhotoFileURL: URL? = nil
@@ -320,7 +334,7 @@ struct EditIDPhotoViewContainer: View {
             previewUIImage: $previewUIImage,
             shouldDisableDoneButton: .readOnly(!hasAnyModifications),
             availableBackgroundColors: BACKGROUND_COLORS,
-            availableSizeVariants: IDPhotoSizeVariant.allCases
+            availableSizeVariants: availableIDPhotoSizeVariants
         )
         .onTapDismissButton {
             if hasAnyModifications {
