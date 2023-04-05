@@ -500,7 +500,7 @@ struct TopViewContainer: View {
                                 }
                         }
                     ) {
-                        Text("削除する")
+                        Text("削除")
                     }
                 } message: { _ in
                     Text("削除した証明写真は復元できません")
@@ -526,11 +526,13 @@ struct TopViewContainer: View {
                     ToolbarItem(placement: .bottomBar) {
                         if currentEditMode.isEditing {
                             Button(
+                                role: .destructive,
                                 action: {
                                     shouldShowDeleteAllConfirmDialog = true
                                 }
                             ) {
-                                Text("すべて消去")
+                                Text("すべて削除")
+                                    .foregroundColor(.red)
                             }
                         }
                     }
