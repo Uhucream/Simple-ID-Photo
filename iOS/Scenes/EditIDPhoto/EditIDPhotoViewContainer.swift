@@ -403,6 +403,7 @@ struct EditIDPhotoViewContainer: View {
                 }
             }
         }
+        .statusBarHidden()
         .confirmationDialog(
             "編集を終了しますか？",
             isPresented: $shouldShowDiscardViewConfirmationDialog,
