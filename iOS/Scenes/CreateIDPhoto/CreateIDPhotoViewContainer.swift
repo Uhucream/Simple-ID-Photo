@@ -388,6 +388,7 @@ struct CreateIDPhotoViewContainer: View {
                 .navigationBarHidden(true)
             }
         }
+        .statusBarHidden()
         .onReceive(Just(selectedBackgroundColor)) { newSelectedBackgroundColor in
             self.selectedBackgroundColorLabel = generateBackgroundColorLabel(newSelectedBackgroundColor)
         }
