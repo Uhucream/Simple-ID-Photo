@@ -139,6 +139,8 @@
 		47DC49C429BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */; };
 		47DC49C629BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */; };
 		47E9DAE829C4286000659744 /* NativeAdLoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */; };
+		47EFA62329F0BCA70054CF5A /* SavingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EFA62229F0BCA70054CF5A /* SavingProgressView.swift */; };
+		47EFA62529F0BCD50054CF5A /* SavingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47EFA62429F0BCD50054CF5A /* SavingStatus.swift */; };
 		47F41BDC29C95D5B00CEDB17 /* SettingsPurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F41BDA29C95D5A00CEDB17 /* SettingsPurchaseView.swift */; };
 		47F41BE229C9948C00CEDB17 /* SettingsPurchaseViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F41BE129C9948B00CEDB17 /* SettingsPurchaseViewContainer.swift */; };
 		47F41BE429C9977700CEDB17 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F41BE329C9977700CEDB17 /* StoreKit.framework */; };
@@ -279,6 +281,8 @@
 		47DC49C329BF85EF00516D4B /* Simple_ID_Photo__macOS_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITests.swift; sourceTree = "<group>"; };
 		47DC49C529BF85EF00516D4B /* Simple_ID_Photo__macOS_UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simple_ID_Photo__macOS_UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		47E9DAE729C4286000659744 /* NativeAdLoadingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdLoadingHelper.swift; sourceTree = "<group>"; };
+		47EFA62229F0BCA70054CF5A /* SavingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingProgressView.swift; sourceTree = "<group>"; };
+		47EFA62429F0BCD50054CF5A /* SavingStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingStatus.swift; sourceTree = "<group>"; };
 		47F41BDA29C95D5A00CEDB17 /* SettingsPurchaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPurchaseView.swift; sourceTree = "<group>"; };
 		47F41BE129C9948B00CEDB17 /* SettingsPurchaseViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPurchaseViewContainer.swift; sourceTree = "<group>"; };
 		47F41BE329C9977700CEDB17 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -461,6 +465,7 @@
 				4728DA42297ECBFE0056767F /* IDPhoto */,
 				47DC499529BF3CA100516D4B /* MeasurementUnitLengthSize.swift */,
 				47DC499729BF3ED400516D4B /* ActualSize.swift */,
+				47EFA62429F0BCD50054CF5A /* SavingStatus.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -847,6 +852,7 @@
 				479573E1296C1B1400B98881 /* IDPhotoSizePickerView.swift */,
 				47868950297F6CDC00952BFD /* IDPhotoBackgroundColorPicker.swift */,
 				478689542980216600952BFD /* IDPhotoSizePicker.swift */,
+				47EFA62229F0BCA70054CF5A /* SavingProgressView.swift */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -1395,6 +1401,7 @@
 				47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */,
 				4727C34E29C467A9000C9D90 /* TopView_iOS16.swift in Sources */,
 				472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */,
+				47EFA62529F0BCD50054CF5A /* SavingStatus.swift in Sources */,
 				478A420429AA3E7300626316 /* IDPhotoDetailView.swift in Sources */,
 				47A865AC29B48799002BE3F9 /* SavedFilePath+.swift in Sources */,
 				47DC499B29BF580900516D4B /* NormalPrinterPrintInteractionControllerDelegate.swift in Sources */,
@@ -1423,6 +1430,7 @@
 				47B91A4D29A8567100754657 /* PrintPageRenderer.swift in Sources */,
 				47868953297F7EC100952BFD /* BlurView.swift in Sources */,
 				474128B129C94EF1002E196E /* InAppPurchaseHelper.swift in Sources */,
+				47EFA62329F0BCA70054CF5A /* SavingProgressView.swift in Sources */,
 				47CFE7CA29CEA81F006B34A9 /* ActivityView.swift in Sources */,
 				472EA52429BA123700463D32 /* EditIDPhotoView.swift in Sources */,
 				4728DA46297ECE260056767F /* IDPhotoSizeVariant.swift in Sources */,
