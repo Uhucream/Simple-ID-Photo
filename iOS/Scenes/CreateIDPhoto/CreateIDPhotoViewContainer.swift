@@ -13,6 +13,7 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 import VideoToolbox
 import UniformTypeIdentifiers
+import Percentage
 
 struct CreateIDPhotoViewContainer: View {
     
@@ -22,6 +23,8 @@ struct CreateIDPhotoViewContainer: View {
     @Environment(\.managedObjectContext) var viewContext
     
     @Environment(\.dismiss) var dismiss
+    
+    @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
     private var sourcePhotoTemporaryURL: URL
     
@@ -87,6 +90,9 @@ struct CreateIDPhotoViewContainer: View {
     @State private var croppingRect: CGRect = .zero
     
     @State private var shouldDisableButtons: Bool = false
+    
+    @State private var shouldShowSavingProgressView: Bool = false
+    @State private var savingProgressStatus: SavingStatus = .inProgress
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
@@ -235,7 +241,7 @@ struct CreateIDPhotoViewContainer: View {
     
     func generateBackgroundColorLabel(_ color: Color) -> String {
         switch color {
-
+            
         case .clear:
             return "背景色なし"
             
@@ -250,7 +256,7 @@ struct CreateIDPhotoViewContainer: View {
             
         case .idPhotoBackgroundColors.brown:
             return "茶"
-
+            
         default:
             return ""
         }
@@ -260,15 +266,29 @@ struct CreateIDPhotoViewContainer: View {
         Task {
             shouldDisableButtons = true
             
+            shouldShowSavingProgressView = true
+            
             do {
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else {
                     shouldDisableButtons = false
+                    
+                    savingProgressStatus = .failed
+                    
+                    try await Task.sleep(milliseconds: 1200)
+                    
+                    shouldShowSavingProgressView = false
                     
                     return
                 }
                 
                 guard let orientationFixedSourceUIImage = orientationFixedSourceUIImage else {
                     shouldDisableButtons = false
+
+                    savingProgressStatus = .failed
+                    
+                    try await Task.sleep(milliseconds: 1200)
+                    
+                    shouldShowSavingProgressView = false
                     
                     return
                 }
@@ -281,6 +301,12 @@ struct CreateIDPhotoViewContainer: View {
                 
                 guard let composedIDPhoto = composedIDPhoto else {
                     shouldDisableButtons = false
+
+                    savingProgressStatus = .failed
+                    
+                    try await Task.sleep(milliseconds: 1200)
+                    
+                    shouldShowSavingProgressView = false
                     
                     return
                 }
@@ -298,6 +324,12 @@ struct CreateIDPhotoViewContainer: View {
                 
                 guard let saveDestinationDirectoryURL = saveDestinationDirectoryURL else {
                     shouldDisableButtons = false
+
+                    savingProgressStatus = .failed
+                    
+                    try await Task.sleep(milliseconds: 1200)
+                    
+                    shouldShowSavingProgressView = false
                     
                     return
                 }
@@ -311,6 +343,12 @@ struct CreateIDPhotoViewContainer: View {
                 
                 guard let savedFileURL = savedFileURL else {
                     shouldDisableButtons = false
+
+                    savingProgressStatus = .failed
+                    
+                    try await Task.sleep(milliseconds: 1200)
+                    
+                    shouldShowSavingProgressView = false
                     
                     return
                 }
@@ -346,6 +384,12 @@ struct CreateIDPhotoViewContainer: View {
                 
                 guard let sourcePhotoSaveDestinationURL = sourcePhotoSaveDestinationURL else {
                     shouldDisableButtons = false
+
+                    savingProgressStatus = .failed
+                    
+                    try await Task.sleep(milliseconds: 1200)
+                    
+                    shouldShowSavingProgressView = false
                     
                     return
                 }
@@ -378,12 +422,22 @@ struct CreateIDPhotoViewContainer: View {
                     sourcePhotoRecord: newSourcePhotoRecord
                 )
                 
+                savingProgressStatus = .succeeded
+                
+                try await Task.sleep(milliseconds: 1200)
+                
                 onDoneCreateIDPhotoProcessCallback?(newCreatedIDPhoto)
             } catch {
                 shouldDisableButtons = false
                 
+                savingProgressStatus = .failed
+                
                 print(error)
             }
+            
+            try await Task.sleep(milliseconds: 1200)
+            
+            shouldShowSavingProgressView = false
         }
     }
     
@@ -461,6 +515,25 @@ struct CreateIDPhotoViewContainer: View {
             ) {
                 Text("保存せずに終了")
             }
+        }
+        .overlay {
+            ZStack {
+                if shouldShowSavingProgressView {
+                    Color.black
+                        .opacity(0.3)
+                        .environment(\.colorScheme, .dark)
+
+                    SavingProgressView(
+                        savingStatus: $savingProgressStatus
+                    )
+                    .frame(width: 40%.of(screenSizeHelper.screenSize.width))
+                }
+            }
+            .animation(
+                shouldShowSavingProgressView ? .none : .easeInOut,
+                value: shouldShowSavingProgressView
+            )
+            .transition(.opacity)
         }
     }
 }
@@ -617,10 +690,23 @@ struct CreateIDPhotoViewContainer_Previews: PreviewProvider {
         
         let sampleImageURL: URL = sampleUIImage.saveOnLibraryCachesForTest(fileName: "TimCook")!
         
+        let screenSizeHelper: ScreenSizeHelper = .shared
+        
         NavigationView {
-            CreateIDPhotoViewContainer(
-                sourcePhotoURL: sampleImageURL
-            )
+            GeometryReader { geometry in
+                let screenSize: CGSize = geometry.size
+                
+                CreateIDPhotoViewContainer(
+                    sourcePhotoURL: sampleImageURL
+                )
+                .environmentObject(screenSizeHelper)
+                .onAppear {
+                    screenSizeHelper.updateScreenSize(screenSize)
+                }
+                .onChange(of: screenSize) { newSize in
+                    screenSizeHelper.updateScreenSize(newSize)
+                }
+            }
         }
     }
 }
