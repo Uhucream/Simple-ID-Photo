@@ -86,6 +86,8 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var croppingRect: CGRect = .zero
     
+    @State private var shouldDisableButtons: Bool = false
+    
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
     private(set) var onDoneCreateIDPhotoProcessCallback: ((CreatedIDPhoto) -> Void)?
@@ -256,11 +258,20 @@ struct CreateIDPhotoViewContainer: View {
     
     func handleTapDoneButton() -> Void {
         Task {
+            shouldDisableButtons = true
+            
             do {
+                guard let sourcePhotoCIImage = sourcePhotoCIImage else {
+                    shouldDisableButtons = false
+                    
+                    return
+                }
                 
-                guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
-                
-                guard let orientationFixedSourceUIImage = orientationFixedSourceUIImage else { return }
+                guard let orientationFixedSourceUIImage = orientationFixedSourceUIImage else {
+                    shouldDisableButtons = false
+                    
+                    return
+                }
                 
                 let composedIDPhoto: CIImage? = await self.composeIDPhoto(
                     sourcePhoto: orientationFixedSourceUIImage.ciImage() ?? sourcePhotoCIImage,
@@ -268,7 +279,11 @@ struct CreateIDPhotoViewContainer: View {
                     backgroundColor: self.selectedBackgroundColor
                 )
                 
-                guard let composedIDPhoto = composedIDPhoto else { return }
+                guard let composedIDPhoto = composedIDPhoto else {
+                    shouldDisableButtons = false
+                    
+                    return
+                }
                 
                 let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
                 
@@ -281,7 +296,11 @@ struct CreateIDPhotoViewContainer: View {
                     relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
                 )
                 
-                guard let saveDestinationDirectoryURL = saveDestinationDirectoryURL else { return }
+                guard let saveDestinationDirectoryURL = saveDestinationDirectoryURL else {
+                    shouldDisableButtons = false
+                    
+                    return
+                }
                 
                 let savedFileURL: URL? = try saveImageToSpecifiedDirectory(
                     ciImage: composedIDPhoto,
@@ -290,7 +309,11 @@ struct CreateIDPhotoViewContainer: View {
                     to: saveDestinationDirectoryURL
                 )
                 
-                guard let savedFileURL = savedFileURL else { return }
+                guard let savedFileURL = savedFileURL else {
+                    shouldDisableButtons = false
+                    
+                    return
+                }
                 
                 let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
                 
@@ -321,7 +344,11 @@ struct CreateIDPhotoViewContainer: View {
                     relativeTo: .libraryDirectory
                 )
                 
-                guard let sourcePhotoSaveDestinationURL = sourcePhotoSaveDestinationURL else { return }
+                guard let sourcePhotoSaveDestinationURL = sourcePhotoSaveDestinationURL else {
+                    shouldDisableButtons = false
+                    
+                    return
+                }
                 
                 let sourcePhotoPermanentURL: URL = sourcePhotoSaveDestinationURL
                     .appendingPathComponent(sourcePhotoTemporaryURL.lastPathComponent, conformingTo: .fileURL)
@@ -353,6 +380,8 @@ struct CreateIDPhotoViewContainer: View {
                 
                 onDoneCreateIDPhotoProcessCallback?(newCreatedIDPhoto)
             } catch {
+                shouldDisableButtons = false
+                
                 print(error)
             }
         }
@@ -373,6 +402,7 @@ struct CreateIDPhotoViewContainer: View {
                 }
                 .onTapDoneButton(action: handleTapDoneButton)
                 .toolbar(.hidden)
+                .disabled(shouldDisableButtons)
             } else {
                 CreateIDPhotoView(
                     selectedBackgroundColor: $selectedBackgroundColor,
@@ -386,6 +416,7 @@ struct CreateIDPhotoViewContainer: View {
                 }
                 .onTapDoneButton(action: handleTapDoneButton)
                 .navigationBarHidden(true)
+                .disabled(shouldDisableButtons)
             }
         }
         .statusBarHidden()
