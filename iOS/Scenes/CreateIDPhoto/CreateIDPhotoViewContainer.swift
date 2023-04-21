@@ -82,6 +82,8 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var previewUIImage: UIImage? = nil
     
+    @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor
+    
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
     
@@ -445,6 +447,7 @@ struct CreateIDPhotoViewContainer: View {
         ZStack {
             if #available(iOS 16, *) {
                 CreateIDPhotoView(
+                    selectedProcess: $selectedProcess,
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
@@ -459,6 +462,7 @@ struct CreateIDPhotoViewContainer: View {
                 .disabled(shouldDisableButtons)
             } else {
                 CreateIDPhotoView(
+                    selectedProcess: $selectedProcess,
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,

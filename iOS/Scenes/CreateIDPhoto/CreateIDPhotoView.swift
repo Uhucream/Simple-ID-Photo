@@ -30,7 +30,7 @@ struct CreateIDPhotoView: View {
         .idPhotoBackgroundColors.brown,
     ]
     
-    @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor
+    @Binding var selectedProcess: IDPhotoProcessSelection
     
     @Binding var selectedBackgroundColor: Color
     @Binding var selectedBackgroundColorLabel: String
@@ -270,6 +270,7 @@ struct CreateIDPhotoView: View {
 struct CreateIDPhotoView_Previews: PreviewProvider {
     static var previews: some View {
         CreateIDPhotoView(
+            selectedProcess: .constant(.backgroundColor),
             selectedBackgroundColor: .constant(
                 Color.idPhotoBackgroundColors.blue
             ),
