@@ -22,6 +22,10 @@ enum IDPhotoProcessSelection: Int, Identifiable {
     }
 }
 
+fileprivate let CROP_VIEW_IMAGE_HORIZONTAL_PADDING: CGFloat = 8
+
+fileprivate let CROP_VIEW_ANIMATION_DURATION_SECONDS: Double = 0.5
+
 struct CreateIDPhotoView: View {
     private let BACKGROUND_COLORS: [Color] = [
         .idPhotoBackgroundColors.blue,
@@ -29,6 +33,12 @@ struct CreateIDPhotoView: View {
         .idPhotoBackgroundColors.white,
         .idPhotoBackgroundColors.brown,
     ]
+    
+    @Namespace private var previewImageNamespace
+    
+    @State private var bottomControlButtonsBarSize: CGSize = .zero
+    
+    @State private var previewImageBoundsInScreen: CGRect = .zero
     
     @Binding var selectedProcess: IDPhotoProcessSelection
     
@@ -39,7 +49,40 @@ struct CreateIDPhotoView: View {
     
     @Binding var previewUIImage: UIImage?
     
+    @Binding var croppingCGRect: CGRect
+    
     var availableSizeVariants: [IDPhotoSizeVariant]
+    
+    private var previewCroppingCGRect: CGRect {
+        let leftUpperOriginRect: CGRect = .init(
+            origin: CGPoint(
+                x: croppingCGRect.origin.x,
+                y: (previewUIImage?.size.height ?? .zero) - croppingCGRect.maxY
+            ),
+            size: croppingCGRect.size
+        )
+        
+        return leftUpperOriginRect
+    }
+    
+    private var previewImageViewScalingAmount: CGFloat {
+        guard let previewUIImage = previewUIImage else { return 1 }
+        
+        return previewUIImage.size.width / previewCroppingCGRect.size.width
+    }
+    
+    private var previewImageOffset: CGSize {
+
+        guard let previewUIImage = previewUIImage else { return .zero }
+        
+        let previewImageActualScaleX = previewImageBoundsInScreen.width / previewUIImage.size.width
+        let previewImageActualScaleY = previewImageBoundsInScreen.height / previewUIImage.size.height
+        
+        return .init(
+            width: (previewUIImage.size.width / 2 - previewCroppingCGRect.midX) * previewImageActualScaleX,
+            height: (previewUIImage.size.height / 2 - previewCroppingCGRect.midY) * previewImageActualScaleY
+        )
+    }
     
     private(set) var onTapDismissButtonCallback: (() -> Void)? = nil
 
@@ -75,193 +118,315 @@ struct CreateIDPhotoView: View {
         return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: variant.photoSize.height))")
     }
     
-    var body: some View {
-        VStack(alignment: .center) {
-            HStack {
-                ZStack {
-                    if selectedProcess == .backgroundColor {
-                        Text("背景色")
-                            .fontWeight(.light)
+    @ViewBuilder
+    func BottomControlButtons() -> some View {
+        VStack(spacing: 0) {
+            ZStack {
+                if self.selectedProcess == .backgroundColor {
+                    VStack(spacing: 16) {
+                        Text(selectedBackgroundColorLabel)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 4))
+                            .environment(\.colorScheme, .dark)
+                        
+                        HStack {
+                            Spacer()
+                            
+                            HStack(spacing: 12) {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(.clear)
+                                    .aspectRatio(1.0, contentMode: .fit)
+                                    .overlay(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 4))
+                                    .padding(4)
+                                    .overlay {
+                                        if selectedBackgroundColor == .clear {
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(Color.tintColor, lineWidth: 2)
+                                        }
+                                    }
+                                    .overlay {
+                                        Image(systemName: "nosign")
+                                            .foregroundColor(.white)
+                                    }
+                                    .frame(maxHeight: 40)
+                                    .environment(\.colorScheme, .dark)
+                                    .onTapGesture {
+                                        self.selectedBackgroundColor = .clear
+                                    }
+                                
+                                IDPhotoBackgroundColorPicker(
+                                    availableBackgroundColors: BACKGROUND_COLORS,
+                                    selectedBackgroundColor: $selectedBackgroundColor
+                                )
+                            }
+                            
+                            Spacer()
+                        }
                     }
+                }
+                
+                if self.selectedProcess == .size {
+                    IDPhotoSizePicker(
+                        availableSizeVariants: availableSizeVariants,
+                        renderSelectonLabel: renderSizeVariantLabel,
+                        selectedIDPhotoSize: $selectedIDPhotoSize
+                    )
+                }
+            }
+            .transaction { transaction in
+                transaction.animation = .none
+            }
+            
+            HStack(alignment: .center) {
+                Button(
+                    role: .cancel,
+                    action: {
+                        self.onTapDismissButtonCallback?()
+                    }
+                ) {
+                    Label("終了", systemImage: "xmark")
+                        .labelStyle(.iconOnly)
+                        .padding()
+                }
+                .controlSize(.mini)
+                .tint(.white)
+                .environment(\.colorScheme, .dark)
+                
+                Spacer()
+                
+                HStack(alignment: .center, spacing: 12) {
+                    Button(
+                        action: {
+                            var transaction: Transaction = .init(animation: .easeInOut)
+                            
+                            transaction.disablesAnimations = true
+                            
+                            withTransaction(transaction) {
+                                self.selectedProcess = .backgroundColor
+                            }
+                        }
+                    ) {
+                        VStack(spacing: 2) {
+                            Label("背景色", systemImage: "paintbrush")
+                                .labelStyle(.iconOnly)
+                                .padding(8)
+                            
+                            Circle()
+                                .frame(width: 4, height: 4)
+                                .foregroundColor(self.selectedProcess == .backgroundColor ? .yellow : .clear)
+                        }
+                    }
+                    .tint(.white)
                     
-                    if selectedProcess == .size {
-                        Text("サイズ")
-                            .fontWeight(.light)
+                    Button(
+                        action: {
+                            var transaction: Transaction = .init(animation: .easeInOut)
+                            
+                            transaction.disablesAnimations = true
+                            
+                            withTransaction(transaction) {
+                                self.selectedProcess = .size
+                            }
+                        }
+                    ) {
+                        VStack(spacing: 2) {
+                            Label("サイズ", systemImage: "person.crop.rectangle")
+                                .labelStyle(.iconOnly)
+                                .padding(8)
+                            
+                            Circle()
+                                .frame(width: 4, height: 4)
+                                .foregroundColor(self.selectedProcess == .size ? .yellow : .clear)
+                        }
                     }
+                    .tint(.white)
                 }
-                .font(Font.subheadline)
-                .foregroundColor(.white)
-                .transaction { transaction in
-                    transaction.animation = .none
+                
+                Spacer()
+                
+                Button(
+                    action: {
+                        onTapDoneButtonCallback?()
+                    }
+                ) {
+                    Image(systemName: "checkmark")
+                        .padding()
                 }
+                .tint(.yellow)
+                .controlSize(.mini)
+            }
+            .frame(maxHeight: 28)
+            .padding(.vertical)
+            .padding(.horizontal, 4)
+        }
+        .background {
+            GeometryReader { buttonsGeometry in
+                
+                let buttonsSize: CGSize = buttonsGeometry.size
+                
+                Color.clear
+                    .onAppear {
+                        self.bottomControlButtonsBarSize = buttonsSize
+                    }
+                    .onChange(of: buttonsSize) { newButtonsSize in
+                        self.bottomControlButtonsBarSize = newButtonsSize
+                    }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func ChangeBackgroundColorView() -> some View {
+        VStack(alignment: .center, spacing: 0) {
+            HStack {
+                Text("背景色")
+                    .font(.subheadline)
+                    .foregroundColor(.white)
             }
             .padding()
             
-            Spacer()
-            
-            ZStack {
+            VStack(spacing: 0) {
+                Spacer()
+                
                 if let previewUIImage = previewUIImage {
                     Image(uiImage: previewUIImage)
                         .resizable()
                         .scaledToFit()
-                } else {
-                    Rectangle()
-                        .overlay {
-                            ProgressView()
-                        }
-                }
-            }
-            
-            Spacer()
-            
-            VStack(spacing: 0) {
-                ZStack {
-                    if self.selectedProcess == .backgroundColor {
-                        VStack(spacing: 16) {
-                            Text(selectedBackgroundColorLabel)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 4))
-                                .environment(\.colorScheme, .dark)
-                            
-                            HStack {
-                                Spacer()
-                                
-                                HStack(spacing: 12) {
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .fill(.clear)
-                                        .aspectRatio(1.0, contentMode: .fit)
-                                        .overlay(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 4))
-                                        .padding(4)
-                                        .overlay {
-                                            if selectedBackgroundColor == .clear {
-                                                RoundedRectangle(cornerRadius: 8)
-                                                    .stroke(Color.tintColor, lineWidth: 2)
-                                            }
-                                        }
-                                        .overlay {
-                                            Image(systemName: "nosign")
-                                                .foregroundColor(.white)
-                                        }
-                                        .frame(maxHeight: 40)
-                                        .environment(\.colorScheme, .dark)
-                                        .onTapGesture {
-                                            self.selectedBackgroundColor = .clear
-                                        }
-                                    
-                                    IDPhotoBackgroundColorPicker(
-                                        availableBackgroundColors: BACKGROUND_COLORS,
-                                        selectedBackgroundColor: $selectedBackgroundColor
-                                    )
-                                }
-                                
-                                Spacer()
-                            }
-                        }
-                    }
-                    
-                    if self.selectedProcess == .size {
-                        IDPhotoSizePicker(
-                            availableSizeVariants: availableSizeVariants,
-                            renderSelectonLabel: renderSizeVariantLabel,
-                            selectedIDPhotoSize: $selectedIDPhotoSize
+                        .matchedGeometryEffect(
+                            id: "previewImage",
+                            in: previewImageNamespace
                         )
-                    }
-                }
-                .transaction { transaction in
-                    transaction.animation = .none
+                        .transaction { transaction in
+                            transaction.disablesAnimations = selectedProcess == .size
+                        }
                 }
                 
-                HStack(alignment: .center) {
-                    Button(
-                        role: .cancel,
-                        action: {
-                            self.onTapDismissButtonCallback?()
-                        }
-                    ) {
-                        Label("終了", systemImage: "xmark")
-                            .labelStyle(.iconOnly)
-                            .padding()
-                    }
-                    .controlSize(.mini)
-                    .tint(.white)
-                    .environment(\.colorScheme, .dark)
-                    
-                    Spacer()
-                    
-                    HStack(alignment: .center, spacing: 12) {
-                        Button(
-                            action: {
-                                var transaction: Transaction = .init(animation: .easeInOut)
-                                
-                                transaction.disablesAnimations = true
-                                
-                                withTransaction(transaction) {
-                                    self.selectedProcess = .backgroundColor
-                                }
-                            }
-                        ) {
-                            VStack(spacing: 2) {
-                                Label("背景色", systemImage: "paintbrush")
-                                    .labelStyle(.iconOnly)
-                                    .padding(8)
-                                
-                                Circle()
-                                    .frame(width: 4, height: 4)
-                                    .foregroundColor(self.selectedProcess == .backgroundColor ? .yellow : .clear)
-                            }
-                        }
-                        .tint(.white)
-                        
-                        Button(
-                            action: {
-                                var transaction: Transaction = .init(animation: .easeInOut)
-                                
-                                transaction.disablesAnimations = true
-                                
-                                withTransaction(transaction) {
-                                    self.selectedProcess = .size
-                                }
-                            }
-                        ) {
-                            VStack(spacing: 2) {
-                                Label("サイズ", systemImage: "person.crop.rectangle")
-                                    .labelStyle(.iconOnly)
-                                    .padding(8)
-                                
-                                Circle()
-                                    .frame(width: 4, height: 4)
-                                    .foregroundColor(self.selectedProcess == .size ? .yellow : .clear)
-                            }
-                        }
-                        .tint(.white)
-                    }
-                    
-                    Spacer()
-                    
-                    Button(
-                        action: {
-                            onTapDoneButtonCallback?()
-                        }
-                    ) {
-                        Image(systemName: "checkmark")
-                            .padding()
-                    }
-                    .tint(.yellow)
-                    .controlSize(.mini)
-                }
-                .frame(maxHeight: 28)
-                .padding(.vertical)
-                .padding(.horizontal, 4)
+                Spacer()
             }
+            
+            BottomControlButtons()
+        }
+    }
+    
+    @ViewBuilder
+    func CroppingFrame() -> some View {
+        Color.clear
+            .background(.regularMaterial, in: Rectangle())
+            .reverseMask {
+                if previewImageBoundsInScreen != .zero {
+                    Rectangle()
+                        .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
+                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                        .position(
+                            x: UIScreen.main.bounds.width / 2,
+                            y: previewImageBoundsInScreen.midY
+                        )
+                }
+            }
+            .overlay {
+                if previewImageBoundsInScreen != .zero {
+                    Rectangle()
+                        .stroke(.white, lineWidth: 2)
+                        .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
+                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                        .position(
+                            x: UIScreen.main.bounds.width / 2,
+                            y: previewImageBoundsInScreen.midY
+                        )
+                }
+            }
+            .environment(\.colorScheme, .dark)
+    }
+    
+    @ViewBuilder
+    func ChangeIDPhotoSizeView() -> some View {
+        ZStack {
+            VStack(spacing: 0) {
+                Spacer()
+                
+                if let previewUIImage = previewUIImage {
+                    Image(uiImage: previewUIImage)
+                        .resizable()
+                        .aspectRatio(previewUIImage.size, contentMode: .fit)
+                        .matchedGeometryEffect(
+                            id: "previewImage",
+                            in: previewImageNamespace
+                        )
+                        .background {
+                            GeometryReader { imageGeometry in
+                                Color.clear
+                                    .task {
+                                        Task {
+                                            guard self.previewImageBoundsInScreen == .zero else { return }
+                                            
+                                            try await Task.sleep(milliseconds: UInt64((CROP_VIEW_ANIMATION_DURATION_SECONDS) * 1000))
+                                            
+                                            self.previewImageBoundsInScreen = imageGeometry.frame(in: .global)
+                                        }
+                                    }
+                            }
+                        }
+                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                        .offset(previewImageOffset)
+                        .scaleEffect(previewImageViewScalingAmount)
+                        .animation(.easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS), value: previewImageViewScalingAmount)
+                        .transition(.scale)
+                }
+                
+                Spacer()
+                
+                //  MARK: これがないと、クロップの枠がサイズピッカーの上に接触してしまう
+                Rectangle()
+                    .fill(.clear)
+                    .aspectRatio(bottomControlButtonsBarSize, contentMode: .fit)
+            }
+            
+            CroppingFrame()
+                .edgesIgnoringSafeArea(.all)
+                .animation(
+                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS)
+                    //  MARK: Image のアニメーションと、タイミングが被ってしまいカクつくので、delay する
+                        .delay(CROP_VIEW_ANIMATION_DURATION_SECONDS / 2),
+                    value: croppingCGRect
+                )
+                .transition(.scale)
+                .overlay {
+                    VStack(alignment: .center, spacing: 0) {
+                        Text("サイズ")
+                            .fontWeight(.light)
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                        
+                        Spacer()
+                        
+                        BottomControlButtons()
+                    }
+            }
+        }
+    }
+    
+    var body: some View {
+        ZStack {
+            if selectedProcess == .backgroundColor {
+                ChangeBackgroundColorView()
+            }
+            
+            if selectedProcess == .size {
+                ChangeIDPhotoSizeView()
+            }
+        }
+        .transaction { transaction in
+            transaction.animation = .none
         }
         .background {
             Color
-                .fixedBlack
-                .overlay {
-                    BlurView(blurStyle: .systemChromeMaterialDark)
-                }
+                .black
+                .overlay(.bar, in: Rectangle())
+                .environment(\.colorScheme, .dark)
                 .edgesIgnoringSafeArea(.all)
         }
     }
@@ -279,6 +444,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
             previewUIImage: .constant(
                 .init(named: "TimCook")
             ),
+            croppingCGRect: .constant(CGRect(origin: .zero, size: UIImage(named: "TimCook")!.size)),
             availableSizeVariants: IDPhotoSizeVariant.allCases
         )
     }

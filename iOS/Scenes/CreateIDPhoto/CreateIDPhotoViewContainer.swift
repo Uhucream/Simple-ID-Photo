@@ -82,14 +82,16 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var previewUIImage: UIImage? = nil
     
+    @State private var paintedSourcePhoto: CIImage? = nil
+    
+    @State private var croppingCGRect: CGRect = .zero
+    
     @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
     
     @State private var selectedBackgroundColorLabel: String = ""
-    
-    @State private var croppingRect: CGRect = .zero
     
     @State private var shouldDisableButtons: Bool = false
     
@@ -105,6 +107,13 @@ struct CreateIDPhotoViewContainer: View {
         self.sourcePhotoTemporaryURL = sourcePhotoURL
         
         _previewUIImage = State(initialValue: orientationFixedSourceUIImage)
+        
+        _croppingCGRect = State(
+            initialValue: CGRect(
+                origin: .zero,
+                size: previewUIImage?.size ?? .zero
+            )
+        )
     }
     
     func onDoneCreateIDPhotoProcess(action: @escaping (CreatedIDPhoto) -> Void) -> Self {
@@ -148,6 +157,42 @@ struct CreateIDPhotoViewContainer: View {
         } catch {
             throw error
         }
+    }
+    
+    func generateCroppingRect(from sizeVariant: IDPhotoSizeVariant) async -> CGRect? {
+
+        guard let detectedFaceRect = try? await detectedFaceRect else { return nil }
+        
+        if detectedFaceRect == .zero { return nil }
+        
+        let faceHeightRatio: Double = sizeVariant.photoSize.faceHeight.value / sizeVariant.photoSize.height.value
+        
+        let idPhotoAspectRatio: Double = sizeVariant.photoSize.width.value / sizeVariant.photoSize.height.value
+        
+        let idPhotoHeight: CGFloat = detectedFaceRect.height / faceHeightRatio
+        let idPhotoWidth: CGFloat = idPhotoHeight * idPhotoAspectRatio
+        
+        let marginTopRatio: Double = sizeVariant.photoSize.marginTop.value / sizeVariant.photoSize.height.value
+        
+        let marginTop: CGFloat = idPhotoHeight * marginTopRatio
+        
+        let remainderWidthOfFaceAndPhoto: CGFloat = idPhotoWidth - detectedFaceRect.size.width
+        
+        let originXOfCroppingRect: CGFloat = detectedFaceRect.origin.x - (remainderWidthOfFaceAndPhoto / 2)
+        let originYOfCroppingRect: CGFloat = (detectedFaceRect.maxY + marginTop) - idPhotoHeight
+        
+        let croppingRect: CGRect = .init(
+            origin: CGPoint(
+                x: originXOfCroppingRect,
+                y: originYOfCroppingRect
+            ),
+            size: CGSize(
+                width: idPhotoWidth,
+                height: idPhotoHeight
+            )
+        )
+        
+        return croppingRect
     }
     
     func croppingImage(
@@ -452,6 +497,7 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation(),
+                    croppingCGRect: $croppingCGRect,
                     availableSizeVariants: availableIDPhotoSizeVariants
                 )
                 .onTapDismissButton {
@@ -467,6 +513,7 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     previewUIImage: $previewUIImage.animation(),
+                    croppingCGRect: $croppingCGRect,
                     availableSizeVariants: availableIDPhotoSizeVariants
                 )
                 .onTapDismissButton {
@@ -482,25 +529,44 @@ struct CreateIDPhotoViewContainer: View {
             self.selectedBackgroundColorLabel = generateBackgroundColorLabel(newSelectedBackgroundColor)
         }
         .onReceive(
-            Just(selectedIDPhotoSizeVariant)
-                .combineLatest(Just(selectedBackgroundColor))
-        ) { newSelectedSizeVariant, newSelectedBackgroundColor in
+            Just(selectedBackgroundColor)
+        ) { newSelectedBackgroundColor in
             Task {
                 
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
-                guard let orientationFixedSourceUIImage = orientationFixedSourceUIImage else { return }
-                
-                let composedIDPhoto: CIImage? = await self.composeIDPhoto(
-                    sourcePhoto: orientationFixedSourceUIImage.ciImage() ?? sourcePhotoCIImage,
-                    idPhotoSizeVariant: newSelectedSizeVariant,
-                    backgroundColor: newSelectedBackgroundColor
-                )
-                
-                guard let composedIDPhotoUIImage: UIImage = composedIDPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                Task { @MainActor in
+                    if selectedBackgroundColor == .clear {
+                        self.previewUIImage = sourcePhotoCIImage.uiImage(orientation: sourceImageOrientation)
+                        
+                        return
+                    }
+                    
+                    let paintedPhoto: CIImage? = try await paintingImageBackgroundColor(sourceImage: sourcePhotoCIImage, backgroundColor: newSelectedBackgroundColor)
+                    
+                    guard let paintedPhotoUIImage: UIImage = paintedPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                    
+                    self.previewUIImage = paintedPhotoUIImage
+                }
+            }
+        }
+        .onChange(of: selectedIDPhotoSizeVariant) { newVariant in
+            guard let previewUIImage = previewUIImage else { return }
+            
+            Task {
+                let generatedCroppingRect: CGRect = await generateCroppingRect(from: newVariant) ?? .init(origin: .zero, size: previewUIImage.size)
                 
                 Task { @MainActor in
-                    self.previewUIImage = composedIDPhotoUIImage
+                    if newVariant == .original {
+                        self.croppingCGRect = .init(
+                            origin: .zero,
+                            size: previewUIImage.size
+                        )
+                        
+                        return
+                    }
+                    
+                    self.croppingCGRect = generatedCroppingRect
                 }
             }
         }
@@ -691,9 +757,9 @@ extension CreateIDPhotoViewContainer {
 
 struct CreateIDPhotoViewContainer_Previews: PreviewProvider {
     static var previews: some View {
-        let sampleUIImage: UIImage = UIImage(named: "TimCook")!
+        let sampleUIImage: UIImage = UIImage(named: "PreviewSourceMaterialPhoto")!
         
-        let sampleImageURL: URL = sampleUIImage.saveOnLibraryCachesForTest(fileName: "TimCook")!
+        let sampleImageURL: URL = sampleUIImage.saveOnLibraryCachesForTest(fileName: "PreviewSourceMaterialPhoto")!
         
         let screenSizeHelper: ScreenSizeHelper = .shared
         
