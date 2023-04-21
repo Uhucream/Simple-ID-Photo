@@ -529,6 +529,7 @@ struct CreateIDPhotoViewContainer: View {
                     .frame(width: 40%.of(screenSizeHelper.screenSize.width))
                 }
             }
+            .edgesIgnoringSafeArea(.all)
             .animation(
                 shouldShowSavingProgressView ? .none : .easeInOut,
                 value: shouldShowSavingProgressView
