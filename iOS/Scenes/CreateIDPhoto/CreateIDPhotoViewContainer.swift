@@ -319,45 +319,31 @@ struct CreateIDPhotoViewContainer: View {
             do {
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else {
                     shouldDisableButtons = false
-                    
+
                     savingProgressStatus = .failed
-                    
+
                     try await Task.sleep(milliseconds: 1200)
-                    
+
                     shouldShowSavingProgressView = false
-                    
+
                     return
                 }
                 
-                guard let orientationFixedSourceUIImage = orientationFixedSourceUIImage else {
+                if croppingCGRect == .zero { return }
+                
+                guard let paintedPhotoCIImage = paintedPhotoCIImage else {
                     shouldDisableButtons = false
 
                     savingProgressStatus = .failed
-                    
-                    try await Task.sleep(milliseconds: 1200)
-                    
-                    shouldShowSavingProgressView = false
-                    
-                    return
-                }
-                
-                let composedIDPhoto: CIImage? = await self.composeIDPhoto(
-                    sourcePhoto: orientationFixedSourceUIImage.ciImage() ?? sourcePhotoCIImage,
-                    idPhotoSizeVariant: self.selectedIDPhotoSizeVariant,
-                    backgroundColor: self.selectedBackgroundColor
-                )
-                
-                guard let composedIDPhoto = composedIDPhoto else {
-                    shouldDisableButtons = false
 
-                    savingProgressStatus = .failed
-                    
                     try await Task.sleep(milliseconds: 1200)
-                    
+
                     shouldShowSavingProgressView = false
-                    
+
                     return
                 }
+                
+                let croppedPaintedPhotoCIImage: CIImage = paintedPhotoCIImage.cropped(to: self.croppingCGRect)
                 
                 let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
                 
@@ -381,9 +367,9 @@ struct CreateIDPhotoViewContainer: View {
                     
                     return
                 }
-                
+
                 let savedFileURL: URL? = try saveImageToSpecifiedDirectory(
-                    ciImage: composedIDPhoto,
+                    ciImage: croppedPaintedPhotoCIImage,
                     fileName: saveFileName,
                     fileType: saveFileUTType,
                     to: saveDestinationDirectoryURL
