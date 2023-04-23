@@ -114,7 +114,7 @@ struct CreateIDPhotoViewContainer: View {
         _croppingCGRect = State(
             initialValue: CGRect(
                 origin: .zero,
-                size: sourcePhotoCIImage?.extent.size ?? .zero
+                size: orientationFixedSourceUIImage?.size ?? .zero
             )
         )
     }
