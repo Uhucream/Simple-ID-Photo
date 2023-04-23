@@ -496,8 +496,6 @@ struct CreateIDPhotoViewContainer: View {
         }
         .onReceive(
             selectedBackgroundColorPublisher
-            //  MARK: 初回描画時には実行してほしくないので、.dropFirst() する
-                .dropFirst()
                 .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
         ) { newSelectedBackgroundColor in
             if let initialPaintingTask = initialPaintingTask, !initialPaintingTask.isCancelled {
@@ -562,8 +560,6 @@ struct CreateIDPhotoViewContainer: View {
         }
         .onReceive(
             selectedIDPhotoSizeVariantPublisher
-            //  MARK: 初回描画時には実行してほしくないので、.dropFirst() する
-                .dropFirst()
                 .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
         ) { newVariant in
             if let generatingCroppingCGRectTask = generatingCroppingCGRectTask, !generatingCroppingCGRectTask.isCancelled {
