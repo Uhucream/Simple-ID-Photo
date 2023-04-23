@@ -82,7 +82,7 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var previewUIImage: UIImage? = nil
     
-    @State private var paintedSourcePhoto: CIImage? = nil
+    @State private var paintedPhotoCIImage: CIImage? = nil
     
     @State private var croppingCGRect: CGRect = .zero
     
