@@ -532,20 +532,21 @@ struct CreateIDPhotoViewContainer: View {
             Just(selectedBackgroundColor)
         ) { newSelectedBackgroundColor in
             Task {
-                
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
-                Task { @MainActor in
-                    if selectedBackgroundColor == .clear {
+                if selectedBackgroundColor == .clear {
+                    Task { @MainActor in
                         self.previewUIImage = sourcePhotoCIImage.uiImage(orientation: sourceImageOrientation)
-                        
-                        return
                     }
                     
-                    let paintedPhoto: CIImage? = try await paintingImageBackgroundColor(sourceImage: sourcePhotoCIImage, backgroundColor: newSelectedBackgroundColor)
-                    
-                    guard let paintedPhotoUIImage: UIImage = paintedPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
-                    
+                    return
+                }
+                
+                let paintedPhoto: CIImage? = try await paintingImageBackgroundColor(sourceImage: sourcePhotoCIImage, backgroundColor: newSelectedBackgroundColor)
+                
+                guard let paintedPhotoUIImage: UIImage = paintedPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                
+                Task { @MainActor in
                     self.previewUIImage = paintedPhotoUIImage
                 }
             }
@@ -556,16 +557,18 @@ struct CreateIDPhotoViewContainer: View {
             Task {
                 let generatedCroppingRect: CGRect = await generateCroppingRect(from: newVariant) ?? .init(origin: .zero, size: previewUIImage.size)
                 
-                Task { @MainActor in
-                    if newVariant == .original {
+                if newVariant == .original {
+                    Task { @MainActor in
                         self.croppingCGRect = .init(
                             origin: .zero,
                             size: previewUIImage.size
                         )
-                        
-                        return
                     }
                     
+                    return
+                }
+                
+                Task { @MainActor in
                     self.croppingCGRect = generatedCroppingRect
                 }
             }

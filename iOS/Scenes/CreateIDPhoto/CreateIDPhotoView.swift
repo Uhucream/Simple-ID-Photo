@@ -363,7 +363,9 @@ struct CreateIDPhotoView: View {
                                             
                                             try await Task.sleep(milliseconds: UInt64((CROP_VIEW_ANIMATION_DURATION_SECONDS) * 1000))
                                             
-                                            self.previewImageBoundsInScreen = imageGeometry.frame(in: .global)
+                                            Task { @MainActor in
+                                                self.previewImageBoundsInScreen = imageGeometry.frame(in: .global)
+                                            }
                                         }
                                     }
                             }
@@ -386,9 +388,7 @@ struct CreateIDPhotoView: View {
             CroppingFrame()
                 .edgesIgnoringSafeArea(.all)
                 .animation(
-                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS)
-                    //  MARK: Image のアニメーションと、タイミングが被ってしまいカクつくので、delay する
-                        .delay(CROP_VIEW_ANIMATION_DURATION_SECONDS / 2),
+                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
                     value: croppingCGRect
                 )
                 .transition(.scale)
