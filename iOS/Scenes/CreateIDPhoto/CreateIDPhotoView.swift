@@ -349,7 +349,7 @@ struct CreateIDPhotoView: View {
                 if let previewUIImage = previewUIImage {
                     Image(uiImage: previewUIImage)
                         .resizable()
-                        .aspectRatio(previewUIImage.size, contentMode: .fit)
+                        .aspectRatio(contentMode: .fit)
                         .matchedGeometryEffect(
                             id: "previewImage",
                             in: previewImageNamespace
