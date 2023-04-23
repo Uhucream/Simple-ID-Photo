@@ -114,6 +114,8 @@ struct CreateIDPhotoViewContainer: View {
         _croppingCGRect = State(
             initialValue: CGRect(
                 origin: .zero,
+                //  MARK: CIImage は向きの情報を持たないので、sourcePhotoCIImage を使うと縦画像でもアスペクト比が横向きの画像のアスペクト比になってしまう
+                //  そのため、orientationFixedSourceUIImage を使用する
                 size: orientationFixedSourceUIImage?.size ?? .zero
             )
         )
@@ -584,13 +586,13 @@ struct CreateIDPhotoViewContainer: View {
             guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
             
             Task {
-                let generatedCroppingRect: CGRect = await generateCroppingRect(from: newVariant) ?? .init(origin: .zero, size: sourcePhotoCIImage.extent.size)
+                let generatedCroppingRect: CGRect = await generateCroppingRect(from: newVariant) ?? .init(origin: .zero, size: orientationFixedSourceUIImage?.size ?? .zero)
                 
                 if newVariant == .original {
                     Task { @MainActor in
                         self.croppingCGRect = .init(
                             origin: .zero,
-                            size: sourcePhotoCIImage.extent.size
+                            size: orientationFixedSourceUIImage?.size ?? sourcePhotoCIImage.extent.size
                         )
                     }
                     
