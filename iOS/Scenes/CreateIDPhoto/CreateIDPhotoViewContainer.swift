@@ -492,7 +492,7 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
-                    previewUIImage: $previewUIImage.animation(),
+                    previewUIImage: $previewUIImage,
                     croppingCGRect: $croppingCGRect,
                     availableSizeVariants: availableIDPhotoSizeVariants
                 )
@@ -508,7 +508,7 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
-                    previewUIImage: $previewUIImage.animation(),
+                    previewUIImage: $previewUIImage,
                     croppingCGRect: $croppingCGRect,
                     availableSizeVariants: availableIDPhotoSizeVariants
                 )
