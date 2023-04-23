@@ -295,16 +295,16 @@ struct CreateIDPhotoView: View {
                     Image(uiImage: croppedPreviewUIImage)
                         .resizable()
                         .scaledToFit()
-                        .matchedGeometryEffect(
-                            id: "previewImage",
-                            in: previewImageNamespace
-                        )
-                        .transaction { transaction in
-                            transaction.disablesAnimations = selectedProcess == .size
-                        }
                 }
                 
                 Spacer()
+            }
+            .matchedGeometryEffect(
+                id: "previewImage",
+                in: previewImageNamespace
+            )
+            .transaction { transaction in
+                transaction.disablesAnimations = selectedProcess == .size
             }
             
             BottomControlButtons()
@@ -345,40 +345,42 @@ struct CreateIDPhotoView: View {
     func ChangeIDPhotoSizeView() -> some View {
         ZStack {
             VStack(spacing: 0) {
-                Spacer()
-                
-                if let originalSizePreviewUIImage = originalSizePreviewUIImage {
-                    Image(uiImage: originalSizePreviewUIImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .matchedGeometryEffect(
-                            id: "previewImage",
-                            in: previewImageNamespace
-                        )
-                        .background {
-                            GeometryReader { imageGeometry in
-                                Color.clear
-                                    .task {
-                                        Task {
-                                            guard self.previewImageBoundsInScreen == .zero else { return }
-                                            
-                                            try await Task.sleep(milliseconds: UInt64((CROP_VIEW_ANIMATION_DURATION_SECONDS) * 1000))
-                                            
-                                            Task { @MainActor in
-                                                self.previewImageBoundsInScreen = imageGeometry.frame(in: .global)
+                VStack(spacing: 0) {
+                    Spacer()
+                    
+                    if let originalSizePreviewUIImage = originalSizePreviewUIImage {
+                        Image(uiImage: originalSizePreviewUIImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .background {
+                                GeometryReader { imageGeometry in
+                                    Color.clear
+                                        .task {
+                                            Task {
+                                                guard self.previewImageBoundsInScreen == .zero else { return }
+                                                
+                                                try await Task.sleep(milliseconds: UInt64((CROP_VIEW_ANIMATION_DURATION_SECONDS) * 1000))
+                                                
+                                                Task { @MainActor in
+                                                    self.previewImageBoundsInScreen = imageGeometry.frame(in: .global)
+                                                }
                                             }
                                         }
-                                    }
+                                }
                             }
-                        }
-                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
-                        .offset(previewImageOffset)
-                        .scaleEffect(previewImageViewScalingAmount)
-                        .animation(.easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS), value: previewImageViewScalingAmount)
-                        .transition(.scale)
+                            .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                            .offset(previewImageOffset)
+                            .scaleEffect(previewImageViewScalingAmount)
+                            .animation(.easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS), value: previewImageViewScalingAmount)
+                            .transition(.scale)
+                    }
+                    
+                    Spacer()
                 }
-                
-                Spacer()
+                .matchedGeometryEffect(
+                    id: "previewImage",
+                    in: previewImageNamespace
+                )
                 
                 //  MARK: これがないと、クロップの枠がサイズピッカーの上に接触してしまう
                 Rectangle()
