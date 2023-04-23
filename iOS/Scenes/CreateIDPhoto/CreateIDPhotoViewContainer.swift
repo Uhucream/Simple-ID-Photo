@@ -138,10 +138,6 @@ struct CreateIDPhotoViewContainer: View {
         }
     }
     
-    func refreshPreviewImage(newImage: UIImage) -> Void {
-        self.previewUIImage = newImage
-    }
-    
     func paintingImageBackgroundColor(
         sourceImage: CIImage,
         backgroundColor: Color
