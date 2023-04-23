@@ -10,12 +10,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Photos
 import PhotosUI
+import Percentage
 
 struct TopViewContainer: View {
     
     @Environment(\.managedObjectContext) var viewContext
     
     @EnvironmentObject private var appStorage: AppStorageStore
+    @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
     @ObservedObject private var adLoadingHelper: NativeAdLoadingHelper
     
@@ -39,6 +41,9 @@ struct TopViewContainer: View {
     
     @State private var shouldShowDeleteConfirmDialog: Bool = false
     @State private var shouldShowDeleteAllConfirmDialog: Bool = false
+    
+    @State private var shouldShowImageSavingProgressView: Bool = false
+    @State private var imageSavingProgressStatus: SavingStatus = .inProgress
     
     @State private var isPhotoLoadingInProgress: Bool = false
     
@@ -314,6 +319,12 @@ struct TopViewContainer: View {
             }
             .onTapSaveImageButton { saveTargetCreatedIDPhoto in
                 Task {
+                    Task { @MainActor in
+                        self.shouldShowImageSavingProgressView = true
+
+                        self.imageSavingProgressStatus = .inProgress
+                    }
+                    
                     do {
                         let savedIDPhotoFileName: String? = saveTargetCreatedIDPhoto.imageFileName
                         
@@ -329,8 +340,22 @@ struct TopViewContainer: View {
                         try await PHPhotoLibrary.shared().performChanges({
                             PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: savedIDPhotoFileURL)
                         })
+                        
+                        Task { @MainActor in
+                            self.imageSavingProgressStatus = .succeeded
+                        }
                     } catch {
+                        Task { @MainActor in
+                            self.imageSavingProgressStatus = .failed
+                        }
+                        
                         print(error)
+                    }
+                    
+                    try await Task.sleep(for: .milliseconds(1200))
+
+                    Task { @MainActor in
+                        self.shouldShowImageSavingProgressView = false
                     }
                 }
             }
@@ -356,6 +381,12 @@ struct TopViewContainer: View {
             }
             .onTapSaveImageButton { saveTargetCreatedIDPhoto in
                 Task {
+                    Task { @MainActor in
+                        self.shouldShowImageSavingProgressView = true
+
+                        self.imageSavingProgressStatus = .inProgress
+                    }
+                    
                     do {
                         let savedIDPhotoFileName: String? = saveTargetCreatedIDPhoto.imageFileName
                         
@@ -371,8 +402,22 @@ struct TopViewContainer: View {
                         try await PHPhotoLibrary.shared().performChanges({
                             PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: savedIDPhotoFileURL)
                         })
+                        
+                        Task { @MainActor in
+                            self.imageSavingProgressStatus = .succeeded
+                        }
                     } catch {
+                        Task { @MainActor in
+                            self.imageSavingProgressStatus = .failed
+                        }
+                        
                         print(error)
+                    }
+                    
+                    try await Task.sleep(milliseconds: 1200)
+
+                    Task { @MainActor in
+                        self.shouldShowImageSavingProgressView = false
                     }
                 }
             }
@@ -548,6 +593,24 @@ struct TopViewContainer: View {
                     .overlay {
                         ProgressView()
                     }
+            }
+            
+            if self.shouldShowImageSavingProgressView {
+                Group {
+                    Color.black
+                        .opacity(0.3)
+
+                    SavingProgressView(
+                        savingStatus: $imageSavingProgressStatus
+                    )
+                    .frame(width: 40%.of(screenSizeHelper.screenSize.width))
+                }
+                .edgesIgnoringSafeArea(.all)
+                .animation(
+                    shouldShowImageSavingProgressView ? .none : .easeInOut,
+                    value: shouldShowImageSavingProgressView
+                )
+                .transition(.opacity)
             }
         }
     }
