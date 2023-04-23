@@ -80,7 +80,8 @@ struct CreateIDPhotoViewContainer: View {
         return variantsWithoutPassportAndCustom
     }
     
-    @State private var previewUIImage: UIImage? = nil
+    @State private var originalSizePreviewUIImage: UIImage? = nil
+    @State private var croppedPreviewUIImage: UIImage? = nil
     
     @State private var paintedPhotoCIImage: CIImage? = nil
     
@@ -106,7 +107,9 @@ struct CreateIDPhotoViewContainer: View {
         
         self.sourcePhotoTemporaryURL = sourcePhotoURL
         
-        _previewUIImage = State(initialValue: orientationFixedSourceUIImage)
+        _originalSizePreviewUIImage = State(initialValue: orientationFixedSourceUIImage)
+        
+        _croppedPreviewUIImage = State(initialValue: orientationFixedSourceUIImage)
         
         _croppingCGRect = State(
             initialValue: CGRect(
@@ -492,7 +495,8 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
-                    previewUIImage: $previewUIImage,
+                    originalSizePreviewUIImage: $originalSizePreviewUIImage,
+                    croppedPreviewUIImage: $croppedPreviewUIImage,
                     croppingCGRect: $croppingCGRect,
                     availableSizeVariants: availableIDPhotoSizeVariants
                 )
@@ -508,7 +512,8 @@ struct CreateIDPhotoViewContainer: View {
                     selectedBackgroundColor: $selectedBackgroundColor,
                     selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
-                    previewUIImage: $previewUIImage,
+                    originalSizePreviewUIImage: $originalSizePreviewUIImage,
+                    croppedPreviewUIImage: $croppedPreviewUIImage,
                     croppingCGRect: $croppingCGRect,
                     availableSizeVariants: availableIDPhotoSizeVariants
                 )
@@ -532,7 +537,21 @@ struct CreateIDPhotoViewContainer: View {
                 
                 if selectedBackgroundColor == .clear {
                     Task { @MainActor in
-                        self.previewUIImage = sourcePhotoCIImage.uiImage(orientation: sourceImageOrientation)
+                        self.paintedPhotoCIImage = sourcePhotoCIImage
+                    }
+                    
+                    guard let sourcePhotoUIImage: UIImage = sourcePhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else { return }
+                    
+                    Task { @MainActor in
+                        self.originalSizePreviewUIImage = sourcePhotoUIImage
+                    }
+                    
+                    let croppedSourcePhotoCIImage: CIImage = sourcePhotoCIImage.cropped(to: croppingCGRect)
+                    
+                    let croppedSourcePhotoUIImage: UIImage? = croppedSourcePhotoCIImage.uiImage(orientation: self.sourceImageOrientation)
+                    
+                    Task { @MainActor in
+                        self.croppedPreviewUIImage = croppedSourcePhotoUIImage
                     }
                     
                     return
@@ -540,25 +559,45 @@ struct CreateIDPhotoViewContainer: View {
                 
                 let paintedPhoto: CIImage? = try await paintingImageBackgroundColor(sourceImage: sourcePhotoCIImage, backgroundColor: newSelectedBackgroundColor)
                 
-                guard let paintedPhotoUIImage: UIImage = paintedPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                guard let paintedPhoto = paintedPhoto else { return }
+
+                Task { @MainActor in
+                    self.paintedPhotoCIImage = paintedPhoto
+                }
+                
+                if let paintedPhotoUIImage = paintedPhoto.uiImage(orientation: self.sourceImageOrientation) {
+                    Task { @MainActor in
+                        self.originalSizePreviewUIImage = paintedPhotoUIImage
+                    }
+                }
+                
+                let croppedPaintedPhotoCIImage: CIImage = paintedPhoto.cropped(to: croppingCGRect)
+                
+                guard let croppedPaintedPhotoUIImage: UIImage = croppedPaintedPhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else { return }
                 
                 Task { @MainActor in
-                    self.previewUIImage = paintedPhotoUIImage
+                    self.croppedPreviewUIImage = croppedPaintedPhotoUIImage
                 }
             }
         }
         .onChange(of: selectedIDPhotoSizeVariant) { newVariant in
-            guard let previewUIImage = previewUIImage else { return }
+            guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
             
             Task {
-                let generatedCroppingRect: CGRect = await generateCroppingRect(from: newVariant) ?? .init(origin: .zero, size: previewUIImage.size)
+                let generatedCroppingRect: CGRect = await generateCroppingRect(from: newVariant) ?? .init(origin: .zero, size: sourcePhotoCIImage.extent.size)
                 
                 if newVariant == .original {
                     Task { @MainActor in
                         self.croppingCGRect = .init(
                             origin: .zero,
-                            size: previewUIImage.size
+                            size: sourcePhotoCIImage.extent.size
                         )
+                    }
+                    
+                    guard let paintedPhotoUIImage = self.paintedPhotoCIImage?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                    
+                    Task { @MainActor in
+                        self.croppedPreviewUIImage = paintedPhotoUIImage
                     }
                     
                     return
@@ -566,6 +605,14 @@ struct CreateIDPhotoViewContainer: View {
                 
                 Task { @MainActor in
                     self.croppingCGRect = generatedCroppingRect
+                }
+                
+                let croppedPaintedPhotoCIImage: CIImage? = self.paintedPhotoCIImage?.cropped(to: generatedCroppingRect)
+                
+                guard let croppedPaintedPhotoUIImage: UIImage = croppedPaintedPhotoCIImage?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                
+                Task { @MainActor in
+                    self.croppedPreviewUIImage = croppedPaintedPhotoUIImage
                 }
             }
         }

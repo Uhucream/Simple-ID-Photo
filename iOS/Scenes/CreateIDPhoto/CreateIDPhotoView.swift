@@ -47,7 +47,8 @@ struct CreateIDPhotoView: View {
     
     @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
     
-    @Binding var previewUIImage: UIImage?
+    @Binding var originalSizePreviewUIImage: UIImage?
+    @Binding var croppedPreviewUIImage: UIImage?
     
     @Binding var croppingCGRect: CGRect
     
@@ -57,7 +58,7 @@ struct CreateIDPhotoView: View {
         let leftUpperOriginRect: CGRect = .init(
             origin: CGPoint(
                 x: croppingCGRect.origin.x,
-                y: (previewUIImage?.size.height ?? .zero) - croppingCGRect.maxY
+                y: (originalSizePreviewUIImage?.size.height ?? .zero) - croppingCGRect.maxY
             ),
             size: croppingCGRect.size
         )
@@ -66,21 +67,21 @@ struct CreateIDPhotoView: View {
     }
     
     private var previewImageViewScalingAmount: CGFloat {
-        guard let previewUIImage = previewUIImage else { return 1 }
+        guard let originalSizePreviewUIImage = originalSizePreviewUIImage else { return 1 }
         
-        return previewUIImage.size.width / previewCroppingCGRect.size.width
+        return originalSizePreviewUIImage.size.width / previewCroppingCGRect.size.width
     }
     
     private var previewImageOffset: CGSize {
 
-        guard let previewUIImage = previewUIImage else { return .zero }
+        guard let originalSizePreviewUIImage = originalSizePreviewUIImage else { return .zero }
         
-        let previewImageActualScaleX = previewImageBoundsInScreen.width / previewUIImage.size.width
-        let previewImageActualScaleY = previewImageBoundsInScreen.height / previewUIImage.size.height
+        let previewImageActualScaleX = previewImageBoundsInScreen.width / originalSizePreviewUIImage.size.width
+        let previewImageActualScaleY = previewImageBoundsInScreen.height / originalSizePreviewUIImage.size.height
         
         return .init(
-            width: (previewUIImage.size.width / 2 - previewCroppingCGRect.midX) * previewImageActualScaleX,
-            height: (previewUIImage.size.height / 2 - previewCroppingCGRect.midY) * previewImageActualScaleY
+            width: (originalSizePreviewUIImage.size.width / 2 - previewCroppingCGRect.midX) * previewImageActualScaleX,
+            height: (originalSizePreviewUIImage.size.height / 2 - previewCroppingCGRect.midY) * previewImageActualScaleY
         )
     }
     
@@ -290,8 +291,8 @@ struct CreateIDPhotoView: View {
             VStack(spacing: 0) {
                 Spacer()
                 
-                if let previewUIImage = previewUIImage {
-                    Image(uiImage: previewUIImage)
+                if let croppedPreviewUIImage = croppedPreviewUIImage {
+                    Image(uiImage: croppedPreviewUIImage)
                         .resizable()
                         .scaledToFit()
                         .matchedGeometryEffect(
@@ -346,8 +347,8 @@ struct CreateIDPhotoView: View {
             VStack(spacing: 0) {
                 Spacer()
                 
-                if let previewUIImage = previewUIImage {
-                    Image(uiImage: previewUIImage)
+                if let originalSizePreviewUIImage = originalSizePreviewUIImage {
+                    Image(uiImage: originalSizePreviewUIImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .matchedGeometryEffect(
@@ -441,7 +442,10 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
             ),
             selectedBackgroundColorLabel: .constant("青"),
             selectedIDPhotoSize: .constant(.original),
-            previewUIImage: .constant(
+            originalSizePreviewUIImage: .constant(
+                .init(named: "TimCook")
+            ),
+            croppedPreviewUIImage: .constant(
                 .init(named: "TimCook")
             ),
             croppingCGRect: .constant(CGRect(origin: .zero, size: UIImage(named: "TimCook")!.size)),
