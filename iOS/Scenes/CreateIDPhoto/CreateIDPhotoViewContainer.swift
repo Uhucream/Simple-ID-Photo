@@ -80,6 +80,10 @@ struct CreateIDPhotoViewContainer: View {
         return variantsWithoutPassportAndCustom
     }
     
+    private var selectedBackgroundColorLabel: String {
+        return generateBackgroundColorLabel(self.selectedBackgroundColor)
+    }
+    
     @State private var originalSizePreviewUIImage: UIImage? = nil
     @State private var croppedPreviewUIImage: UIImage? = nil
     
@@ -91,8 +95,6 @@ struct CreateIDPhotoViewContainer: View {
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
-    
-    @State private var selectedBackgroundColorLabel: String = ""
     
     @State private var shouldDisableButtons: Bool = false
     
@@ -390,7 +392,7 @@ struct CreateIDPhotoViewContainer: View {
                 CreateIDPhotoView(
                     selectedProcess: $selectedProcess,
                     selectedBackgroundColor: $selectedBackgroundColor,
-                    selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
+                    selectedBackgroundColorLabel: .readOnly(self.selectedBackgroundColorLabel),
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     originalSizePreviewUIImage: $originalSizePreviewUIImage,
                     croppedPreviewUIImage: $croppedPreviewUIImage,
@@ -407,7 +409,7 @@ struct CreateIDPhotoViewContainer: View {
                 CreateIDPhotoView(
                     selectedProcess: $selectedProcess,
                     selectedBackgroundColor: $selectedBackgroundColor,
-                    selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
+                    selectedBackgroundColorLabel: .readOnly(self.selectedBackgroundColorLabel),
                     selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
                     originalSizePreviewUIImage: $originalSizePreviewUIImage,
                     croppedPreviewUIImage: $croppedPreviewUIImage,
@@ -423,9 +425,6 @@ struct CreateIDPhotoViewContainer: View {
             }
         }
         .statusBarHidden()
-        .onReceive(Just(selectedBackgroundColor)) { newSelectedBackgroundColor in
-            self.selectedBackgroundColorLabel = generateBackgroundColorLabel(newSelectedBackgroundColor)
-        }
         .onReceive(
             Just(selectedBackgroundColor)
         ) { newSelectedBackgroundColor in
