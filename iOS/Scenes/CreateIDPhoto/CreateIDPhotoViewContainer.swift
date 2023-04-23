@@ -52,8 +52,8 @@ struct CreateIDPhotoViewContainer: View {
     
     private var visionFrameworkHelper: VisionFrameworkHelper {
         .init(
-            sourceCIImage: sourcePhotoCIImage,
-            sourceImageOrientation: .init(sourceImageOrientation)
+            sourceCIImage: orientationFixedSourceUIImage?.ciImage(),
+            sourceImageOrientation: .init(orientationFixedSourceUIImage?.imageOrientation ?? .up)
         )
     }
     
