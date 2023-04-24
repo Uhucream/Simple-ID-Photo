@@ -503,15 +503,6 @@ struct CreateIDPhotoViewContainer: View {
         //  https://ondrej-kvasnovsky.medium.com/apply-textfield-changes-after-a-delay-debouncing-in-swiftui-af425446f8d8
         //  Just() .debounce を書いても反応しないので、onChange を使用して変更を監視する
         .onChange(of: self.selectedBackgroundColor) { newSelectedBackgroundColor in
-            selectedBackgroundColorPublisher.send(newSelectedBackgroundColor)
-        }
-        .onChange(of: self.selectedIDPhotoSizeVariant) { newSelectedVariant in
-            selectedIDPhotoSizeVariantPublisher.send(newSelectedVariant)
-        }
-        .onReceive(
-            selectedBackgroundColorPublisher
-                .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-        ) { newSelectedBackgroundColor in
             if let initialPaintingTask = initialPaintingTask, !initialPaintingTask.isCancelled {
                 initialPaintingTask.cancel()
             }
@@ -520,6 +511,19 @@ struct CreateIDPhotoViewContainer: View {
                 userSelectedColorPaintingTask.cancel()
             }
             
+            selectedBackgroundColorPublisher.send(newSelectedBackgroundColor)
+        }
+        .onChange(of: self.selectedIDPhotoSizeVariant) { newSelectedVariant in
+            if let generatingCroppingCGRectTask = generatingCroppingCGRectTask, !generatingCroppingCGRectTask.isCancelled {
+                generatingCroppingCGRectTask.cancel()
+            }
+            
+            selectedIDPhotoSizeVariantPublisher.send(newSelectedVariant)
+        }
+        .onReceive(
+            selectedBackgroundColorPublisher
+                .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+        ) { newSelectedBackgroundColor in
             self.userSelectedColorPaintingTask = Task { () -> Void in
                 do {
                     guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
@@ -576,10 +580,6 @@ struct CreateIDPhotoViewContainer: View {
             selectedIDPhotoSizeVariantPublisher
                 .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
         ) { newVariant in
-            if let generatingCroppingCGRectTask = generatingCroppingCGRectTask, !generatingCroppingCGRectTask.isCancelled {
-                generatingCroppingCGRectTask.cancel()
-            }
-            
             guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
             
             self.generatingCroppingCGRectTask = Task { () -> Void in
