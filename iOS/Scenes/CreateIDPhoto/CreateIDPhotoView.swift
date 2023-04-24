@@ -384,10 +384,12 @@ struct CreateIDPhotoView: View {
                     in: previewImageNamespace
                 )
                 
-                //  MARK: これがないと、クロップの枠がサイズピッカーの上に接触してしまう
-                Rectangle()
-                    .fill(.clear)
-                    .aspectRatio(bottomControlButtonsBarSize, contentMode: .fit)
+                if bottomControlButtonsBarSize != .zero {
+                    //  MARK: これがないと、クロップの枠がサイズピッカーの上に接触してしまう
+                    Rectangle()
+                        .fill(.clear)
+                        .aspectRatio(bottomControlButtonsBarSize, contentMode: .fit)
+                }
             }
             
             CroppingFrame()
