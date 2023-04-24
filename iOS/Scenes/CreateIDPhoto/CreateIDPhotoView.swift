@@ -283,6 +283,7 @@ struct CreateIDPhotoView: View {
         VStack(alignment: .center, spacing: 0) {
             HStack {
                 Text("背景色")
+                    .fontWeight(.light)
                     .font(.subheadline)
                     .foregroundColor(.white)
             }
