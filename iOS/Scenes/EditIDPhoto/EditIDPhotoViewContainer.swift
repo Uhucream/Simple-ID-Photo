@@ -58,6 +58,10 @@ struct EditIDPhotoViewContainer: View {
         return variantsWithoutPassportAndCustom
     }
     
+    private var selectedBackgroundColorLabel: String {
+        return generateBackgroundColorLabel(self.selectedBackgroundColor)
+    }
+    
     @State private var originalCreatedIDPhotoFileURL: URL? = nil
     
     @State private var sourcePhotoFileURL: URL? = nil
@@ -70,8 +74,6 @@ struct EditIDPhotoViewContainer: View {
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
-    
-    @State private var selectedBackgroundColorLabel: String = ""
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
@@ -125,8 +127,6 @@ struct EditIDPhotoViewContainer: View {
                 blue: appliedBackgroundColor.blue,
                 opacity: appliedBackgroundColor.alpha
             )
-            
-            _selectedBackgroundColorLabel = State(initialValue: generateBackgroundColorLabel(colorFromEntity))
             
             _selectedBackgroundColor = State(initialValue: colorFromEntity)
         }
@@ -332,7 +332,7 @@ struct EditIDPhotoViewContainer: View {
         EditIDPhotoView(
             selectedProcess: $currentSelectedProcess,
             selectedBackgroundColor: $selectedBackgroundColor,
-            selectedBackgroundColorLabel: $selectedBackgroundColorLabel,
+            selectedBackgroundColorLabel: .readOnly(selectedBackgroundColorLabel),
             selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
             previewUIImage: $previewUIImage,
             shouldDisableDoneButton: .readOnly(!hasAnyModifications),
@@ -463,9 +463,6 @@ struct EditIDPhotoViewContainer: View {
                     self.previewUIImage = composedIDPhotoUIImage
                 }
             }
-        }
-        .onReceive(Just(selectedBackgroundColor)) { newSelectedBackgroundColor in
-            self.selectedBackgroundColorLabel = generateBackgroundColorLabel(newSelectedBackgroundColor)
         }
         .onReceive(
             Just(selectedIDPhotoSizeVariant)
