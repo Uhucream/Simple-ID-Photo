@@ -295,6 +295,7 @@ struct IDPhotoDetailViewContainer: View {
                 .onDoneSaveProcess {
                     dismissEditIDPhotoView()
                 }
+                .environmentObject(screenSizeHelper)
             }
         }
     }

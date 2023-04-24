@@ -11,6 +11,7 @@ import UIKit
 import CoreData
 import Combine
 import UniformTypeIdentifiers
+import Percentage
 
 struct EditIDPhotoViewContainer: View {
     
@@ -22,6 +23,8 @@ struct EditIDPhotoViewContainer: View {
     ]
     
     @Environment(\.managedObjectContext) private var viewContext
+    
+    @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
     @ObservedObject var editTargetCreatedIDPhoto: CreatedIDPhoto
     
@@ -74,6 +77,11 @@ struct EditIDPhotoViewContainer: View {
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
+    
+    @State private var shouldDisableButtons: Bool = false
+    
+    @State private var shouldShowSavingProgressView: Bool = false
+    @State private var savingProgressStatus: SavingStatus = .inProgress
     
     @State private var shouldShowDiscardViewConfirmationDialog: Bool = false
     
@@ -350,11 +358,27 @@ struct EditIDPhotoViewContainer: View {
         }
         .onTapDoneButton {
             Task {
+                Task { @MainActor in
+                    self.shouldDisableButtons = true
+
+                    self.shouldShowSavingProgressView = true
+                }
+                
                 do {
                     
                     let fileManager: FileManager = .default
                     
-                    guard let originalCreatedIDPhotoFileURL = self.originalCreatedIDPhotoFileURL else { return }
+                    guard let originalCreatedIDPhotoFileURL = self.originalCreatedIDPhotoFileURL else {
+                        shouldDisableButtons = false
+
+                        savingProgressStatus = .failed
+
+                        try await Task.sleep(milliseconds: 1200)
+
+                        shouldShowSavingProgressView = false
+
+                        return
+                    }
                     
                     let originalCreatedIDPhotoFileBaseName: String = originalCreatedIDPhotoFileURL
                         .deletingPathExtension()
@@ -362,9 +386,29 @@ struct EditIDPhotoViewContainer: View {
                     
                     let originalCreatedIDPhotoFileUTType: UTType? = UTType(filenameExtension: originalCreatedIDPhotoFileURL.pathExtension)
                     
-                    guard let originalCreatedIDPhotoFileUTType = originalCreatedIDPhotoFileUTType else { return }
+                    guard let originalCreatedIDPhotoFileUTType = originalCreatedIDPhotoFileUTType else {
+                        shouldDisableButtons = false
+
+                        savingProgressStatus = .failed
+
+                        try await Task.sleep(milliseconds: 1200)
+
+                        shouldShowSavingProgressView = false
+
+                        return
+                    }
                     
-                    guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                    guard let sourcePhotoCIImage = sourcePhotoCIImage else {
+                        shouldDisableButtons = false
+
+                        savingProgressStatus = .failed
+
+                        try await Task.sleep(milliseconds: 1200)
+
+                        shouldShowSavingProgressView = false
+
+                        return
+                    }
                     
                     let composedIDPhoto: CIImage? = await composeIDPhoto(
                         sourcePhoto: sourcePhotoCIImage,
@@ -372,7 +416,17 @@ struct EditIDPhotoViewContainer: View {
                         backgroundColor: self.selectedBackgroundColor
                     )
                     
-                    guard let composedIDPhoto = composedIDPhoto else { return }
+                    guard let composedIDPhoto = composedIDPhoto else {
+                        shouldDisableButtons = false
+
+                        savingProgressStatus = .failed
+
+                        try await Task.sleep(milliseconds: 1200)
+
+                        shouldShowSavingProgressView = false
+
+                        return
+                    }
                     
                     let createdNewIDPhotoURL: URL?  = try createImageFile(
                         image: composedIDPhoto,
@@ -381,7 +435,17 @@ struct EditIDPhotoViewContainer: View {
                         saveDestination: fileManager.temporaryDirectory
                     )
                     
-                    guard let createdNewIDPhotoURL = createdNewIDPhotoURL else { return }
+                    guard let createdNewIDPhotoURL = createdNewIDPhotoURL else {
+                        shouldDisableButtons = false
+
+                        savingProgressStatus = .failed
+
+                        try await Task.sleep(milliseconds: 1200)
+
+                        shouldShowSavingProgressView = false
+
+                        return
+                    }
                     
                     try fileManager.replaceItemAt(originalCreatedIDPhotoFileURL, withItemAt: createdNewIDPhotoURL)
                     
@@ -397,12 +461,25 @@ struct EditIDPhotoViewContainer: View {
                     
                     viewContext.refresh(self.editTargetCreatedIDPhoto, mergeChanges: true)
                     
+                    savingProgressStatus = .succeeded
+                    
+                    try await Task.sleep(milliseconds: 1200)
+                    
                     onDoneSaveProcessCallback?()
                 } catch {
+                    shouldDisableButtons = false
+                    
+                    savingProgressStatus = .failed
+                    
                     print(error)
                 }
+                
+                try await Task.sleep(milliseconds: 1200)
+                
+                shouldShowSavingProgressView = false
             }
         }
+        .disabled(shouldDisableButtons)
         .statusBarHidden()
         .confirmationDialog(
             "編集を終了しますか？",
@@ -495,6 +572,26 @@ struct EditIDPhotoViewContainer: View {
             
             self.isBackgroundColorChanged = isBackgroundColorChanged
         }
+       .overlay {
+           ZStack {
+               if shouldShowSavingProgressView {
+                   Color.black
+                       .opacity(0.3)
+                       .environment(\.colorScheme, .dark)
+
+                   SavingProgressView(
+                       savingStatus: $savingProgressStatus
+                   )
+                   .frame(width: 40%.of(screenSizeHelper.screenSize.width))
+               }
+           }
+           .edgesIgnoringSafeArea(.all)
+           .animation(
+               shouldShowSavingProgressView ? .none : .easeInOut,
+               value: shouldShowSavingProgressView
+           )
+           .transition(.opacity)
+       }
     }
 }
 
@@ -606,6 +703,8 @@ extension EditIDPhotoViewContainer {
 struct EditIDPhotoViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         
+        let screenSizeHelper: ScreenSizeHelper = .shared
+        
         let persistenceController: PersistenceController = .preview
         let viewContext: NSManagedObjectContext = persistenceController.container.viewContext
         
@@ -643,10 +742,22 @@ struct EditIDPhotoViewContainer_Previews: PreviewProvider {
             )
         }()
         
-        EditIDPhotoViewContainer(
-            initialDisplayProcess: .backgroundColor,
-            editTargetCreatedIDPhoto: mockCreatedIDPhotoRecord
-        )
+        GeometryReader { geometry in
+
+            let screenSize: CGSize = geometry.size
+            
+            EditIDPhotoViewContainer(
+                initialDisplayProcess: .backgroundColor,
+                editTargetCreatedIDPhoto: mockCreatedIDPhotoRecord
+            )
+            .onAppear {
+                screenSizeHelper.updateScreenSize(screenSize)
+            }
+            .onChange(of: screenSize) { newScreenSize in
+                screenSizeHelper.updateScreenSize(newScreenSize)
+            }
+        }
         .environment(\.managedObjectContext, viewContext)
+        .environmentObject(screenSizeHelper)
     }
 }
