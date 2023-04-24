@@ -67,12 +67,16 @@ struct CreateIDPhotoView: View {
     }
     
     private var previewImageViewScalingAmount: CGFloat {
+        if croppingCGRect.size == .zero { return 1 }
+        
         guard let originalSizePreviewUIImage = originalSizePreviewUIImage else { return 1 }
         
         return originalSizePreviewUIImage.size.width / previewCroppingCGRect.size.width
     }
     
     private var previewImageOffset: CGSize {
+        
+        if previewImageBoundsInScreen.size == .zero { return .zero }
 
         guard let originalSizePreviewUIImage = originalSizePreviewUIImage else { return .zero }
         
@@ -317,7 +321,7 @@ struct CreateIDPhotoView: View {
         Color.clear
             .background(.regularMaterial, in: Rectangle())
             .reverseMask {
-                if previewImageBoundsInScreen != .zero {
+                if previewCroppingCGRect.size != .zero && previewImageBoundsInScreen != .zero {
                     Rectangle()
                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
                         .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
@@ -328,7 +332,7 @@ struct CreateIDPhotoView: View {
                 }
             }
             .overlay {
-                if previewImageBoundsInScreen != .zero {
+                if previewCroppingCGRect.size != .zero && previewImageBoundsInScreen != .zero {
                     Rectangle()
                         .stroke(.white, lineWidth: 2)
                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
