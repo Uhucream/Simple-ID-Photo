@@ -491,8 +491,9 @@ struct CreateIDPhotoViewContainer: View {
             do {
                 try await Task.sleep(milliseconds: 500)
 
-                if previousUserSelectedBackgroundColor == self.selectedBackgroundColor
-                { throw SelectedSameValueAsPreviousError() }
+                if previousUserSelectedBackgroundColor == self.selectedBackgroundColor {
+                    throw SelectedSameValueAsPreviousError()
+                }
                 
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
@@ -518,7 +519,10 @@ struct CreateIDPhotoViewContainer: View {
                     return
                 }
                 
-                let paintedPhoto: CIImage? = try await paintingImageBackgroundColor(sourceImage: sourcePhotoCIImage, backgroundColor: self.selectedBackgroundColor)
+                let paintedPhoto: CIImage? = try await paintingImageBackgroundColor(
+                    sourceImage: sourcePhotoCIImage,
+                    backgroundColor: self.selectedBackgroundColor
+                )
                 
                 guard let paintedPhoto = paintedPhoto else { return }
                 
@@ -548,12 +552,11 @@ struct CreateIDPhotoViewContainer: View {
                 //  MARK: ユーザーが選択変更をやめてから処理を開始したいので、待つ
                 try await Task.sleep(milliseconds: 500)
 
-                if self.selectedIDPhotoSizeVariant == self.previousUserSelectedIDPhotoSizeVariant
-                { throw SelectedSameValueAsPreviousError() }
+                if self.selectedIDPhotoSizeVariant == self.previousUserSelectedIDPhotoSizeVariant {
+                    throw SelectedSameValueAsPreviousError()
+                }
                 
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
-                
-                let generatedCroppingRect: CGRect = await generateCroppingRect(from: self.selectedIDPhotoSizeVariant) ?? .init(origin: .zero, size: sourcePhotoCIImage.extent.size)
                 
                 if self.selectedIDPhotoSizeVariant == .original {
                     Task { @MainActor in
@@ -572,6 +575,12 @@ struct CreateIDPhotoViewContainer: View {
                     return
                 }
                 
+                let generatedCroppingRect: CGRect? = await generateCroppingRect(
+                    from: self.selectedIDPhotoSizeVariant
+                )
+                
+                guard let generatedCroppingRect = generatedCroppingRect else { return }
+                    
                 Task { @MainActor in
                     self.croppingCGRect = generatedCroppingRect
                 }
