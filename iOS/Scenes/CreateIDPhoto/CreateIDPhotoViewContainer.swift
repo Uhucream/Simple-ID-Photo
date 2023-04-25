@@ -38,7 +38,12 @@ struct CreateIDPhotoViewContainer: View {
     private var sourcePhotoTemporaryURL: URL
     
     private var sourcePhotoCIImage: CIImage? {
-        return .init(contentsOf: sourcePhotoTemporaryURL)
+        return .init(
+            contentsOf: sourcePhotoTemporaryURL,
+            options: [
+                .applyOrientationProperty: true
+            ]
+        )
     }
     
     private var orientationFixedSourceUIImage: UIImage? {
