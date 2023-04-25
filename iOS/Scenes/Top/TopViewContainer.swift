@@ -153,10 +153,6 @@ struct TopViewContainer: View {
         
         if let pickedPhotoUIImage = pickedPhotoUIImage {
             
-            let cgImageFromPhoto: CGImage? = pickedPhotoUIImage.cgImage
-            
-            guard let cgImageFromPhoto = cgImageFromPhoto else { return }
-            
             let fileManager: FileManager = .default
             
             let temporaryDirectoryURL: URL = fileManager.temporaryDirectory
@@ -170,28 +166,48 @@ struct TopViewContainer: View {
                 .appendingPathComponent(newTemporaryFileName, conformingTo: .fileURL)
                 .appendingPathExtension(for: newFileUTType)
             
-            let cgImageDestination: CGImageDestination? = CGImageDestinationCreateWithURL(
-                newFileURL as CFURL,
-                newFileUTType.identifier as CFString,
-                1,
-                [:] as CFDictionary?
+            let ciImageFromPhoto: CIImage? = .init(
+                image: pickedPhotoUIImage,
+                options: [
+                    .applyOrientationProperty: true,
+                    .properties: pickedPhotoMetadata as Any,
+                ]
             )
             
-            guard let cgImageDestination = cgImageDestination else { return }
+            guard let ciImageFromPhoto = ciImageFromPhoto else { return }
             
-            CGImageDestinationAddImage(
-                cgImageDestination,
-                cgImageFromPhoto,
-                pickedPhotoMetadata
-            )
-            
-            CGImageDestinationFinalize(cgImageDestination)
-            
-            let savedTemporaryFileData: Data? = try? Data(contentsOf: newFileURL)
-            
-            if savedTemporaryFileData == nil { return }
-            
-            self.userSelectedImageURL = newFileURL
+            do {
+                let ciContext: CIContext = .init()
+                
+                if !isHEICSupported {
+                    let jpegData: Data? = ciImageFromPhoto.jpegData(
+                        ciContext: ciContext,
+                        colorSpace: ciImageFromPhoto.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                    )
+                    
+                    guard let jpegData = jpegData else { return }
+                    
+                    try jpegData.write(to: newFileURL)
+                    
+                    self.userSelectedImageURL = newFileURL
+                    
+                    return
+                }
+                
+                let heicData: Data? = ciImageFromPhoto.heifData(
+                    ciContext: ciContext,
+                    format: .RGBA8,
+                    colorSpace: ciImageFromPhoto.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                )
+                
+                guard let heicData = heicData else { return }
+                
+                try heicData.write(to: newFileURL)
+                
+                self.userSelectedImageURL = newFileURL
+            } catch {
+                print(error)
+            }
         }
         
         imagePickerController.dismiss(animated: true)
