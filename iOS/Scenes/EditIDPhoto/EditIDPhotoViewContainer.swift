@@ -98,6 +98,8 @@ struct EditIDPhotoViewContainer: View {
     
     @State private var shouldDisableButtons: Bool = false
     
+    @State private var shouldShowBackgroundColorProgressView: Bool = false
+    
     @State private var shouldShowSavingProgressView: Bool = false
     @State private var savingProgressStatus: SavingStatus = .inProgress
     
@@ -220,6 +222,10 @@ struct EditIDPhotoViewContainer: View {
         sourceImage: CIImage,
         backgroundColor: Color
     ) async throws -> CIImage? {
+        Task { @MainActor in
+            self.shouldShowBackgroundColorProgressView = true
+        }
+        
         do {
             let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourceImage.extent.size)
             
@@ -227,8 +233,16 @@ struct EditIDPhotoViewContainer: View {
             
             let generatedImage: CIImage? = try await visionFrameworkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
             
+            Task { @MainActor in
+                self.shouldShowBackgroundColorProgressView = false
+            }
+            
             return generatedImage
         } catch {
+            Task { @MainActor in
+                self.shouldShowBackgroundColorProgressView = false
+            }
+            
             throw error
         }
     }
@@ -614,6 +628,21 @@ struct EditIDPhotoViewContainer: View {
            )
            .transition(.opacity)
        }
+        .overlay(alignment: .bottom) {
+            Group {
+                if shouldShowBackgroundColorProgressView {
+                    HStack(alignment: .center, spacing: 4) {
+                        ProgressView()
+                        
+                        Text("背景を合成中")
+                    }
+                    .padding(8)
+                    .background(.black, in: Capsule())
+                    .environment(\.colorScheme, .dark)
+                    .offset(y: -20%.of(screenSizeHelper.screenSize.height))
+                }
+            }
+        }
     }
 }
 
