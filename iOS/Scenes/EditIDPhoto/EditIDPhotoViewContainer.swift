@@ -546,6 +546,41 @@ struct EditIDPhotoViewContainer: View {
         } message: {
             Text("加えた変更は保存されません")
         }
+        .overlay {
+            ZStack {
+                if shouldShowSavingProgressView {
+                    Color.black
+                        .opacity(0.3)
+                        .environment(\.colorScheme, .dark)
+                    
+                    SavingProgressView(
+                        savingStatus: $savingProgressStatus
+                    )
+                    .frame(width: 40%.of(screenSizeHelper.screenSize.width))
+                }
+            }
+            .edgesIgnoringSafeArea(.all)
+            .animation(
+                shouldShowSavingProgressView ? .none : .easeInOut,
+                value: shouldShowSavingProgressView
+            )
+            .transition(.opacity)
+        }
+        .overlay(alignment: .bottom) {
+            Group {
+                if shouldShowBackgroundColorProgressView {
+                    HStack(alignment: .center, spacing: 4) {
+                        ProgressView()
+                        
+                        Text("背景を合成中")
+                    }
+                    .padding(8)
+                    .background(.black, in: Capsule())
+                    .environment(\.colorScheme, .dark)
+                    .offset(y: -20%.of(screenSizeHelper.screenSize.height))
+                }
+            }
+        }
         //  https://ondrej-kvasnovsky.medium.com/apply-textfield-changes-after-a-delay-debouncing-in-swiftui-af425446f8d8
         //  Just() .debounce を書いても反応しないので、onChange を使用して変更を監視する
         .onChange(of: self.selectedBackgroundColor) { newSelectedBackgroundColor in
@@ -607,41 +642,6 @@ struct EditIDPhotoViewContainer: View {
             let isBackgroundColorChanged: Bool = isRedChanged || isGreenChanged || isBlueChanged || isAlphaChanged
             
             self.isBackgroundColorChanged = isBackgroundColorChanged
-        }
-        .overlay {
-            ZStack {
-                if shouldShowSavingProgressView {
-                    Color.black
-                        .opacity(0.3)
-                        .environment(\.colorScheme, .dark)
-                    
-                    SavingProgressView(
-                        savingStatus: $savingProgressStatus
-                    )
-                    .frame(width: 40%.of(screenSizeHelper.screenSize.width))
-                }
-            }
-            .edgesIgnoringSafeArea(.all)
-            .animation(
-                shouldShowSavingProgressView ? .none : .easeInOut,
-                value: shouldShowSavingProgressView
-            )
-            .transition(.opacity)
-        }
-        .overlay(alignment: .bottom) {
-            Group {
-                if shouldShowBackgroundColorProgressView {
-                    HStack(alignment: .center, spacing: 4) {
-                        ProgressView()
-                        
-                        Text("背景を合成中")
-                    }
-                    .padding(8)
-                    .background(.black, in: Capsule())
-                    .environment(\.colorScheme, .dark)
-                    .offset(y: -20%.of(screenSizeHelper.screenSize.height))
-                }
-            }
         }
     }
 }
