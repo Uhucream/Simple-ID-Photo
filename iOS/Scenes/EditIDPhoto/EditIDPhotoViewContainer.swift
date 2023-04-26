@@ -68,8 +68,26 @@ struct EditIDPhotoViewContainer: View {
     @State private var originalCreatedIDPhotoFileURL: URL? = nil
     
     @State private var sourcePhotoFileURL: URL? = nil
-    @State private var sourcePhotoCIImage: CIImage? = nil
-    @State private var sourceImageOrientation: UIImage.Orientation = .up
+
+    private var sourcePhotoCIImage: CIImage? {
+        guard let sourcePhotoFileURL = sourcePhotoFileURL else { return nil }
+        
+        return .init(
+            contentsOf: sourcePhotoFileURL,
+            options: [
+                .applyOrientationProperty: true
+            ]
+        )
+    }
+    
+    private var sourceImageOrientation: UIImage.Orientation {
+        guard let sourcePhotoFileURL = sourcePhotoFileURL else { return .up }
+        
+        let uiImageFromURL: UIImage = .init(url: sourcePhotoFileURL)
+        let orientationFixedUIImage: UIImage? = uiImageFromURL.orientationFixed()
+
+        return orientationFixedUIImage?.imageOrientation ?? .up
+    }
 
     @State private var previewUIImage: UIImage? = nil
     
@@ -103,6 +121,21 @@ struct EditIDPhotoViewContainer: View {
         _editTargetCreatedIDPhoto = ObservedObject(wrappedValue: editTargetCreatedIDPhoto)
         
         _currentSelectedProcess = State(initialValue: initialDisplayProcess)
+        
+        if
+            let sourcePhotoRecord = editTargetCreatedIDPhoto.sourcePhoto,
+            let sourcePhotoFileName = sourcePhotoRecord.imageFileName,
+            let sourcePhotoSavedFilePath = sourcePhotoRecord.savedDirectory
+        {
+            let sourcePhotoFileURL: URL? = self.parseSavedFileURL(
+                fileName: sourcePhotoFileName,
+                savedFilePath: sourcePhotoSavedFilePath
+            )
+            
+            guard let sourcePhotoFileURL = sourcePhotoFileURL else { return }
+            
+            _sourcePhotoFileURL = State(initialValue: sourcePhotoFileURL)
+        }
 
         if
             let createdIDPhotoFileName = editTargetCreatedIDPhoto.imageFileName,
@@ -121,7 +154,6 @@ struct EditIDPhotoViewContainer: View {
             let createdIDPhotoUIImage: UIImage = .init(url: createdIDPhotoParsedURL)
             
             _previewUIImage = .init(initialValue: createdIDPhotoUIImage)
-            _sourceImageOrientation = .init(initialValue: createdIDPhotoUIImage.imageOrientation)
         }
         
         let appliedBackgroundColor: AppliedBackgroundColor? = editTargetCreatedIDPhoto.appliedBackgroundColor
@@ -496,27 +528,6 @@ struct EditIDPhotoViewContainer: View {
             }
         } message: {
             Text("加えた変更は保存されません")
-        }
-        .task {
-            guard let sourcePhotoRecord = self.editTargetCreatedIDPhoto.sourcePhoto else { return }
-            
-            guard let sourcePhotoFileName = sourcePhotoRecord.imageFileName else { return }
-            
-            guard let sourcePhotoSavedFilePath = sourcePhotoRecord.savedDirectory else { return }
-            
-            let sourcePhotoFileURL: URL? = self.parseSavedFileURL(
-                fileName: sourcePhotoFileName,
-                savedFilePath: sourcePhotoSavedFilePath
-            )
-            
-            guard let sourcePhotoFileURL = sourcePhotoFileURL else { return }
-            
-            let uiImageFromURL: UIImage = .init(url: sourcePhotoFileURL)
-            let orientationFixedUIImage: UIImage? = uiImageFromURL.orientationFixed()
-            
-            self.sourcePhotoCIImage = orientationFixedUIImage?.ciImage()
-            
-            self.sourcePhotoFileURL = sourcePhotoFileURL
         }
         .onReceive(
             Just(selectedIDPhotoSizeVariant)
