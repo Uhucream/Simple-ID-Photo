@@ -288,7 +288,35 @@ struct CreateIDPhotoViewContainer: View {
                     return
                 }
                 
-                let croppedPaintedPhotoCIImage: CIImage = paintedPhotoCIImage.cropped(to: self.croppingCGRect)
+                var dateFormatterForExif: DateFormatter {
+                    
+                    let formatter: DateFormatter = .init()
+                    
+                    formatter.locale = NSLocale.system
+                    formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
+                    
+                    return formatter
+                }
+                
+                var exifModifiedPaintedPhotoCIImage: CIImage {
+                    var paintedPhotoProperties: Dictionary<String, Any> = paintedPhotoCIImage.properties
+
+                    var paintedPhotoExif: [String: Any]? = paintedPhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
+                    
+                    guard var paintedPhotoExif = paintedPhotoExif else { return paintedPhotoCIImage }
+                    
+                    paintedPhotoExif[kCGImagePropertyExifDateTimeDigitized as String] = dateFormatterForExif.string(from: .now)
+                    
+                    paintedPhotoProperties[kCGImagePropertyExifDictionary as String] = paintedPhotoExif
+                    
+                    paintedPhotoProperties[kCGImagePropertyGPSDictionary as String] = nil
+                    
+                    let exifModifiedCIImage: CIImage = paintedPhotoCIImage.settingProperties(paintedPhotoProperties)
+                    
+                    return exifModifiedCIImage
+                }
+                
+                let croppedPaintedPhotoCIImage: CIImage = exifModifiedPaintedPhotoCIImage.cropped(to: self.croppingCGRect)
                 
                 let isHEICSupported: Bool = (CGImageDestinationCopyTypeIdentifiers() as! [String]).contains(UTType.heic.identifier)
                 
@@ -333,16 +361,6 @@ struct CreateIDPhotoViewContainer: View {
                 }
                 
                 let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
-                
-                var dateFormatterForExif: DateFormatter {
-                    
-                    let formatter: DateFormatter = .init()
-                    
-                    formatter.locale = NSLocale.system
-                    formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
-                    
-                    return formatter
-                }
                 
                 let sourcePhotoProperties: [String: Any] = sourcePhotoCIImage.properties
                 let sourcePhotoExif: [String: Any]? = sourcePhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
