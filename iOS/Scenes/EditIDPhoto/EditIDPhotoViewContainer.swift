@@ -608,26 +608,26 @@ struct EditIDPhotoViewContainer: View {
             
             self.isBackgroundColorChanged = isBackgroundColorChanged
         }
-       .overlay {
-           ZStack {
-               if shouldShowSavingProgressView {
-                   Color.black
-                       .opacity(0.3)
-                       .environment(\.colorScheme, .dark)
-
-                   SavingProgressView(
-                       savingStatus: $savingProgressStatus
-                   )
-                   .frame(width: 40%.of(screenSizeHelper.screenSize.width))
-               }
-           }
-           .edgesIgnoringSafeArea(.all)
-           .animation(
-               shouldShowSavingProgressView ? .none : .easeInOut,
-               value: shouldShowSavingProgressView
-           )
-           .transition(.opacity)
-       }
+        .overlay {
+            ZStack {
+                if shouldShowSavingProgressView {
+                    Color.black
+                        .opacity(0.3)
+                        .environment(\.colorScheme, .dark)
+                    
+                    SavingProgressView(
+                        savingStatus: $savingProgressStatus
+                    )
+                    .frame(width: 40%.of(screenSizeHelper.screenSize.width))
+                }
+            }
+            .edgesIgnoringSafeArea(.all)
+            .animation(
+                shouldShowSavingProgressView ? .none : .easeInOut,
+                value: shouldShowSavingProgressView
+            )
+            .transition(.opacity)
+        }
         .overlay(alignment: .bottom) {
             Group {
                 if shouldShowBackgroundColorProgressView {
