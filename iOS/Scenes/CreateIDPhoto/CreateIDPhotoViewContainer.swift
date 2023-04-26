@@ -174,9 +174,11 @@ struct CreateIDPhotoViewContainer: View {
         }
         
         do {
-            let solidColorBackgroundUIImage: UIImage? = .init(color: backgroundColor, size: sourceImage.extent.size)
-            
-            guard let solidColorBackgroundCIImage = solidColorBackgroundUIImage?.ciImage() else { return nil }
+            let solidColorBackgroundCIImage: CIImage = .init(
+                color: CIColor(
+                    cgColor: backgroundColor.cgColor ?? UIColor(backgroundColor).cgColor
+                )
+            ).cropped(to: CGRect(origin: .zero, size: sourceImage.extent.size))
             
             let generatedImage: CIImage? = try await visionFrameworkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
 
