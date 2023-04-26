@@ -540,26 +540,12 @@ struct EditIDPhotoViewContainer: View {
                         return
                     }
                     
-                    let composedIDPhoto: CIImage? = await composeIDPhoto(
-                        sourcePhoto: sourcePhotoCIImage,
-                        idPhotoSizeVariant: self.selectedIDPhotoSizeVariant,
-                        backgroundColor: self.selectedBackgroundColor
-                    )
+                    guard let paintedPhotoCIImage = paintedPhotoCIImage else { return }
                     
-                    guard let composedIDPhoto = composedIDPhoto else {
-                        shouldDisableButtons = false
-
-                        savingProgressStatus = .failed
-
-                        try await Task.sleep(milliseconds: 1200)
-
-                        shouldShowSavingProgressView = false
-
-                        return
-                    }
+                    let croppedPaintedIDPhoto: CIImage = paintedPhotoCIImage.cropped(to: self.croppingCGRect)
                     
                     let createdNewIDPhotoURL: URL?  = try createImageFile(
-                        image: composedIDPhoto,
+                        image: croppedPaintedIDPhoto,
                         fileName: originalCreatedIDPhotoFileBaseName,
                         fileType: originalCreatedIDPhotoFileUTType,
                         saveDestination: fileManager.temporaryDirectory
