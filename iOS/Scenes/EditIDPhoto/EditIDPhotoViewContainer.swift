@@ -89,12 +89,20 @@ struct EditIDPhotoViewContainer: View {
         return orientationFixedUIImage?.imageOrientation ?? .up
     }
 
-    @State private var previewUIImage: UIImage? = nil
+    @State private var originalSizePreviewUIImage: UIImage? = nil
+    @State private var croppedPreviewUIImage: UIImage? = nil
+    
+    @State private var paintedPhotoCIImage: CIImage? = nil
+    
+    @State private var croppingCGRect: CGRect = .zero
     
     @State private var currentSelectedProcess: IDPhotoProcessSelection = .backgroundColor
     
     @State private var selectedBackgroundColor: Color = .idPhotoBackgroundColors.blue
     @State private var selectedIDPhotoSizeVariant: IDPhotoSizeVariant = .original
+
+    @State private var previousUserSelectedBackgroundColor: Color? = nil
+    @State private var previousUserSelectedIDPhotoSizeVariant: IDPhotoSizeVariant? = nil
     
     @State private var shouldDisableButtons: Bool = false
     
@@ -107,6 +115,33 @@ struct EditIDPhotoViewContainer: View {
     
     @State private var isBackgroundColorChanged: Bool = false
     @State private var isIDPhotoSizeChanged: Bool = false
+    
+    private var originalAppliedBackgroundColor: Color? {
+        let appliedBackgroundColor: AppliedBackgroundColor? = editTargetCreatedIDPhoto.appliedBackgroundColor
+        
+        guard let appliedBackgroundColor = appliedBackgroundColor else { return nil }
+        
+        let colorFromEntity: Color = .init(
+            red: appliedBackgroundColor.red,
+            green: appliedBackgroundColor.green,
+            blue: appliedBackgroundColor.blue,
+            opacity: appliedBackgroundColor.alpha
+        )
+        
+        return colorFromEntity
+    }
+    
+    private var originalAppliedIDPhotoSizeVariant: IDPhotoSizeVariant? {
+        let appliedIDPhotoSize: AppliedIDPhotoSize? = editTargetCreatedIDPhoto.appliedIDPhotoSize
+        
+        guard let appliedIDPhotoSize = appliedIDPhotoSize else { return nil }
+        
+        let appliedIDPhotoSizeVariant: IDPhotoSizeVariant? = .init(
+            rawValue: Int(appliedIDPhotoSize.sizeVariant)
+        )
+        
+        return appliedIDPhotoSizeVariant
+    }
 
     private var hasAnyModifications: Bool {
         return isBackgroundColorChanged || isIDPhotoSizeChanged
@@ -114,6 +149,10 @@ struct EditIDPhotoViewContainer: View {
     
     @State private var selectedBackgroundColorPublisher: PassthroughSubject<Color, Never> = .init()
     @State private var selectedIDPhotoSizeVariantPublisher: PassthroughSubject<IDPhotoSizeVariant, Never> = .init()
+    
+    @State private var initialPaintingTask: Task<Void, Never>? = nil
+    
+    @State private var initialGeneratingCroppingCGRectTask: Task<Void, Never>? = nil
     
     private(set) var onDismissCallback: (() -> Void)?
     private(set) var onDoneSaveProcessCallback: (() -> Void)?
@@ -140,6 +179,10 @@ struct EditIDPhotoViewContainer: View {
             guard let sourcePhotoFileURL = sourcePhotoFileURL else { return }
             
             _sourcePhotoFileURL = State(initialValue: sourcePhotoFileURL)
+            
+            let uiImageFromURL: UIImage = .init(url: sourcePhotoFileURL)
+            
+            _originalSizePreviewUIImage = State(initialValue: uiImageFromURL)
         }
 
         if
@@ -157,8 +200,8 @@ struct EditIDPhotoViewContainer: View {
             _originalCreatedIDPhotoFileURL = State(initialValue: createdIDPhotoParsedURL)
             
             let createdIDPhotoUIImage: UIImage = .init(url: createdIDPhotoParsedURL)
-            
-            _previewUIImage = .init(initialValue: createdIDPhotoUIImage)
+
+            _croppedPreviewUIImage = .init(initialValue: createdIDPhotoUIImage)
         }
         
         let appliedBackgroundColor: AppliedBackgroundColor? = editTargetCreatedIDPhoto.appliedBackgroundColor
@@ -245,6 +288,42 @@ struct EditIDPhotoViewContainer: View {
             
             throw error
         }
+    }
+    
+    func generateCroppingRect(from sizeVariant: IDPhotoSizeVariant) async -> CGRect? {
+
+        guard let detectedFaceRect = try? await detectedFaceRect else { return nil }
+        
+        if detectedFaceRect == .zero { return nil }
+        
+        let faceHeightRatio: Double = sizeVariant.photoSize.faceHeight.value / sizeVariant.photoSize.height.value
+        
+        let idPhotoAspectRatio: Double = sizeVariant.photoSize.width.value / sizeVariant.photoSize.height.value
+        
+        let idPhotoHeight: CGFloat = detectedFaceRect.height / faceHeightRatio
+        let idPhotoWidth: CGFloat = idPhotoHeight * idPhotoAspectRatio
+        
+        let marginTopRatio: Double = sizeVariant.photoSize.marginTop.value / sizeVariant.photoSize.height.value
+        
+        let marginTop: CGFloat = idPhotoHeight * marginTopRatio
+        
+        let remainderWidthOfFaceAndPhoto: CGFloat = idPhotoWidth - detectedFaceRect.size.width
+        
+        let originXOfCroppingRect: CGFloat = detectedFaceRect.origin.x - (remainderWidthOfFaceAndPhoto / 2)
+        let originYOfCroppingRect: CGFloat = (detectedFaceRect.maxY + marginTop) - idPhotoHeight
+        
+        let croppingRect: CGRect = .init(
+            origin: CGPoint(
+                x: originXOfCroppingRect,
+                y: originYOfCroppingRect
+            ),
+            size: CGSize(
+                width: idPhotoWidth,
+                height: idPhotoHeight
+            )
+        )
+        
+        return croppingRect
     }
     
     func croppingImage(
@@ -391,7 +470,9 @@ struct EditIDPhotoViewContainer: View {
             selectedBackgroundColor: $selectedBackgroundColor,
             selectedBackgroundColorLabel: .readOnly(selectedBackgroundColorLabel),
             selectedIDPhotoSize: $selectedIDPhotoSizeVariant,
-            previewUIImage: $previewUIImage,
+            originalSizePreviewUIImage: $originalSizePreviewUIImage,
+            croppedPreviewUIImage: $croppedPreviewUIImage,
+            croppingCGRect: $croppingCGRect,
             shouldDisableDoneButton: .readOnly(!hasAnyModifications),
             availableBackgroundColors: BACKGROUND_COLORS,
             availableSizeVariants: availableIDPhotoSizeVariants
@@ -587,36 +668,87 @@ struct EditIDPhotoViewContainer: View {
             
             self.savingProgressStatus = .inProgress
         }
+        .task {
+            self.initialGeneratingCroppingCGRectTask = Task { () -> Void in
+                let generatedCroppingRect: CGRect = await generateCroppingRect(
+                    from: self.selectedIDPhotoSizeVariant
+                ) ?? .init(origin: .zero, size: sourcePhotoCIImage?.extent.size ?? .zero)
+                
+                if self.selectedIDPhotoSizeVariant == .original {
+                    Task { @MainActor in
+                        guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                        
+                        self.croppingCGRect = .init(
+                            origin: .zero,
+                            size: sourcePhotoCIImage.extent.size
+                        )
+                    }
+                    
+                    return
+                }
+                
+                Task { @MainActor in
+                    self.croppingCGRect = generatedCroppingRect
+                }
+            }
+        }
+        .task {
+            self.initialPaintingTask = Task { () -> Void in
+                do {
+                    guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                    
+                    if selectedBackgroundColor == .clear {
+                        Task { @MainActor in
+                            self.paintedPhotoCIImage = sourcePhotoCIImage
+                        }
+                        
+                        guard let sourcePhotoUIImage: UIImage = sourcePhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else { return }
+                        
+                        Task { @MainActor in
+                            self.originalSizePreviewUIImage = sourcePhotoUIImage
+                        }
+                        
+                        return
+                    }
+                    
+                    let paintedPhoto: CIImage? = try await paintImageBackgroundColor(
+                        sourceImage: sourcePhotoCIImage,
+                        backgroundColor: self.selectedBackgroundColor
+                    )
+                    
+                    guard let paintedPhoto = paintedPhoto else { return }
+                    
+                    Task { @MainActor in
+                        self.paintedPhotoCIImage = paintedPhoto
+                    }
+                    
+                    if let paintedPhotoUIImage = paintedPhoto.uiImage(orientation: self.sourceImageOrientation) {
+                        Task { @MainActor in
+                            self.originalSizePreviewUIImage = paintedPhotoUIImage
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        .onChange(of: self.selectedBackgroundColor) { _ in
+            guard let initialPaintingTask, !initialPaintingTask.isCancelled else { return }
+            
+            initialPaintingTask.cancel()
+        }
+        .onChange(of: self.selectedIDPhotoSizeVariant) { _ in
+            guard let initialGeneratingCroppingCGRectTask, !initialGeneratingCroppingCGRectTask.isCancelled else { return }
+            
+            initialGeneratingCroppingCGRectTask.cancel()
+        }
         //  https://ondrej-kvasnovsky.medium.com/apply-textfield-changes-after-a-delay-debouncing-in-swiftui-af425446f8d8
-        //  Just() .debounce を書いても反応しないので、onChange を使用して変更を監視する
+        //  Just() に .debounce を書いても反応しないので、onChange を使用して変更を監視する
         .onChange(of: self.selectedBackgroundColor) { newSelectedBackgroundColor in
             selectedBackgroundColorPublisher.send(newSelectedBackgroundColor)
         }
         .onChange(of: self.selectedIDPhotoSizeVariant) { newSelectedVariant in
             selectedIDPhotoSizeVariantPublisher.send(newSelectedVariant)
-        }
-        .onReceive(
-            Just(selectedIDPhotoSizeVariant)
-                .combineLatest(Just(selectedBackgroundColor))
-        ) { newSelectedSizeVariant, newSelectedBackgroundColor in
-            
-            guard hasAnyModifications else { return }
-            
-            Task {
-                guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
-                
-                let composedIDPhoto: CIImage? = await self.composeIDPhoto(
-                    sourcePhoto: sourcePhotoCIImage,
-                    idPhotoSizeVariant: newSelectedSizeVariant,
-                    backgroundColor: newSelectedBackgroundColor
-                )
-                
-                guard let composedIDPhotoUIImage: UIImage = composedIDPhoto?.uiImage(orientation: self.sourceImageOrientation) else { return }
-                
-                Task { @MainActor in
-                    self.previewUIImage = composedIDPhotoUIImage
-                }
-            }
         }
         .onReceive(
             selectedIDPhotoSizeVariantPublisher
@@ -648,6 +780,146 @@ struct EditIDPhotoViewContainer: View {
             let isBackgroundColorChanged: Bool = isRedChanged || isGreenChanged || isBlueChanged || isAlphaChanged
             
             self.isBackgroundColorChanged = isBackgroundColorChanged
+        }
+        .onReceive(
+            selectedBackgroundColorPublisher
+                .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            //  MARK: http://web.archive.org/web/20230425043745/https://zenn.dev/ikuraikura/articles/2022-02-08-scan-pre#scan()を使う
+                .scan(
+                    (self.originalAppliedBackgroundColor, self.originalAppliedBackgroundColor)
+                ) { previous, current in
+                    return (previous.1, current)
+                }
+        ) { previousSelectedColor, _ in
+            self.previousUserSelectedBackgroundColor = previousSelectedColor
+        }
+        .onReceive(
+            selectedIDPhotoSizeVariantPublisher
+                .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            //  MARK: http://web.archive.org/web/20230425043745/https://zenn.dev/ikuraikura/articles/2022-02-08-scan-pre#scan()を使う
+                .scan(
+                    (self.originalAppliedIDPhotoSizeVariant, self.originalAppliedIDPhotoSizeVariant)
+                ) { previous, current in
+                    return (previous.1, current)
+                }
+        ) { previousSelectedVariant, _ in
+            self.previousUserSelectedIDPhotoSizeVariant = previousSelectedVariant
+        }
+        .task(id: selectedBackgroundColor) {
+            do {
+                //  TODO: 初期描画時は処理してほしくない(ユーザーが操作するまで処理しないようにしたい)のだが、上手く機能していないので修正する
+                guard let initialPaintingTask, initialPaintingTask.isCancelled else {
+                    throw CancellationError()
+                }
+                
+                try await Task.sleep(milliseconds: 500)
+                
+                if previousUserSelectedBackgroundColor == self.selectedBackgroundColor {
+                    throw SelectedSameValueAsPreviousError()
+                }
+                
+                guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                
+                if selectedBackgroundColor == .clear {
+                    Task { @MainActor in
+                        self.paintedPhotoCIImage = sourcePhotoCIImage
+                    }
+                    
+                    guard let sourcePhotoUIImage: UIImage = sourcePhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else { return }
+                    
+                    Task { @MainActor in
+                        self.originalSizePreviewUIImage = sourcePhotoUIImage
+                    }
+                    
+                    let croppedSourcePhotoCIImage: CIImage = sourcePhotoCIImage.cropped(to: croppingCGRect)
+                    
+                    let croppedSourcePhotoUIImage: UIImage? = croppedSourcePhotoCIImage.uiImage(orientation: self.sourceImageOrientation)
+                    
+                    Task { @MainActor in
+                        self.croppedPreviewUIImage = croppedSourcePhotoUIImage
+                    }
+                    
+                    return
+                }
+                
+                let paintedPhoto: CIImage? = try await paintImageBackgroundColor(
+                    sourceImage: sourcePhotoCIImage,
+                    backgroundColor: self.selectedBackgroundColor
+                )
+                
+                guard let paintedPhoto = paintedPhoto else { return }
+                
+                Task { @MainActor in
+                    self.paintedPhotoCIImage = paintedPhoto
+                }
+                
+                if let paintedPhotoUIImage = paintedPhoto.uiImage(orientation: self.sourceImageOrientation) {
+                    Task { @MainActor in
+                        self.originalSizePreviewUIImage = paintedPhotoUIImage
+                    }
+                }
+                
+                let croppedPaintedPhotoCIImage: CIImage = paintedPhoto.cropped(to: croppingCGRect)
+                
+                guard let croppedPaintedPhotoUIImage: UIImage = croppedPaintedPhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else { return }
+                
+                Task { @MainActor in
+                    self.croppedPreviewUIImage = croppedPaintedPhotoUIImage
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        .task(id: selectedIDPhotoSizeVariant) {
+            do {
+                guard let initialGeneratingCroppingCGRectTask, initialGeneratingCroppingCGRectTask.isCancelled else {
+                    throw CancellationError()
+                }
+                
+                //  MARK: ユーザーが選択変更をやめてから処理を開始したいので、待つ
+                try await Task.sleep(milliseconds: 500)
+                
+                if self.selectedIDPhotoSizeVariant == self.previousUserSelectedIDPhotoSizeVariant {
+                    throw SelectedSameValueAsPreviousError()
+                }
+                
+                guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+                
+                let generatedCroppingRect: CGRect = await generateCroppingRect(
+                    from: self.selectedIDPhotoSizeVariant
+                ) ?? .init(origin: .zero, size: sourcePhotoCIImage.extent.size)
+                
+                if self.selectedIDPhotoSizeVariant == .original {
+                    Task { @MainActor in
+                        self.croppingCGRect = .init(
+                            origin: .zero,
+                            size: sourcePhotoCIImage.extent.size
+                        )
+                    }
+                    
+                    guard let paintedPhotoUIImage = self.paintedPhotoCIImage?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                    
+                    Task { @MainActor in
+                        self.croppedPreviewUIImage = paintedPhotoUIImage
+                    }
+                    
+                    return
+                }
+                
+                Task { @MainActor in
+                    self.croppingCGRect = generatedCroppingRect
+                }
+                
+                let croppedPaintedPhotoCIImage: CIImage? = self.paintedPhotoCIImage?.cropped(to: generatedCroppingRect)
+                
+                guard let croppedPaintedPhotoUIImage: UIImage = croppedPaintedPhotoCIImage?.uiImage(orientation: self.sourceImageOrientation) else { return }
+                
+                Task { @MainActor in
+                    self.croppedPreviewUIImage = croppedPaintedPhotoUIImage
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }
