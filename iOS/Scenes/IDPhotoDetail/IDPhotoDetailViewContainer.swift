@@ -245,7 +245,7 @@ struct IDPhotoDetailViewContainer: View {
                         onTapDeleteButton()
                     }
                 ) {
-                    Text("削除する")
+                    Text("削除")
                 }
             } message: {
                 Text("削除した証明写真は復元できません")
