@@ -110,6 +110,9 @@ struct EditIDPhotoViewContainer: View {
         return isBackgroundColorChanged || isIDPhotoSizeChanged
     }
     
+    @State private var selectedBackgroundColorPublisher: PassthroughSubject<Color, Never> = .init()
+    @State private var selectedIDPhotoSizeVariantPublisher: PassthroughSubject<IDPhotoSizeVariant, Never> = .init()
+    
     private(set) var onDismissCallback: (() -> Void)?
     private(set) var onDoneSaveProcessCallback: (() -> Void)?
     
@@ -529,6 +532,14 @@ struct EditIDPhotoViewContainer: View {
         } message: {
             Text("加えた変更は保存されません")
         }
+        //  https://ondrej-kvasnovsky.medium.com/apply-textfield-changes-after-a-delay-debouncing-in-swiftui-af425446f8d8
+        //  Just() .debounce を書いても反応しないので、onChange を使用して変更を監視する
+        .onChange(of: self.selectedBackgroundColor) { newSelectedBackgroundColor in
+            selectedBackgroundColorPublisher.send(newSelectedBackgroundColor)
+        }
+        .onChange(of: self.selectedIDPhotoSizeVariant) { newSelectedVariant in
+            selectedIDPhotoSizeVariantPublisher.send(newSelectedVariant)
+        }
         .onReceive(
             Just(selectedIDPhotoSizeVariant)
                 .combineLatest(Just(selectedBackgroundColor))
@@ -553,7 +564,7 @@ struct EditIDPhotoViewContainer: View {
             }
         }
         .onReceive(
-            Just(selectedIDPhotoSizeVariant)
+            selectedIDPhotoSizeVariantPublisher
         ) { newIDPhotoSizeVariant in
             
             let DEFAULT_ID_PHOTO_SIZE_VARIANT: IDPhotoSizeVariant = .original
@@ -568,7 +579,7 @@ struct EditIDPhotoViewContainer: View {
             self.isIDPhotoSizeChanged = isIDPhotoSizeChanged
         }
         .onReceive(
-            Just(selectedBackgroundColor)
+            selectedBackgroundColorPublisher
         ) { newBackgroundColor in
             
             let originalBackgroundColorComponents: AppliedBackgroundColor? = editTargetCreatedIDPhoto.appliedBackgroundColor
