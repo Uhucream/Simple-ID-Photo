@@ -581,6 +581,12 @@ struct EditIDPhotoViewContainer: View {
                 }
             }
         }
+        //  MARK: ProgressView が非表示になったあとに status をリセットする
+        .onChange(of: shouldShowSavingProgressView) { newValue in
+            guard newValue == false else { return }
+            
+            self.savingProgressStatus = .inProgress
+        }
         //  https://ondrej-kvasnovsky.medium.com/apply-textfield-changes-after-a-delay-debouncing-in-swiftui-af425446f8d8
         //  Just() .debounce を書いても反応しないので、onChange を使用して変更を監視する
         .onChange(of: self.selectedBackgroundColor) { newSelectedBackgroundColor in
