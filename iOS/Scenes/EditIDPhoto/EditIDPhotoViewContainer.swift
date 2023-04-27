@@ -650,8 +650,6 @@ struct EditIDPhotoViewContainer: View {
                         size: sourcePhotoCIImage.extent.size
                     )
                 }
-                
-                return
             }
 
             if self.selectedIDPhotoSizeVariant != .original {
