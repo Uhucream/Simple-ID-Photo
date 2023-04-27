@@ -179,10 +179,6 @@ struct EditIDPhotoViewContainer: View {
             guard let sourcePhotoFileURL = sourcePhotoFileURL else { return }
             
             _sourcePhotoFileURL = State(initialValue: sourcePhotoFileURL)
-            
-            let uiImageFromURL: UIImage = .init(url: sourcePhotoFileURL)
-            
-            _originalSizePreviewUIImage = State(initialValue: uiImageFromURL)
         }
 
         if
