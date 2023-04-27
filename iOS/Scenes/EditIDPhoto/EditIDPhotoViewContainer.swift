@@ -15,6 +15,21 @@ import Percentage
 
 struct EditIDPhotoViewContainer: View {
     
+    enum PhotoProcessInProgress: Hashable {
+        case preparingPreview
+        case backgroundColor
+        
+        var localizedMessage: String {
+            switch self {
+            case .preparingPreview:
+                return "プレビューの準備中"
+                
+            case .backgroundColor:
+                return "背景を合成中"
+            }
+        }
+    }
+    
     private let BACKGROUND_COLORS: [Color] = [
         .idPhotoBackgroundColors.blue,
         .idPhotoBackgroundColors.gray,
@@ -106,7 +121,7 @@ struct EditIDPhotoViewContainer: View {
     
     @State private var shouldDisableButtons: Bool = false
     
-    @State private var shouldShowBackgroundColorProgressView: Bool = false
+    @State private var photoProcessesInProgress: Set<PhotoProcessInProgress> = .init()
     
     @State private var shouldShowSavingProgressView: Bool = false
     @State private var savingProgressStatus: SavingStatus = .inProgress
@@ -261,10 +276,6 @@ struct EditIDPhotoViewContainer: View {
         sourceImage: CIImage,
         backgroundColor: Color
     ) async throws -> CIImage? {
-        Task { @MainActor in
-            self.shouldShowBackgroundColorProgressView = true
-        }
-        
         do {
             let solidColorBackgroundCIImage: CIImage = .init(
                 color: CIColor(
@@ -274,16 +285,8 @@ struct EditIDPhotoViewContainer: View {
             
             let generatedImage: CIImage? = try await visionFrameworkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
             
-            Task { @MainActor in
-                self.shouldShowBackgroundColorProgressView = false
-            }
-            
             return generatedImage
         } catch {
-            Task { @MainActor in
-                self.shouldShowBackgroundColorProgressView = false
-            }
-            
             throw error
         }
     }
@@ -547,15 +550,20 @@ struct EditIDPhotoViewContainer: View {
         }
         .overlay(alignment: .bottom) {
             Group {
-                if shouldShowBackgroundColorProgressView {
-                    HStack(alignment: .center, spacing: 4) {
-                        ProgressView()
-                        
-                        Text("背景を合成中")
+                if self.photoProcessesInProgress.count > 0 {
+                    LazyVStack {
+                        ForEach(Array(photoProcessesInProgress), id: \.hashValue) { process in
+                            LazyHStack(alignment: .center, spacing: 4) {
+                                ProgressView()
+                                
+                                Text(process.localizedMessage)
+                            }
+                            .padding(8)
+                            .background(.black, in: Capsule())
+                            .animation(.easeOut, value: photoProcessesInProgress.count)
+                            .environment(\.colorScheme, .dark)
+                        }
                     }
-                    .padding(8)
-                    .background(.black, in: Capsule())
-                    .environment(\.colorScheme, .dark)
                     .offset(y: -20%.of(screenSizeHelper.screenSize.height))
                 }
             }
@@ -569,9 +577,19 @@ struct EditIDPhotoViewContainer: View {
         .task(id: isSelectionChanged) {
             //  MARK: ユーザーが選択肢を変えたら処理をやめる
             //  https://stackoverflow.com/a/75399723/18698351
-            if isSelectionChanged { return }
+            if isSelectionChanged {
+                Task { @MainActor in
+                    self.photoProcessesInProgress.remove(.preparingPreview)
+                }
+                
+                return
+            }
             
             guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
+            
+            Task { @MainActor in
+                self.photoProcessesInProgress.insert(.preparingPreview)
+            }
             
             // MARK: 背景色処理 と croppingCGRect の処理の順番を逆にすると表示がおかしくなるので、この順番になっている
             // MARK: - 背景色が合成された画像の生成
@@ -580,7 +598,13 @@ struct EditIDPhotoViewContainer: View {
                     self.paintedPhotoCIImage = sourcePhotoCIImage
                 }
                 
-                guard let sourcePhotoUIImage: UIImage = sourcePhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else { return }
+                guard let sourcePhotoUIImage: UIImage = sourcePhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else {
+                    Task { @MainActor in
+                        self.photoProcessesInProgress.remove(.preparingPreview)
+                    }
+
+                    return
+                }
                 
                 Task { @MainActor in
                     self.originalSizePreviewUIImage = sourcePhotoUIImage
@@ -593,13 +617,25 @@ struct EditIDPhotoViewContainer: View {
                     backgroundColor: self.selectedBackgroundColor
                 )
                 
-                guard let paintedPhoto = try? await paintedPhoto else { return }
+                guard let paintedPhoto = try? await paintedPhoto else {
+                    Task { @MainActor in
+                        self.photoProcessesInProgress.remove(.preparingPreview)
+                    }
+
+                    return
+                }
                 
                 Task { @MainActor in
                     self.paintedPhotoCIImage = paintedPhoto
                 }
                 
-                guard let paintedPhotoUIImage: UIImage = paintedPhoto.uiImage(orientation: self.sourceImageOrientation) else { return }
+                guard let paintedPhotoUIImage: UIImage = paintedPhoto.uiImage(orientation: self.sourceImageOrientation) else {
+                    Task { @MainActor in
+                        self.photoProcessesInProgress.remove(.preparingPreview)
+                    }
+
+                    return
+                }
                 
                 Task { @MainActor in
                     self.originalSizePreviewUIImage = paintedPhotoUIImage
@@ -621,11 +657,21 @@ struct EditIDPhotoViewContainer: View {
             if self.selectedIDPhotoSizeVariant != .original {
                 async let generatedCroppingRect: CGRect? = await generateCroppingRect(from: self.selectedIDPhotoSizeVariant)
 
-                guard let generatedCroppingRect = await generatedCroppingRect else { return }
+                guard let generatedCroppingRect = await generatedCroppingRect else {
+                    Task { @MainActor in
+                        self.photoProcessesInProgress.remove(.preparingPreview)
+                    }
+
+                    return
+                }
 
                 Task { @MainActor in
                     self.croppingCGRect = generatedCroppingRect
                 }
+            }
+            
+            Task { @MainActor in
+                self.photoProcessesInProgress.remove(.preparingPreview)
             }
         }
         //  https://ondrej-kvasnovsky.medium.com/apply-textfield-changes-after-a-delay-debouncing-in-swiftui-af425446f8d8
@@ -735,11 +781,19 @@ struct EditIDPhotoViewContainer: View {
                     return
                 }
                 
+                Task { @MainActor in
+                    self.photoProcessesInProgress.insert(.backgroundColor)
+                }
+                
                 let paintedPhoto: CIImage? = try await paintImageBackgroundColor(
                     sourceImage: sourcePhotoCIImage,
                     backgroundColor: self.selectedBackgroundColor
                 )
                 
+                Task { @MainActor in
+                    self.photoProcessesInProgress.remove(.backgroundColor)
+                }
+
                 guard let paintedPhoto = paintedPhoto else { return }
                 
                 Task { @MainActor in
@@ -760,6 +814,10 @@ struct EditIDPhotoViewContainer: View {
                     self.croppedPreviewUIImage = croppedPaintedPhotoUIImage
                 }
             } catch {
+                Task { @MainActor in
+                    self.photoProcessesInProgress.remove(.backgroundColor)
+                }
+                
                 print(error.localizedDescription)
             }
         }
