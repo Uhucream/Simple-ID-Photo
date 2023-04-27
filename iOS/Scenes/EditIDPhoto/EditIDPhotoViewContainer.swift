@@ -776,10 +776,6 @@ struct EditIDPhotoViewContainer: View {
                 
                 guard let sourcePhotoCIImage = sourcePhotoCIImage else { return }
                 
-                let generatedCroppingRect: CGRect = await generateCroppingRect(
-                    from: self.selectedIDPhotoSizeVariant
-                ) ?? .init(origin: .zero, size: sourcePhotoCIImage.extent.size)
-                
                 if self.selectedIDPhotoSizeVariant == .original {
                     Task { @MainActor in
                         self.croppingCGRect = .init(
@@ -796,6 +792,12 @@ struct EditIDPhotoViewContainer: View {
                     
                     return
                 }
+                
+                let generatedCroppingRect: CGRect? = await generateCroppingRect(
+                    from: self.selectedIDPhotoSizeVariant
+                )
+                
+                guard let generatedCroppingRect = generatedCroppingRect else { return }
                 
                 Task { @MainActor in
                     self.croppingCGRect = generatedCroppingRect
