@@ -804,6 +804,28 @@ struct EditIDPhotoViewContainer: View {
                     }
                 }
                 
+                //  MARK: .task(id: isSelectionChanged) 実行中に背景色の選択肢が変わってしまうと croppingCGRect.size が .zero のままになることがあるのでその対策
+                if self.croppingCGRect.size == .zero {
+                    if self.selectedIDPhotoSizeVariant == .original {
+                        Task { @MainActor in
+                            self.croppingCGRect = .init(
+                                origin: .zero,
+                                size: sourcePhotoCIImage.extent.size
+                            )
+                        }
+                        
+                        return
+                    }
+                    
+                    async let generatedCroppingRect: CGRect? = generateCroppingRect(from: self.selectedIDPhotoSizeVariant)
+                    
+                    guard let generatedCroppingRect = await generatedCroppingRect else { return }
+                    
+                    Task { @MainActor in
+                        self.croppingCGRect = generatedCroppingRect
+                    }
+                }
+                
                 let croppedPaintedPhotoCIImage: CIImage = paintedPhoto.cropped(to: croppingCGRect)
                 
                 guard let croppedPaintedPhotoUIImage: UIImage = croppedPaintedPhotoCIImage.uiImage(orientation: self.sourceImageOrientation) else { return }
