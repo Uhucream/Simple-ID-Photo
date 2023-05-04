@@ -33,6 +33,8 @@ final class VisionFrameworkHelper {
         
         let segmentationRequest: VNGeneratePersonSegmentationRequest = .init()
         
+        segmentationRequest.preferBackgroundProcessing = true
+        
         segmentationRequest.qualityLevel = qualityLevel
         segmentationRequest.outputPixelFormat = outputPixelFormat
         
@@ -42,18 +44,20 @@ final class VisionFrameworkHelper {
             options: [:]
         )
         
-        do {
-            if Task.isCancelled {
-                segmentationRequest.cancel()
-                
-                throw CancellationError()
+        return try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+            
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    try imageRequestHandler.perform([segmentationRequest])
+                    
+                    continuation.resume(returning: segmentationRequest.results)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
             }
-            
-            try imageRequestHandler.perform([segmentationRequest])
-            
-            return segmentationRequest.results
-        } catch {
-            throw error
+        } onCancel: {
+            segmentationRequest.cancel()
         }
     }
     
@@ -95,24 +99,28 @@ final class VisionFrameworkHelper {
         
         let faceLandmarksRequest: VNDetectFaceLandmarksRequest = .init()
         
+        faceLandmarksRequest.preferBackgroundProcessing = true
+        
         let imageReqeustHandler: VNImageRequestHandler = .init(
             ciImage: sourceImage,
             orientation: imageOrientation,
             options: [:]
         )
         
-        do {
-            if Task.isCancelled {
-                faceLandmarksRequest.cancel()
-                
-                throw CancellationError()
+        return try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+            
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    try imageReqeustHandler.perform([faceLandmarksRequest])
+                    
+                    continuation.resume(returning: faceLandmarksRequest.results)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
             }
-            
-            try imageReqeustHandler.perform([faceLandmarksRequest])
-            
-            return faceLandmarksRequest.results
-        } catch {
-            throw error
+        } onCancel: {
+            faceLandmarksRequest.cancel()
         }
     }
 }
