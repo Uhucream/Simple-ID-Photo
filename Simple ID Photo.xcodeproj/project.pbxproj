@@ -1701,7 +1701,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
 				PRODUCT_NAME = SimpleIDPhoto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1741,7 +1741,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
 				PRODUCT_NAME = SimpleIDPhoto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
