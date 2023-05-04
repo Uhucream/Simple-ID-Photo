@@ -61,6 +61,44 @@ final class VisionFrameworkHelper {
         }
     }
     
+    public func performDetectContoursRequest(
+        sourceImage: CIImage,
+        imageOrientation: CGImagePropertyOrientation,
+        contrastAdjustment: Float = 2.0,
+        maximumImageDimension: Int = 512,
+        detectsDarkOnLight: Bool = true
+    ) async throws -> [VNContoursObservation]? {
+
+        let detectContoursRequest: VNDetectContoursRequest = .init()
+        
+        detectContoursRequest.preferBackgroundProcessing = true
+        
+        detectContoursRequest.contrastAdjustment = contrastAdjustment
+        detectContoursRequest.maximumImageDimension = maximumImageDimension
+        detectContoursRequest.detectsDarkOnLight = detectsDarkOnLight
+        
+        let imageRequestHandler: VNImageRequestHandler = .init(
+            ciImage: sourceImage,
+            orientation: imageOrientation
+        )
+        
+        return try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+            
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    try imageRequestHandler.perform([detectContoursRequest])
+                    
+                    continuation.resume(returning: detectContoursRequest.results)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        } onCancel: {
+            detectContoursRequest.cancel()
+        }
+    }
+    
     public func performHumanRectanglesRequest(
         sourceImage: CIImage,
         imageOrientation: CGImagePropertyOrientation,
@@ -215,24 +253,57 @@ extension VisionFrameworkHelper {
             let sourceImageExtent: CGRect = sourceCIImage.extent
             let sourceImageSize: CGSize = sourceImageExtent.size
             
-            let humanObservations: [VNHumanObservation]? = try await performHumanRectanglesRequest(
+            let pixelBufferObservations: [VNPixelBufferObservation]? = try await self.performPersonSegmentationRequest(
+                sourceImage: sourceCIImage,
+                imageOrientation: self.sourceImageOrientation,
+                qualityLevel: .balanced
+            )
+            
+            let segmentationMask: CVPixelBuffer? = pixelBufferObservations?.first?.pixelBuffer
+            
+            guard let segmentationMask: CVPixelBuffer = segmentationMask else { return nil }
+            
+            let maskCIImage: CIImage = .init(cvImageBuffer: segmentationMask)
+            
+            let maskScaleX = sourceCIImage.extent.width / maskCIImage.extent.width
+            let maskScaleY = sourceCIImage.extent.height / maskCIImage.extent.height
+            
+            let scaledMaskCIImage: CIImage = maskCIImage
+                .transformed(
+                    by: CGAffineTransform(
+                        a: maskScaleX,
+                        b: 0,
+                        c: 0,
+                        d: maskScaleY,
+                        tx: 0,
+                        ty: 0
+                    )
+                )
+            
+            async let contoursObservations: [VNContoursObservation]? = try performDetectContoursRequest(
+                sourceImage: scaledMaskCIImage,
+                imageOrientation: self.sourceImageOrientation,
+                contrastAdjustment: 1.0,
+                detectsDarkOnLight: false
+            )
+            
+            async let faceObservations: [VNFaceObservation]? = try performFaceLandmarksRequest(
                 sourceImage: sourceCIImage,
                 imageOrientation: self.sourceImageOrientation
             )
             
-            let faceObservations: [VNFaceObservation]? = try await performFaceLandmarksRequest(
-                sourceImage: sourceCIImage,
-                imageOrientation: self.sourceImageOrientation
-            )
+            guard let firstContourObservation = try await contoursObservations?.first else { return nil }
             
-            guard let firstHumanObservation = humanObservations?.first else { return nil }
+            guard let firstFaceObservation = try await faceObservations?.first else { return nil }
             
-            guard let firstFaceObservation = faceObservations?.first else { return nil }
+            let segmentationMaskPersonContour: VNContour? = firstContourObservation.topLevelContours.max { $0.pointCount < $1.pointCount }
             
-            let humanNormalizedRectangle: CGRect = firstHumanObservation.boundingBox
+            guard let segmentationMaskPersonContour = segmentationMaskPersonContour else { return nil }
             
-            let denormalizedHumanRectangle: CGRect = VNImageRectForNormalizedRect(
-                humanNormalizedRectangle,
+            let segmentationMaskPersonContourNormalizedBoundingBox: CGRect = segmentationMaskPersonContour.normalizedPath.boundingBox
+            
+            let denormalizedContourBoundingBox: CGRect = VNImageRectForNormalizedRect(
+                segmentationMaskPersonContourNormalizedBoundingBox,
                 Int(sourceImageSize.width),
                 Int(sourceImageSize.height)
             )
@@ -253,7 +324,7 @@ extension VisionFrameworkHelper {
             
             let bottomYOfFaceWithHairRect =  bottomPointOfFaceWithHairRect.y
             
-            let topYOfFaceWithHairRect: CGFloat = denormalizedHumanRectangle.maxY
+            let topYOfFaceWithHairRect: CGFloat = denormalizedContourBoundingBox.maxY
             let topLeftXOfFaceWithHairRect: CGFloat = denormalizedFaceRectangle.origin.x
             
             let faceWithHairRectWidth: CGFloat = denormalizedFaceRectangle.width
