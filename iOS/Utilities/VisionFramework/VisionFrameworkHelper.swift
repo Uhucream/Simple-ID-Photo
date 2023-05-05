@@ -178,32 +178,16 @@ extension VisionFrameworkHelper {
         let maskScaleX = inputImageSize.width / maskCIImage.extent.width
         let maskScaleY = inputImageSize.height / maskCIImage.extent.height
         
-        let scaledMaskCIImage = maskCIImage
-            .transformed(
-                by: CGAffineTransform(
-                    a: maskScaleX,
-                    b: 0,
-                    c: 0,
-                    d: maskScaleY,
-                    tx: 0,
-                    ty: 0
-                )
-            )
+        let scaledMaskCIImage = maskCIImage.transformed(
+            by: CGAffineTransform(scaleX: maskScaleX, y: maskScaleY)
+        )
         
         let backgroundImageScaleX = inputImageSize.width / backgroundImage.extent.width
         let backgroundImageScaleY = inputImageSize.height / backgroundImage.extent.height
         
-        let scaledBackgroundImage = backgroundImage
-            .transformed(
-                by: CGAffineTransform(
-                    a: backgroundImageScaleX,
-                    b: 0,
-                    c: 0,
-                    d: backgroundImageScaleY,
-                    tx: 0,
-                    ty: 0
-                )
-            )
+        let scaledBackgroundImage = backgroundImage.transformed(
+            by: CGAffineTransform(scaleX: backgroundImageScaleX, y: backgroundImageScaleY)
+        )
         
         let blendWithMaskFilter = CIFilter.blendWithMask()
         
@@ -270,14 +254,7 @@ extension VisionFrameworkHelper {
             
             let scaledMaskCIImage: CIImage = maskCIImage
                 .transformed(
-                    by: CGAffineTransform(
-                        a: maskScaleX,
-                        b: 0,
-                        c: 0,
-                        d: maskScaleY,
-                        tx: 0,
-                        ty: 0
-                    )
+                    by: CGAffineTransform(scaleX: maskScaleX, y: maskScaleY)
                 )
             
             async let contoursObservations: [VNContoursObservation]? = try performDetectContoursRequest(
