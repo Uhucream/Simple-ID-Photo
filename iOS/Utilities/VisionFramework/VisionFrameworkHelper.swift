@@ -203,7 +203,7 @@ extension VisionFrameworkHelper {
 
 extension VisionFrameworkHelper {
     
-    public func combineWithBackgroundImage(with backgroundImage: CIImage) async throws -> CIImage? {
+    public func combinedImage(with backgroundImage: CIImage) async throws -> CIImage? {
         do {
 
             guard let sourceCIImage: CIImage = sourceCIImage else { return nil }

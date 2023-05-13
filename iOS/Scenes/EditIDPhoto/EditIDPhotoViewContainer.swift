@@ -283,7 +283,7 @@ struct EditIDPhotoViewContainer: View {
                 )
             ).cropped(to: CGRect(origin: .zero, size: sourceImage.extent.size))
             
-            let generatedImage: CIImage? = try await visionFrameworkHelper.combineWithBackgroundImage(with: solidColorBackgroundCIImage)
+            let generatedImage: CIImage? = try await visionFrameworkHelper.combinedImage(with: solidColorBackgroundCIImage)
             
             return generatedImage
         } catch {
