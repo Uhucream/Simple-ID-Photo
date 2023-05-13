@@ -99,37 +99,6 @@ final class VisionFrameworkHelper {
         }
     }
     
-    public func performHumanRectanglesRequest(
-        sourceImage: CIImage,
-        imageOrientation: CGImagePropertyOrientation,
-        upperBodyOnly: Bool = false
-    ) async throws -> [VNHumanObservation]? {
-        
-        let humanRectanglesRequest: VNDetectHumanRectanglesRequest = .init()
-        
-        humanRectanglesRequest.upperBodyOnly = upperBodyOnly
-        
-        let imageRequestHandler: VNImageRequestHandler = .init(
-            ciImage: sourceImage,
-            orientation: imageOrientation,
-            options: [:]
-        )
-        
-        do {
-            if Task.isCancelled {
-                humanRectanglesRequest.cancel()
-                
-                throw CancellationError()
-            }
-            
-            try imageRequestHandler.perform([humanRectanglesRequest])
-            
-            return humanRectanglesRequest.results
-        } catch {
-            throw error
-        }
-    }
-    
     public func performFaceLandmarksRequest(
         sourceImage: CIImage,
         imageOrientation: CGImagePropertyOrientation
