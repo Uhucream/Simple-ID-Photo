@@ -301,7 +301,7 @@ struct CreateIDPhotoViewContainer: View {
                 var exifModifiedPaintedPhotoCIImage: CIImage {
                     var paintedPhotoProperties: Dictionary<String, Any> = paintedPhotoCIImage.properties
 
-                    var paintedPhotoExif: [String: Any]? = paintedPhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
+                    let paintedPhotoExif: [String: Any]? = paintedPhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
                     
                     guard var paintedPhotoExif = paintedPhotoExif else { return paintedPhotoCIImage }
                     
