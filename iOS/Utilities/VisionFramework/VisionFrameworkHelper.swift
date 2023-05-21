@@ -108,7 +108,7 @@ final class VisionFrameworkHelper {
         
         faceLandmarksRequest.preferBackgroundProcessing = true
         
-        let imageReqeustHandler: VNImageRequestHandler = .init(
+        let imageRequestHandler: VNImageRequestHandler = .init(
             ciImage: sourceImage,
             orientation: imageOrientation,
             options: [:]
@@ -119,7 +119,7 @@ final class VisionFrameworkHelper {
             
             return try await withCheckedThrowingContinuation { continuation in
                 do {
-                    try imageReqeustHandler.perform([faceLandmarksRequest])
+                    try imageRequestHandler.perform([faceLandmarksRequest])
                     
                     continuation.resume(returning: faceLandmarksRequest.results)
                 } catch {
