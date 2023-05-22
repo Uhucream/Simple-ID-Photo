@@ -138,7 +138,7 @@ extension VisionFrameworkHelper {
         inputImage: CIImage,
         maskBuffer: CVPixelBuffer,
         backgroundImage: CIImage
-    ) -> CIImage? {
+    ) -> CIImage {
         
         let inputImageSize: CGSize = inputImage.extent.size
         
