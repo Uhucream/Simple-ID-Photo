@@ -158,13 +158,13 @@ extension VisionFrameworkHelper {
             by: CGAffineTransform(scaleX: backgroundImageScaleX, y: backgroundImageScaleY)
         )
         
-        let blendWithMaskFilter = CIFilter.blendWithMask()
-        
-        blendWithMaskFilter.inputImage = inputImage
-        blendWithMaskFilter.backgroundImage = scaledBackgroundImage
-        blendWithMaskFilter.maskImage = scaledMaskCIImage
-        
-        let blendedCIImage: CIImage? = blendWithMaskFilter.outputImage
+        let blendedCIImage: CIImage = inputImage.applyingFilter(
+            CIFilter.blendWithMask().name,
+            parameters: [
+                kCIInputMaskImageKey: scaledMaskCIImage,
+                kCIInputBackgroundImageKey: scaledBackgroundImage
+            ]
+        )
         
         return blendedCIImage
     }
