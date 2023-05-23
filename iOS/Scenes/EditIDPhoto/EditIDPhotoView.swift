@@ -18,7 +18,7 @@ struct EditIDPhotoView: View {
     
     @State private var bottomControlButtonsBarSize: CGSize = .zero
     
-    @State private var previewImageBoundsInScreen: CGRect = .zero
+    @State private var previewImageBoundsInScreen: CGRect = .null
     
     @Binding var selectedProcess: IDPhotoProcessSelection
     
@@ -349,7 +349,7 @@ struct EditIDPhotoView: View {
                                             do {
                                                 try await Task.sleep(milliseconds: 100)
                                                 
-                                                guard self.previewImageBoundsInScreen == .zero else { throw CancellationError() }
+                                                guard self.previewImageBoundsInScreen == .null else { throw CancellationError() }
                                                 
                                                 Task { @MainActor in
                                                     self.previewImageBoundsInScreen = imageGeometry.frame(in: .global)

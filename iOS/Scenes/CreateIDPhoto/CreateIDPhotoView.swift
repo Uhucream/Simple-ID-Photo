@@ -38,7 +38,7 @@ struct CreateIDPhotoView: View {
     
     @State private var bottomControlButtonsBarSize: CGSize = .zero
     
-    @State private var previewImageBoundsInScreen: CGRect = .zero
+    @State private var previewImageBoundsInScreen: CGRect = .null
     
     @Binding var selectedProcess: IDPhotoProcessSelection
     
@@ -362,7 +362,7 @@ struct CreateIDPhotoView: View {
                                     Color.clear
                                         .task {
                                             Task {
-                                                guard self.previewImageBoundsInScreen == .zero else { return }
+                                                guard self.previewImageBoundsInScreen == .null else { return }
                                                 
                                                 try await Task.sleep(milliseconds: UInt64((CROP_VIEW_ANIMATION_DURATION_SECONDS) * 1000))
                                                 

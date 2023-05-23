@@ -55,7 +55,7 @@ struct EditIDPhotoViewContainer: View {
     
     private var detectedFaceRect: CGRect {
         get async throws {
-            try await detectFaceRect() ?? .zero
+            try await detectFaceRect()
         }
     }
     
@@ -109,7 +109,7 @@ struct EditIDPhotoViewContainer: View {
     
     @State private var paintedPhotoCIImage: CIImage? = nil
     
-    @State private var croppingCGRect: CGRect = .zero
+    @State private var croppingCGRect: CGRect = .null
     
     @State private var currentSelectedProcess: IDPhotoProcessSelection = .backgroundColor
     
@@ -262,9 +262,9 @@ struct EditIDPhotoViewContainer: View {
         shouldShowDiscardViewConfirmationDialog = true
     }
     
-    func detectFaceRect() async throws -> CGRect? {
+    func detectFaceRect() async throws -> CGRect {
         do {
-            let detectedRect: CGRect? = try await visionFrameworkHelper.detectFaceIncludingHairRectangle()
+            let detectedRect: CGRect = try await visionFrameworkHelper.detectFaceIncludingHairRectangle()
             
             return detectedRect
         } catch {
@@ -291,11 +291,11 @@ struct EditIDPhotoViewContainer: View {
         }
     }
     
-    func generateCroppingRect(from sizeVariant: IDPhotoSizeVariant) async -> CGRect? {
+    func generateCroppingRect(from sizeVariant: IDPhotoSizeVariant) async -> CGRect {
 
-        guard let detectedFaceRect = try? await detectedFaceRect else { return nil }
+        guard let detectedFaceRect = try? await detectedFaceRect else { return .null }
         
-        if detectedFaceRect == .zero { return nil }
+        if detectedFaceRect == .null { return .null }
         
         let faceHeightRatio: Double = sizeVariant.photoSize.faceHeight.value / sizeVariant.photoSize.height.value
         

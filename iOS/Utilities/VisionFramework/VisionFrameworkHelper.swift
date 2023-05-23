@@ -199,9 +199,9 @@ extension VisionFrameworkHelper {
         }
     }
     
-    public func detectFaceIncludingHairRectangle() async throws -> CGRect? {
+    public func detectFaceIncludingHairRectangle() async throws -> CGRect {
         do {
-            guard let sourceCIImage = sourceCIImage else { return nil }
+            guard let sourceCIImage = sourceCIImage else { return .null }
             
             let sourceImageExtent: CGRect = sourceCIImage.extent
             let sourceImageSize: CGSize = sourceImageExtent.size
@@ -214,7 +214,7 @@ extension VisionFrameworkHelper {
             
             let segmentationMask: CVPixelBuffer? = pixelBufferObservations?.first?.pixelBuffer
             
-            guard let segmentationMask: CVPixelBuffer = segmentationMask else { return nil }
+            guard let segmentationMask: CVPixelBuffer = segmentationMask else { return .null }
             
             let maskCIImage: CIImage = .init(cvImageBuffer: segmentationMask)
             
@@ -238,13 +238,13 @@ extension VisionFrameworkHelper {
                 imageOrientation: self.sourceImageOrientation
             )
             
-            guard let firstContourObservation = try await contoursObservations?.first else { return nil }
+            guard let firstContourObservation = try await contoursObservations?.first else { return .null }
             
-            guard let firstFaceObservation = try await faceObservations?.first else { return nil }
+            guard let firstFaceObservation = try await faceObservations?.first else { return .null }
             
             let segmentationMaskPersonContour: VNContour? = firstContourObservation.topLevelContours.max { $0.pointCount < $1.pointCount }
             
-            guard let segmentationMaskPersonContour = segmentationMaskPersonContour else { return nil }
+            guard let segmentationMaskPersonContour = segmentationMaskPersonContour else { return .null }
             
             let segmentationMaskPersonContourNormalizedBoundingBox: CGRect = segmentationMaskPersonContour.normalizedPath.boundingBox
             
@@ -254,7 +254,7 @@ extension VisionFrameworkHelper {
                 Int(sourceImageSize.height)
             )
 
-            guard let faceContourLandmark2D = firstFaceObservation.landmarks?.faceContour else { return nil }
+            guard let faceContourLandmark2D = firstFaceObservation.landmarks?.faceContour else { return .null }
             
             let denormalizedFaceContourPoints: [CGPoint] = faceContourLandmark2D.pointsInImage(imageSize: sourceImageSize)
             
@@ -266,7 +266,7 @@ extension VisionFrameworkHelper {
                 Int(sourceImageSize.height)
             )
             
-            guard let bottomPointOfFaceWithHairRect: CGPoint = denormalizedFaceContourPoints.min(by: { $0.y < $1.y }) else { return nil }
+            guard let bottomPointOfFaceWithHairRect: CGPoint = denormalizedFaceContourPoints.min(by: { $0.y < $1.y }) else { return .null }
             
             let bottomYOfFaceWithHairRect =  bottomPointOfFaceWithHairRect.y
             
