@@ -12,5 +12,5 @@ final class AppStorageStore: ObservableObject {
     
     static let shared: AppStorageStore = .init()
     
-    @AppStorage(.isHideAdPurchased) var isHideAdPurchased = false
+    @AppStorage(\.isHideAdPurchased) var isHideAdPurchased
 }

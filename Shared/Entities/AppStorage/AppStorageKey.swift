@@ -9,6 +9,12 @@
 import Foundation
 import SwiftUI
 
-enum AppStorageKey: String {
-    case isHideAdPurchased
+struct AppStorageKey<Value> {
+    let name: String
+    let defaultValue: Value
+
+    init(_ name: String, defaultValue: Value) {
+        self.name = name
+        self.defaultValue = defaultValue
+    }
 }
