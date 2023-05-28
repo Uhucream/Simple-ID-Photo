@@ -6,7 +6,7 @@
 //  
 //
 
-import UIKit
+import SwiftUI
 import Photos
 import PhotosUI
 
@@ -16,7 +16,26 @@ class PhotoEditingViewController: UIViewController, PHContentEditingController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
+        
+        let contentView: ContentView = .init()
+        
+        let contentViewHostingController: UIHostingController<ContentView> = .init(rootView: contentView)
+        
+        self.addChild(contentViewHostingController)
+        self.view.addSubview(contentViewHostingController.view)
+        
+        contentViewHostingController.didMove(toParent: self)
+        
+        contentViewHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            contentViewHostingController.view.heightAnchor.constraint(equalTo: self.view.heightAnchor),
+            contentViewHostingController.view.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            contentViewHostingController.view.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            contentViewHostingController.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+        ])
     }
         
     // MARK: - PHContentEditingController
