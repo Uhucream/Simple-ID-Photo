@@ -1,5 +1,9 @@
 # このアプリについて
 
+## AppStore
+
+https://apple.co/3NYbmEz
+
 ## コンセプト
 
 証明写真作成をより簡単に。
