@@ -1868,6 +1868,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
 				PRODUCT_NAME = SimpleIDPhoto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1909,6 +1910,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
 				PRODUCT_NAME = SimpleIDPhoto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -2233,7 +2235,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
+				minimumVersion = 10.0.0;
 			};
 		};
 		4796EC5229C03B10007C2980 /* XCRemoteSwiftPackageReference "Percentage" */ = {
