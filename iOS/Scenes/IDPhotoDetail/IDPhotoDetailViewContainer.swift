@@ -319,7 +319,7 @@ extension IDPhotoDetailViewContainer {
             height: .init(value: idPhotoMillimetersHeight, unit: .millimeters)
         )
         
-        let printingIDPhotoCGSize: CGSize = printingIDPhotoActualSize.cgSize(pixelDensity: PrintPageRenderer.APPLE_PRINT_PIXEL_DENSITY)
+        let printingIDPhotoCGSize: CGSize = printingIDPhotoActualSize.cgSize(pixelDensity: PrintPageRenderer.applePrintPixelDensity)
         
         guard let createdIDPhotoFileURL: URL = parseCreatedIDPhotoFileURL() else { return }
         
