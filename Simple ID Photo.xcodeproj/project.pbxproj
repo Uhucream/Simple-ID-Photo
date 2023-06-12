@@ -1708,6 +1708,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
 				PRODUCT_NAME = SimpleIDPhoto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1748,6 +1749,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "pictures.uhucream-takashi.Simple-ID-Photo";
 				PRODUCT_NAME = SimpleIDPhoto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
