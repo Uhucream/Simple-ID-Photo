@@ -1158,8 +1158,8 @@
 				47C49B362967FB1C00F2BF35 /* Sources */,
 				47C49B372967FB1C00F2BF35 /* Frameworks */,
 				47C49B382967FB1C00F2BF35 /* Resources */,
-				47301EC529CC1AA5007F41CA /* Upload dSYM to Firebase Crashlytics */,
 				47B9EA662A235B520027985B /* Embed Foundation Extensions */,
+				47301EC529CC1AA5007F41CA /* Upload dSYM to Firebase Crashlytics */,
 			);
 			buildRules = (
 			);
