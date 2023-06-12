@@ -28,9 +28,9 @@ public enum IDPhotoSizeVariant: Int, CaseIterable {
     case w50_h50
     
     var photoSize: IDPhotoSize {
-        let GENERIC_MARGIN_TOP: Measurement<UnitLength> = .init(value: 4, unit: .millimeters)
+        let genericMarginTop: Measurement<UnitLength> = .init(value: 4, unit: .millimeters)
         
-        let GENERIC_FACE_HEIGHT_PERCENTAGE: Double = (60 / 100)
+        let genericFaceHeightPercentage: Double = (60 / 100)
         
         switch self {
 
@@ -69,81 +69,81 @@ public enum IDPhotoSizeVariant: Int, CaseIterable {
             let width: Measurement<UnitLength> = .init(value: 24, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 30, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w25_h30:
             let width: Measurement<UnitLength> = .init(value: 25, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 30, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w30_h30:
             let width: Measurement<UnitLength> = .init(value: 30, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 30, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w30_h40:
             let width: Measurement<UnitLength> = .init(value: 30, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 40, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w35_h45:
             let width: Measurement<UnitLength> = .init(value: 35, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 45, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w40_h50:
             let width: Measurement<UnitLength> = .init(value: 40, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 50, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w40_h55:
             let width: Measurement<UnitLength> = .init(value: 40, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 55, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w40_h60:
             let width: Measurement<UnitLength> = .init(value: 40, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 60, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w45_h60:
             let width: Measurement<UnitLength> = .init(value: 45, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 60, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
             
         case .w50_h50:
             let width: Measurement<UnitLength> = .init(value: 50, unit: .millimeters)
             let height: Measurement<UnitLength> = .init(value: 50, unit: .millimeters)
             
-            let faceHeight: Measurement<UnitLength> = .init(value: height.value * GENERIC_FACE_HEIGHT_PERCENTAGE, unit: .millimeters)
+            let faceHeight: Measurement<UnitLength> = .init(value: height.value * genericFaceHeightPercentage, unit: .millimeters)
             
-            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: GENERIC_MARGIN_TOP)
+            return IDPhotoSize(width: width, height: height, faceHeight: faceHeight, marginTop: genericMarginTop)
         }
     }
 }
