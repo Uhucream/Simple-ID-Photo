@@ -23,7 +23,7 @@ struct CreatedIDPhotoHistoryCard: View {
     
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
 
-    var idPhotoSizeType: IDPhotoSizeVariant
+    var idPhotoSizeVariant: IDPhotoSizeVariant
 
     var idPhotoThumbnailImageURL: URL?
     
@@ -31,13 +31,13 @@ struct CreatedIDPhotoHistoryCard: View {
     
     init(
         createdIDPhoto: CreatedIDPhoto,
-        idPhotoSizeType: IDPhotoSizeVariant,
+        idPhotoSizeVariant: IDPhotoSizeVariant,
         idPhotoThumbnailImageURL: URL?,
         createdAt: Date
     ) {
         _createdIDPhoto = .init(wrappedValue: createdIDPhoto)
         
-        self.idPhotoSizeType = idPhotoSizeType
+        self.idPhotoSizeVariant = idPhotoSizeVariant
 
         self.idPhotoThumbnailImageURL = idPhotoThumbnailImageURL
 
@@ -46,13 +46,13 @@ struct CreatedIDPhotoHistoryCard: View {
     
     @ViewBuilder
     func renderTitle() -> some View {
-        let photoWidth: Int = .init(idPhotoSizeType.photoSize.width.value)
-        let photoHeight: Int = .init(idPhotoSizeType.photoSize.height.value)
+        let photoWidth: Int = .init(idPhotoSizeVariant.photoSize.width.value)
+        let photoHeight: Int = .init(idPhotoSizeVariant.photoSize.height.value)
         
-        if self.idPhotoSizeType == .original {
+        if self.idPhotoSizeVariant == .original {
             Text("オリジナルサイズ")
                 .fontWeight(.medium)
-        } else if self.idPhotoSizeType == .passport {
+        } else if self.idPhotoSizeVariant == .passport {
             Text("パスポートサイズ")
                 .fontWeight(.medium)
         } else {
@@ -99,10 +99,10 @@ struct CreatedIDPhotoHistoryCard: View {
             HStack(alignment: .center) {
 
                 HStack(alignment: .center, spacing: 12) {
-                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
+                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeVariant.photoSize
                     
                     let createdIDPhotoAspectRatio: CGFloat = {
-                        if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
+                        if self.idPhotoSizeVariant == .original || self.idPhotoSizeVariant == .custom {
                             return 3 / 4
                         }
                         
@@ -235,21 +235,21 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
         List {
             CreatedIDPhotoHistoryCard(
                 createdIDPhoto: mockCreatedIDPhoto,
-                idPhotoSizeType: mockHistory.idPhotoSizeType,
+                idPhotoSizeVariant: mockHistory.idPhotoSizeType,
                 idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
                 createdIDPhoto: mockCreatedIDPhoto,
-                idPhotoSizeType: .original,
+                idPhotoSizeVariant: .original,
                 idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
                 createdIDPhoto: mockCreatedIDPhoto,
-                idPhotoSizeType: .passport,
+                idPhotoSizeVariant: .passport,
                 idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
