@@ -57,7 +57,6 @@ struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where
         }()
         
         CreatedIDPhotoHistoryCard(
-            createdIDPhoto: createdIDPhotoHistory,
             idPhotoSizeVariant: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
             idPhotoThumbnailImageURL: thumbnailURL,
             createdAt: createdIDPhotoHistory.createdAt ?? .distantPast

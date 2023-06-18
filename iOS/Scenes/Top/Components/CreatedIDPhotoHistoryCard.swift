@@ -21,8 +21,6 @@ struct CreatedIDPhotoHistoryCard: View {
     @ScaledMetric(relativeTo: .callout) var titleScaleFactor: CGFloat = 1
     @ScaledMetric(relativeTo: .callout) var thumbnailScaleFactor: CGFloat = 1
     
-    @ObservedObject var createdIDPhoto: CreatedIDPhoto
-
     var idPhotoSizeVariant: IDPhotoSizeVariant
 
     var idPhotoThumbnailImageURL: URL?
@@ -30,13 +28,10 @@ struct CreatedIDPhotoHistoryCard: View {
     var createdAt: Date
     
     init(
-        createdIDPhoto: CreatedIDPhoto,
         idPhotoSizeVariant: IDPhotoSizeVariant,
         idPhotoThumbnailImageURL: URL?,
         createdAt: Date
     ) {
-        _createdIDPhoto = .init(wrappedValue: createdIDPhoto)
-        
         self.idPhotoSizeVariant = idPhotoSizeVariant
 
         self.idPhotoThumbnailImageURL = idPhotoThumbnailImageURL
@@ -234,21 +229,18 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
         
         List {
             CreatedIDPhotoHistoryCard(
-                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeVariant: mockHistory.idPhotoSizeType,
                 idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
-                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeVariant: .original,
                 idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
-                createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeVariant: .passport,
                 idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
