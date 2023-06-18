@@ -9,24 +9,12 @@
 import SwiftUI
 import Percentage
 
-fileprivate let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
-    let formatter: RelativeDateTimeFormatter = .init()
-    
-    formatter.unitsStyle = .abbreviated
-    
-    return formatter
-}()
-
-fileprivate let dateFormatter: DateFormatter = {
-    let formatter: DateFormatter = .init()
-    
-    formatter.dateStyle = .short
-    formatter.timeStyle = .none
-    
-    return formatter
-}()
-
 struct CreatedIDPhotoHistoryCard: View {
+    static let numericDateStyle: Date.FormatStyle = {
+        let style: Date.FormatStyle = .init(date: .numeric, time: .omitted)
+        
+        return style.month(.twoDigits).day(.twoDigits)
+    }()
     
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
@@ -34,8 +22,6 @@ struct CreatedIDPhotoHistoryCard: View {
     @ScaledMetric(relativeTo: .callout) var thumbnailScaleFactor: CGFloat = 1
     
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
-    
-    @State private var createdAtRelativeLabel: String
 
     private var idPhotoThumbnailImageURL: URL? {
         return parseImageFileURL()
@@ -50,10 +36,6 @@ struct CreatedIDPhotoHistoryCard: View {
         createdAt: Date
     ) {
         _createdIDPhoto = .init(wrappedValue: createdIDPhoto)
-        
-        _createdAtRelativeLabel = .init(
-            initialValue: relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
-        )
         
         self.idPhotoSizeType = idPhotoSizeType
         self.createdAt = createdAt
@@ -124,15 +106,19 @@ struct CreatedIDPhotoHistoryCard: View {
                     .lineLimit(1)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(createdAt, formatter: dateFormatter)
+                    Text(createdAt, format: CreatedIDPhotoHistoryCard.numericDateStyle)
                         .font(.subheadline)
                         .fontWeight(.medium)
                     
-                    Text(createdAtRelativeLabel)
-                        .font(.caption2)
-                        .onAppear {
-                            self.createdAtRelativeLabel = relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
-                        }
+                    Text(
+                        createdAt,
+                        format: .relative(
+                            presentation: .numeric,
+                            unitsStyle: .abbreviated
+                        )
+                    )
+                    .font(.caption2)
+                    .id(Int.random(in: 0...10)) // これがないと詳細画面から戻ったとき表示が更新されない
                 }
                 .foregroundColor(.secondaryLabel)
             }
@@ -225,15 +211,19 @@ struct CreatedIDPhotoHistoryCard: View {
                     Text("")
                         .font(.caption2)
                     
-                    Text(createdAt, formatter: dateFormatter)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
+                    Text(createdAt, format: CreatedIDPhotoHistoryCard.numericDateStyle)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
                     
-                    Text(createdAtRelativeLabel)
-                        .font(.caption2)
-                        .onAppear {
-                            self.createdAtRelativeLabel = relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now)
-                        }
+                    Text(
+                        createdAt,
+                        format: .relative(
+                            presentation: .numeric,
+                            unitsStyle: .abbreviated
+                        )
+                    )
+                    .font(.caption2)
+                    .id(Int.random(in: 0...10)) // これがないと詳細画面から戻ったとき表示が更新されない
                 }
                 .foregroundColor(.secondaryLabel)
             }
