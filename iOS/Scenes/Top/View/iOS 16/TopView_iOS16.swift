@@ -44,9 +44,22 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
         
         let currentRenderingID: String = "\(createdIDPhotoHistory.id ?? .init())\(createdIDPhotoHistory.updatedAt ?? .now)"
         
+        let thumbnailURL: URL? = {
+            let savedDirectoryURL: URL? = createdIDPhotoHistory.savedDirectory?.parseToDirectoryFileURL()
+            let fileName: String? = createdIDPhotoHistory.imageFileName
+            
+            guard let savedDirectoryURL, let fileName else { return nil }
+            
+            let filePathURL: URL = savedDirectoryURL
+                .appendingPathComponent(fileName, conformingTo: .fileURL)
+            
+            return filePathURL
+        }()
+        
         CreatedIDPhotoHistoryCard(
             createdIDPhoto: createdIDPhotoHistory,
             idPhotoSizeType: IDPhotoSizeVariant(rawValue: Int(createdIDPhotoHistory.appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .custom,
+            idPhotoThumbnailImageURL: thumbnailURL,
             createdAt: createdIDPhotoHistory.createdAt ?? .distantPast
         )
         .id(currentRenderingID)

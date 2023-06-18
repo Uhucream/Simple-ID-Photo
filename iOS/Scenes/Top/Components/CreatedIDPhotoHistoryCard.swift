@@ -23,21 +23,24 @@ struct CreatedIDPhotoHistoryCard: View {
     
     @ObservedObject var createdIDPhoto: CreatedIDPhoto
 
-    private var idPhotoThumbnailImageURL: URL? {
-        return parseImageFileURL()
-    }
     var idPhotoSizeType: IDPhotoSizeVariant
+
+    var idPhotoThumbnailImageURL: URL?
     
     var createdAt: Date
     
     init(
         createdIDPhoto: CreatedIDPhoto,
         idPhotoSizeType: IDPhotoSizeVariant,
+        idPhotoThumbnailImageURL: URL?,
         createdAt: Date
     ) {
         _createdIDPhoto = .init(wrappedValue: createdIDPhoto)
         
         self.idPhotoSizeType = idPhotoSizeType
+
+        self.idPhotoThumbnailImageURL = idPhotoThumbnailImageURL
+
         self.createdAt = createdAt
     }
     
@@ -66,36 +69,6 @@ struct CreatedIDPhotoHistoryCard: View {
                     .fontWeight(.medium)
             }
         }
-    }
-    
-    private func parseImageFileURL() -> URL? {
-        let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
-        
-        let LIBRARY_DIRECTORY_RAW_VALUE_INT64: Int64 = .init(DEFAULT_SAVE_DIRECTORY_ROOT.rawValue)
-        
-        let fileManager: FileManager = .default
-
-        let saveDestinationRootSearchDirectory: FileManager.SearchPathDirectory = FileManager.SearchPathDirectory(rawValue: .init(createdIDPhoto.savedDirectory?.rootSearchPathDirectory ?? LIBRARY_DIRECTORY_RAW_VALUE_INT64)) ?? DEFAULT_SAVE_DIRECTORY_ROOT
-        
-        let saveDestinationRootSearchDirectoryURL: URL? = fileManager.urls(for: saveDestinationRootSearchDirectory, in: .userDomainMask).first
-        
-        let relativePathFromRoot: String = createdIDPhoto.savedDirectory?.relativePathFromRootSearchPath ?? ""
-        let fileSaveDestinationURL: URL = .init(
-            fileURLWithPath: relativePathFromRoot,
-            isDirectory: true,
-            relativeTo: saveDestinationRootSearchDirectoryURL
-        )
-        
-        let createdIDPhotoFileName: String? = createdIDPhoto.imageFileName
-        
-        guard let createdIDPhotoFileName = createdIDPhotoFileName else { return nil }
-        
-        let createdIDPhotoFileURL: URL = fileSaveDestinationURL
-            .appendingPathComponent(createdIDPhotoFileName, conformingTo: .fileURL)
-        
-        guard fileManager.fileExists(atPath: createdIDPhotoFileURL.path) else { return nil }
-        
-        return createdIDPhotoFileURL
     }
     
     var body: some View {
@@ -247,22 +220,37 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
             updatedAt: .now
         )
         
+        let thumbnailURL: URL? = {
+            let savedDirectoryURL: URL? = mockCreatedIDPhoto.savedDirectory?.parseToDirectoryFileURL()
+            let fileName: String? = mockCreatedIDPhoto.imageFileName
+            
+            guard let savedDirectoryURL, let fileName else { return nil }
+            
+            let filePathURL: URL = savedDirectoryURL
+                .appendingPathComponent(fileName, conformingTo: .fileURL)
+            
+            return filePathURL
+        }()
+        
         List {
             CreatedIDPhotoHistoryCard(
                 createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: mockHistory.idPhotoSizeType,
+                idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
                 createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: .original,
+                idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
             
             CreatedIDPhotoHistoryCard(
                 createdIDPhoto: mockCreatedIDPhoto,
                 idPhotoSizeType: .passport,
+                idPhotoThumbnailImageURL: thumbnailURL,
                 createdAt: mockHistory.createdAt
             )
         }
