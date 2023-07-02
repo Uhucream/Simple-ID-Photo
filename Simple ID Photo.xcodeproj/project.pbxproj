@@ -72,6 +72,7 @@
 		478F83F929D12309004AFC1E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 478F83F829D12309004AFC1E /* GoogleMobileAds */; };
 		478F83FE29D12EAE004AFC1E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 478F83FD29D12EAE004AFC1E /* Settings.bundle */; };
 		479573E2296C1B1400B98881 /* IDPhotoSizePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479573E1296C1B1400B98881 /* IDPhotoSizePickerView.swift */; };
+		4795C4712A5162210087D98B /* SwiftyImageIO in Frameworks */ = {isa = PBXBuildFile; productRef = 4795C4702A5162210087D98B /* SwiftyImageIO */; };
 		4796EC1D29C03964007C2980 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4796EC1C29C03964007C2980 /* FirebaseAnalytics */; };
 		4796EC1F29C03964007C2980 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 4796EC1E29C03964007C2980 /* FirebaseAnalyticsOnDeviceConversion */; };
 		4796EC2129C03964007C2980 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4796EC2029C03964007C2980 /* FirebaseAnalyticsSwift */; };
@@ -307,6 +308,7 @@
 				4796EC3129C03964007C2980 /* FirebaseDatabaseSwift in Frameworks */,
 				4796EC4729C03964007C2980 /* FirebaseMessaging in Frameworks */,
 				4796EC2B29C03964007C2980 /* FirebaseAuthCombine-Community in Frameworks */,
+				4795C4712A5162210087D98B /* SwiftyImageIO in Frameworks */,
 				47091B7429D1B90A005E4D87 /* BetterSafariView in Frameworks */,
 				4796EC3729C03964007C2980 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				4796EC2129C03964007C2980 /* FirebaseAnalyticsSwift in Frameworks */,
@@ -1110,6 +1112,7 @@
 				4796EC5329C03B10007C2980 /* Percentage */,
 				479C37EE29C19E2D003D860C /* GoogleMobileAds */,
 				47091B7329D1B90A005E4D87 /* BetterSafariView */,
+				4795C4702A5162210087D98B /* SwiftyImageIO */,
 			);
 			productName = "Simple ID Photo";
 			productReference = 47C49B3A2967FB1C00F2BF35 /* SimpleIDPhoto.app */;
@@ -1279,6 +1282,7 @@
 				4796EC5229C03B10007C2980 /* XCRemoteSwiftPackageReference "Percentage" */,
 				479C37ED29C19E2D003D860C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				47091B7229D1B90A005E4D87 /* XCRemoteSwiftPackageReference "BetterSafariView" */,
+				4795C46F2A5162210087D98B /* XCRemoteSwiftPackageReference "SwiftyImageIO" */,
 			);
 			productRefGroup = 47C49B3B2967FB1C00F2BF35 /* Products */;
 			projectDirPath = "";
@@ -2060,6 +2064,14 @@
 				kind = branch;
 			};
 		};
+		4795C46F2A5162210087D98B /* XCRemoteSwiftPackageReference "SwiftyImageIO" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:Uhucream/SwiftyImageIO.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		4796EC1B29C03964007C2980 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -2211,6 +2223,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 479C37ED29C19E2D003D860C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
 			productName = GoogleMobileAds;
+		};
+		4795C4702A5162210087D98B /* SwiftyImageIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4795C46F2A5162210087D98B /* XCRemoteSwiftPackageReference "SwiftyImageIO" */;
+			productName = SwiftyImageIO;
 		};
 		4796EC1C29C03964007C2980 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
