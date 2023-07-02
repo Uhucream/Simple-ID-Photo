@@ -14,6 +14,7 @@ import CoreImage.CIFilterBuiltins
 import VideoToolbox
 import UniformTypeIdentifiers
 import Percentage
+import SwiftyImageIO
 
 struct SelectedSameValueAsPreviousError: Error {
     var localizedDescription: String {
@@ -288,32 +289,24 @@ struct CreateIDPhotoViewContainer: View {
                     return
                 }
                 
-                var dateFormatterForExif: DateFormatter {
-                    
-                    let formatter: DateFormatter = .init()
-                    
-                    formatter.locale = NSLocale.system
-                    formatter.dateFormat =  "yyyy:MM:dd HH:mm:ss"
-                    
-                    return formatter
-                }
-                
                 var exifModifiedPaintedPhotoCIImage: CIImage {
-                    var paintedPhotoProperties: Dictionary<String, Any> = paintedPhotoCIImage.properties
-
-                    let paintedPhotoExif: [String: Any]? = paintedPhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
+                    let paintedPhotoSwiftyProperties: CIImage.Properties? = paintedPhotoCIImage.swiftyImageProperties
                     
-                    guard var paintedPhotoExif = paintedPhotoExif else { return paintedPhotoCIImage }
+                    guard var paintedPhotoSwiftyProperties else { return paintedPhotoCIImage }
                     
-                    paintedPhotoExif[kCGImagePropertyExifDateTimeDigitized as String] = dateFormatterForExif.string(from: .now)
+                    paintedPhotoSwiftyProperties.exif?.dateTimeDigitized = .now
                     
-                    paintedPhotoProperties[kCGImagePropertyExifDictionary as String] = paintedPhotoExif
+                    paintedPhotoSwiftyProperties.gps = nil
                     
-                    paintedPhotoProperties[kCGImagePropertyGPSDictionary as String] = nil
-                    
-                    let exifModifiedCIImage: CIImage = paintedPhotoCIImage.settingProperties(paintedPhotoProperties)
-                    
-                    return exifModifiedCIImage
+                    do {
+                        let propertiesModifiedCIImage: CIImage = try paintedPhotoCIImage.settingProperties(paintedPhotoSwiftyProperties)
+                        
+                        return propertiesModifiedCIImage
+                    } catch {
+                        print(error)
+                        
+                        return paintedPhotoCIImage
+                    }
                 }
                 
                 let croppedPaintedPhotoCIImage: CIImage = exifModifiedPaintedPhotoCIImage.cropped(to: self.croppingCGRect)
@@ -362,13 +355,6 @@ struct CreateIDPhotoViewContainer: View {
                 
                 let imageFileNameWithPathExtension: String = savedFileURL.lastPathComponent
                 
-                let sourcePhotoProperties: [String: Any] = sourcePhotoCIImage.properties
-                let sourcePhotoExif: [String: Any]? = sourcePhotoProperties[kCGImagePropertyExifDictionary as String] as? [String: Any]
-                
-                let sourcePhotoShotDateString: String? = sourcePhotoExif?[kCGImagePropertyExifDateTimeOriginal as String] as? String
-                
-                let sourcePhotoShotDate: Date? = dateFormatterForExif.date(from: sourcePhotoShotDateString ?? "")
-                
                 let sourcePhotoSaveDirectoryRootPath: FileManager.SearchPathDirectory = .libraryDirectory
                 let sourcePhotoSaveDirectoryRelativePath: String = "SourcePhotos"
                 
@@ -408,7 +394,7 @@ struct CreateIDPhotoViewContainer: View {
                 let newSourcePhotoRecord: SourcePhoto = .init(
                     on: viewContext,
                     imageFileName: sourcePhotoTemporaryURL.lastPathComponent,
-                    shotDate: sourcePhotoShotDate,
+                    shotDate: sourcePhotoCIImage.swiftyImageProperties?.exif?.dateTimeOriginal,
                     savedDirectory: sourcePhotoSavedDirectory
                 )
                 
