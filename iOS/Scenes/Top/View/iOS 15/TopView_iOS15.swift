@@ -12,6 +12,10 @@ import GoogleMobileAds
 
 @available(iOS, introduced: 15, deprecated: 16)
 struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where CreatedIDPhotosResults.Element ==  CreatedIDPhoto {
+    enum DateSection: Int {
+        case older = 0
+        case newer = 1
+    }
     
     @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
@@ -24,6 +28,34 @@ struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where
     @Binding var currentEditMode: EditMode
     
     var createdIDPhotoHistories: CreatedIDPhotosResults
+    
+    private var historiesSectionedByDate: [DateSection: [CreatedIDPhoto]] {
+        createdIDPhotoHistories.reduce([DateSection: [CreatedIDPhoto]]()) { currentDictionary, createdIDPhoto in
+            let createdAt: Date = createdIDPhoto.createdAt ?? .distantPast
+            let startOfCreatedDate: Date = Calendar.gregorian.startOfDay(for: createdAt)
+            
+            let threeMonthsAgo: Date? = Calendar.gregorian.date(
+                byAdding: .month,
+                value: -3,
+                to: Calendar.gregorian.startOfDay(for: .now)
+            )
+            let startOfThreeMonthsAgo: Date = Calendar.gregorian.date(
+                from: Calendar.current.dateComponents(
+                    [.year, .month],
+                    from: threeMonthsAgo ?? .distantPast
+                )
+            ) ?? .distantPast
+            
+            let isDateWithinThreeMonths: Bool = startOfCreatedDate >= startOfThreeMonthsAgo
+            
+            let sectionForNewElement: DateSection = isDateWithinThreeMonths ? .newer : .older
+            
+            let newElement: [DateSection: [CreatedIDPhoto]] = [sectionForNewElement: [createdIDPhoto]]
+            
+            return currentDictionary.merging(newElement) { $0 + $1 }
+        }
+    }
+
     var dropAllowedFileUTTypes: [UTType]
     
     private let today: Date = Calendar.gregorian.startOfDay(for: .now)
@@ -168,7 +200,7 @@ struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 } else {
                     Group {
-                        if createdIDPhotoHistories.count == 0 {
+                        if historiesSectionedByDate.isEmpty {
                             VStack(alignment: .center) {
                                 Spacer()
                                 
@@ -181,94 +213,53 @@ struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where
                             .aspectRatio(3 / 4, contentMode: .fit)
                             .listRowBackground(Color.systemGroupedBackground)
                         } else {
-                            
-                            let historiesWithinThreeMonths: [CreatedIDPhoto] = createdIDPhotoHistories
-                                .filter { generatedIDPhoto in
-                                    let startOfShotDate: Date = Calendar.gregorian.startOfDay(for: generatedIDPhoto.sourcePhoto?.shotDate ?? .distantPast)
-                                    
-                                    let elapsedMonths: Int = Calendar.gregorian.dateComponents([.month], from: startOfShotDate, to: self.today).month!
-                                    
-                                    return elapsedMonths <= 3
-                                }
-                            
-                            let historiesOverThreeMonthsAgo: [CreatedIDPhoto] = createdIDPhotoHistories
-                                .filter { (history) -> Bool in
-                                    let isHistoryContainedOnThreeMonthsHistories: Bool = historiesWithinThreeMonths.contains(history)
-                                    
-                                    return !isHistoryContainedOnThreeMonthsHistories
-                                }
-                            
-                            if historiesWithinThreeMonths.count > 0 {
+                            ForEach(
+                                Array(historiesSectionedByDate.keys).sorted { $0.rawValue > $1.rawValue },
+                                id: \.rawValue
+                            ) { section in
+                                let historiesInSection = historiesSectionedByDate[section]
                                 
-                                let onDeleteForWithinThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
-                                    let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
-                                        .map { deleteTargetOffset in
-                                            return historiesWithinThreeMonths[deleteTargetOffset]
-                                        }
+                                if let historiesInSection, historiesInSection.count > 0 {
+                                    let sortedHistoriesInSection = historiesInSection.sorted {
+                                        ($0.createdAt ?? .distantPast) > ($1.createdAt ?? .distantPast)
+                                    }
                                     
-                                    self.onDeleteHistoryCardCallback?(deleteTargets)
-                                }
-                                
-                                Section {
-                                    ForEach(historiesWithinThreeMonths) { history in
-                                        NavigationLink(
-                                            destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                        ) {
-                                            renderHistoryCard(history)
-                                        }
-                                        .isDetailLink(true)
-                                        .contextMenu {
-                                            Button(
-                                                action: {
-                                                    onTapSaveImageButtonCallback?(history)
-                                                }
+                                    Section {
+                                        ForEach(sortedHistoriesInSection) { history in
+                                            NavigationLink(
+                                                destination: IDPhotoDetailViewContainer(
+                                                    createdIDPhoto: history
+                                                )
                                             ) {
-                                                Label("画像を保存", systemImage: "square.and.arrow.down")
+                                                renderHistoryCard(history)
+                                            }
+                                            .isDetailLink(true)
+                                            .contextMenu {
+                                                Button(
+                                                    action: {
+                                                        onTapSaveImageButtonCallback?(history)
+                                                    }
+                                                ) {
+                                                    Label("画像を保存", systemImage: "square.and.arrow.down")
+                                                }
                                             }
                                         }
-                                    }
-                                    .onDelete(perform: onDeleteForWithinThreeMonthsSection)
-                                    .deleteDisabled(!currentEditMode.isEditing)
-                                } header: {
-                                    Text("3ヶ月以内")
-                                }
-                            }
-                            
-                            if historiesOverThreeMonthsAgo.count > 0 {
-                                
-                                let onDeleteForOverThreeMonthsSection: (IndexSet) -> Void = { (deleteTargetsOffsets) in
-                                    let deleteTargets: [CreatedIDPhoto] = deleteTargetsOffsets
-                                        .map { deleteTargetOffset in
-                                            return historiesOverThreeMonthsAgo[deleteTargetOffset]
+                                        .onDelete { deleteTargetOffsets in
+                                            let deleteTargetHistories: [CreatedIDPhoto] = deleteTargetOffsets.map { historiesInSection[$0] }
+                                            
+                                            onDeleteHistoryCardCallback?(deleteTargetHistories)
                                         }
-                                    
-                                    self.onDeleteHistoryCardCallback?(deleteTargets)
-                                }
-                                
-                                Section {
-                                    ForEach(historiesOverThreeMonthsAgo) { history in
-                                        NavigationLink(
-                                            destination: IDPhotoDetailViewContainer(createdIDPhoto: history)
-                                        ) {
-                                            renderHistoryCard(history)
-                                        }
-                                        .isDetailLink(true)
-                                        .contextMenu {
-                                            Button(
-                                                action: {
-                                                    onTapSaveImageButtonCallback?(history)
-                                                }
-                                            ) {
-                                                Label("画像を保存", systemImage: "square.and.arrow.down")
-                                            }
+                                        .deleteDisabled(!currentEditMode.isEditing)
+                                    } header: {
+                                        if section == .newer {
+                                            Text("3ヶ月以内")
+                                        } else {
+                                            let newerSectionHistories: [CreatedIDPhoto] = historiesSectionedByDate[.newer] ?? []
+                                            let doesNewerSectionExist: Bool = newerSectionHistories.count > 0
+                                            
+                                            Text(doesNewerSectionExist ? "それ以前" : "3ヶ月以上前")
                                         }
                                     }
-                                    .onDelete(perform: onDeleteForOverThreeMonthsSection)
-                                    .deleteDisabled(!currentEditMode.isEditing)
-                                } header: {
-                                    let doesHistoriesWithInThreeMonthsExist: Bool = historiesWithinThreeMonths.count > 0
-                                    
-                                    Text(doesHistoriesWithInThreeMonthsExist ? "それ以前" : "3ヶ月以上前")
                                 }
                             }
                             
