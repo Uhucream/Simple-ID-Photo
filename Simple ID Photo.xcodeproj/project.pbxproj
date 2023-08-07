@@ -151,6 +151,8 @@
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
 		47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */; };
+		96A8C6412A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
+		96A8C6422A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -297,6 +299,7 @@
 		47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+ConvenienceInitializer.swift"; sourceTree = "<group>"; };
 		47FC2D6129C0346D00F865A4 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		47FC2D6229C0354200F865A4 /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
+		96A8C6402A80D19B00455F85 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -629,6 +632,7 @@
 			isa = PBXGroup;
 			children = (
 				47CDB2B929A5070F007FDE8E /* Measurement<UnitLength>+.swift */,
+				96A8C6402A80D19B00455F85 /* Calendar+.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -1421,6 +1425,7 @@
 				47D9041229692E9200DD4FAF /* Color+.swift in Sources */,
 				47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */,
 				47CFE7D629D01CF8006B34A9 /* View+.swift in Sources */,
+				96A8C6412A80D19B00455F85 /* Calendar+.swift in Sources */,
 				47CFE7D429D01CA0006B34A9 /* DetentSheetModifier.swift in Sources */,
 				47C49B94296849A700F2BF35 /* CameraView.swift in Sources */,
 				4707215029B029D800BD8535 /* AppliedIDPhotoFaceHeight+.swift in Sources */,
@@ -1501,6 +1506,7 @@
 				47DC49A529BF85E900516D4B /* ContentView.swift in Sources */,
 				47DC49A329BF85E900516D4B /* SimpleIDPhotoApp_macOS.swift in Sources */,
 				47DC49AF29BF85ED00516D4B /* Simple_ID_Photo__macOS_.xcdatamodeld in Sources */,
+				96A8C6422A80D19B00455F85 /* Calendar+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
