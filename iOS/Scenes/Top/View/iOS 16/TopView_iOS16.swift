@@ -10,8 +10,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 import GoogleMobileAds
 
-fileprivate let gregorianCalendar: Calendar = .init(identifier: .gregorian)
-
 @available(iOS 16, *)
 struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where CreatedIDPhotosResults.Element ==  CreatedIDPhoto {
     
@@ -28,7 +26,7 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
     var createdIDPhotoHistories: CreatedIDPhotosResults
     var dropAllowedFileUTTypes: [UTType]
     
-    private let today: Date = gregorianCalendar.startOfDay(for: .now)
+    private let today: Date = Calendar.gregorian.startOfDay(for: .now)
     
     var onTapSelectFromAlbumButton: (() -> Void)?
     var onTapTakePictureButton: (() -> Void)?
@@ -186,9 +184,9 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
                             
                             let historiesWithinThreeMonths: [CreatedIDPhoto] = createdIDPhotoHistories
                                 .filter { generatedIDPhoto in
-                                    let startOfShotDate: Date = gregorianCalendar.startOfDay(for: generatedIDPhoto.sourcePhoto?.shotDate ?? .distantPast)
+                                    let startOfShotDate: Date = Calendar.gregorian.startOfDay(for: generatedIDPhoto.sourcePhoto?.shotDate ?? .distantPast)
                                     
-                                    let elapsedMonths: Int = gregorianCalendar.dateComponents([.month], from: startOfShotDate, to: self.today).month!
+                                    let elapsedMonths: Int = Calendar.gregorian.dateComponents([.month], from: startOfShotDate, to: self.today).month!
                                     
                                     return elapsedMonths <= 3
                                 }
