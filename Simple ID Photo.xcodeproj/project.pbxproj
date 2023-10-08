@@ -151,6 +151,7 @@
 		47F9085529BDAD88000F7394 /* SettingsAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085429BDAD88000F7394 /* SettingsAboutView.swift */; };
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
 		47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */; };
+		96A44C342AD2517800E630C5 /* Vision+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A44C332AD2517800E630C5 /* Vision+.swift */; };
 		96A8C6412A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
 		96A8C6422A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
 /* End PBXBuildFile section */
@@ -299,6 +300,7 @@
 		47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedFilePath+ConvenienceInitializer.swift"; sourceTree = "<group>"; };
 		47FC2D6129C0346D00F865A4 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		47FC2D6229C0354200F865A4 /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
+		96A44C332AD2517800E630C5 /* Vision+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vision+.swift"; sourceTree = "<group>"; };
 		96A8C6402A80D19B00455F85 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -928,6 +930,7 @@
 		47D9041029692E7B00DD4FAF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				96A44C322AD2516A00E630C5 /* Vision */,
 				47F9085B29BDD8FF000F7394 /* Concurrency */,
 				47AB8B8929AF6046008C753F /* CoreData */,
 				4778B34E29A7427000F35EE0 /* Foundation */,
@@ -1071,6 +1074,14 @@
 				47F9085C29BDD913000F7394 /* Task+.swift */,
 			);
 			path = Concurrency;
+			sourceTree = "<group>";
+		};
+		96A44C322AD2516A00E630C5 /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				96A44C332AD2517800E630C5 /* Vision+.swift */,
+			);
+			path = Vision;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1451,6 +1462,7 @@
 				478689552980216600952BFD /* IDPhotoSizePicker.swift in Sources */,
 				47D9040F2969142500DD4FAF /* ScreenSizeHelper.swift in Sources */,
 				47AB8B8B29AF606D008C753F /* AppliedBackgroundColor+.swift in Sources */,
+				96A44C342AD2517800E630C5 /* Vision+.swift in Sources */,
 				4727C34F29C467A9000C9D90 /* TopView_iOS15.swift in Sources */,
 				47301EBC29CA94C0007F41CA /* AppStorage+.swift in Sources */,
 				47CFE7CC29CEC169006B34A9 /* DetentSheet.swift in Sources */,
