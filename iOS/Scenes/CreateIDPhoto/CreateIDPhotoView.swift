@@ -354,6 +354,10 @@ struct CreateIDPhotoView: View {
                                 }
                                 .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
                                 .offset(previewImageOffset)
+                                .animation(
+                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    value: previewImageOffset
+                                )
                                 .scaleEffect(previewImageViewScalingAmount)
                                 .position(
                                     x: croppingFrameProxy[namedAnchor.anchor].midX,
