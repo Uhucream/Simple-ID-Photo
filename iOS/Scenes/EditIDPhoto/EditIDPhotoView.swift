@@ -61,10 +61,10 @@ struct EditIDPhotoView: View {
 
         guard let originalSizePreviewUIImage = originalSizePreviewUIImage else { return .zero }
 
-        // MARK: .scaleEffect で画像を拡大しても、View の外周の大きさが変わるわけではない
         let previewImageActualScaleX = previewImageActualSize.width / originalSizePreviewUIImage.size.width
         let previewImageActualScaleY = previewImageActualSize.height / originalSizePreviewUIImage.size.height
 
+        // MARK: .scaleEffect モディファイアで Image を拡大しても、View の外周の大きさが変わるわけではないため、画面に表示されている画像の実際の縮小率分だけ移動量を縮小する必要がある
         return .init(
             width: (originalSizePreviewUIImage.size.width / 2 - previewCroppingCGRect.midX) * previewImageActualScaleX,
             height: (originalSizePreviewUIImage.size.height / 2 - previewCroppingCGRect.midY) * previewImageActualScaleY
