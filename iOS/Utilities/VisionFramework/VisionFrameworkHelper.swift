@@ -177,15 +177,45 @@ extension VisionFrameworkHelper {
 
             guard let sourceCIImage: CIImage = sourceCIImage else { return nil }
             
-            let pixelBufferObservations: [VNPixelBufferObservation]? = try await self.performPersonSegmentationRequest(
-                sourceImage: sourceCIImage,
-                imageOrientation: self.sourceImageOrientation,
-                qualityLevel: .accurate
-            )
+            var segmentationMask: CVPixelBuffer? {
+                get async throws {
+                    if #unavailable(iOS 17) {
+                        let pixelBufferObservations: [VNPixelBufferObservation]? = try await self.performPersonSegmentationRequest(
+                            sourceImage: sourceCIImage,
+                            imageOrientation: self.sourceImageOrientation,
+                            qualityLevel: .accurate
+                        )
+                        
+                        let personSegmentationMask: CVPixelBuffer? = pixelBufferObservations?.first?.pixelBuffer
+                        
+                        return personSegmentationMask
+                    }
+                    
+                    guard #available(iOS 17, *) else { return nil }
+                    
+                    let personInstanceMaskRequest: VNGeneratePersonInstanceMaskRequest = .init()
+                    
+                    personInstanceMaskRequest.preferBackgroundProcessing = true
+                    
+                    let imageRequestHandler: VNImageRequestHandler = .init(
+                        ciImage: sourceCIImage,
+                        orientation: self.sourceImageOrientation
+                    )
+                    
+                    try await imageRequestHandler.perform([personInstanceMaskRequest])
+                    
+                    guard let result = personInstanceMaskRequest.results?.first else { return nil }
+                    
+                    let foremostPersonInstanceMask: CVPixelBuffer = try result.generateScaledMaskForImage(
+                        forInstances: IndexSet(integer: 1),
+                        from: imageRequestHandler
+                    )
+                    
+                    return foremostPersonInstanceMask
+                }
+            }
             
-            let segmentationMask: CVPixelBuffer? = pixelBufferObservations?.first?.pixelBuffer
-            
-            guard let segmentationMask: CVPixelBuffer = segmentationMask else { return nil }
+            guard let segmentationMask: CVPixelBuffer = try await segmentationMask else { return nil }
             
             let combinedImage: CIImage? = maskImage(
                 inputImage: sourceCIImage,
@@ -206,15 +236,45 @@ extension VisionFrameworkHelper {
             let sourceImageExtent: CGRect = sourceCIImage.extent
             let sourceImageSize: CGSize = sourceImageExtent.size
             
-            let pixelBufferObservations: [VNPixelBufferObservation]? = try await self.performPersonSegmentationRequest(
-                sourceImage: sourceCIImage,
-                imageOrientation: self.sourceImageOrientation,
-                qualityLevel: .balanced
-            )
+            var segmentationMask: CVPixelBuffer? {
+                get async throws {
+                    if #unavailable(iOS 17) {
+                        let pixelBufferObservations: [VNPixelBufferObservation]? = try await self.performPersonSegmentationRequest(
+                            sourceImage: sourceCIImage,
+                            imageOrientation: self.sourceImageOrientation,
+                            qualityLevel: .balanced
+                        )
+                        
+                        let personSegmentationMask: CVPixelBuffer? = pixelBufferObservations?.first?.pixelBuffer
+                        
+                        return personSegmentationMask
+                    }
+                    
+                    guard #available(iOS 17, *) else { return nil }
+                    
+                    let personInstanceMaskRequest: VNGeneratePersonInstanceMaskRequest = .init()
+                    
+                    personInstanceMaskRequest.preferBackgroundProcessing = true
+                    
+                    let imageRequestHandler: VNImageRequestHandler = .init(
+                        ciImage: sourceCIImage,
+                        orientation: self.sourceImageOrientation
+                    )
+                    
+                    try await imageRequestHandler.perform([personInstanceMaskRequest])
+                    
+                    guard let result = personInstanceMaskRequest.results?.first else { return nil }
+                    
+                    let foremostPersonInstanceMask: CVPixelBuffer = try result.generateScaledMaskForImage(
+                        forInstances: IndexSet(integer: 1),
+                        from: imageRequestHandler
+                    )
+                    
+                    return foremostPersonInstanceMask
+                }
+            }
             
-            let segmentationMask: CVPixelBuffer? = pixelBufferObservations?.first?.pixelBuffer
-            
-            guard let segmentationMask: CVPixelBuffer = segmentationMask else { return .null }
+            guard let segmentationMask: CVPixelBuffer = try await segmentationMask else { return .null }
             
             let maskCIImage: CIImage = .init(cvImageBuffer: segmentationMask)
             
