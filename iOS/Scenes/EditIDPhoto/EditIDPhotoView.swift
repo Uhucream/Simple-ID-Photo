@@ -15,13 +15,11 @@ fileprivate let CROP_VIEW_ANIMATION_DURATION_SECONDS: Double = 0.5
 struct EditIDPhotoView: View {
 
     @Namespace private var previewImageNamespace
-    
-    @State private var bottomControlButtonsBarSize: CGSize = .zero
-    
-    @State private var previewImageBoundsInScreen: CGRect = .null
-    
+
+    @State private var previewImageActualSize: CGSize = .zero
+
     @Binding var selectedProcess: IDPhotoProcessSelection
-    
+
     @Binding var selectedBackgroundColor: Color
     @Binding var selectedBackgroundColorLabel: String
     
@@ -59,20 +57,20 @@ struct EditIDPhotoView: View {
     }
     
     private var previewImageOffset: CGSize {
-        
-        if previewImageBoundsInScreen.size == .zero { return .zero }
+        if previewImageActualSize == .zero { return .zero }
 
-        guard let originalSizePreviewUIImage = originalSizePreviewUIImage, originalSizePreviewUIImage.size != .zero else { return .zero }
-        
-        let previewImageActualScaleX = previewImageBoundsInScreen.width / originalSizePreviewUIImage.size.width
-        let previewImageActualScaleY = previewImageBoundsInScreen.height / originalSizePreviewUIImage.size.height
-        
+        guard let originalSizePreviewUIImage = originalSizePreviewUIImage else { return .zero }
+
+        let previewImageActualScaleX = previewImageActualSize.width / originalSizePreviewUIImage.size.width
+        let previewImageActualScaleY = previewImageActualSize.height / originalSizePreviewUIImage.size.height
+
+        // MARK: .scaleEffect モディファイアで Image を拡大しても、View の外周の大きさが変わるわけではないため、画面に表示されている画像の実際の縮小率分だけ移動量を縮小する必要がある
         return .init(
             width: (originalSizePreviewUIImage.size.width / 2 - previewCroppingCGRect.midX) * previewImageActualScaleX,
             height: (originalSizePreviewUIImage.size.height / 2 - previewCroppingCGRect.midY) * previewImageActualScaleY
         )
     }
-    
+
     private(set) var onTapDismissButtonCallback: (() -> Void)? = nil
 
     private(set) var onTapDoneButtonCallback: (() -> Void)? = nil
@@ -112,17 +110,17 @@ struct EditIDPhotoView: View {
         VStack(spacing: 0) {
             ZStack {
                 if self.selectedProcess == .backgroundColor {
-                    VStack {
+                    VStack(spacing: 16) {
                         Text(selectedBackgroundColorLabel)
                             .foregroundColor(.white)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(.ultraThickMaterial, in: RoundedRectangle(cornerRadius: 4))
                             .environment(\.colorScheme, .dark)
-                        
+
                         HStack {
                             Spacer()
-                            
+
                             HStack(spacing: 12) {
                                 RoundedRectangle(cornerRadius: 4)
                                     .fill(.clear)
@@ -245,188 +243,139 @@ struct EditIDPhotoView: View {
                 }
                 .tint(.yellow)
                 .controlSize(.mini)
-                .disabled(shouldDisableDoneButton)
             }
             .frame(maxHeight: 28)
             .padding(.vertical)
             .padding(.horizontal, 4)
         }
-        .background {
-            GeometryReader { buttonsGeometry in
-                
-                let buttonsSize: CGSize = buttonsGeometry.size
-                
-                Color.clear
-                    .onAppear {
-                        self.bottomControlButtonsBarSize = buttonsSize
-                    }
-                    .onChange(of: buttonsSize) { newButtonsSize in
-                        self.bottomControlButtonsBarSize = newButtonsSize
-                    }
-            }
-        }
     }
-    
-    @ViewBuilder
-    func ChangeBackgroundColorView() -> some View {
-        VStack(alignment: .center) {
-            HStack {
-                Text("背景色")
-                    .fontWeight(.light)
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-            }
-            .padding()
-            
-            VStack(spacing: 0) {
-                Spacer()
-                
-                if let croppedPreviewUIImage = croppedPreviewUIImage {
-                    Image(uiImage: croppedPreviewUIImage)
-                        .resizable()
-                        .scaledToFit()
+
+    var body: some View {
+        VStack(alignment: .center, spacing: 0) {
+            Text(selectedProcess == .backgroundColor ? "背景色" : "サイズ")
+                .fontWeight(.light)
+                .font(.subheadline)
+                .foregroundColor(.white)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .transaction { transaction in
+                    transaction.animation = .none
                 }
-                
-                Spacer()
+
+            Spacer()
+
+            if previewCroppingCGRect != .zero {
+                // MARK: 座標取得用
+                //
+                Color.clear
+                    .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
+                    .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                    .anchorPreference(
+                        key: NamedBoundsPreferenceKey.self,
+                        value: .bounds
+                    ) {
+                        [NamedAnchor(name: "croppingFrame", anchor: $0)]
+                    }
             }
-            .matchedGeometryEffect(
-                id: "previewImage",
-                in: previewImageNamespace
-            )
-            .transaction { transaction in
-                transaction.disablesAnimations = selectedProcess == .size
-            }
-            
+
+            Spacer()
+
             BottomControlButtons()
         }
-    }
-    
-    @ViewBuilder
-    func CroppingFrame() -> some View {
-        Color.clear
-            .background(.regularMaterial, in: Rectangle())
-            .reverseMask {
-                if previewCroppingCGRect.size != .zero && previewImageBoundsInScreen != .zero {
-                    Rectangle()
-                        .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
-                        .position(
-                            x: UIScreen.main.bounds.width / 2,
-                            y: previewImageBoundsInScreen.midY
-                        )
-                }
-            }
-            .overlay {
-                if previewCroppingCGRect.size != .zero && previewImageBoundsInScreen != .zero {
-                    Rectangle()
-                        .stroke(.white, lineWidth: 2)
-                        .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
-                        .position(
-                            x: UIScreen.main.bounds.width / 2,
-                            y: previewImageBoundsInScreen.midY
-                        )
-                }
-            }
-            .environment(\.colorScheme, .dark)
-    }
-    
-    @ViewBuilder
-    func ChangeIDPhotoSizeView() -> some View {
-        ZStack {
-            VStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    Spacer()
-                    
-                    if let originalSizePreviewUIImage = originalSizePreviewUIImage {
-                        Image(uiImage: originalSizePreviewUIImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .background {
-                                GeometryReader { imageGeometry in
-                                    Color.clear
-                                        .task(id: imageGeometry.size) {
-                                            do {
-                                                try await Task.sleep(milliseconds: 100)
-                                                
-                                                guard self.previewImageBoundsInScreen == .null else { throw CancellationError() }
-                                                
-                                                Task { @MainActor in
-                                                    self.previewImageBoundsInScreen = imageGeometry.frame(in: .global)
-                                                }
-                                            } catch {
-                                                print(error)
+        .backgroundPreferenceValue(NamedBoundsPreferenceKey.self) { namedAnchors in
+            if let namedAnchor = namedAnchors.filter({ $0.name == "croppingFrame" }).last {
+                GeometryReader { croppingFrameProxy in
+                    ZStack {
+                        if selectedProcess == .backgroundColor, let croppedPreviewUIImage {
+                            Image(uiImage: croppedPreviewUIImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .position(
+                                    x: croppingFrameProxy[namedAnchor.anchor].midX,
+                                    y: croppingFrameProxy[namedAnchor.anchor].midY
+                                )
+                        }
+
+                        if selectedProcess == .size, let originalSizePreviewUIImage {
+                            Image(uiImage: originalSizePreviewUIImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .overlay {
+                                    GeometryReader { imageGeometry in
+                                        Color.clear
+                                            .preference(key: SizePreferenceKey.self, value: imageGeometry.size)
+                                            .onPreferenceChange(SizePreferenceKey.self) { imageSize in
+                                                previewImageActualSize = imageSize
                                             }
-                                        }
+                                    }
+                                }
+                                .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                .offset(previewImageOffset)
+                                .animation(
+                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    value: previewImageOffset
+                                )
+                                .scaleEffect(previewImageViewScalingAmount)
+                                .position(
+                                    x: croppingFrameProxy[namedAnchor.anchor].midX,
+                                    y: croppingFrameProxy[namedAnchor.anchor].midY
+                                )
+                                .animation(
+                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    value: previewImageViewScalingAmount
+                                )
+                                .transition(.scale)
+                        }
+                    }
+                    .transaction { transaction in
+                        transaction.animation = .none
+                    }
+                }
+                .overlay {
+                    GeometryReader { proxy in
+                        Rectangle()
+                            .fill(.regularMaterial)
+                            .reverseMask {
+                                if previewCroppingCGRect.size != .zero {
+                                    Rectangle()
+                                        .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
+                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .position(
+                                            x: proxy[namedAnchor.anchor].midX,
+                                            y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
+                                        )
+
                                 }
                             }
-                            .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
-                            .offset(previewImageOffset)
-                            .animation(.easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS), value: previewImageOffset)
-                            .scaleEffect(previewImageViewScalingAmount)
-                            .animation(.easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS), value: previewImageViewScalingAmount)
-                            .transition(.scale)
-                            .transaction { transaction in
-                                transaction.disablesAnimations = self.croppingCGRect.size == .zero
+                            .overlay {
+                                if previewCroppingCGRect.size != .zero {
+                                    Rectangle()
+                                        .stroke(.white, lineWidth: 2)
+                                        .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
+                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .position(
+                                            x: proxy[namedAnchor.anchor].midX,
+                                            y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
+                                        )
+
+                                }
                             }
+                            .opacity(selectedProcess == .size ? 1 : 0)
+                            .ignoresSafeArea()
+                            .animation(
+                                .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                value: previewImageViewScalingAmount
+                            )
+                            .transition(.scale)
+                            .environment(\.colorScheme, .dark)
                     }
-                    
-                    Spacer()
-                }
-                .matchedGeometryEffect(
-                    id: "previewImage",
-                    in: previewImageNamespace
-                )
-                
-                if bottomControlButtonsBarSize != .zero {
-                    //  MARK: これがないと、クロップの枠がサイズピッカーの上に接触してしまう
-                    Rectangle()
-                        .fill(.clear)
-                        .aspectRatio(bottomControlButtonsBarSize, contentMode: .fit)
                 }
             }
-            
-            CroppingFrame()
-                .edgesIgnoringSafeArea(.all)
-                .animation(
-                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
-                    value: croppingCGRect
-                )
-                .transition(.scale)
-                .overlay {
-                    VStack(alignment: .center, spacing: 0) {
-                        Text("サイズ")
-                            .fontWeight(.light)
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                        
-                        Spacer()
-                        
-                        BottomControlButtons()
-                    }
-            }
-        }
-    }
-    
-    var body: some View {
-        ZStack {
-            if selectedProcess == .backgroundColor {
-                ChangeBackgroundColorView()
-            }
-            
-            if selectedProcess == .size {
-                ChangeIDPhotoSizeView()
-            }
-        }
-        .transaction { transaction in
-            transaction.animation = .none
         }
         .background {
             Color
                 .black
-                .overlay(.bar)
+                .overlay(.bar, in: Rectangle())
                 .environment(\.colorScheme, .dark)
                 .edgesIgnoringSafeArea(.all)
         }
