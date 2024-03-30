@@ -138,7 +138,6 @@
 		47F9085D29BDD913000F7394 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F9085C29BDD913000F7394 /* Task+.swift */; };
 		47FB50C029B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FB50BF29B49F6100095266 /* SavedFilePath+ConvenienceInitializer.swift */; };
 		96A44C342AD2517800E630C5 /* Vision+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A44C332AD2517800E630C5 /* Vision+.swift */; };
-		96A697BC2BB7EFC5008C329A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 96A697BB2BB7EEE6008C329A /* PrivacyInfo.xcprivacy */; };
 		96A8C6412A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
 		96A8C6422A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
 /* End PBXBuildFile section */
@@ -288,7 +287,6 @@
 		47FC2D6129C0346D00F865A4 /* Info-iOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-iOS.plist"; sourceTree = "<group>"; };
 		47FC2D6229C0354200F865A4 /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
 		96A44C332AD2517800E630C5 /* Vision+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vision+.swift"; sourceTree = "<group>"; };
-		96A697BB2BB7EEE6008C329A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		96A8C6402A80D19B00455F85 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -758,7 +756,6 @@
 				47FC2D6129C0346D00F865A4 /* Info-iOS.plist */,
 				47F41BE529C99FB000CEDB17 /* iOS.entitlements */,
 				478F83FD29D12EAE004AFC1E /* Settings.bundle */,
-				96A697BB2BB7EEE6008C329A /* PrivacyInfo.xcprivacy */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -1282,7 +1279,6 @@
 				47CFE7DB29D026FC006B34A9 /* GoogleService-Info.plist in Resources */,
 				4778B34629A7396000F35EE0 /* Colors.xcassets in Resources */,
 				47C49B452967FB1E00F2BF35 /* Preview Assets.xcassets in Resources */,
-				96A697BC2BB7EFC5008C329A /* PrivacyInfo.xcprivacy in Resources */,
 				479BBC7729696DCB00C02BB7 /* Localizable.strings in Resources */,
 				47C49B422967FB1E00F2BF35 /* Assets.iOS.xcassets in Resources */,
 				4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */,
