@@ -7,11 +7,11 @@
 #
 
 if [[ $CI_XCODE_SCHEME = "[Debug] Simple ID Photo (iOS)" ]]; then
-    XCCONFIG_FILE="${CI_WORKSPACE}/Shared/EnvironmentVariables/Debug/EnvironmentVariables_Debug.xcconfig"
+    XCCONFIG_FILE="${CI_PRIMARY_REPOSITORY_PATH}/Shared/EnvironmentVariables/Debug/EnvironmentVariables_Debug.xcconfig"
 fi
 
 if [[ $CI_XCODE_SCHEME = "[Release] Simple ID Photo (iOS)" ]]; then
-    XCCONFIG_FILE="${CI_WORKSPACE}/Shared/EnvironmentVariables/Release/EnvironmentVariables_Release.xcconfig"
+    XCCONFIG_FILE="${CI_PRIMARY_REPOSITORY_PATH}/Shared/EnvironmentVariables/Release/EnvironmentVariables_Release.xcconfig"
 fi
 
 echo .xcconfig file path is ${XCCONFIG_FILE}
