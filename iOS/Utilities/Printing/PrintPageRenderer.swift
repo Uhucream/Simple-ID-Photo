@@ -9,7 +9,7 @@
 import UIKit
 
 class PrintPageRenderer: UIPrintPageRenderer {
-    static let APPLE_PRINT_PIXEL_DENSITY: Double = 72
+    static let applePrintPixelDensity: Double = 72
     
     var onDrawPage: ((Int, CGRect) -> Void)?
     var onDrawHeaderForPage: ((Int, CGRect) -> Void)?
