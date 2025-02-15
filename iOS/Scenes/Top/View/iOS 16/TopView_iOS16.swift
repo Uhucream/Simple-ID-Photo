@@ -23,7 +23,7 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
     
     @Binding var shouldShowAdvertisement: Bool
     
-    @Binding var nativeAdObject: GADNativeAd?
+    @Binding var nativeAdObject: NativeAd?
     
     @Binding var currentEditMode: EditMode
     

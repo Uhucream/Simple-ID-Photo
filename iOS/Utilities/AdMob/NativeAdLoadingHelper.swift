@@ -9,13 +9,13 @@
 import Combine
 import GoogleMobileAds
 
-class NativeAdLoadingHelper: NSObject, GADNativeAdLoaderDelegate, ObservableObject {
+class NativeAdLoadingHelper: NSObject, NativeAdLoaderDelegate, ObservableObject {
     
-    @Published private(set) var nativeAd: GADNativeAd? = nil
+    @Published private(set) var nativeAd: NativeAd? = nil
     
     private var advertisementUnitID: String
     
-    private var adLoader: GADAdLoader!
+    private var adLoader: AdLoader!
     
     init(advertisementUnitID: String) {
         self.advertisementUnitID = advertisementUnitID
@@ -31,16 +31,16 @@ class NativeAdLoadingHelper: NSObject, GADNativeAdLoaderDelegate, ObservableObje
         
         adLoader.delegate = self
 
-        adLoader.load(GADRequest())
+        adLoader.load(Request())
     }
     
-    func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADNativeAd) {
+    func adLoader(_ adLoader: AdLoader, didReceive nativeAd: NativeAd) {
         self.nativeAd = nativeAd
         
         print(nativeAd.debugDescription)
     }
     
-    func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: Error) {
+    func adLoader(_ adLoader: AdLoader, didFailToReceiveAdWithError error: Error) {
         print(error)
     }
 }

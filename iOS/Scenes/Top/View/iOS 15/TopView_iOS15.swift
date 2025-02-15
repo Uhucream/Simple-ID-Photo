@@ -23,8 +23,8 @@ struct TopView_iOS15<CreatedIDPhotosResults: RandomAccessCollection>: View where
     
     @Binding var shouldShowAdvertisement: Bool
     
-    @Binding var nativeAdObject: GADNativeAd?
-    
+    @Binding var nativeAdObject: NativeAd?
+
     @Binding var currentEditMode: EditMode
     
     var createdIDPhotoHistories: CreatedIDPhotosResults

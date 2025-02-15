@@ -20,8 +20,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         FirebaseApp.configure()
 
-        GADMobileAds.sharedInstance().start()
-        
+        MobileAds.shared.start()
+
         return true
     }
 }

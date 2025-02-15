@@ -11,16 +11,16 @@ import GoogleMobileAds
 
 struct ListAdvertisementCard: UIViewRepresentable {
     
-    @Binding var nativeAd: GADNativeAd
+    @Binding var nativeAd: NativeAd
     
     func makeUIView(context: Context) -> UIView {
         
         let containerView: UIView = .init()
         
-        let nativeAdViewFromXIB: GADNativeAdView = Bundle.main.loadNibNamed(
+        let nativeAdViewFromXIB: NativeAdView = Bundle.main.loadNibNamed(
             "ListAdvertisementCard",
             owner: nil
-        )?.first as! GADNativeAdView
+        )?.first as! NativeAdView
         
         nativeAdViewFromXIB.translatesAutoresizingMaskIntoConstraints = false
         
@@ -41,7 +41,7 @@ struct ListAdvertisementCard: UIViewRepresentable {
     
     func updateUIView(_ containerView: UIView, context: Context) {
         
-        guard let nativeAdView = containerView.subviews.first as? GADNativeAdView else { return }
+        guard let nativeAdView = containerView.subviews.first as? NativeAdView else { return }
         
         nativeAdView.nativeAd = nativeAd
         
