@@ -265,7 +265,7 @@ struct TopView_iOS16<CreatedIDPhotosResults: RandomAccessCollection>: View where
                             if let nativeAdObject = nativeAdObject, shouldShowAdvertisement {
                                 Section {
                                     ListAdvertisementCard(
-                                        nativeAd: .constant(nativeAdObject)
+                                        nativeAd: nativeAdObject
                                     )
                                     .frame(minHeight: 80)
                                 }

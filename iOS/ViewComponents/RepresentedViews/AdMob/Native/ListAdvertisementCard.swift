@@ -11,8 +11,12 @@ import GoogleMobileAds
 
 struct ListAdvertisementCard: UIViewRepresentable {
     
-    @Binding var nativeAd: NativeAd
-    
+    private var nativeAd: NativeAd
+
+    init(nativeAd: NativeAd) {
+        self.nativeAd = nativeAd
+    }
+
     func makeUIView(context: Context) -> UIView {
         
         let containerView: UIView = .init()
