@@ -206,8 +206,8 @@ struct IDPhotoDetailView: View {
                             .foregroundColor(Color.secondaryLabel)
                         
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(Date(), style: .date)
-                            
+                            Text(createdAt, style: .date)
+
                             Text(relativeDateTimeFormatter.localizedString(for: createdAt, relativeTo: .now))
                                 .font(.caption2)
                         }
