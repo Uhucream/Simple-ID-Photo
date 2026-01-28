@@ -23,7 +23,6 @@ public final class IDPhotoEditor {
     private var paintedOriginalSizeImage: CIImage
     private var currentSelectedBackgroundColor: Color?
     private var currentCroppingRule: CroppingRule?
-    private var cachedOriginalSizeImage: CIImage?
 
     public init(
         sourceImage: CIImage,
@@ -56,7 +55,6 @@ public final class IDPhotoEditor {
             return paintedOriginalSizeImage
         }
 
-        cachedOriginalSizeImage = paintedOriginalSizeImage
         return paintedOriginalSizeImage.cropped(to: croppingRect)
     }
 
@@ -185,6 +183,10 @@ private extension IDPhotoEditor {
             let scaleX = image.extent.width / maskImage.extent.width
             let scaleY = image.extent.height / maskImage.extent.height
             return maskImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
+        }
+
+        guard #available(iOS 17, *) else {
+            throw EditorError.missingSegmentationMask
         }
 
         let request = VNGeneratePersonInstanceMaskRequest()
@@ -471,45 +473,36 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Original
 }
 
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.StandardCroppingRule {
-    static var w24_h30: Self {
-        standardRule(width: 24, height: 30)
+    static var w30_h24: Self {
+        standardRule(width: 30, height: 24)
     }
 
-    static var w25_h30: Self {
-        standardRule(width: 25, height: 30)
+    static var w40_h30: Self {
+        standardRule(width: 40, height: 30)
+    }
+
+    static var w45_h35: Self {
+        standardRule(width: 45, height: 35)
+    }
+
+    static var w25_h25: Self {
+        standardRule(width: 25, height: 25)
+    }
+
+    static var w30_h25: Self {
+        standardRule(width: 30, height: 25)
     }
 
     static var w30_h30: Self {
         standardRule(width: 30, height: 30)
     }
 
-    static var w30_h40: Self {
-        standardRule(width: 30, height: 40)
+    static var w60_h40: Self {
+        standardRule(width: 60, height: 40)
     }
 
-    static var w35_h45: Self {
-        standardRule(width: 35, height: 45)
-    }
-
-    static var w40_h50: Self {
-        standardRule(width: 40, height: 50)
-    }
-
-    static var w40_h55: Self {
-        standardRule(width: 40, height: 55)
-    }
-
-    static var w40_h60: Self {
-        standardRule(width: 40, height: 60)
-    }
-
-    static var w45_h60: Self {
-        standardRule(width: 45, height: 60)
-    }
-
-    @available(*, deprecated, message: "Deprecated size variant.")
-    static var w50_h50: Self {
-        standardRule(width: 50, height: 50)
+    static var w60_h45: Self {
+        standardRule(width: 60, height: 45)
     }
 
     private static func standardRule(width: Double, height: Double) -> Self {
