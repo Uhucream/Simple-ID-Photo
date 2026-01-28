@@ -485,24 +485,12 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Standard
         standardRule(width: 45, height: 35)
     }
 
-    static var w25_h25: Self {
-        standardRule(width: 25, height: 25)
-    }
-
     static var w30_h25: Self {
         standardRule(width: 30, height: 25)
     }
 
-    static var w30_h30: Self {
-        standardRule(width: 30, height: 30)
-    }
-
-    static var w60_h40: Self {
-        standardRule(width: 60, height: 40)
-    }
-
-    static var w60_h45: Self {
-        standardRule(width: 60, height: 45)
+    static var w70_h50: Self {
+        standardRule(width: 70, height: 50)
     }
 
     private static func standardRule(width: Double, height: Double) -> Self {
@@ -517,5 +505,55 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Standard
         let marginTop = Measurement<UnitLength>(value: 4, unit: .millimeters)
 
         return .init(size: size, faceHeight: faceHeight, marginTop: marginTop)
+    }
+}
+
+public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.TrimmedCroppingRule {
+    static var w25_h25: Self {
+        .init(
+            baseRule: IDPhotoEditor.StandardCroppingRule.w30_h25,
+            trimInsets: .init(
+                top: .init(value: .zero, unit: .millimeters),
+                bottom: .init(value: 5, unit: .millimeters),
+                leading: .init(value: .zero, unit: .millimeters),
+                trailing: .init(value: .zero, unit: .millimeters)
+            )
+        )
+    }
+
+    static var w30_h30: Self {
+        .init(
+            baseRule: IDPhotoEditor.StandardCroppingRule.w40_h30,
+            trimInsets: .init(
+                top: .init(value: .zero, unit: .millimeters),
+                bottom: .init(value: 10, unit: .millimeters),
+                leading: .init(value: .zero, unit: .millimeters),
+                trailing: .init(value: .zero, unit: .millimeters)
+            )
+        )
+    }
+
+    static var w60_h40: Self {
+        .init(
+            baseRule: IDPhotoEditor.StandardCroppingRule.w70_h50,
+            trimInsets: .init(
+                top: .init(value: .zero, unit: .millimeters),
+                bottom: .init(value: 10, unit: .millimeters),
+                leading: .init(value: 5, unit: .millimeters),
+                trailing: .init(value: 5, unit: .millimeters)
+            )
+        )
+    }
+
+    static var w60_h45: Self {
+        .init(
+            baseRule: IDPhotoEditor.StandardCroppingRule.w70_h50,
+            trimInsets: .init(
+                top: .init(value: .zero, unit: .millimeters),
+                bottom: .init(value: 10, unit: .millimeters),
+                leading: .init(value: 2.5, unit: .millimeters),
+                trailing: .init(value: 2.5, unit: .millimeters)
+            )
+        )
     }
 }
