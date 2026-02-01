@@ -17,9 +17,9 @@ public final class IDPhotoEditor {
     public let outputResolution: OutputResolution
     public let sourceImageOrientation: CGImagePropertyOrientation
 
-    private var cachedFaceArea: DetectedFaceArea?
-    private var cachedSegmentationMask: CIImage?
-    private var cachedContourMask: CIImage?
+    private var detectedFaceArea: DetectedFaceArea?
+    private var detectedSegmentationMask: CIImage?
+    private var detectedContourMask: CIImage?
     private var paintedOriginalSizeImage: CIImage
     private var currentSelectedBackgroundColor: Color?
     private var currentCroppingRule: CroppingRule?
@@ -36,14 +36,14 @@ public final class IDPhotoEditor {
     }
 
     public func prepare() async throws {
-        if cachedFaceArea == nil {
-            cachedFaceArea = try await loadFaceArea()
+        if detectedFaceArea == nil {
+            detectedFaceArea = try await loadFaceArea()
         }
-        if cachedSegmentationMask == nil {
-            cachedSegmentationMask = try await loadSegmentationMask()
+        if detectedSegmentationMask == nil {
+            detectedSegmentationMask = try await loadSegmentationMask()
         }
-        if cachedContourMask == nil {
-            cachedContourMask = try await loadContourMask()
+        if detectedContourMask == nil {
+            detectedContourMask = try await loadContourMask()
         }
     }
 
@@ -52,6 +52,7 @@ public final class IDPhotoEditor {
         let faceArea = try await loadFaceArea()
         let croppingRect = rule.cropRect(in: sourceImage.extent, faceArea: faceArea)
         if croppingRect == .null || croppingRect.isEmpty {
+
             return paintedOriginalSizeImage
         }
 
@@ -60,12 +61,14 @@ public final class IDPhotoEditor {
 
     public func paintedImage(with color: Color) async throws -> CIImage {
         if currentSelectedBackgroundColor == color {
+
             return applyCurrentCrop(to: paintedOriginalSizeImage)
         }
 
         if color == .clear {
             currentSelectedBackgroundColor = color
             paintedOriginalSizeImage = sourceImage
+
             return applyCurrentCrop(to: sourceImage)
         }
 
@@ -73,8 +76,10 @@ public final class IDPhotoEditor {
 
         let cgColor: CGColor? = {
             if #available(iOS 17, *) {
+
                 return color.resolve(in: EnvironmentValues()).cgColor
             }
+
 
             return color.cgColor ?? UIColor(color).cgColor
         }()
@@ -96,6 +101,7 @@ public final class IDPhotoEditor {
 
         currentSelectedBackgroundColor = color
         paintedOriginalSizeImage = paintedImage
+
         return applyCurrentCrop(to: paintedImage)
     }
 }
@@ -109,39 +115,49 @@ public extension IDPhotoEditor {
     }
 
     private func loadFaceArea() async throws -> DetectedFaceArea {
-        if let cachedFaceArea {
-            return cachedFaceArea
+        if let detectedFaceArea {
+
+            return detectedFaceArea
         }
         let faceArea = try await detectFaceArea()
-        cachedFaceArea = faceArea
+        detectedFaceArea = faceArea
+
         return faceArea
     }
 
     private func loadSegmentationMask() async throws -> CIImage {
-        if let cachedSegmentationMask {
-            return cachedSegmentationMask
+        if let detectedSegmentationMask {
+
+            return detectedSegmentationMask
         }
         let mask = try await scaledSegmentationMask(from: sourceImage, qualityLevel: .accurate)
-        cachedSegmentationMask = mask
+        detectedSegmentationMask = mask
+
         return mask
     }
 
     private func loadContourMask() async throws -> CIImage {
-        if let cachedContourMask {
-            return cachedContourMask
+        if let detectedContourMask {
+
+            return detectedContourMask
         }
         let mask = try await scaledSegmentationMask(from: sourceImage, qualityLevel: .balanced)
-        cachedContourMask = mask
+        detectedContourMask = mask
+
         return mask
     }
 
     private func applyCurrentCrop(to image: CIImage) -> CIImage {
-        guard let currentCroppingRule, let cachedFaceArea else {
+        guard let currentCroppingRule, let detectedFaceArea else {
+
             return image
         }
 
-        let croppingRect = currentCroppingRule.cropRect(in: sourceImage.extent, faceArea: cachedFaceArea)
-        if croppingRect == .null || croppingRect.isEmpty { return image }
+        let croppingRect = currentCroppingRule.cropRect(in: sourceImage.extent, faceArea: detectedFaceArea)
+        if croppingRect == .null || croppingRect.isEmpty {
+
+            return image
+        }
 
         return image.cropped(to: croppingRect)
     }
@@ -154,6 +170,7 @@ public extension IDPhotoEditor {
         public init() {}
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
+
             imageExtent
         }
     }
@@ -182,6 +199,7 @@ private extension IDPhotoEditor {
             let maskImage = CIImage(cvPixelBuffer: pixelBuffer)
             let scaleX = image.extent.width / maskImage.extent.width
             let scaleY = image.extent.height / maskImage.extent.height
+
             return maskImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
         }
 
@@ -208,6 +226,7 @@ private extension IDPhotoEditor {
         let maskImage = CIImage(cvPixelBuffer: foremostPersonInstanceMask)
         let scaleX = image.extent.width / maskImage.extent.width
         let scaleY = image.extent.height / maskImage.extent.height
+
         return maskImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
     }
 
@@ -334,7 +353,10 @@ public extension IDPhotoEditor {
         }
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
-            if faceArea.faceBounds == .null || faceArea.faceBounds.isEmpty { return .null }
+            if faceArea.faceBounds == .null || faceArea.faceBounds.isEmpty {
+
+                return .null
+            }
 
             let faceHeightRatio: Double = faceHeight.value / size.height.value
             let aspectRatio: Double = size.width.value / size.height.value
@@ -359,24 +381,27 @@ public extension IDPhotoEditor {
 
 public extension IDPhotoEditor {
     struct PassportCroppingRule: CroppingRule, Sendable, Equatable {
-        public let size: MeasurementSize = .init(
-            width: .init(value: 35, unit: .millimeters),
-            height: .init(value: 45, unit: .millimeters)
+        public let size: MeasurementSize = MeasurementSize(
+            width: Measurement<UnitLength>(value: 35, unit: .millimeters),
+            height: Measurement<UnitLength>(value: 45, unit: .millimeters)
         )
-        public let faceHeight: Measurement<UnitLength> = .init(value: 34, unit: .millimeters)
-        public let topMargin: Measurement<UnitLength> = .init(value: 4, unit: .millimeters)
+        public let faceHeight: Measurement<UnitLength> = Measurement<UnitLength>(value: 34, unit: .millimeters)
+        public let topMargin: Measurement<UnitLength> = Measurement<UnitLength>(value: 4, unit: .millimeters)
 
         public init() {}
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
             let faceHeightPixels = faceArea.headTopY - faceArea.chinBottomY
-            if faceHeightPixels <= 0 { return .null }
+            if faceHeightPixels <= 0 {
 
-            let aspectRatio: Double = size.width.value / size.height.value
+                return .null
+            }
+
+            let photoAspectRatio: Double = size.width.value / size.height.value
             let faceHeightRatio: Double = faceHeight.value / size.height.value
 
             let idealHeight: CGFloat = faceHeightPixels / faceHeightRatio
-            let idealWidth: CGFloat = idealHeight * aspectRatio
+            let idealWidth: CGFloat = idealHeight * photoAspectRatio
 
             let marginTopRatio: Double = topMargin.value / size.height.value
             let marginTopLength: CGFloat = idealHeight * marginTopRatio
@@ -390,11 +415,12 @@ public extension IDPhotoEditor {
             )
 
             if imageExtent.contains(idealRect) {
+
                 return idealRect
             }
 
             let availableWidth: CGFloat = min(idealWidth, imageExtent.width)
-            let adjustedHeight: CGFloat = availableWidth / aspectRatio
+            let adjustedHeight: CGFloat = availableWidth / photoAspectRatio
             let adjustedMarginTop: CGFloat = adjustedHeight * marginTopRatio
             let adjustedOriginX: CGFloat = faceArea.faceBounds.midX - (availableWidth / 2)
             let adjustedOriginY: CGFloat = (faceArea.headTopY + adjustedMarginTop) - adjustedHeight
@@ -442,7 +468,10 @@ public extension IDPhotoEditor {
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
             let baseRect = baseRule.cropRect(in: imageExtent, faceArea: faceArea)
-            if baseRect == .null || baseRect.isEmpty { return baseRect }
+            if baseRect == .null || baseRect.isEmpty {
+
+                return baseRect
+            }
 
             let widthRatio = CGFloat(trimInsets.leading.value + trimInsets.trailing.value) / size.width.value
             let heightRatio = CGFloat(trimInsets.top.value + trimInsets.bottom.value) / size.height.value
@@ -462,13 +491,15 @@ public extension IDPhotoEditor {
 }
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.PassportCroppingRule {
     static var passport: Self {
-        .init()
+
+        return Self()
     }
 }
 
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.OriginalSizeCroppingRule {
     static var original: Self {
-        .init()
+
+        return Self()
     }
 }
 
@@ -495,8 +526,8 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Standard
 
     private static func standardRule(width: Double, height: Double) -> Self {
         let size = MeasurementSize(
-            width: .init(value: width, unit: .millimeters),
-            height: .init(value: height, unit: .millimeters)
+            width: Measurement<UnitLength>(value: width, unit: .millimeters),
+            height: Measurement<UnitLength>(value: height, unit: .millimeters)
         )
         let faceHeight = Measurement<UnitLength>(
             value: height * 0.6,
@@ -504,55 +535,60 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Standard
         )
         let marginTop = Measurement<UnitLength>(value: 4, unit: .millimeters)
 
-        return .init(size: size, faceHeight: faceHeight, marginTop: marginTop)
+
+        return IDPhotoEditor.StandardCroppingRule(
+            size: size,
+            faceHeight: faceHeight,
+            marginTop: marginTop
+        )
     }
 }
 
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.TrimmedCroppingRule {
     static var w25_h25: Self {
-        .init(
-            baseRule: IDPhotoEditor.StandardCroppingRule.w30_h25,
-            trimInsets: .init(
-                top: .init(value: .zero, unit: .millimeters),
-                bottom: .init(value: 5, unit: .millimeters),
-                leading: .init(value: .zero, unit: .millimeters),
-                trailing: .init(value: .zero, unit: .millimeters)
+        IDPhotoEditor.TrimmedCroppingRule(
+            baseRule: .w30_h25,
+            trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
+                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
+                bottom: Measurement<UnitLength>(value: 5, unit: .millimeters),
+                leading: Measurement<UnitLength>(value: .zero, unit: .millimeters),
+                trailing: Measurement<UnitLength>(value: .zero, unit: .millimeters)
             )
         )
     }
 
     static var w30_h30: Self {
-        .init(
-            baseRule: IDPhotoEditor.StandardCroppingRule.w40_h30,
-            trimInsets: .init(
-                top: .init(value: .zero, unit: .millimeters),
-                bottom: .init(value: 10, unit: .millimeters),
-                leading: .init(value: .zero, unit: .millimeters),
-                trailing: .init(value: .zero, unit: .millimeters)
+        IDPhotoEditor.TrimmedCroppingRule(
+            baseRule: .w40_h30,
+            trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
+                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
+                bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
+                leading: Measurement<UnitLength>(value: .zero, unit: .millimeters),
+                trailing: Measurement<UnitLength>(value: .zero, unit: .millimeters)
             )
         )
     }
 
     static var w60_h40: Self {
-        .init(
-            baseRule: IDPhotoEditor.StandardCroppingRule.w70_h50,
-            trimInsets: .init(
-                top: .init(value: .zero, unit: .millimeters),
-                bottom: .init(value: 10, unit: .millimeters),
-                leading: .init(value: 5, unit: .millimeters),
-                trailing: .init(value: 5, unit: .millimeters)
+        IDPhotoEditor.TrimmedCroppingRule(
+            baseRule: .w70_h50,
+            trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
+                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
+                bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
+                leading: Measurement<UnitLength>(value: 5, unit: .millimeters),
+                trailing: Measurement<UnitLength>(value: 5, unit: .millimeters)
             )
         )
     }
 
     static var w60_h45: Self {
-        .init(
-            baseRule: IDPhotoEditor.StandardCroppingRule.w70_h50,
-            trimInsets: .init(
-                top: .init(value: .zero, unit: .millimeters),
-                bottom: .init(value: 10, unit: .millimeters),
-                leading: .init(value: 2.5, unit: .millimeters),
-                trailing: .init(value: 2.5, unit: .millimeters)
+        IDPhotoEditor.TrimmedCroppingRule(
+            baseRule: .w70_h50,
+            trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
+                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
+                bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
+                leading: Measurement<UnitLength>(value: 2.5, unit: .millimeters),
+                trailing: Measurement<UnitLength>(value: 2.5, unit: .millimeters)
             )
         )
     }

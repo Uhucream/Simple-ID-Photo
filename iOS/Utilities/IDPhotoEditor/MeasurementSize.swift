@@ -21,6 +21,7 @@ public struct MeasurementSize: Sendable, Equatable {
         let inchesWidth: Measurement<UnitLength> = width.converted(to: .inches)
         let inchesHeight: Measurement<UnitLength> = height.converted(to: .inches)
 
+
         return CGSize(
             width: CGFloat(inchesWidth.value * pixelDensity),
             height: CGFloat(inchesHeight.value * pixelDensity)
@@ -29,8 +30,8 @@ public struct MeasurementSize: Sendable, Equatable {
 }
 
 extension MeasurementSize {
-    static let zero: MeasurementSize = .init(
-        width: .init(value: .zero, unit: .millimeters),
-        height: .init(value: .zero, unit: .millimeters)
+    static let zero: MeasurementSize = MeasurementSize(
+        width: Measurement<UnitLength>(value: .zero, unit: .millimeters),
+        height: Measurement<UnitLength>(value: .zero, unit: .millimeters)
     )
 }
