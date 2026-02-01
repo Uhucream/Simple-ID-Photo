@@ -92,7 +92,7 @@ public final class IDPhotoEditor {
             .cropped(to: CGRect(origin: .zero, size: sourceImage.extent.size))
 
         let paintedImage = sourceImage.applyingFilter(
-            "CIBlendWithMask",
+            CIFilter.blendWithMask().name,
             parameters: [
                 kCIInputMaskImageKey: mask,
                 kCIInputBackgroundImageKey: background
