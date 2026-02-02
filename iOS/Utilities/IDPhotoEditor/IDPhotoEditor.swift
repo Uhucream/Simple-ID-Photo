@@ -52,7 +52,6 @@ public final class IDPhotoEditor {
         let faceArea = try await loadFaceArea()
         let croppingRect = rule.cropRect(in: sourceImage.extent, faceArea: faceArea)
         if croppingRect == .null || croppingRect.isEmpty {
-
             return paintedOriginalSizeImage
         }
 
@@ -61,7 +60,6 @@ public final class IDPhotoEditor {
 
     public func paintedImage(with color: Color) async throws -> CIImage {
         if currentSelectedBackgroundColor == color {
-
             return applyCurrentCrop(to: paintedOriginalSizeImage)
         }
 
@@ -76,10 +74,8 @@ public final class IDPhotoEditor {
 
         let cgColor: CGColor? = {
             if #available(iOS 17, *) {
-
                 return color.resolve(in: EnvironmentValues()).cgColor
             }
-
 
             return color.cgColor ?? UIColor(color).cgColor
         }()
@@ -116,7 +112,6 @@ public extension IDPhotoEditor {
 
     private func loadFaceArea() async throws -> DetectedFaceArea {
         if let detectedFaceArea {
-
             return detectedFaceArea
         }
         let faceArea = try await detectFaceArea()
@@ -127,7 +122,6 @@ public extension IDPhotoEditor {
 
     private func loadSegmentationMask() async throws -> CIImage {
         if let detectedSegmentationMask {
-
             return detectedSegmentationMask
         }
         let mask = try await scaledSegmentationMask(from: sourceImage, qualityLevel: .accurate)
@@ -138,7 +132,6 @@ public extension IDPhotoEditor {
 
     private func loadContourMask() async throws -> CIImage {
         if let detectedContourMask {
-
             return detectedContourMask
         }
         let mask = try await scaledSegmentationMask(from: sourceImage, qualityLevel: .balanced)
@@ -149,13 +142,11 @@ public extension IDPhotoEditor {
 
     private func applyCurrentCrop(to image: CIImage) -> CIImage {
         guard let currentCroppingRule, let detectedFaceArea else {
-
             return image
         }
 
         let croppingRect = currentCroppingRule.cropRect(in: sourceImage.extent, faceArea: detectedFaceArea)
         if croppingRect == .null || croppingRect.isEmpty {
-
             return image
         }
 
@@ -170,7 +161,6 @@ public extension IDPhotoEditor {
         public init() {}
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
-
             imageExtent
         }
     }
@@ -354,7 +344,6 @@ public extension IDPhotoEditor {
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
             if faceArea.faceBounds == .null || faceArea.faceBounds.isEmpty {
-
                 return .null
             }
 
@@ -393,7 +382,6 @@ public extension IDPhotoEditor {
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
             let faceHeightPixels = faceArea.headTopY - faceArea.chinBottomY
             if faceHeightPixels <= 0 {
-
                 return .null
             }
 
@@ -415,7 +403,6 @@ public extension IDPhotoEditor {
             )
 
             if imageExtent.contains(idealRect) {
-
                 return idealRect
             }
 
@@ -469,7 +456,6 @@ public extension IDPhotoEditor {
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
             let baseRect = baseRule.cropRect(in: imageExtent, faceArea: faceArea)
             if baseRect == .null || baseRect.isEmpty {
-
                 return baseRect
             }
 
@@ -491,14 +477,12 @@ public extension IDPhotoEditor {
 }
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.PassportCroppingRule {
     static var passport: Self {
-
         return Self()
     }
 }
 
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.OriginalSizeCroppingRule {
     static var original: Self {
-
         return Self()
     }
 }
