@@ -449,7 +449,8 @@ public extension IDPhotoEditor {
         }
 
         public var size: MeasurementSize {
-            baseRule.size
+
+            return baseRule.size
         }
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
@@ -474,6 +475,17 @@ public extension IDPhotoEditor {
         }
     }
 }
+
+extension IDPhotoEditor.TrimmedCroppingRule: Equatable {
+    public static func == (lhs: IDPhotoEditor.TrimmedCroppingRule, rhs: IDPhotoEditor.TrimmedCroppingRule) -> Bool {
+
+        return lhs.baseRule.size == rhs.baseRule.size
+            && lhs.trimInsets.top == rhs.trimInsets.top
+            && lhs.trimInsets.bottom == rhs.trimInsets.bottom
+            && lhs.trimInsets.leading == rhs.trimInsets.leading
+            && lhs.trimInsets.trailing == rhs.trimInsets.trailing
+    }
+}
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.PassportCroppingRule {
     static var passport: Self {
         return Self()
@@ -487,24 +499,24 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Original
 }
 
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.StandardCroppingRule {
-    static var w30_h24: Self {
-        standardRule(width: 30, height: 24)
+    static var w24_h30: Self {
+        standardRule(width: 24, height: 30)
     }
 
-    static var w40_h30: Self {
-        standardRule(width: 40, height: 30)
+    static var w30_h40: Self {
+        standardRule(width: 30, height: 40)
     }
 
-    static var w45_h35: Self {
-        standardRule(width: 45, height: 35)
+    static var w35_h45: Self {
+        standardRule(width: 35, height: 45)
     }
 
-    static var w30_h25: Self {
-        standardRule(width: 30, height: 25)
+    static var w25_h30: Self {
+        standardRule(width: 25, height: 30)
     }
 
-    static var w70_h50: Self {
-        standardRule(width: 70, height: 50)
+    static var w50_h70: Self {
+        standardRule(width: 50, height: 70)
     }
 
     private static func standardRule(width: Double, height: Double) -> Self {
@@ -530,7 +542,7 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Standard
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.TrimmedCroppingRule {
     static var w25_h25: Self {
         IDPhotoEditor.TrimmedCroppingRule(
-            baseRule: .w30_h25,
+            baseRule: .w25_h30,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
                 top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
                 bottom: Measurement<UnitLength>(value: 5, unit: .millimeters),
@@ -542,7 +554,7 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.TrimmedC
 
     static var w30_h30: Self {
         IDPhotoEditor.TrimmedCroppingRule(
-            baseRule: .w40_h30,
+            baseRule: .w30_h40,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
                 top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
                 bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
@@ -552,9 +564,9 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.TrimmedC
         )
     }
 
-    static var w60_h40: Self {
+    static var w40_h60: Self {
         IDPhotoEditor.TrimmedCroppingRule(
-            baseRule: .w70_h50,
+            baseRule: .w50_h70,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
                 top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
                 bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
@@ -564,9 +576,9 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.TrimmedC
         )
     }
 
-    static var w60_h45: Self {
+    static var w45_h60: Self {
         IDPhotoEditor.TrimmedCroppingRule(
-            baseRule: .w70_h50,
+            baseRule: .w50_h70,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
                 top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
                 bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
