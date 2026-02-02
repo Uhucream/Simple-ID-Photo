@@ -213,11 +213,8 @@ private extension IDPhotoEditor {
             forInstances: IndexSet(integer: 1),
             from: handler
         )
-        let maskImage = CIImage(cvPixelBuffer: foremostPersonInstanceMask)
-        let scaleX = image.extent.width / maskImage.extent.width
-        let scaleY = image.extent.height / maskImage.extent.height
 
-        return maskImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
+        return CIImage(cvPixelBuffer: foremostPersonInstanceMask)
     }
 
     func detectFaceArea() async throws -> DetectedFaceArea {
