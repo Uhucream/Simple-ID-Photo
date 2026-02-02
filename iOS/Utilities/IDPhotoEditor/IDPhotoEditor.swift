@@ -303,6 +303,8 @@ public extension IDPhotoEditor {
     }
 }
 
+// MARK: - Output Resolution
+
 public extension IDPhotoEditor {
     struct OutputResolution: Sendable, Equatable {
         public let pixelDensity: Double
@@ -418,7 +420,7 @@ public extension IDPhotoEditor {
 }
 
 public extension IDPhotoEditor {
-    struct TrimmedCroppingRule: CroppingRule, Sendable, Equatable {
+    struct TrimmedCroppingRule: CroppingRule, Sendable {
         public struct Insets: Sendable, Equatable {
             public let top: Measurement<UnitLength>
             public let bottom: Measurement<UnitLength>
