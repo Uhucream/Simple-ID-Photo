@@ -31,7 +31,7 @@ public struct MeasurementSize: Sendable, Equatable {
 
 extension MeasurementSize {
     static let zero: MeasurementSize = MeasurementSize(
-        width: Measurement<UnitLength>(value: .zero, unit: .millimeters),
-        height: Measurement<UnitLength>(value: .zero, unit: .millimeters)
+        width: Measurement<UnitLength>.millimeters(.zero),
+        height: Measurement<UnitLength>.millimeters(.zero)
     )
 }

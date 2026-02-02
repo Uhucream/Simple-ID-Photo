@@ -303,8 +303,6 @@ public extension IDPhotoEditor {
     }
 }
 
-// MARK: - Output Resolution
-
 public extension IDPhotoEditor {
     struct OutputResolution: Sendable, Equatable {
         public let pixelDensity: Double
@@ -312,9 +310,11 @@ public extension IDPhotoEditor {
         public init(pixelDensity: Double) {
             self.pixelDensity = pixelDensity
         }
-
-        public static let airPrint: OutputResolution = .init(pixelDensity: 72)
     }
+}
+
+extension IDPhotoEditor.OutputResolution {
+    public static let airPrint: OutputResolution = OutputResolution(pixelDensity: 72)
 }
 
 public extension IDPhotoEditor {
@@ -370,11 +370,11 @@ public extension IDPhotoEditor {
 public extension IDPhotoEditor {
     struct PassportCroppingRule: CroppingRule, Sendable, Equatable {
         public let size: MeasurementSize = MeasurementSize(
-            width: Measurement<UnitLength>(value: 35, unit: .millimeters),
-            height: Measurement<UnitLength>(value: 45, unit: .millimeters)
+            width: Measurement<UnitLength>.millimeters(35),
+            height: Measurement<UnitLength>.millimeters(45)
         )
-        public let faceHeight: Measurement<UnitLength> = Measurement<UnitLength>(value: 34, unit: .millimeters)
-        public let topMargin: Measurement<UnitLength> = Measurement<UnitLength>(value: 4, unit: .millimeters)
+        public let faceHeight: Measurement<UnitLength> = Measurement<UnitLength>.millimeters(34)
+        public let topMargin: Measurement<UnitLength> = Measurement<UnitLength>.millimeters(4)
 
         public init() {}
 
@@ -440,18 +440,9 @@ public extension IDPhotoEditor {
             }
         }
 
+        public let size: MeasurementSize
         public let baseRule: CroppingRule
         public let trimInsets: Insets
-
-        public init(baseRule: CroppingRule, trimInsets: Insets) {
-            self.baseRule = baseRule
-            self.trimInsets = trimInsets
-        }
-
-        public var size: MeasurementSize {
-
-            return baseRule.size
-        }
 
         public func cropRect(in imageExtent: CGRect, faceArea: DetectedFaceArea) -> CGRect {
             let baseRect = baseRule.cropRect(in: imageExtent, faceArea: faceArea)
@@ -478,7 +469,6 @@ public extension IDPhotoEditor {
 
 extension IDPhotoEditor.TrimmedCroppingRule: Equatable {
     public static func == (lhs: IDPhotoEditor.TrimmedCroppingRule, rhs: IDPhotoEditor.TrimmedCroppingRule) -> Bool {
-
         return lhs.baseRule.size == rhs.baseRule.size
             && lhs.trimInsets.top == rhs.trimInsets.top
             && lhs.trimInsets.bottom == rhs.trimInsets.bottom
@@ -521,14 +511,11 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Standard
 
     private static func standardRule(width: Double, height: Double) -> Self {
         let size = MeasurementSize(
-            width: Measurement<UnitLength>(value: width, unit: .millimeters),
-            height: Measurement<UnitLength>(value: height, unit: .millimeters)
+            width: Measurement<UnitLength>.millimeters(width),
+            height: Measurement<UnitLength>.millimeters(height)
         )
-        let faceHeight = Measurement<UnitLength>(
-            value: height * 0.6,
-            unit: .millimeters
-        )
-        let marginTop = Measurement<UnitLength>(value: 4, unit: .millimeters)
+        let faceHeight = Measurement<UnitLength>.millimeters(height * 0.6)
+        let marginTop = Measurement<UnitLength>.millimeters(4)
 
 
         return IDPhotoEditor.StandardCroppingRule(
@@ -542,48 +529,64 @@ public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.Standard
 public extension IDPhotoEditor.CroppingRule where Self == IDPhotoEditor.TrimmedCroppingRule {
     static var w25_h25: Self {
         IDPhotoEditor.TrimmedCroppingRule(
+            size: MeasurementSize(
+                width: Measurement<UnitLength>.millimeters(25),
+                height: Measurement<UnitLength>.millimeters(25)
+            ),
             baseRule: .w25_h30,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
-                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
-                bottom: Measurement<UnitLength>(value: 5, unit: .millimeters),
-                leading: Measurement<UnitLength>(value: .zero, unit: .millimeters),
-                trailing: Measurement<UnitLength>(value: .zero, unit: .millimeters)
+                top: Measurement<UnitLength>.millimeters(.zero),
+                bottom: Measurement<UnitLength>.millimeters(5),
+                leading: Measurement<UnitLength>.millimeters(.zero),
+                trailing: Measurement<UnitLength>.millimeters(.zero)
             )
         )
     }
 
     static var w30_h30: Self {
         IDPhotoEditor.TrimmedCroppingRule(
+            size: MeasurementSize(
+                width: Measurement<UnitLength>.millimeters(30),
+                height: Measurement<UnitLength>.millimeters(30)
+            ),
             baseRule: .w30_h40,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
-                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
-                bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
-                leading: Measurement<UnitLength>(value: .zero, unit: .millimeters),
-                trailing: Measurement<UnitLength>(value: .zero, unit: .millimeters)
+                top: Measurement<UnitLength>.millimeters(.zero),
+                bottom: Measurement<UnitLength>.millimeters(10),
+                leading: Measurement<UnitLength>.millimeters(.zero),
+                trailing: Measurement<UnitLength>.millimeters(.zero)
             )
         )
     }
 
     static var w40_h60: Self {
         IDPhotoEditor.TrimmedCroppingRule(
+            size: MeasurementSize(
+                width: Measurement<UnitLength>.millimeters(40),
+                height: Measurement<UnitLength>.millimeters(60)
+            ),
             baseRule: .w50_h70,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
-                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
-                bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
-                leading: Measurement<UnitLength>(value: 5, unit: .millimeters),
-                trailing: Measurement<UnitLength>(value: 5, unit: .millimeters)
+                top: Measurement<UnitLength>.millimeters(.zero),
+                bottom: Measurement<UnitLength>.millimeters(10),
+                leading: Measurement<UnitLength>.millimeters(5),
+                trailing: Measurement<UnitLength>.millimeters(5)
             )
         )
     }
 
     static var w45_h60: Self {
         IDPhotoEditor.TrimmedCroppingRule(
+            size: MeasurementSize(
+                width: Measurement<UnitLength>.millimeters(45),
+                height: Measurement<UnitLength>.millimeters(60)
+            ),
             baseRule: .w50_h70,
             trimInsets: IDPhotoEditor.TrimmedCroppingRule.Insets(
-                top: Measurement<UnitLength>(value: .zero, unit: .millimeters),
-                bottom: Measurement<UnitLength>(value: 10, unit: .millimeters),
-                leading: Measurement<UnitLength>(value: 2.5, unit: .millimeters),
-                trailing: Measurement<UnitLength>(value: 2.5, unit: .millimeters)
+                top: Measurement<UnitLength>.millimeters(.zero),
+                bottom: Measurement<UnitLength>.millimeters(10),
+                leading: Measurement<UnitLength>.millimeters(2.5),
+                trailing: Measurement<UnitLength>.millimeters(2.5)
             )
         )
     }
