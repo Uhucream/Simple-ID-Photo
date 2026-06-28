@@ -336,6 +336,7 @@ struct CreateIDPhotoViewContainer: View {
 
                 let savedFileURL: URL? = try saveImageToSpecifiedDirectory(
                     ciImage: croppedPaintedPhotoCIImage,
+                    colorSpace: sourcePhotoCIImage.colorSpace ?? CGColorSpaceCreateDeviceRGB(),
                     fileName: saveFileName,
                     fileType: saveFileUTType,
                     to: saveDestinationDirectoryURL
@@ -760,40 +761,41 @@ extension CreateIDPhotoViewContainer {
     
     func saveImageToSpecifiedDirectory(
         ciImage: CIImage,
+        colorSpace: CGColorSpace,
         fileName: String,
         fileType: UTType,
         to saveDestinationDirectoryURL: URL
     ) throws -> URL? {
-        
+
         let saveFilePathURL: URL = saveDestinationDirectoryURL
             .appendingPathComponent(fileName, conformingTo: fileType)
-        
+
         let ciContext: CIContext = .init()
-        
+
         do {
             if fileType == .jpeg {
                 let jpegData: Data? = ciImage.jpegData(
                     ciContext: ciContext,
-                    colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                    colorSpace: colorSpace
                 )
-                
+
                 guard let jpegData = jpegData else { return nil }
-                
+
                 try jpegData.write(to: saveFilePathURL)
-                
+
                 return saveFilePathURL
             }
-            
+
             let heicData: Data? = ciImage.heifData(
                 ciContext: ciContext,
                 format: .RGBA8,
-                colorSpace: ciImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+                colorSpace: colorSpace
             )
-            
+
             guard let heicData = heicData else { return nil }
-            
+
             try heicData.write(to: saveFilePathURL)
-            
+
             return saveFilePathURL
         } catch {
             throw error
