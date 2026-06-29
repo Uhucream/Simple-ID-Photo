@@ -121,5 +121,17 @@ paths: "**/*.swift"
   let showAlert: Bool = false
   ```
 
+- 変数名は省略しないこと。
+
+```swift
+// 良い例
+let lengthBytes
+let index
+
+// 悪い例
+let lenBytes
+let idx
+```
+
 - 上記以外の命名規則については [Swift API Design Guidelines](https://swift.org/documentation/api-design-guidelines/) に従うこと
 - また、[Google Swift Style Guide](https://google.github.io/swift/) も参考にすること
