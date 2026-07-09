@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AppliedBackgroundColor" representedClassName="AppliedBackgroundColor" syncable="YES" codeGenerationType="class">
+        <attribute name="alpha" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="blue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="colorSpace" optional="YES" attributeType="String"/>
+        <attribute name="green" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="red" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="createdIDPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CreatedIDPhoto" inverseName="appliedBackgroundColor" inverseEntity="CreatedIDPhoto"/>
+    </entity>
+    <entity name="AppliedIDPhotoSize" representedClassName="AppliedIDPhotoSize" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="millimetersHeight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="millimetersWidth" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="sizeSpecificationID" optional="YES" attributeType="String"/>
+        <attribute name="sizeVariant" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="createdIDPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CreatedIDPhoto" inverseName="appliedIDPhotoSize" inverseEntity="CreatedIDPhoto"/>
+    </entity>
+    <entity name="CreatedIDPhoto" representedClassName="CreatedIDPhoto" versionHashModifier="1" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="imageFileName" optional="YES" attributeType="String"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="appliedBackgroundColor" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AppliedBackgroundColor" inverseName="createdIDPhoto" inverseEntity="AppliedBackgroundColor"/>
+        <relationship name="appliedIDPhotoSize" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AppliedIDPhotoSize" inverseName="createdIDPhoto" inverseEntity="AppliedIDPhotoSize"/>
+        <relationship name="savedDirectory" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SavedFilePath" inverseName="createdIDPhoto" inverseEntity="SavedFilePath"/>
+        <relationship name="sourcePhoto" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePhoto" inverseName="createdIDPhoto" inverseEntity="SourcePhoto"/>
+    </entity>
+    <entity name="CustomIDPhotoSize" representedClassName="CustomIDPhotoSize" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="millimetersCrownMargin" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="millimetersFaceHeight" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="millimetersHeight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="millimetersWidth" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="DetectedSubject" representedClassName="DetectedSubject" syncable="YES" codeGenerationType="class">
+        <attribute name="chinY" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="crownY" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="detectionVersion" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="eyeCenterY" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <attribute name="faceRectHeight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="faceRectWidth" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="faceRectX" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="faceRectY" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="imageHeight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="imageWidth" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="sourcePhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SourcePhoto" inverseName="detectedSubject" inverseEntity="SourcePhoto"/>
+    </entity>
+    <entity name="SavedFilePath" representedClassName="SavedFilePath" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="relativePathFromRootSearchPath" attributeType="String" defaultValueString=""/>
+        <attribute name="rootSearchPathDirectory" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="createdIDPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CreatedIDPhoto" inverseName="savedDirectory" inverseEntity="CreatedIDPhoto"/>
+        <relationship name="sourcePhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SourcePhoto" inverseName="savedDirectory" inverseEntity="SourcePhoto"/>
+    </entity>
+    <entity name="SourcePhoto" representedClassName="SourcePhoto" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="imageFileName" optional="YES" attributeType="String"/>
+        <attribute name="shotDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="createdIDPhoto" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CreatedIDPhoto" inverseName="sourcePhoto" inverseEntity="CreatedIDPhoto"/>
+        <relationship name="detectedSubject" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DetectedSubject" inverseName="sourcePhoto" inverseEntity="DetectedSubject"/>
+        <relationship name="savedDirectory" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SavedFilePath" inverseName="sourcePhoto" inverseEntity="SavedFilePath"/>
+    </entity>
+</model>
