@@ -1,31 +1,31 @@
 //
 //  IDPhotoSizePicker.swift
 //  Simple ID Photo (iOS)
-//  
+//
 //  Created by TakashiUshikoshi on 2023/01/24
-//  
+//
 //
 
 import SwiftUI
 
 struct IDPhotoSizePicker: View {
-    
-    var availableSizeVariants: [IDPhotoSizeVariant]
-    
-    var renderSelectonLabel: (IDPhotoSizeVariant) -> Text
-    
-    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
-    
+
+    var availableSizeSpecifications: [any IDPhotoSizeSpecification]
+
+    var renderSelectionLabel: (any IDPhotoSizeSpecification) -> Text
+
+    @Binding var selectedSizeSpecification: any IDPhotoSizeSpecification
+
     var body: some View {
         HStack {
             ScrollViewReader { scrollViewProxy in
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 4) {
-                        ForEach(availableSizeVariants, id: \.self) { sizeSelection in
-                            let isSelected: Bool = self.selectedIDPhotoSize == sizeSelection
-                            
+                        ForEach(availableSizeSpecifications, id: \.id) { sizeSpecification in
+                            let isSelected: Bool = self.selectedSizeSpecification.id == sizeSpecification.id
+
                             ZStack {
-                                renderSelectonLabel(sizeSelection)
+                                renderSelectionLabel(sizeSpecification)
                                     .font(.system(size: 14.0, design: .rounded))
                                     .fontWeight(.regular)
                             }
@@ -46,21 +46,23 @@ struct IDPhotoSizePicker: View {
                                 }
                             }
                             .onTapGesture {
-                                selectedIDPhotoSize = sizeSelection
+                                selectedSizeSpecification = sizeSpecification
                             }
-                            .id(sizeSelection)
+                            .id(sizeSpecification.id)
                         }
                     }
                     .padding()
                     .onAppear {
-                        
-                        let currentSelectedVariantIndex: Int = availableSizeVariants.firstIndex(of: self.selectedIDPhotoSize) ?? 0
-                        
-                        if currentSelectedVariantIndex == 0 {
+
+                        let currentSelectedSpecificationIndex: Int = availableSizeSpecifications.firstIndex { specification in
+                            return specification.id == self.selectedSizeSpecification.id
+                        } ?? 0
+
+                        if currentSelectedSpecificationIndex == 0 {
                             return
                         }
-                        
-                        scrollViewProxy.scrollTo(selectedIDPhotoSize)
+
+                        scrollViewProxy.scrollTo(selectedSizeSpecification.id)
                     }
                 }
             }
@@ -70,24 +72,14 @@ struct IDPhotoSizePicker: View {
 
 struct IDPhotoSizePicker_Previews: PreviewProvider {
     static var previews: some View {
-        let renderVariantLabel: (IDPhotoSizeVariant) -> Text = { (variant: IDPhotoSizeVariant) in
-            if variant == .original {
-                return Text("オリジナル")
-            }
-            
-            if variant == .passport {
-                return Text("パスポート (35 x 45 mm)")
-            }
-            
-            let photoWidth: Int = Int(variant.photoSize.width.value)
-            
-            return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: variant.photoSize.height))")
+        let renderSpecificationLabel: (any IDPhotoSizeSpecification) -> Text = { (specification: any IDPhotoSizeSpecification) in
+            return Text(specification.pickerLabel)
         }
-        
+
         IDPhotoSizePicker(
-            availableSizeVariants: IDPhotoSizeVariant.allCases,
-            renderSelectonLabel: renderVariantLabel,
-            selectedIDPhotoSize: .constant(.original)
+            availableSizeSpecifications: JapanIDPhotoSizes.pickerLineup,
+            renderSelectionLabel: renderSpecificationLabel,
+            selectedSizeSpecification: .constant(JapanIDPhotoSizes.original)
         )
         .previewLayout(.sizeThatFits)
     }

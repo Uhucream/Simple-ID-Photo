@@ -116,17 +116,17 @@ struct ConfirmSaveViewContainer: View {
     @State private var idPhotoForSavingUIImage: UIImage? = nil
     
     var sourceIDPhotoUIImage: UIImage?
-    var sourceIDPhotoSizeVariant: IDPhotoSizeVariant
-    
+    var sourceIDPhotoMillimeterSize: MillimeterSize
+
     init(
         sourceIDPhotoUIImage: UIImage?,
-        sourceIDPhotoSizeVariant: IDPhotoSizeVariant
+        sourceIDPhotoMillimeterSize: MillimeterSize
     ) {
         _idPhotoForSavingUIImage = .init(initialValue: sourceIDPhotoUIImage)
-        
+
         self.sourceIDPhotoUIImage = sourceIDPhotoUIImage
-        
-        self.sourceIDPhotoSizeVariant = sourceIDPhotoSizeVariant
+
+        self.sourceIDPhotoMillimeterSize = sourceIDPhotoMillimeterSize
     }
     
     @MainActor
@@ -136,8 +136,20 @@ struct ConfirmSaveViewContainer: View {
         
         @ViewBuilder
         var imageRendererSourceView: some View {
-            let idPhotoCGSize: CGSize = self.sourceIDPhotoSizeVariant.photoSize.cgsize(pixelDensity: 350)
-            
+            let idPhotoWidthMeasurement: Measurement<UnitLength> = .init(
+                value: self.sourceIDPhotoMillimeterSize.width,
+                unit: .millimeters
+            )
+            let idPhotoHeightMeasurement: Measurement<UnitLength> = .init(
+                value: self.sourceIDPhotoMillimeterSize.height,
+                unit: .millimeters
+            )
+
+            let idPhotoCGSize: CGSize = .init(
+                width: idPhotoWidthMeasurement.pixelLength(pixelDensity: 350),
+                height: idPhotoHeightMeasurement.pixelLength(pixelDensity: 350)
+            )
+
             let idPhotoRoundedCGSize: CGSize = .init(
                 width: idPhotoCGSize.width,
                 height: idPhotoCGSize.height
@@ -217,7 +229,7 @@ struct ConfirmSaveViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         ConfirmSaveViewContainer(
             sourceIDPhotoUIImage: .init(named: "SampleIDPhoto"),
-            sourceIDPhotoSizeVariant: .w24_h30
+            sourceIDPhotoMillimeterSize: .init(width: 24, height: 30)
         )
     }
 }

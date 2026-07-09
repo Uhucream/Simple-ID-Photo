@@ -138,17 +138,7 @@ struct IDPhotoDetailViewContainer: View {
                         self.createdIDPhoto.imageFileName = newImageURL?.absoluteString
                     }
                 ),
-                idPhotoSizeType: Binding<IDPhotoSizeVariant>(
-                    get: {
-                        let appliedIDPhotoSize = createdIDPhoto.appliedIDPhotoSize
-                        let idPhotoSizeVariant: IDPhotoSizeVariant = IDPhotoSizeVariant(rawValue: Int(appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .original
-                        
-                        return idPhotoSizeVariant
-                    },
-                    set: { (newIDPhotoSizeVariant) in
-                        createdIDPhoto.appliedIDPhotoSize?.sizeVariant = Int32(newIDPhotoSizeVariant.rawValue)
-                    }
-                ),
+                idPhotoSizeLabel: .readOnly(createdIDPhoto.appliedIDPhotoSize?.sizeLabel ?? .unknown),
                 createdAt: Binding<Date>(
                     get: {
                         let createdDate: Date = createdIDPhoto.createdAt ?? .distantPast
@@ -325,7 +315,7 @@ extension IDPhotoDetailViewContainer {
         
         let printingIDPhotoUIImage: UIImage = .init(url: createdIDPhotoFileURL)
         
-        //  MARK: IDPhotoSizeVariant.original など、CGSize が .zero のものはサイズ調整せずに印刷する
+        //  MARK: オリジナルサイズなど、CGSize が .zero のものはサイズ調整せずに印刷する
         if printingIDPhotoCGSize == .zero {
             
             let printInteractionController: UIPrintInteractionController = .shared

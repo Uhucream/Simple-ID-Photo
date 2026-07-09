@@ -8,11 +8,6 @@
 
 import SwiftUI
 
-struct IDPhotoBackgroundColor {
-    let name: String
-    let color: Color
-}
-
 enum IDPhotoProcessSelection: Int, Identifiable {
     case backgroundColor
     case size
@@ -54,30 +49,25 @@ fileprivate let CROP_VIEW_IMAGE_HORIZONTAL_PADDING: CGFloat = 8
 fileprivate let CROP_VIEW_ANIMATION_DURATION_SECONDS: Double = 0.5
 
 struct CreateIDPhotoView: View {
-    private let BACKGROUND_COLORS: [Color] = [
-        .idPhotoBackgroundColors.blue,
-        .idPhotoBackgroundColors.gray,
-        .idPhotoBackgroundColors.white,
-        .idPhotoBackgroundColors.brown,
-    ]
-    
+    private let BACKGROUND_COLORS: [IDPhotoBackgroundColor] = IDPhotoBackgroundColor.presets
+
     @Namespace private var previewImageNamespace
-    
+
     @State private var previewImageActualSize: CGSize = .zero
 
     @Binding var selectedProcess: IDPhotoProcessSelection
-    
-    @Binding var selectedBackgroundColor: Color
+
+    @Binding var selectedBackgroundColor: IDPhotoBackgroundColor
     @Binding var selectedBackgroundColorLabel: String
-    
-    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
-    
+
+    @Binding var selectedSizeSpecification: any IDPhotoSizeSpecification
+
     @Binding var originalSizePreviewUIImage: UIImage?
     @Binding var croppedPreviewUIImage: UIImage?
-    
+
     @Binding var croppingCGRect: CGRect
-    
-    var availableSizeVariants: [IDPhotoSizeVariant]
+
+    var availableSizeSpecifications: [any IDPhotoSizeSpecification]
     
     private var previewCroppingCGRect: CGRect {
         let leftUpperOriginRect: CGRect = .init(
@@ -134,18 +124,8 @@ struct CreateIDPhotoView: View {
         return view
     }
     
-    func renderSizeVariantLabel(_ variant: IDPhotoSizeVariant) -> Text {
-        if variant == .original {
-            return Text("オリジナル")
-        }
-        
-        if variant == .passport {
-            return Text("パスポート (35 x 45 mm)")
-        }
-        
-        let photoWidth: Int = Int(variant.photoSize.width.value)
-        
-        return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: variant.photoSize.height))")
+    func renderSizeSpecificationLabel(_ specification: any IDPhotoSizeSpecification) -> Text {
+        return Text(specification.pickerLabel)
     }
     
     @ViewBuilder
@@ -171,7 +151,7 @@ struct CreateIDPhotoView: View {
                                     .overlay(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 4))
                                     .padding(4)
                                     .overlay {
-                                        if selectedBackgroundColor == .clear {
+                                        if selectedBackgroundColor == .original {
                                             RoundedRectangle(cornerRadius: 8)
                                                 .stroke(Color.tintColor, lineWidth: 2)
                                         }
@@ -183,7 +163,7 @@ struct CreateIDPhotoView: View {
                                     .frame(maxHeight: 40)
                                     .environment(\.colorScheme, .dark)
                                     .onTapGesture {
-                                        self.selectedBackgroundColor = .clear
+                                        self.selectedBackgroundColor = .original
                                     }
                                 
                                 IDPhotoBackgroundColorPicker(
@@ -199,9 +179,9 @@ struct CreateIDPhotoView: View {
                 
                 if self.selectedProcess == .size {
                     IDPhotoSizePicker(
-                        availableSizeVariants: availableSizeVariants,
-                        renderSelectonLabel: renderSizeVariantLabel,
-                        selectedIDPhotoSize: $selectedIDPhotoSize
+                        availableSizeSpecifications: availableSizeSpecifications,
+                        renderSelectionLabel: renderSizeSpecificationLabel,
+                        selectedSizeSpecification: $selectedSizeSpecification
                     )
                 }
             }
@@ -429,11 +409,9 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
     static var previews: some View {
         CreateIDPhotoView(
             selectedProcess: .constant(.backgroundColor),
-            selectedBackgroundColor: .constant(
-                Color.idPhotoBackgroundColors.blue
-            ),
+            selectedBackgroundColor: .constant(.blue),
             selectedBackgroundColorLabel: .constant("青"),
-            selectedIDPhotoSize: .constant(.original),
+            selectedSizeSpecification: .constant(JapanIDPhotoSizes.original),
             originalSizePreviewUIImage: .constant(
                 .init(named: "TimCook")
             ),
@@ -441,7 +419,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
                 .init(named: "TimCook")
             ),
             croppingCGRect: .constant(CGRect(origin: .zero, size: UIImage(named: "TimCook")!.size)),
-            availableSizeVariants: IDPhotoSizeVariant.allCases
+            availableSizeSpecifications: JapanIDPhotoSizes.pickerLineup
         )
     }
 }
