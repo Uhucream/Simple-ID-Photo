@@ -29,7 +29,7 @@ struct SavingProgressView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(maxHeight: 30%.of(geometry.size.height))
                         
-                        Text("保存しました!")
+                        Text("作成しました!")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
