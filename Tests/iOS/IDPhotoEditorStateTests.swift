@@ -19,12 +19,12 @@ import CoreGraphics
 @Suite("IDPhotoEditor の状態遷移 (Vision 非依存)")
 struct IDPhotoEditorStateTests {
 
-    private static let SOURCE_EXTENT: CGRect = .init(x: 0, y: 0, width: 400, height: 600)
+    private static let sourceExtent: CGRect = .init(x: 0, y: 0, width: 400, height: 600)
 
     /// 左半分が白 (人物)、右半分が黒 (背景) のスタブマスク
     private static func makeStubPersonMask() -> CIImage {
         let blackBackgroundCIImage: CIImage = CIImage(color: CIColor(red: 0, green: 0, blue: 0))
-            .cropped(to: SOURCE_EXTENT)
+            .cropped(to: sourceExtent)
 
         let whiteLeftHalfCIImage: CIImage = CIImage(color: CIColor(red: 1, green: 1, blue: 1))
             .cropped(to: CGRect(x: 0, y: 0, width: 200, height: 600))
@@ -34,7 +34,7 @@ struct IDPhotoEditorStateTests {
 
     private static func makeStubSubject() -> IDPhotoSubject {
         return IDPhotoSubject(
-            imageExtent: SOURCE_EXTENT,
+            imageExtent: sourceExtent,
             faceWithHairRect: CGRect(x: 50, y: 300, width: 100, height: 150),
             crownY: 450,
             chinY: 300,
@@ -45,7 +45,7 @@ struct IDPhotoEditorStateTests {
     /// 元画像は全面赤
     private static func makeEditor() -> IDPhotoEditor {
         let redSourceCIImage: CIImage = CIImage(color: CIColor(red: 1, green: 0, blue: 0))
-            .cropped(to: SOURCE_EXTENT)
+            .cropped(to: sourceExtent)
 
         return IDPhotoEditor(
             sourceCIImage: redSourceCIImage,
@@ -58,6 +58,7 @@ struct IDPhotoEditorStateTests {
     private struct StubCropSpecification: IDPhotoSizeSpecification {
         let id: String = "test.stub"
         let millimeterSize: MeasurementSize? = MeasurementSize(width: .millimeters(20), height: .millimeters(20))
+        let requiresSubjectDetection: Bool = true
 
         func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
             return CGRect(x: 100, y: 100, width: 200, height: 200)
@@ -67,6 +68,7 @@ struct IDPhotoEditorStateTests {
     private struct ThrowingCropSpecification: IDPhotoSizeSpecification {
         let id: String = "test.throwing"
         let millimeterSize: MeasurementSize? = nil
+        let requiresSubjectDetection: Bool = true
 
         func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
             throw IDPhotoEditorError.croppingRegionUnsatisfiable
@@ -113,13 +115,13 @@ struct IDPhotoEditorStateTests {
         blue: Double,
         sourceLocation: SourceLocation = #_sourceLocation
     ) {
-        let COMPONENT_TOLERANCE: Double = 0.03
+        let componentTolerance: Double = 0.03
 
         let components: (red: Double, green: Double, blue: Double, alpha: Double) = pixelComponents(of: ciImage, at: point)
 
-        #expect(abs(components.red - red) < COMPONENT_TOLERANCE, sourceLocation: sourceLocation)
-        #expect(abs(components.green - green) < COMPONENT_TOLERANCE, sourceLocation: sourceLocation)
-        #expect(abs(components.blue - blue) < COMPONENT_TOLERANCE, sourceLocation: sourceLocation)
+        #expect(abs(components.red - red) < componentTolerance, sourceLocation: sourceLocation)
+        #expect(abs(components.green - green) < componentTolerance, sourceLocation: sourceLocation)
+        #expect(abs(components.blue - blue) < componentTolerance, sourceLocation: sourceLocation)
     }
 
     @Test("ペイント → クロップ → ペイント: 2回目のペイントは全体サイズで、前回の合成に重ね塗りされない")
@@ -139,7 +141,7 @@ struct IDPhotoEditorStateTests {
         let brownPaintedIDPhoto: IDPhoto = try await editor.painted(with: Self.brownBackgroundColor)
 
         //  クロップを挟んでも全体サイズのまま
-        #expect(brownPaintedIDPhoto.ciImage.extent == Self.SOURCE_EXTENT)
+        #expect(brownPaintedIDPhoto.ciImage.extent == Self.sourceExtent)
 
         //  背景は青ではなく茶 (元画像から再合成されている)
         Self.expectPixel(of: brownPaintedIDPhoto.ciImage, at: CGPoint(x: 300, y: 300), isRed: 0.6, green: 0.4, blue: 0.2)
@@ -161,7 +163,7 @@ struct IDPhotoEditorStateTests {
         let bluePaintedIDPhoto: IDPhoto = try await editor.painted(with: Self.blueBackgroundColor)
 
         //  先行クロップの影響を受けず全体サイズ
-        #expect(bluePaintedIDPhoto.ciImage.extent == Self.SOURCE_EXTENT)
+        #expect(bluePaintedIDPhoto.ciImage.extent == Self.sourceExtent)
 
         let secondCroppedIDPhoto: IDPhoto = try await editor.cropped(to: StubCropSpecification())
 
@@ -193,8 +195,8 @@ struct IDPhotoEditorStateTests {
 
         let croppedIDPhoto: IDPhoto = try await editor.cropped(to: OriginalSizeSpecification())
 
-        #expect(croppedIDPhoto.ciImage.extent == Self.SOURCE_EXTENT)
-        #expect(croppedIDPhoto.appliedCroppingRect == Self.SOURCE_EXTENT)
+        #expect(croppedIDPhoto.ciImage.extent == Self.sourceExtent)
+        #expect(croppedIDPhoto.appliedCroppingRect == Self.sourceExtent)
     }
 
     @Test("仕様書が throw した場合、エディタはそのまま rethrow する")

@@ -10,7 +10,7 @@ import Foundation
 import CoreGraphics
 import CoreImage
 
-/// 証明写真の背景色。
+/// 証明写真の背景色
 ///
 /// UI フレームワークに依存させないため、コア層では数値 (成分 + 色空間) のみを保持する。
 /// アプリ側のプリセット (青・グレー・白・茶) は extension で提供される。
@@ -43,7 +43,7 @@ extension IDPhotoBackgroundColor {
 
 extension IDPhotoBackgroundColor: Identifiable {
 
-    /// 同一色判定・永続化後の照合に使える安定 ID (成分から導出される)
+    /// 成分から導出される安定 ID
     var id: String {
         switch self {
 
@@ -68,8 +68,9 @@ extension IDPhotoBackgroundColor: Equatable {
 
 extension IDPhotoBackgroundColor {
 
-    /// 色空間の違いを吸収した同一色判定 (Display P3 へ変換して成分を比較する)。
-    /// 永続化された成分からプリセットを復元するときに使用する
+    /// 色空間の違いを吸収した同一色判定
+    ///
+    /// Display P3 へ変換したうえで、成分を許容誤差つきで比較する
     func isSameColor(as other: IDPhotoBackgroundColor) -> Bool {
         if self == other { return true }
 
@@ -79,11 +80,11 @@ extension IDPhotoBackgroundColor {
             selfComponents.count == otherComponents.count
         else { return false }
 
-        let COMPONENT_TOLERANCE: CGFloat = 0.001
+        let componentTolerance: CGFloat = 0.001
 
         let componentPairs: Zip2Sequence<[CGFloat], [CGFloat]> = zip(selfComponents, otherComponents)
 
-        return componentPairs.allSatisfy { abs($0 - $1) <= COMPONENT_TOLERANCE }
+        return componentPairs.allSatisfy { abs($0 - $1) <= componentTolerance }
     }
 
     private func displayP3Components() -> [CGFloat]? {
@@ -111,7 +112,9 @@ extension IDPhotoBackgroundColor {
 
 extension CIColor {
 
-    /// 背景合成に使用する色。「背景色なし」(`.clear`) の場合は nil
+    /// IDPhotoBackgroundColor から生成する
+    ///
+    /// 「背景色なし」(`.clear`) の場合は nil
     convenience init?(idPhotoBackgroundColor: IDPhotoBackgroundColor) {
         guard case .solid(let red, let green, let blue, let alpha, let colorSpace) = idPhotoBackgroundColor else { return nil }
 

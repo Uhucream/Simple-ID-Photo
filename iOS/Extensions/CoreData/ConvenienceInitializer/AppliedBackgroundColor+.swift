@@ -12,14 +12,14 @@ extension AppliedBackgroundColor {
     convenience init(
         on context: NSManagedObjectContext,
         id: UUID = .init(),
-        backgroundColor: IDPhotoBackgroundColor,
+        color: IDPhotoBackgroundColor,
         createdIDPhoto: CreatedIDPhoto? = nil
     ) {
         self.init(context: context)
 
         self.id = id
 
-        switch backgroundColor {
+        switch color {
 
         case .clear:
             //  「背景色なし」は alpha 0 で表現する (旧実装の Color.clear と同じ)
@@ -44,7 +44,8 @@ extension AppliedBackgroundColor {
 
 extension IDPhotoBackgroundColor {
 
-    /// 保存された成分から背景色を復元する。
+    /// 保存されたレコードから復元する
+    ///
     /// プリセットと同一色の場合は該当プリセットになる
     init(_ appliedBackgroundColor: AppliedBackgroundColor) {
         self.init(

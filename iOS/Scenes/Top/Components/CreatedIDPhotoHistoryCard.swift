@@ -99,9 +99,15 @@ struct CreatedIDPhotoHistoryCard: View {
             HStack(alignment: .center) {
 
                 HStack(alignment: .center, spacing: 12) {
-                    let DEFAULT_THUMBNAIL_ASPECT_RATIO: CGFloat = 3 / 4
+                    let defaultThumbnailAspectRatio: CGFloat = 3 / 4
 
-                    let createdIDPhotoAspectRatio: CGFloat = self.sizeLabel.aspectRatio ?? DEFAULT_THUMBNAIL_ASPECT_RATIO
+                    let createdIDPhotoAspectRatio: CGFloat = {
+                        guard case .millimeters(let width, let height) = self.sizeLabel, height > .zero else {
+                            return defaultThumbnailAspectRatio
+                        }
+
+                        return width / height
+                    }()
 
                     let asyncImageContainerSideLength: CGFloat = 52 * thumbnailScaleFactor
 

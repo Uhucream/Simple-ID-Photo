@@ -46,7 +46,7 @@ struct PersistenceController {
 
                 let appliedBackgroundColor: AppliedBackgroundColor = .init(
                     on: viewContext,
-                    backgroundColor: .blue
+                    color: .blue
                 )
 
                 let appliedIDPhotoSize: AppliedIDPhotoSize = .init(

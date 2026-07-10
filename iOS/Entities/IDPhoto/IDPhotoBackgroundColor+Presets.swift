@@ -57,7 +57,7 @@ extension IDPhotoBackgroundColor {
 //  MARK: SwiftUI 連携
 extension IDPhotoBackgroundColor {
 
-    /// ピッカーの色見本などに使用する SwiftUI Color
+    /// SwiftUI の Color 表現
     var swiftUIColor: Color {
         switch self {
 
@@ -105,11 +105,10 @@ extension IDPhotoBackgroundColor {
 //  MARK: 永続化された成分からの復元
 extension IDPhotoBackgroundColor {
 
-    /// Core Data に保存された RGBA 成分から背景色を復元する。
+    /// 保存された RGBA 成分から復元する
     ///
-    /// プリセットと同一色 (色空間変換込みで比較) の場合は該当プリセットを返すため、
-    /// ピッカーの選択状態やラベルが正しく一致する。
-    /// alpha が 0 の場合は「背景色なし」(`.clear`) として扱う。
+    /// プリセットと同一色 (色空間変換込みで比較) の場合は該当プリセットになる。
+    /// alpha が 0 の場合は「背景色なし」(`.clear`) になる
     init(
         red: Double,
         green: Double,

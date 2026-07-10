@@ -31,14 +31,22 @@ struct EditIDPhotoViewContainer: View {
         }
     }
 
-    private let BACKGROUND_COLORS: [IDPhotoBackgroundColor] = IDPhotoBackgroundColor.presets
+    private let availableBackgroundColors: [IDPhotoBackgroundColor] = IDPhotoBackgroundColor.presets
 
-    private static let DEFAULT_SIZE_SPECIFICATION: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
+    private static let defaultSizeSpecification: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
 
-    //  MARK: w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
+    //  MARK: DNP の対象サイズのみを表示する (ベースの w25xh30 / w50xh70 は対象外)。
+    //  w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
     //  パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで表示しない
     private var availableSizeSpecifications: [any IDPhotoSizeSpecification] {
-        let selectableJapanIDPhotoSizes: [any IDPhotoSizeSpecification] = JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }
+        let selectableJapanIDPhotoSizes: [any IDPhotoSizeSpecification] = [
+            JapanIDPhotoSize.w24xh30,
+            JapanIDPhotoSize.square25,
+            JapanIDPhotoSize.square30,
+            JapanIDPhotoSize.w30xh40,
+            JapanIDPhotoSize.w40xh60,
+            JapanIDPhotoSize.w45xh60
+        ]
 
         return [OriginalSizeSpecification.original] + selectableJapanIDPhotoSizes
     }
@@ -85,7 +93,7 @@ struct EditIDPhotoViewContainer: View {
     @State private var currentSelectedProcess: IDPhotoProcessSelection = .backgroundColor
 
     @State private var selectedBackgroundColor: IDPhotoBackgroundColor = .blue
-    @State private var selectedSizeSpecification: any IDPhotoSizeSpecification = EditIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION
+    @State private var selectedSizeSpecification: any IDPhotoSizeSpecification = EditIDPhotoViewContainer.defaultSizeSpecification
 
     @State private var previousUserSelectedBackgroundColor: IDPhotoBackgroundColor? = nil
     @State private var previousUserSelectedSizeSpecification: (any IDPhotoSizeSpecification)? = nil
@@ -164,7 +172,7 @@ struct EditIDPhotoViewContainer: View {
                     let sourceImageOrientation: UIImage.Orientation = orientationFixedUIImage?.imageOrientation ?? .up
 
                     //  保存済みの検出結果があれば注入し、Vision の再実行をスキップする
-                    let precomputedSubject: IDPhotoSubject? = sourcePhotoRecord.detectedSubject?.parseToIDPhotoSubject()
+                    let precomputedSubject: IDPhotoSubject? = sourcePhotoRecord.detectedSubject.flatMap(IDPhotoSubject.init)
 
                     _idPhotoEditor = State(
                         initialValue: IDPhotoEditor(
@@ -206,7 +214,7 @@ struct EditIDPhotoViewContainer: View {
 
             //  廃止されたサイズなどで仕様書を解決できない場合はオリジナルとして扱う
             _selectedSizeSpecification = .init(
-                initialValue: appliedIDPhotoSize.resolvedSizeSpecification ?? EditIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION
+                initialValue: appliedIDPhotoSize.resolvedSizeSpecification ?? EditIDPhotoViewContainer.defaultSizeSpecification
             )
         }
     }
@@ -241,7 +249,7 @@ struct EditIDPhotoViewContainer: View {
             croppedPreviewUIImage: $croppedPreviewUIImage,
             croppingCGRect: $croppingCGRect,
             shouldDisableDoneButton: .readOnly(!hasAnyModifications),
-            availableBackgroundColors: BACKGROUND_COLORS,
+            availableBackgroundColors: availableBackgroundColors,
             availableSizeSpecifications: availableSizeSpecifications
         )
         .onTapDismissButton {
@@ -646,7 +654,7 @@ struct EditIDPhotoViewContainer: View {
                     //  失敗した選択肢のままにしないため、直前の選択肢へ戻す
                     self.selectedSizeSpecification = self.previousUserSelectedSizeSpecification
                         ?? self.originalAppliedSizeSpecification
-                        ?? EditIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION
+                        ?? EditIDPhotoViewContainer.defaultSizeSpecification
                 }
             } catch {
                 print(error.localizedDescription)
@@ -730,7 +738,7 @@ extension EditIDPhotoViewContainer {
             if let appliedBackgroundColor = idPhotoBackgroundColor {
                 editTargetCreatedIDPhoto.appliedBackgroundColor = .init(
                     on: viewContext,
-                    backgroundColor: appliedBackgroundColor
+                    color: appliedBackgroundColor
                 )
             }
 

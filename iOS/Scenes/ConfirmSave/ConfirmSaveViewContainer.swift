@@ -41,7 +41,7 @@ struct Triangle: Shape {
 
 fileprivate struct PrintSizeGuideView<Content: View>: View {
 
-    private let  SIZE_GUIDE_BORDER_WIDTH: Double = 2
+    private let sizeGuideBorderWidth: Double = 2
     
     @ViewBuilder var content: () -> Content
     
@@ -82,8 +82,8 @@ fileprivate struct PrintSizeGuideView<Content: View>: View {
                 content()
                     .padding(triangleWidth)
             }
-            .padding(self.SIZE_GUIDE_BORDER_WIDTH)
-            .border(Color.fixedBlack, width: self.SIZE_GUIDE_BORDER_WIDTH)
+            .padding(self.sizeGuideBorderWidth)
+            .border(Color.fixedBlack, width: self.sizeGuideBorderWidth)
         }
     }
 }

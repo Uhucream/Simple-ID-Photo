@@ -9,7 +9,7 @@
 import Foundation
 import CoreGraphics
 
-/// 派生サイズ (元サイズをカットして作るサイズ) の仕様書。
+/// 派生サイズ (元サイズをカットして作るサイズ) の仕様書
 ///
 /// DNP の仕様に基づき、縦方向のカットは写真の下部のみ (上端は固定)、横方向のカットは左右均等。
 /// 詳細は `.claude/docs/photo_size_spec.md` 第7章を参照。
@@ -26,6 +26,8 @@ struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
     /// 左右それぞれのカット量
     let millimeterHorizontalCutPerSide: Measurement<UnitLength>
 
+    let requiresSubjectDetection: Bool = true
+
     var millimeterSize: MeasurementSize? {
         let baseMillimeterWidth: Double = baseSize.dimensions.width.converted(to: .millimeters).value
         let baseMillimeterHeight: Double = baseSize.dimensions.height.converted(to: .millimeters).value
@@ -37,19 +39,6 @@ struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
             width: .millimeters(baseMillimeterWidth - (horizontalCutPerSideMillimeters * 2)),
             height: .millimeters(baseMillimeterHeight - bottomCutMillimeters)
         )
-    }
-
-    init(
-        id: String,
-        baseSize: FaceOccupancyIDPhotoSizeSpecification,
-        millimeterBottomCut: Measurement<UnitLength>,
-        millimeterHorizontalCutPerSide: Measurement<UnitLength>
-    ) {
-        self.id = id
-        self.baseSize = baseSize
-
-        self.millimeterBottomCut = millimeterBottomCut
-        self.millimeterHorizontalCutPerSide = millimeterHorizontalCutPerSide
     }
 
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {

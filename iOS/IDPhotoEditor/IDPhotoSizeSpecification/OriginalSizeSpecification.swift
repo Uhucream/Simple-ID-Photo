@@ -9,7 +9,9 @@
 import Foundation
 import CoreGraphics
 
-/// オリジナルサイズ (切り抜きなし) の仕様書。元画像の extent をそのまま返す
+/// オリジナルサイズ (切り抜きなし) の仕様書
+///
+/// クロップ矩形として元画像の extent をそのまま返す
 struct OriginalSizeSpecification: IDPhotoSizeSpecification {
 
     let id: String = "original"
@@ -17,8 +19,6 @@ struct OriginalSizeSpecification: IDPhotoSizeSpecification {
     let millimeterSize: MeasurementSize? = nil
 
     let requiresSubjectDetection: Bool = false
-
-    init() {}
 
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
         return subject.imageExtent

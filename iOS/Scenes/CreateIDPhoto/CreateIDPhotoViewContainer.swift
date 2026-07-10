@@ -22,16 +22,24 @@ struct SelectedSameValueAsPreviousError: Error {
 
 struct CreateIDPhotoViewContainer: View {
 
-    static let CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH: FileManager.SearchPathDirectory = .libraryDirectory
-    static let CREATED_ID_PHOTO_SAVE_FOLDER_NAME: String = "CreatedPhotos"
+    static let createdIDPhotoSaveFolderRootSearchPath: FileManager.SearchPathDirectory = .libraryDirectory
+    static let createdIDPhotoSaveFolderName: String = "CreatedPhotos"
 
-    static let DEFAULT_BACKGROUND_COLOR: IDPhotoBackgroundColor = .blue
-    static let DEFAULT_SIZE_SPECIFICATION: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
+    static let defaultBackgroundColor: IDPhotoBackgroundColor = .blue
+    static let defaultSizeSpecification: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
 
-    //  MARK: w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
+    //  MARK: DNP の対象サイズのみを表示する (ベースの w25xh30 / w50xh70 は対象外)。
+    //  w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
     //  パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで表示しない
     private var availableSizeSpecifications: [any IDPhotoSizeSpecification] {
-        let selectableJapanIDPhotoSizes: [any IDPhotoSizeSpecification] = JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }
+        let selectableJapanIDPhotoSizes: [any IDPhotoSizeSpecification] = [
+            JapanIDPhotoSize.w24xh30,
+            JapanIDPhotoSize.square25,
+            JapanIDPhotoSize.square30,
+            JapanIDPhotoSize.w30xh40,
+            JapanIDPhotoSize.w40xh60,
+            JapanIDPhotoSize.w45xh60
+        ]
 
         return [OriginalSizeSpecification.original] + selectableJapanIDPhotoSizes
     }
@@ -86,8 +94,8 @@ struct CreateIDPhotoViewContainer: View {
 
     @State private var selectedProcess: IDPhotoProcessSelection = .backgroundColor
 
-    @State private var selectedBackgroundColor: IDPhotoBackgroundColor = CreateIDPhotoViewContainer.DEFAULT_BACKGROUND_COLOR
-    @State private var selectedSizeSpecification: any IDPhotoSizeSpecification = CreateIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION
+    @State private var selectedBackgroundColor: IDPhotoBackgroundColor = CreateIDPhotoViewContainer.defaultBackgroundColor
+    @State private var selectedSizeSpecification: any IDPhotoSizeSpecification = CreateIDPhotoViewContainer.defaultSizeSpecification
 
     @State private var previousUserSelectedBackgroundColor: IDPhotoBackgroundColor? = nil
     @State private var previousUserSelectedSizeSpecification: (any IDPhotoSizeSpecification)? = nil
@@ -208,8 +216,8 @@ struct CreateIDPhotoViewContainer: View {
                 let saveFileName: String = ProcessInfo.processInfo.globallyUniqueString
 
                 let saveDestinationDirectoryURL: URL? = fetchOrCreateDirectoryURL(
-                    directoryName: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
-                    relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH
+                    directoryName: CreateIDPhotoViewContainer.createdIDPhotoSaveFolderName,
+                    relativeTo: CreateIDPhotoViewContainer.createdIDPhotoSaveFolderRootSearchPath
                 )
 
                 guard let saveDestinationDirectoryURL = saveDestinationDirectoryURL else {
@@ -302,8 +310,8 @@ struct CreateIDPhotoViewContainer: View {
 
                 let newCreatedIDPhoto: CreatedIDPhoto = try registerCreatedIDPhotoRecord(
                     imageFileName: imageFileNameWithPathExtension,
-                    saveDirectoryPath: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_NAME,
-                    relativeTo: CreateIDPhotoViewContainer.CREATED_ID_PHOTO_SAVE_FOLDER_ROOT_SEARCH_PATH,
+                    saveDirectoryPath: CreateIDPhotoViewContainer.createdIDPhotoSaveFolderName,
+                    relativeTo: CreateIDPhotoViewContainer.createdIDPhotoSaveFolderRootSearchPath,
                     sourcePhotoRecord: newSourcePhotoRecord
                 )
 
@@ -376,7 +384,7 @@ struct CreateIDPhotoViewContainer: View {
                 .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
             //  MARK: http://web.archive.org/web/20230425043745/https://zenn.dev/ikuraikura/articles/2022-02-08-scan-pre#scan()を使う
                 .scan(
-                    (CreateIDPhotoViewContainer.DEFAULT_BACKGROUND_COLOR, CreateIDPhotoViewContainer.DEFAULT_BACKGROUND_COLOR)
+                    (CreateIDPhotoViewContainer.defaultBackgroundColor, CreateIDPhotoViewContainer.defaultBackgroundColor)
                 ) { previous, current in
                     return (previous.1, current)
                 }
@@ -388,7 +396,7 @@ struct CreateIDPhotoViewContainer: View {
                 .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
             //  MARK: http://web.archive.org/web/20230425043745/https://zenn.dev/ikuraikura/articles/2022-02-08-scan-pre#scan()を使う
                 .scan(
-                    (CreateIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION, CreateIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION)
+                    (CreateIDPhotoViewContainer.defaultSizeSpecification, CreateIDPhotoViewContainer.defaultSizeSpecification)
                 ) { previous, current in
                     return (previous.1, current)
                 }
@@ -479,7 +487,7 @@ struct CreateIDPhotoViewContainer: View {
                     self.shouldShowCroppingErrorAlert = true
 
                     //  失敗した選択肢のままにしないため、直前の選択肢へ戻す
-                    self.selectedSizeSpecification = self.previousUserSelectedSizeSpecification ?? CreateIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION
+                    self.selectedSizeSpecification = self.previousUserSelectedSizeSpecification ?? CreateIDPhotoViewContainer.defaultSizeSpecification
                 }
             } catch {
                 print(error.localizedDescription)
@@ -557,7 +565,7 @@ extension CreateIDPhotoViewContainer {
         do {
             let appliedBackgroundColor: AppliedBackgroundColor = .init(
                 on: viewContext,
-                backgroundColor: self.selectedBackgroundColor
+                color: self.selectedBackgroundColor
             )
 
             let appliedIDPhotoSize: AppliedIDPhotoSize = .init(

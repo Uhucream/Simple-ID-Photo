@@ -12,7 +12,8 @@ import Foundation
 //  国際化対応 (roadmap 6) では、ここのリテラルを String Catalog のキーに差し替えるだけでよい
 extension IDPhotoSizeSpecification {
 
-    /// ピッカーなどに表示するサイズ名。
+    /// ピッカーに表示するサイズ名
+    ///
     /// 数値サイズは MeasurementFormatter によってロケールに応じてフォーマットされる
     var pickerLabel: String {
         guard let millimeterSize = self.millimeterSize else { return "オリジナル" }

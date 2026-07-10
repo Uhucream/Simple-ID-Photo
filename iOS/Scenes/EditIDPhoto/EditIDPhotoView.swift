@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-fileprivate let CROP_VIEW_IMAGE_HORIZONTAL_PADDING: CGFloat = 8
+fileprivate let cropViewImageHorizontalPadding: CGFloat = 8
 
-fileprivate let CROP_VIEW_ANIMATION_DURATION_SECONDS: Double = 0.5
+fileprivate let cropViewAnimationDurationSeconds: Double = 0.5
 
 struct EditIDPhotoView: View {
 
@@ -91,10 +91,6 @@ struct EditIDPhotoView: View {
         return view
     }
     
-    func renderSizeSpecificationLabel(_ specification: any IDPhotoSizeSpecification) -> Text {
-        return Text(specification.pickerLabel)
-    }
-    
     @ViewBuilder
     func BottomControlButtons() -> some View {
         VStack(spacing: 0) {
@@ -147,7 +143,6 @@ struct EditIDPhotoView: View {
                 if self.selectedProcess == .size {
                     IDPhotoSizePicker(
                         availableSizeSpecifications: availableSizeSpecifications,
-                        renderSelectionLabel: renderSizeSpecificationLabel,
                         selectedSizeSpecification: $selectedSizeSpecification
                     )
                 }
@@ -259,7 +254,7 @@ struct EditIDPhotoView: View {
                 //
                 Color.clear
                     .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                    .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                    .padding(.horizontal, cropViewImageHorizontalPadding)
                     .anchorPreference(
                         key: NamedBoundsPreferenceKey.self,
                         value: .bounds
@@ -299,10 +294,10 @@ struct EditIDPhotoView: View {
                                             }
                                     }
                                 }
-                                .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                .padding(.horizontal, cropViewImageHorizontalPadding)
                                 .offset(previewImageOffset)
                                 .animation(
-                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                     value: previewImageOffset
                                 )
                                 .scaleEffect(previewImageViewScalingAmount)
@@ -311,7 +306,7 @@ struct EditIDPhotoView: View {
                                     y: croppingFrameProxy[namedAnchor.anchor].midY
                                 )
                                 .animation(
-                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                     value: previewImageViewScalingAmount
                                 )
                                 .transition(.scale)
@@ -329,7 +324,7 @@ struct EditIDPhotoView: View {
                                 if previewCroppingCGRect.size != .zero {
                                     Rectangle()
                                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .padding(.horizontal, cropViewImageHorizontalPadding)
                                         .position(
                                             x: proxy[namedAnchor.anchor].midX,
                                             y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
@@ -342,7 +337,7 @@ struct EditIDPhotoView: View {
                                     Rectangle()
                                         .stroke(.white, lineWidth: 2)
                                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .padding(.horizontal, cropViewImageHorizontalPadding)
                                         .position(
                                             x: proxy[namedAnchor.anchor].midX,
                                             y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
@@ -353,7 +348,7 @@ struct EditIDPhotoView: View {
                             .opacity(selectedProcess == .size ? 1 : 0)
                             .ignoresSafeArea()
                             .animation(
-                                .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                 value: previewImageViewScalingAmount
                             )
                             .transition(.scale)

@@ -70,7 +70,9 @@ actor IDPhotoEditor {
 //  MARK: - 公開 API
 extension IDPhotoEditor {
 
-    /// 被写体の検出結果を返す (未検出の場合は Vision を実行して検出する)
+    /// 被写体の検出結果を返す
+    ///
+    /// 未検出の場合は Vision を実行して検出する
     func detectedSubject() async throws -> IDPhotoSubject {
         if let cachedSubject = cachedSubject { return cachedSubject }
 
@@ -81,14 +83,16 @@ extension IDPhotoEditor {
         return detectedSubject
     }
 
-    /// 検出済みの場合のみ被写体情報を返す (Vision を実行しない)。永続化用
+    /// 検出済みの場合のみ被写体の検出結果を返す
+    ///
+    /// Vision は実行しない
     func alreadyDetectedSubject() -> IDPhotoSubject? {
         return cachedSubject
     }
 
-    /// 背景色を合成し、元画像サイズの合成済み画像を返す。
+    /// 背景色を合成し、元画像サイズの合成済み画像を返す
     ///
-    /// 常に元画像から再合成するため、何度色を変えても画質は劣化しない。
+    /// 常に元画像から再合成するため、何度色を変えても画質は劣化しない
     @discardableResult
     func painted(with backgroundColor: IDPhotoBackgroundColor) async throws -> IDPhoto {
         switch backgroundColor {
@@ -132,9 +136,9 @@ extension IDPhotoEditor {
         }
     }
 
-    /// 仕様書が生成したクロップ矩形で、現在の作業画像を切り抜いて返す。
+    /// 仕様書が生成したクロップ矩形で、現在の作業画像を切り抜いて返す
     ///
-    /// 作業画像は変異しないため、続けて `painted(with:)` を呼んでも切り抜きの影響は受けない。
+    /// 作業画像は変異しないため、続けて `painted(with:)` を呼んでも切り抜きの影響は受けない
     func cropped(to specification: any IDPhotoSizeSpecification) async throws -> IDPhoto {
         let subject: IDPhotoSubject
 
@@ -165,7 +169,8 @@ extension IDPhotoEditor {
 //  MARK: - 合成
 extension IDPhotoEditor {
 
-    /// マスクの白い領域に source を、黒い領域に background を合成する。
+    /// マスクの白い領域に source を、黒い領域に background を合成する
+    ///
     /// マスクと背景は source の extent に合わせて拡大される
     static func blended(
         source: CIImage,

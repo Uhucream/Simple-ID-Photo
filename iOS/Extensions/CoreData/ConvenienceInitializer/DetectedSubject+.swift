@@ -11,10 +11,11 @@ import CoreGraphics
 
 extension DetectedSubject {
 
-    /// 検出アルゴリズムの版数。
+    /// 検出アルゴリズムの版数
+    ///
     /// 検出ロジックを変更した場合 (iOS 18 の新 Vision API への移行など) はこの値を上げることで、
     /// 古い検出結果を無効化して再検出させる
-    static let CURRENT_DETECTION_VERSION: Int16 = 1
+    static let currentDetectionVersion: Int16 = 1
 
     convenience init(
         on context: NSManagedObjectContext,
@@ -38,36 +39,40 @@ extension DetectedSubject {
         self.chinY = subject.chinY
         self.eyeCenterY = subject.eyeCenterY.map { NSNumber(value: Double($0)) }
 
-        self.detectionVersion = DetectedSubject.CURRENT_DETECTION_VERSION
+        self.detectionVersion = DetectedSubject.currentDetectionVersion
 
         self.sourcePhoto = sourcePhoto
     }
+}
 
-    /// 保存された検出結果を IDPhotoSubject に復元する。
-    /// 検出アルゴリズムの版数が現在と異なる場合は nil (再検出させる)
-    func parseToIDPhotoSubject() -> IDPhotoSubject? {
-        guard self.detectionVersion == DetectedSubject.CURRENT_DETECTION_VERSION else { return nil }
+extension IDPhotoSubject {
 
-        guard self.imageWidth > .zero, self.imageHeight > .zero else { return nil }
+    /// 保存された検出結果から復元する
+    ///
+    /// 検出アルゴリズムの版数が現在と異なる場合は nil
+    init?(_ detectedSubject: DetectedSubject) {
+        guard detectedSubject.detectionVersion == DetectedSubject.currentDetectionVersion else { return nil }
+
+        guard detectedSubject.imageWidth > .zero, detectedSubject.imageHeight > .zero else { return nil }
 
         let imageExtent: CGRect = .init(
             origin: .zero,
-            size: CGSize(width: self.imageWidth, height: self.imageHeight)
+            size: CGSize(width: detectedSubject.imageWidth, height: detectedSubject.imageHeight)
         )
 
         let faceWithHairRect: CGRect = .init(
-            x: self.faceRectX,
-            y: self.faceRectY,
-            width: self.faceRectWidth,
-            height: self.faceRectHeight
+            x: detectedSubject.faceRectX,
+            y: detectedSubject.faceRectY,
+            width: detectedSubject.faceRectWidth,
+            height: detectedSubject.faceRectHeight
         )
 
-        return IDPhotoSubject(
+        self.init(
             imageExtent: imageExtent,
             faceWithHairRect: faceWithHairRect,
-            crownY: self.crownY,
-            chinY: self.chinY,
-            eyeCenterY: self.eyeCenterY.map { CGFloat($0.doubleValue) }
+            crownY: detectedSubject.crownY,
+            chinY: detectedSubject.chinY,
+            eyeCenterY: detectedSubject.eyeCenterY.map { CGFloat($0.doubleValue) }
         )
     }
 }

@@ -102,9 +102,15 @@ struct IDPhotoDetailView: View {
             Section {
                 VStack(alignment: .center, spacing: 28) {
 
-                    let DEFAULT_PLACEHOLDER_ASPECT_RATIO: CGFloat = 3 / 4
+                    let defaultPlaceholderAspectRatio: CGFloat = 3 / 4
 
-                    let createdIDPhotoAspectRatio: CGFloat = self.idPhotoSizeLabel.aspectRatio ?? DEFAULT_PLACEHOLDER_ASPECT_RATIO
+                    let createdIDPhotoAspectRatio: CGFloat = {
+                        guard case .millimeters(let width, let height) = self.idPhotoSizeLabel, height > .zero else {
+                            return defaultPlaceholderAspectRatio
+                        }
+
+                        return width / height
+                    }()
                     
                     let screenWidth: CGFloat = screenSizeHelper.screenSize.width
                     

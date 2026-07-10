@@ -12,8 +12,6 @@ struct IDPhotoSizePicker: View {
 
     var availableSizeSpecifications: [any IDPhotoSizeSpecification]
 
-    var renderSelectionLabel: (any IDPhotoSizeSpecification) -> Text
-
     @Binding var selectedSizeSpecification: any IDPhotoSizeSpecification
 
     var body: some View {
@@ -25,7 +23,7 @@ struct IDPhotoSizePicker: View {
                             let isSelected: Bool = self.selectedSizeSpecification.id == sizeSpecification.id
 
                             ZStack {
-                                renderSelectionLabel(sizeSpecification)
+                                Text(sizeSpecification.pickerLabel)
                                     .font(.system(size: 14.0, design: .rounded))
                                     .fontWeight(.regular)
                             }
@@ -72,13 +70,8 @@ struct IDPhotoSizePicker: View {
 
 struct IDPhotoSizePicker_Previews: PreviewProvider {
     static var previews: some View {
-        let renderSpecificationLabel: (any IDPhotoSizeSpecification) -> Text = { (specification: any IDPhotoSizeSpecification) in
-            return Text(specification.pickerLabel)
-        }
-
         IDPhotoSizePicker(
             availableSizeSpecifications: JapanIDPhotoSize.allCases,
-            renderSelectionLabel: renderSpecificationLabel,
             selectedSizeSpecification: .constant(OriginalSizeSpecification.original)
         )
         .previewLayout(.sizeThatFits)

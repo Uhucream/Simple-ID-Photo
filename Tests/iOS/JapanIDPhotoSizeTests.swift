@@ -17,6 +17,7 @@ struct JapanIDPhotoSizeTests {
         //  旧 enum の並び: original(0), passport(1), custom(2), w24_h30(3), w25_h30(4), w30_h30(5),
         //  w30_h40(6), w35_h45(7), w40_h50(8), w40_h55(9), w40_h60(10), w45_h60(11), w50_h50(12)
         #expect(JapanIDPhotoSize(legacySizeVariantRawValue: 3) == .w24xh30)
+        #expect(JapanIDPhotoSize(legacySizeVariantRawValue: 4) == .w25xh30)
         #expect(JapanIDPhotoSize(legacySizeVariantRawValue: 5) == .square30)
         #expect(JapanIDPhotoSize(legacySizeVariantRawValue: 6) == .w30xh40)
         #expect(JapanIDPhotoSize(legacySizeVariantRawValue: 7) == .w35xh45)
@@ -27,8 +28,8 @@ struct JapanIDPhotoSizeTests {
     @Test("廃止されたサイズと本 enum の範囲外 (original / passport) は nil を返す")
     func unresolvableLegacySizeVariantsMapToNil() {
         //  0 (original) と 1 (passport) は呼び出し側で個別に扱う
-        //  2 / 4 / 8 / 9 / 12 は廃止されたサイズ (mm 実寸フォールバックに委ねる)
-        let unresolvableRawValues: [Int32] = [0, 1, 2, 4, 8, 9, 12]
+        //  2 / 8 / 9 / 12 は廃止されたサイズ (mm 実寸フォールバックに委ねる)
+        let unresolvableRawValues: [Int32] = [0, 1, 2, 8, 9, 12]
 
         for rawValue in unresolvableRawValues {
             #expect(JapanIDPhotoSize(legacySizeVariantRawValue: rawValue) == nil)
@@ -56,8 +57,10 @@ struct JapanIDPhotoSizeTests {
     @Test("基準サイズの寸法が DNP 仕様と一致する")
     func standardSizeDimensionsMatchSpecification() {
         #expect(JapanIDPhotoSize.w24xh30.millimeterSize == MeasurementSize(width: .millimeters(24), height: .millimeters(30)))
+        #expect(JapanIDPhotoSize.w25xh30.millimeterSize == MeasurementSize(width: .millimeters(25), height: .millimeters(30)))
         #expect(JapanIDPhotoSize.w30xh40.millimeterSize == MeasurementSize(width: .millimeters(30), height: .millimeters(40)))
         #expect(JapanIDPhotoSize.w35xh45.millimeterSize == MeasurementSize(width: .millimeters(35), height: .millimeters(45)))
+        #expect(JapanIDPhotoSize.w50xh70.millimeterSize == MeasurementSize(width: .millimeters(50), height: .millimeters(70)))
     }
 
     @Test("永続化 ID に重複がない")

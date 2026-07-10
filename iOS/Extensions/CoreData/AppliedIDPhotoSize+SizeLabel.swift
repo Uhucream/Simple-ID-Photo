@@ -25,7 +25,9 @@ enum AppliedIDPhotoSizeLabel: Equatable {
 
 extension AppliedIDPhotoSize {
 
-    /// 仕様書 ID。未バックフィルのレコードは旧 sizeVariant からフォールバック解決する
+    /// 仕様書 ID
+    ///
+    /// 未バックフィルのレコードは旧 sizeVariant からフォールバック解決する
     var resolvedSizeSpecificationID: String? {
         if let sizeSpecificationID = self.sizeSpecificationID {
             return sizeSpecificationID
@@ -44,7 +46,8 @@ extension AppliedIDPhotoSize {
         }
     }
 
-    /// 保存済みの仕様書 ID から復元したサイズ仕様書。
+    /// 保存済みの仕様書 ID から復元したサイズ仕様書
+    ///
     /// 廃止されたサイズや未実装のパスポート規格は復元できないため nil
     var resolvedSizeSpecification: (any IDPhotoSizeSpecification)? {
         guard let resolvedID = self.resolvedSizeSpecificationID else { return nil }
@@ -56,7 +59,8 @@ extension AppliedIDPhotoSize {
         return JapanIDPhotoSize(rawValue: resolvedID)
     }
 
-    /// 表示用ラベル。
+    /// 表示用ラベル
+    ///
     /// 仕様書 ID から解決できない場合 (廃止サイズ) は保存済みの mm 実寸にフォールバックする
     var sizeLabel: AppliedIDPhotoSizeLabel {
         let resolvedID: String? = self.resolvedSizeSpecificationID
@@ -88,12 +92,3 @@ extension AppliedIDPhotoSize {
     }
 }
 
-extension AppliedIDPhotoSizeLabel {
-
-    /// サムネイルのプレースホルダなどに使用するアスペクト比 (幅 ÷ 高さ)。解決できない場合は nil
-    var aspectRatio: CGFloat? {
-        guard case .millimeters(let width, let height) = self, height > .zero else { return nil }
-
-        return width / height
-    }
-}

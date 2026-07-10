@@ -9,7 +9,7 @@
 import Foundation
 import CoreGraphics
 
-/// 標準の写り方 (顔が写真全体に占める割合を一定にする) の仕様書。
+/// 標準の写り方 (顔が写真全体に占める割合を一定にする) の仕様書
 ///
 /// カスタムサイズもこの仕様書で表現できる (寸法・顔の高さ・頭上の余白がすべてパラメータであるため)。
 struct FaceOccupancyIDPhotoSizeSpecification: IDPhotoSizeSpecification {
@@ -25,21 +25,10 @@ struct FaceOccupancyIDPhotoSizeSpecification: IDPhotoSizeSpecification {
     /// 頭頂から写真上端までの余白
     let millimeterCrownMargin: Measurement<UnitLength>
 
+    let requiresSubjectDetection: Bool = true
+
     var millimeterSize: MeasurementSize? {
         return dimensions
-    }
-
-    init(
-        id: String,
-        dimensions: MeasurementSize,
-        millimeterFaceHeight: Measurement<UnitLength>,
-        millimeterCrownMargin: Measurement<UnitLength>
-    ) {
-        self.id = id
-        self.dimensions = dimensions
-
-        self.millimeterFaceHeight = millimeterFaceHeight
-        self.millimeterCrownMargin = millimeterCrownMargin
     }
 
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {

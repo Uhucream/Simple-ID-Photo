@@ -13,12 +13,4 @@ struct MeasurementSize: Codable, Equatable, Sendable {
 
     let width: Measurement<UnitLength>
     let height: Measurement<UnitLength>
-
-    init(
-        width: Measurement<UnitLength>,
-        height: Measurement<UnitLength>
-    ) {
-        self.width = width
-        self.height = height
-    }
 }
