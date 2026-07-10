@@ -120,8 +120,10 @@ enum JapanIDPhotoSize: String {
   旧 w25_h30 (4) はベース case の宣言に伴い `.w25xh30` へ復元できる
 - パスポートの予約 ID は `JapanIDPhotoSize.reservedPassportSpecificationID` ("jp.passport")
 - **UI 都合の一覧 (selectable 等) をモデルに持たせない (オーナー指示)**。
-  ピッカーの選択肢は各 ViewContainer の `availableSizeSpecifications` が**アローリストで明示列挙**する
-  (w35xh45 とベース2種は DNP の対象サイズ一覧に無い/誤認防止のため出さない)
+  ピッカーの選択肢は各 ViewContainer の `availableSizeSpecifications` が
+  `[OriginalSizeSpecification.original] + JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }` で組み立てる。
+  **除外は w35xh45 のみ** (同寸法のパスポート規格との誤認防止)。長型枠 w25xh30・大型元寸 w50xh70 を含む
+  他の全サイズは選択可能 (DNP 実機でカット前提で選べる正当なサイズであり、UI から消す理由がないため)
 - サイズ一覧は DNP 2023年5月仕様に刷新済み: 旧 40×50 / 40×55 / 50×50 は廃止。
   正方形 (25×25, 30×30)・大型 (40×60, 45×60) は「元サイズからのカット」方式に変更 (顔占有率が旧実装から変わる。承認済み)
 - **w35xh45 (4.5×3.5 規格外) は定義のみでピッカー非表示**: 同寸法のパスポート規格と誤認したユーザーが

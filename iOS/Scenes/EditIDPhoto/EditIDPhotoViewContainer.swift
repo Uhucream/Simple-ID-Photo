@@ -35,20 +35,10 @@ struct EditIDPhotoViewContainer: View {
 
     private static let defaultSizeSpecification: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
 
-    //  MARK: DNP の対象サイズのみを表示する (ベースの w25xh30 / w50xh70 は対象外)。
-    //  w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
+    //  MARK: w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
     //  パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで表示しない
     private var availableSizeSpecifications: [any IDPhotoSizeSpecification] {
-        let selectableJapanIDPhotoSizes: [any IDPhotoSizeSpecification] = [
-            JapanIDPhotoSize.w24xh30,
-            JapanIDPhotoSize.square25,
-            JapanIDPhotoSize.square30,
-            JapanIDPhotoSize.w30xh40,
-            JapanIDPhotoSize.w40xh60,
-            JapanIDPhotoSize.w45xh60
-        ]
-
-        return [OriginalSizeSpecification.original] + selectableJapanIDPhotoSizes
+        return [OriginalSizeSpecification.original] + JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }
     }
 
     @Environment(\.managedObjectContext) private var viewContext
