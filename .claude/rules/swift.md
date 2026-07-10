@@ -184,6 +184,18 @@ Apple のフレームワークの API デザインを規範とする。迷った
 - 型宣言本体は最小限にし、プロトコル準拠・ネスト型・ヘルパーは extension に分離すること
 - 単位を持つ値には `Measurement` を使うこと (`Measurement<UnitLength>` 等)
 - モデル層に UI 都合のプロパティを持たせないこと (表示可否・ピッカー用の一覧・並び順などの UI ポリシーは View / ViewContainer 側の責務)
+- View にフォーマット用のクロージャを渡さないこと (React のレンダープロップ的な発想を持ち込まない)。View 自身が値から表示を導出する
+- 定数はアッパースネークケースではなく `static let` + キャメルケースで宣言すること (Google Swift Style Guide 準拠。過去コードにアッパースネークの定数が残っているが、真似しない)
+
+  ```swift
+  // 良い例
+  static let defaultBackgroundColor: IDPhotoBackgroundColor = .blue
+
+  // 悪い例
+  static let DEFAULT_BACKGROUND_COLOR: IDPhotoBackgroundColor = .blue
+  ```
+
+- インスタンス変数を初期化しているだけの init を struct に書かないこと (memberwise init に委ねる)。特別な変換・検証がある場合のみ init を書く
 
 ## ドキュメントコメント
 
@@ -192,3 +204,18 @@ Apple のフレームワークの API デザインを規範とする。迷った
 - 使用側の関心事 (何を返すか・いつ throw するか・座標系などの契約) だけを書くこと
 - 内部実装の都合 (「protocol extension は stored property を持てないため computed にしている」「〜だからこの書き方をしている」等) は論外。内部向けの補足が必要なら通常コメント (`//`) を使うこと
 - private メンバーの内部メモも `//` で書くこと
+- 補足はカッコ書きで summary に詰め込まず、改行して Discussion 記法で書くこと
+
+  ```swift
+  // 良い例
+  /// 髪を含む顔の矩形
+  ///
+  /// 幅は顔の boundingBox の幅、上端は crownY、下端は chinY
+  let faceWithHairRect: CGRect
+
+  // 悪い例
+  /// 髪を含む顔の矩形 (幅は顔の boundingBox の幅、上端は crownY、下端は chinY)
+  let faceWithHairRect: CGRect
+  ```
+
+- プロパティを「何に使うか」を doc コメントで勝手に規定しないこと (どう活かすかは使用者側が決める)。書いてよいのは事実 (値の定義・nil になる条件など) のみ。避けるべき使い方がある場合に限り `- Important:` などの警告レベルの記法で書くこと

@@ -74,7 +74,9 @@ let cropped: IDPhoto = try await idPhotoEditor.cropped(to: JapanIDPhotoSize.w30x
 - **`eyeCenterY` を持つ理由**: 外務省パスポート規格の「髪のボリュームが大きい場合は、目から顎までの幅と同程度の幅を
   目から上側にとり、その部分を頭頂とみなす」規定のため。みなし頭頂の計算
   `deemedCrownY = min(crownY, eyeCenterY + (eyeCenterY - chinY))` は**パスポート仕様書 struct の内部で行う**
-  (subject は事実だけを持ち、解釈は仕様書側)
+  (subject は事実だけを持ち、解釈は仕様書側)。
+  ただしこの用途を `eyeCenterY` の doc コメントに書いてはならない
+  (プロパティの用途を doc で規定しない、というオーナー規範。経緯はここに記録する)
 - `Codable` なのは Core Data への永続化 (`DetectedSubject`) のため
 
 ### 2.3 サイズ仕様書 (`IDPhotoSizeSpecification`)
@@ -83,7 +85,9 @@ let cropped: IDPhoto = try await idPhotoEditor.cropped(to: JapanIDPhotoSize.w30x
 **エディタは仕様書が返した CGRect を `ciImage.cropped(to:)` に渡すだけ** (エディタの責務を肥大化させないため。
 旧 `IDPhotoSizeVariant` の「enum の case で処理側が切り抜きを分岐する」設計は柔軟性に欠けるとして廃止された)。
 
-- `requiresSubjectDetection` が false の仕様書 (オリジナルサイズ) では Vision が一切走らない
+- `requiresSubjectDetection` が false の仕様書 (オリジナルサイズ) では Vision が一切走らない。
+  **このプロパティに protocol extension のデフォルト実装を与えてはならない** (被写体検出の要否は各仕様書が
+  意識して宣言すべきセマンティクスであり、デフォルトで隠さない。オーナー決定)
 - 仕様書が rect を生成できない場合は throw し、エディタはそのまま rethrow する
 - 実装:
   - `OriginalSizeSpecification` — 切り抜きなし。`IDPhotoSizeSpecification where Self == OriginalSizeSpecification` に
@@ -105,12 +109,17 @@ enum JapanIDPhotoSize: String {
 - enum 自身が `IDPhotoSizeSpecification` に準拠し、private な `specification` (case ごとの寸法データ選択) に委譲
 - **「namespace enum に他の型の定数を寄せ集める」形 (旧 JapanIDPhotoSizes) はオーナーが明確に拒否**。
   この enum 化はオーナー選定 (A案)。詳細は `.claude/rules/swift.md` の API 設計ルール参照
+- **派生サイズのベースになるサイズ (長型枠 w25xh30 / 大型ベース w50xh70) も case として宣言する (オーナー指示)**。
+  標準の写り方の仕様書は private static 定数 (`w25xh30Standard` 等) に1箇所で定義し、
+  ベース case 自身の `specification` と派生 case の `baseSize` の両方がそれを参照する (force cast 不要)
 - 旧 `IDPhotoSizeVariant` からの変換は `init?(legacySizeVariantRawValue:)`。
-  original (0) と passport (1) は enum の範囲外で、呼び出し側 (`AppliedIDPhotoSize.resolvedSizeSpecificationID`) が個別に扱う
+  original (0) と passport (1) は enum の範囲外で、呼び出し側 (`AppliedIDPhotoSize.resolvedSizeSpecificationID`) が個別に扱う。
+  旧 w25_h30 (4) はベース case の宣言に伴い `.w25xh30` へ復元できる
 - パスポートの予約 ID は `JapanIDPhotoSize.reservedPassportSpecificationID` ("jp.passport")
 - **UI 都合の一覧 (selectable 等) をモデルに持たせない (オーナー指示)**。
-  w35xh45 のピッカー除外は各 ViewContainer の `availableSizeSpecifications` で行う
-- サイズ一覧は DNP 2023年5月仕様に刷新済み: 旧 25×30 / 40×50 / 40×55 / 50×50 は廃止。
+  ピッカーの選択肢は各 ViewContainer の `availableSizeSpecifications` が**アローリストで明示列挙**する
+  (w35xh45 とベース2種は DNP の対象サイズ一覧に無い/誤認防止のため出さない)
+- サイズ一覧は DNP 2023年5月仕様に刷新済み: 旧 40×50 / 40×55 / 50×50 は廃止。
   正方形 (25×25, 30×30)・大型 (40×60, 45×60) は「元サイズからのカット」方式に変更 (顔占有率が旧実装から変わる。承認済み)
 - **w35xh45 (4.5×3.5 規格外) は定義のみでピッカー非表示**: 同寸法のパスポート規格と誤認したユーザーが
   パスポート申請に使ってしまう事故を防ぐため。パスポートサイズ対応が完了したら表示する (オーナー決定)
