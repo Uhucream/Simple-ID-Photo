@@ -112,6 +112,9 @@ enum JapanIDPhotoSize: String {
 - **派生サイズのベースになるサイズ (長型枠 w25xh30 / 大型ベース w50xh70) も case として宣言する (オーナー指示)**。
   標準の写り方の仕様書は private static 定数 (`w25xh30Standard` 等) に1箇所で定義し、
   ベース case 自身の `specification` と派生 case の `baseSize` の両方がそれを参照する (force cast 不要)
+- 内部の仕様書 (FaceOccupancy / EdgeCut) にも**対応 case の rawValue を id として与える** (空 id を作らない)。
+  現状は enum 自身の id が rawValue を返すため空 id でも動くが、custom サイズや id 委譲の変更で
+  `ForEach(id: \.id)` が衝突する landmine になるため、構造的に回避する
 - 旧 `IDPhotoSizeVariant` からの変換は `init?(legacySizeVariantRawValue:)`。
   original (0) と passport (1) は enum の範囲外で、呼び出し側 (`AppliedIDPhotoSize.resolvedSizeSpecificationID`) が個別に扱う。
   旧 w25_h30 (4) はベース case の宣言に伴い `.w25xh30` へ復元できる

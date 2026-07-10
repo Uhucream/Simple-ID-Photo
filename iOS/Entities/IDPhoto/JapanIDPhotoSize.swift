@@ -23,8 +23,6 @@ enum JapanIDPhotoSize: String {
     case w24xh30 = "jp.w24h30"
 
     /// 長型枠 (3.0 × 2.5 cm)
-    ///
-    /// 正方・小 (square25) のベースになるサイズ
     case w25xh30 = "jp.w25h30"
 
     /// 一般・履歴書 (4.0 × 3.0 cm)
@@ -32,34 +30,22 @@ enum JapanIDPhotoSize: String {
 
     /// 4.5 × 3.5 cm (パスポート規格外・標準の写り方)
     ///
-    /// - Important: 同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
-    ///   パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで
-    ///   ピッカーには表示しないこと (表示可否は ViewContainer 側で制御する)
+    /// - Important: 寸法はパスポート規格と同じだが、写り方が異なるためパスポート申請には使用できない
     case w35xh45 = "jp.w35h45"
 
     /// 正方・小 (2.5 × 2.5 cm)
-    ///
-    /// 長型枠 (w25xh30) の下部を 0.5 cm カットして作る
     case square25 = "jp.square25"
 
     /// 正方・中 (3.0 × 3.0 cm)
-    ///
-    /// 一般・履歴書 (w30xh40) の下部を 1.0 cm カットして作る
     case square30 = "jp.square30"
 
     /// 大型 (6.0 × 4.0 cm)
-    ///
-    /// 大型ベース (w50xh70) の下部を 1.0 cm、左右を各 0.5 cm カットして作る
     case w40xh60 = "jp.w40h60"
 
     /// 大型 (6.0 × 4.5 cm)
-    ///
-    /// 大型ベース (w50xh70) の下部を 1.0 cm、左右を各 0.25 cm カットして作る
     case w45xh60 = "jp.w45h60"
 
     /// 大型ベース (7.0 × 5.0 cm)
-    ///
-    /// 大型 2種 (w40xh60 / w45xh60) のベースになるサイズ
     case w50xh70 = "jp.w50h70"
 }
 
@@ -94,13 +80,12 @@ extension JapanIDPhotoSize {
     private static let provisionalMillimeterCrownMargin: Measurement<UnitLength> = .millimeters(4)
 
     //  標準の写り方の仕様書。
-    //  ベースになるサイズ (w25xh30 / w30xh40 / w50xh70) は自身の specification と
-    //  派生サイズの baseSize の両方から参照されるため、定義を1箇所にまとめている
-    private static let w24xh30Standard: FaceOccupancyIDPhotoSizeSpecification = standard(millimeterWidth: 24, millimeterHeight: 30)
-    private static let w25xh30Standard: FaceOccupancyIDPhotoSizeSpecification = standard(millimeterWidth: 25, millimeterHeight: 30)
-    private static let w30xh40Standard: FaceOccupancyIDPhotoSizeSpecification = standard(millimeterWidth: 30, millimeterHeight: 40)
-    private static let w35xh45Standard: FaceOccupancyIDPhotoSizeSpecification = standard(millimeterWidth: 35, millimeterHeight: 45)
-    private static let w50xh70Standard: FaceOccupancyIDPhotoSizeSpecification = standard(millimeterWidth: 50, millimeterHeight: 70)
+    //  派生サイズの baseSize (square25 → w25xh30 など) からも参照されるため、定義を1箇所にまとめている
+    private static let w24xh30Standard: FaceOccupancyIDPhotoSizeSpecification = standard(for: .w24xh30, millimeterWidth: 24, millimeterHeight: 30)
+    private static let w25xh30Standard: FaceOccupancyIDPhotoSizeSpecification = standard(for: .w25xh30, millimeterWidth: 25, millimeterHeight: 30)
+    private static let w30xh40Standard: FaceOccupancyIDPhotoSizeSpecification = standard(for: .w30xh40, millimeterWidth: 30, millimeterHeight: 40)
+    private static let w35xh45Standard: FaceOccupancyIDPhotoSizeSpecification = standard(for: .w35xh45, millimeterWidth: 35, millimeterHeight: 45)
+    private static let w50xh70Standard: FaceOccupancyIDPhotoSizeSpecification = standard(for: .w50xh70, millimeterWidth: 50, millimeterHeight: 70)
 
     //  実体の仕様書。処理の分岐ではなく、case ごとの寸法データの選択
     private var specification: any IDPhotoSizeSpecification {
@@ -156,13 +141,13 @@ extension JapanIDPhotoSize {
     }
 
     private static func standard(
+        for size: JapanIDPhotoSize,
         millimeterWidth: Double,
         millimeterHeight: Double
     ) -> FaceOccupancyIDPhotoSizeSpecification {
 
-        //  外向きの ID は enum の rawValue なので、内部の仕様書には ID を持たせない
         return FaceOccupancyIDPhotoSizeSpecification(
-            id: "",
+            id: size.rawValue,
             dimensions: MeasurementSize(
                 width: .millimeters(millimeterWidth),
                 height: .millimeters(millimeterHeight)
