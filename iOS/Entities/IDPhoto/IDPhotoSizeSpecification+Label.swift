@@ -8,7 +8,7 @@
 
 import Foundation
 
-//  MARK: 表示名の解決 (仕様書 ID がキー)。
+//  表示名の解決 (仕様書 ID がキー)。
 //  国際化対応 (roadmap 6) では、ここのリテラルを String Catalog のキーに差し替えるだけでよい
 extension IDPhotoSizeSpecification {
 

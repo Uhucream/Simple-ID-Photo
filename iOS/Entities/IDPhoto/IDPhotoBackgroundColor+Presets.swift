@@ -9,7 +9,7 @@
 import SwiftUI
 import UIKit
 
-//  MARK: プリセット (asset catalog の色から生成)
+//  プリセット (asset catalog の色から生成)
 extension IDPhotoBackgroundColor {
 
     static let blue: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.blue)
@@ -54,7 +54,7 @@ extension IDPhotoBackgroundColor {
     }
 }
 
-//  MARK: SwiftUI 連携
+//  SwiftUI 連携
 extension IDPhotoBackgroundColor {
 
     /// SwiftUI の Color 表現
@@ -102,7 +102,7 @@ extension IDPhotoBackgroundColor {
     }
 }
 
-//  MARK: 永続化された成分からの復元
+//  永続化された成分からの復元
 extension IDPhotoBackgroundColor {
 
     /// 保存された RGBA 成分から復元する

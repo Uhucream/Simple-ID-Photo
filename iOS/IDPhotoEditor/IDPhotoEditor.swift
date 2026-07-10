@@ -67,7 +67,7 @@ actor IDPhotoEditor {
     }
 }
 
-//  MARK: - 公開 API
+//  公開 API
 extension IDPhotoEditor {
 
     /// 被写体の検出結果を返す
@@ -166,7 +166,7 @@ extension IDPhotoEditor {
     }
 }
 
-//  MARK: - 合成
+//  合成
 extension IDPhotoEditor {
 
     /// マスクの白い領域に source を、黒い領域に background を合成する
@@ -206,7 +206,7 @@ extension IDPhotoEditor {
     }
 }
 
-//  MARK: - 人物マスク生成
+//  人物マスク生成
 extension IDPhotoEditor {
 
     //  背景合成用の人物マスク (キャッシュされる)
@@ -285,7 +285,7 @@ extension IDPhotoEditor {
 
         guard let personInstanceMaskResult = personInstanceMaskRequest.results?.first else { return nil }
 
-        //  MARK: 複数人物対応の拡張ポイント。
+        //  複数人物対応の拡張ポイント。
         //  将来「対象人物の選択」を実装する場合は、選択されたインスタンスをここに渡す (現状は最前面の1人固定)
         let targetPersonInstances: IndexSet = .init(integer: 1)
 
@@ -298,7 +298,7 @@ extension IDPhotoEditor {
     }
 }
 
-//  MARK: - 被写体検出
+//  被写体検出
 extension IDPhotoEditor {
 
     //  被写体を検出する。
@@ -434,7 +434,7 @@ extension IDPhotoEditor {
     }
 }
 
-//  MARK: - Vision リクエスト実行
+//  Vision リクエスト実行
 extension IDPhotoEditor {
 
     private static func perform(
