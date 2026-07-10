@@ -14,7 +14,7 @@ struct OriginalSizeSpecification: IDPhotoSizeSpecification {
 
     let id: String = "original"
 
-    let millimeterSize: MillimeterSize? = nil
+    let millimeterSize: MeasurementSize? = nil
 
     let requiresSubjectDetection: Bool = false
 
@@ -22,5 +22,13 @@ struct OriginalSizeSpecification: IDPhotoSizeSpecification {
 
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
         return subject.imageExtent
+    }
+}
+
+extension IDPhotoSizeSpecification where Self == OriginalSizeSpecification {
+
+    /// オリジナルサイズ (切り抜きなし)
+    static var original: OriginalSizeSpecification {
+        return .init()
     }
 }

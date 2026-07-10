@@ -31,7 +31,29 @@ extension AppliedIDPhotoSize {
             return sizeSpecificationID
         }
 
-        return JapanIDPhotoSizes.sizeSpecificationID(fromLegacySizeVariantRawValue: self.sizeVariant)
+        switch self.sizeVariant {
+
+        case 0:
+            return OriginalSizeSpecification.original.id
+
+        case 1:
+            return JapanIDPhotoSize.reservedPassportSpecificationID
+
+        default:
+            return JapanIDPhotoSize(legacySizeVariantRawValue: self.sizeVariant)?.id
+        }
+    }
+
+    /// 保存済みの仕様書 ID から復元したサイズ仕様書。
+    /// 廃止されたサイズや未実装のパスポート規格は復元できないため nil
+    var resolvedSizeSpecification: (any IDPhotoSizeSpecification)? {
+        guard let resolvedID = self.resolvedSizeSpecificationID else { return nil }
+
+        if resolvedID == OriginalSizeSpecification.original.id {
+            return OriginalSizeSpecification.original
+        }
+
+        return JapanIDPhotoSize(rawValue: resolvedID)
     }
 
     /// 表示用ラベル。
@@ -39,19 +61,23 @@ extension AppliedIDPhotoSize {
     var sizeLabel: AppliedIDPhotoSizeLabel {
         let resolvedID: String? = self.resolvedSizeSpecificationID
 
-        if resolvedID == JapanIDPhotoSizes.original.id {
+        if resolvedID == OriginalSizeSpecification.original.id {
             return .original
         }
 
-        if resolvedID == JapanIDPhotoSizes.passportSizeSpecificationID {
+        if resolvedID == JapanIDPhotoSize.reservedPassportSpecificationID {
             return .passport
         }
 
         if
-            let specification = JapanIDPhotoSizes.specification(matching: resolvedID),
-            let millimeterSize = specification.millimeterSize
+            let resolvedID = resolvedID,
+            let japanIDPhotoSize = JapanIDPhotoSize(rawValue: resolvedID),
+            let millimeterSize = japanIDPhotoSize.millimeterSize
         {
-            return .millimeters(width: millimeterSize.width, height: millimeterSize.height)
+            return .millimeters(
+                width: millimeterSize.width.converted(to: .millimeters).value,
+                height: millimeterSize.height.converted(to: .millimeters).value
+            )
         }
 
         if self.millimetersWidth > .zero, self.millimetersHeight > .zero {

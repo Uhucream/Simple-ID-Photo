@@ -151,7 +151,7 @@ struct CreateIDPhotoView: View {
                                     .overlay(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 4))
                                     .padding(4)
                                     .overlay {
-                                        if selectedBackgroundColor == .original {
+                                        if selectedBackgroundColor == .clear {
                                             RoundedRectangle(cornerRadius: 8)
                                                 .stroke(Color.tintColor, lineWidth: 2)
                                         }
@@ -163,7 +163,7 @@ struct CreateIDPhotoView: View {
                                     .frame(maxHeight: 40)
                                     .environment(\.colorScheme, .dark)
                                     .onTapGesture {
-                                        self.selectedBackgroundColor = .original
+                                        self.selectedBackgroundColor = .clear
                                     }
                                 
                                 IDPhotoBackgroundColorPicker(
@@ -411,7 +411,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
             selectedProcess: .constant(.backgroundColor),
             selectedBackgroundColor: .constant(.blue),
             selectedBackgroundColorLabel: .constant("青"),
-            selectedSizeSpecification: .constant(JapanIDPhotoSizes.original),
+            selectedSizeSpecification: .constant(OriginalSizeSpecification.original),
             originalSizePreviewUIImage: .constant(
                 .init(named: "TimCook")
             ),
@@ -419,7 +419,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
                 .init(named: "TimCook")
             ),
             croppingCGRect: .constant(CGRect(origin: .zero, size: UIImage(named: "TimCook")!.size)),
-            availableSizeSpecifications: JapanIDPhotoSizes.pickerLineup
+            availableSizeSpecifications: JapanIDPhotoSize.allCases
         )
     }
 }

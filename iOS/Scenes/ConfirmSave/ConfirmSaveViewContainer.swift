@@ -116,11 +116,11 @@ struct ConfirmSaveViewContainer: View {
     @State private var idPhotoForSavingUIImage: UIImage? = nil
     
     var sourceIDPhotoUIImage: UIImage?
-    var sourceIDPhotoMillimeterSize: MillimeterSize
+    var sourceIDPhotoMillimeterSize: MeasurementSize
 
     init(
         sourceIDPhotoUIImage: UIImage?,
-        sourceIDPhotoMillimeterSize: MillimeterSize
+        sourceIDPhotoMillimeterSize: MeasurementSize
     ) {
         _idPhotoForSavingUIImage = .init(initialValue: sourceIDPhotoUIImage)
 
@@ -136,14 +136,8 @@ struct ConfirmSaveViewContainer: View {
         
         @ViewBuilder
         var imageRendererSourceView: some View {
-            let idPhotoWidthMeasurement: Measurement<UnitLength> = .init(
-                value: self.sourceIDPhotoMillimeterSize.width,
-                unit: .millimeters
-            )
-            let idPhotoHeightMeasurement: Measurement<UnitLength> = .init(
-                value: self.sourceIDPhotoMillimeterSize.height,
-                unit: .millimeters
-            )
+            let idPhotoWidthMeasurement: Measurement<UnitLength> = self.sourceIDPhotoMillimeterSize.width
+            let idPhotoHeightMeasurement: Measurement<UnitLength> = self.sourceIDPhotoMillimeterSize.height
 
             let idPhotoCGSize: CGSize = .init(
                 width: idPhotoWidthMeasurement.pixelLength(pixelDensity: 350),
@@ -229,7 +223,7 @@ struct ConfirmSaveViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         ConfirmSaveViewContainer(
             sourceIDPhotoUIImage: .init(named: "SampleIDPhoto"),
-            sourceIDPhotoMillimeterSize: .init(width: 24, height: 30)
+            sourceIDPhotoMillimeterSize: .init(width: .millimeters(24), height: .millimeters(30))
         )
     }
 }

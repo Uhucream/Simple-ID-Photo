@@ -14,28 +14,20 @@ struct IDPhotoBackgroundColorTests {
 
     @Test("同じ成分からは同じ ID が導出され、Equatable が成立する")
     func idIsStableForSameComponents() {
-        let firstColor: IDPhotoBackgroundColor = .init(
-            fill: .solid(red: 0.5, green: 0.25, blue: 0.75, alpha: 1, colorSpace: .sRGB)
-        )
-        let secondColor: IDPhotoBackgroundColor = .init(
-            fill: .solid(red: 0.5, green: 0.25, blue: 0.75, alpha: 1, colorSpace: .sRGB)
-        )
+        let firstColor: IDPhotoBackgroundColor = .solid(red: 0.5, green: 0.25, blue: 0.75, alpha: 1, colorSpace: .sRGB)
+        let secondColor: IDPhotoBackgroundColor = .solid(red: 0.5, green: 0.25, blue: 0.75, alpha: 1, colorSpace: .sRGB)
 
         #expect(firstColor.id == secondColor.id)
         #expect(firstColor == secondColor)
 
-        #expect(IDPhotoBackgroundColor.original.id == "original")
-        #expect(firstColor != .original)
+        #expect(IDPhotoBackgroundColor.clear.id == "clear")
+        #expect(firstColor != .clear)
     }
 
     @Test("色空間が違えば ID は別物になる (成分比較には isSameColor を使う)")
     func idDiffersAcrossColorSpaces() {
-        let sRGBWhite: IDPhotoBackgroundColor = .init(
-            fill: .solid(red: 1, green: 1, blue: 1, alpha: 1, colorSpace: .sRGB)
-        )
-        let displayP3White: IDPhotoBackgroundColor = .init(
-            fill: .solid(red: 1, green: 1, blue: 1, alpha: 1, colorSpace: .displayP3)
-        )
+        let sRGBWhite: IDPhotoBackgroundColor = .solid(red: 1, green: 1, blue: 1, alpha: 1, colorSpace: .sRGB)
+        let displayP3White: IDPhotoBackgroundColor = .solid(red: 1, green: 1, blue: 1, alpha: 1, colorSpace: .displayP3)
 
         #expect(sRGBWhite.id != displayP3White.id)
 
@@ -43,9 +35,9 @@ struct IDPhotoBackgroundColorTests {
         #expect(sRGBWhite.isSameColor(as: displayP3White))
     }
 
-    @Test("保存された成分の alpha が 0 なら「背景色なし」として復元される (旧 .clear 相当)")
-    func zeroAlphaRestoresAsOriginal() {
-        let restoredColor: IDPhotoBackgroundColor = .fromStoredComponents(
+    @Test("保存された成分の alpha が 0 なら「背景色なし」として復元される (旧 Color.clear 相当)")
+    func zeroAlphaRestoresAsClear() {
+        let restoredColor: IDPhotoBackgroundColor = .init(
             red: 0,
             green: 0,
             blue: 0,
@@ -53,18 +45,18 @@ struct IDPhotoBackgroundColorTests {
             colorSpaceRawValue: nil
         )
 
-        #expect(restoredColor == .original)
+        #expect(restoredColor == .clear)
     }
 
     @Test("プリセットと同一色の保存成分はプリセットとして復元される")
     func storedPresetComponentsRestoreAsPreset() {
-        guard case .solid(let red, let green, let blue, let alpha, let colorSpace) = IDPhotoBackgroundColor.blue.fill else {
+        guard case .solid(let red, let green, let blue, let alpha, let colorSpace) = IDPhotoBackgroundColor.blue else {
             Issue.record("プリセット blue が solid ではない")
 
             return
         }
 
-        let restoredColor: IDPhotoBackgroundColor = .fromStoredComponents(
+        let restoredColor: IDPhotoBackgroundColor = .init(
             red: red,
             green: green,
             blue: blue,
@@ -78,7 +70,7 @@ struct IDPhotoBackgroundColorTests {
 
     @Test("プリセットのどれとも一致しない成分はカスタムとして復元される")
     func storedUnknownComponentsRestoreAsCustom() {
-        let restoredColor: IDPhotoBackgroundColor = .fromStoredComponents(
+        let restoredColor: IDPhotoBackgroundColor = .init(
             red: 0.9,
             green: 0.1,
             blue: 0.1,

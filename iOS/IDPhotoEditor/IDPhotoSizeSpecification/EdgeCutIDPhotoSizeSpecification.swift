@@ -1,5 +1,5 @@
 //
-//  EdgeCutIDPhotoSize.swift
+//  EdgeCutIDPhotoSizeSpecification.swift
 //  Simple ID Photo
 //
 //  Created by TakashiUshikoshi on 2026/07/09
@@ -13,31 +13,37 @@ import CoreGraphics
 ///
 /// DNP の仕様に基づき、縦方向のカットは写真の下部のみ (上端は固定)、横方向のカットは左右均等。
 /// 詳細は `.claude/docs/photo_size_spec.md` 第7章を参照。
-struct EdgeCutIDPhotoSize: IDPhotoSizeSpecification {
+struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
 
     let id: String
 
     /// カット元のサイズ仕様書
-    let baseSize: FaceOccupancyIDPhotoSize
+    let baseSize: FaceOccupancyIDPhotoSizeSpecification
 
     /// 下部のカット量
-    let millimeterBottomCut: Double
+    let millimeterBottomCut: Measurement<UnitLength>
 
     /// 左右それぞれのカット量
-    let millimeterHorizontalCutPerSide: Double
+    let millimeterHorizontalCutPerSide: Measurement<UnitLength>
 
-    var millimeterSize: MillimeterSize? {
-        return MillimeterSize(
-            width: baseSize.dimensions.width - (millimeterHorizontalCutPerSide * 2),
-            height: baseSize.dimensions.height - millimeterBottomCut
+    var millimeterSize: MeasurementSize? {
+        let baseMillimeterWidth: Double = baseSize.dimensions.width.converted(to: .millimeters).value
+        let baseMillimeterHeight: Double = baseSize.dimensions.height.converted(to: .millimeters).value
+
+        let bottomCutMillimeters: Double = millimeterBottomCut.converted(to: .millimeters).value
+        let horizontalCutPerSideMillimeters: Double = millimeterHorizontalCutPerSide.converted(to: .millimeters).value
+
+        return MeasurementSize(
+            width: .millimeters(baseMillimeterWidth - (horizontalCutPerSideMillimeters * 2)),
+            height: .millimeters(baseMillimeterHeight - bottomCutMillimeters)
         )
     }
 
     init(
         id: String,
-        baseSize: FaceOccupancyIDPhotoSize,
-        millimeterBottomCut: Double,
-        millimeterHorizontalCutPerSide: Double
+        baseSize: FaceOccupancyIDPhotoSizeSpecification,
+        millimeterBottomCut: Measurement<UnitLength>,
+        millimeterHorizontalCutPerSide: Measurement<UnitLength>
     ) {
         self.id = id
         self.baseSize = baseSize
@@ -49,10 +55,12 @@ struct EdgeCutIDPhotoSize: IDPhotoSizeSpecification {
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
         let baseCroppingRect: CGRect = try baseSize.croppingRect(for: subject)
 
-        let pixelsPerMillimeter: CGFloat = baseCroppingRect.height / baseSize.dimensions.height
+        let baseMillimeterHeight: Double = baseSize.dimensions.height.converted(to: .millimeters).value
 
-        let bottomCut: CGFloat = millimeterBottomCut * pixelsPerMillimeter
-        let horizontalCutPerSide: CGFloat = millimeterHorizontalCutPerSide * pixelsPerMillimeter
+        let pixelsPerMillimeter: CGFloat = baseCroppingRect.height / baseMillimeterHeight
+
+        let bottomCut: CGFloat = millimeterBottomCut.converted(to: .millimeters).value * pixelsPerMillimeter
+        let horizontalCutPerSide: CGFloat = millimeterHorizontalCutPerSide.converted(to: .millimeters).value * pixelsPerMillimeter
 
         //  CoreImage 座標系 (原点は左下) では、下部カット = origin.y を上げて高さを減らす (上端は固定される)
         let croppingRect: CGRect = .init(

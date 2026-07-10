@@ -22,26 +22,25 @@ import Vision
 ///
 /// 座標系はすべて CoreImage 座標系 (原点は左下、単位は px)。
 ///
-/// - Note: 被写体検出 (subject) と背景合成用マスクは独立した遅延キャッシュであり、
-///   呼び出し順に制約はない。
+/// - Note: `painted(with:)` と `cropped(to:)` はどちらを先に呼んでもよい (呼び出し順に制約はない)。
 actor IDPhotoEditor {
 
     let sourceCIImage: CIImage
     let sourceOrientation: CGImagePropertyOrientation
 
-    /// 被写体の検出結果 (初回の検出後にキャッシュされる)
+    //  被写体の検出結果 (初回の検出後にキャッシュされる)
     private var cachedSubject: IDPhotoSubject?
 
-    /// 背景合成用の人物マスク (初回の生成後にキャッシュされる)
+    //  背景合成用の人物マスク (初回の生成後にキャッシュされる)
     private var cachedPersonMaskCIImage: CIImage?
 
-    /// 作業画像 (初期値は元画像。painted(with:) で差し替えられる)
+    //  作業画像 (初期値は元画像。painted(with:) で差し替えられる)
     private var workingCIImage: CIImage
 
     private var appliedBackgroundColor: IDPhotoBackgroundColor?
 
-    /// VNImageRequestHandler.perform は同期かつ高負荷なため、専用のキューで実行して
-    /// Swift Concurrency の協調スレッドプールをブロックしないようにする
+    //  VNImageRequestHandler.perform は同期かつ高負荷なため、専用のキューで実行して
+    //  Swift Concurrency の協調スレッドプールをブロックしないようにする
     private static let visionRequestQueue: DispatchQueue = .init(
         label: "IDPhotoEditor.VisionRequest",
         qos: .userInitiated
@@ -89,12 +88,12 @@ extension IDPhotoEditor {
 
     /// 背景色を合成し、元画像サイズの合成済み画像を返す。
     ///
-    /// 常に「元画像 + キャッシュ済みマスク」から再合成するため、何度色を変えても画質は劣化しない。
+    /// 常に元画像から再合成するため、何度色を変えても画質は劣化しない。
     @discardableResult
     func painted(with backgroundColor: IDPhotoBackgroundColor) async throws -> IDPhoto {
-        switch backgroundColor.fill {
+        switch backgroundColor {
 
-        case .original:
+        case .clear:
             self.workingCIImage = sourceCIImage
             self.appliedBackgroundColor = backgroundColor
 
@@ -105,7 +104,9 @@ extension IDPhotoEditor {
             )
 
         case .solid:
-            guard let backgroundCIColor: CIColor = backgroundColor.ciColor else {
+            let backgroundCIColor: CIColor? = .init(idPhotoBackgroundColor: backgroundColor)
+
+            guard let backgroundCIColor = backgroundCIColor else {
                 throw IDPhotoEditorError.invalidBackgroundColor
             }
 
@@ -203,7 +204,7 @@ extension IDPhotoEditor {
 //  MARK: - 人物マスク生成
 extension IDPhotoEditor {
 
-    /// 背景合成用の人物マスク (キャッシュされる)
+    //  背景合成用の人物マスク (キャッシュされる)
     private func personMask() async throws -> CIImage {
         if let cachedPersonMaskCIImage = cachedPersonMaskCIImage { return cachedPersonMaskCIImage }
 
@@ -226,8 +227,8 @@ extension IDPhotoEditor {
         return personMaskCIImage
     }
 
-    /// 頭頂検出 (輪郭検出) 用のマスク。
-    /// iOS 17 以降は背景合成用と同じインスタンスマスクを共用し、それ未満は balanced 品質のマスクを生成する
+    //  頭頂検出 (輪郭検出) 用のマスク。
+    //  iOS 17 以降は背景合成用と同じインスタンスマスクを共用し、それ未満は balanced 品質のマスクを生成する
     private func contourDetectionMask() async throws -> CIImage {
         if #available(iOS 17, *) {
             return try await personMask()
@@ -295,10 +296,9 @@ extension IDPhotoEditor {
 //  MARK: - 被写体検出
 extension IDPhotoEditor {
 
-    /// 被写体を検出する。
-    ///
-    /// `VNDetectFaceLandmarksRequest` の結果には頭頂の座標が含まれないため、
-    /// 人物マスクを `VNDetectContoursRequest` にかけて人物輪郭の上端を頭頂として得る。
+    //  被写体を検出する。
+    //  VNDetectFaceLandmarksRequest の結果には頭頂の座標が含まれないため、
+    //  人物マスクを VNDetectContoursRequest にかけて人物輪郭の上端を頭頂として得る
     private func detectSubject() async throws -> IDPhotoSubject {
         let sourceImageExtent: CGRect = sourceCIImage.extent
         let sourceImageSize: CGSize = sourceImageExtent.size

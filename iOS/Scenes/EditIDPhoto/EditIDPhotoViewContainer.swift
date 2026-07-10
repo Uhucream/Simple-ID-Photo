@@ -33,7 +33,15 @@ struct EditIDPhotoViewContainer: View {
 
     private let BACKGROUND_COLORS: [IDPhotoBackgroundColor] = IDPhotoBackgroundColor.presets
 
-    private static let DEFAULT_SIZE_SPECIFICATION: any IDPhotoSizeSpecification = JapanIDPhotoSizes.original
+    private static let DEFAULT_SIZE_SPECIFICATION: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
+
+    //  MARK: w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
+    //  パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで表示しない
+    private var availableSizeSpecifications: [any IDPhotoSizeSpecification] {
+        let selectableJapanIDPhotoSizes: [any IDPhotoSizeSpecification] = JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }
+
+        return [OriginalSizeSpecification.original] + selectableJapanIDPhotoSizes
+    }
 
     @Environment(\.managedObjectContext) private var viewContext
 
@@ -99,17 +107,13 @@ struct EditIDPhotoViewContainer: View {
     @State private var isSizeSpecificationModified: Bool = false
 
     private var originalAppliedBackgroundColor: IDPhotoBackgroundColor? {
-        let appliedBackgroundColor: AppliedBackgroundColor? = editTargetCreatedIDPhoto.appliedBackgroundColor
+        guard let appliedBackgroundColor = editTargetCreatedIDPhoto.appliedBackgroundColor else { return nil }
 
-        return appliedBackgroundColor?.parseToIDPhotoBackgroundColor()
+        return IDPhotoBackgroundColor(appliedBackgroundColor)
     }
 
     private var originalAppliedSizeSpecification: (any IDPhotoSizeSpecification)? {
-        let appliedIDPhotoSize: AppliedIDPhotoSize? = editTargetCreatedIDPhoto.appliedIDPhotoSize
-
-        return JapanIDPhotoSizes.specification(
-            matching: appliedIDPhotoSize?.resolvedSizeSpecificationID
-        )
+        return editTargetCreatedIDPhoto.appliedIDPhotoSize?.resolvedSizeSpecification
     }
 
     private var hasAnyModifications: Bool {
@@ -194,19 +198,15 @@ struct EditIDPhotoViewContainer: View {
 
         if let appliedBackgroundColor = editTargetCreatedIDPhoto.appliedBackgroundColor {
             _selectedBackgroundColor = State(
-                initialValue: appliedBackgroundColor.parseToIDPhotoBackgroundColor()
+                initialValue: IDPhotoBackgroundColor(appliedBackgroundColor)
             )
         }
 
         if let appliedIDPhotoSize = editTargetCreatedIDPhoto.appliedIDPhotoSize {
 
-            let appliedSizeSpecification: (any IDPhotoSizeSpecification)? = JapanIDPhotoSizes.specification(
-                matching: appliedIDPhotoSize.resolvedSizeSpecificationID
-            )
-
             //  廃止されたサイズなどで仕様書を解決できない場合はオリジナルとして扱う
             _selectedSizeSpecification = .init(
-                initialValue: appliedSizeSpecification ?? EditIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION
+                initialValue: appliedIDPhotoSize.resolvedSizeSpecification ?? EditIDPhotoViewContainer.DEFAULT_SIZE_SPECIFICATION
             )
         }
     }
@@ -242,7 +242,7 @@ struct EditIDPhotoViewContainer: View {
             croppingCGRect: $croppingCGRect,
             shouldDisableDoneButton: .readOnly(!hasAnyModifications),
             availableBackgroundColors: BACKGROUND_COLORS,
-            availableSizeSpecifications: JapanIDPhotoSizes.pickerLineup
+            availableSizeSpecifications: availableSizeSpecifications
         )
         .onTapDismissButton {
             if hasAnyModifications {
@@ -508,7 +508,7 @@ struct EditIDPhotoViewContainer: View {
             selectedSizeSpecificationPublisher
         ) { newSizeSpecification in
 
-            let currentAppliedSizeSpecificationID: String = self.originalAppliedSizeSpecification?.id ?? JapanIDPhotoSizes.original.id
+            let currentAppliedSizeSpecificationID: String = self.originalAppliedSizeSpecification?.id ?? OriginalSizeSpecification.original.id
 
             let isSizeSpecificationChanged: Bool = newSizeSpecification.id != currentAppliedSizeSpecificationID
 
@@ -518,7 +518,7 @@ struct EditIDPhotoViewContainer: View {
             selectedBackgroundColorPublisher
         ) { newBackgroundColor in
 
-            let currentAppliedBackgroundColor: IDPhotoBackgroundColor = self.originalAppliedBackgroundColor ?? .original
+            let currentAppliedBackgroundColor: IDPhotoBackgroundColor = self.originalAppliedBackgroundColor ?? .clear
 
             let isBackgroundColorChanged: Bool = newBackgroundColor != currentAppliedBackgroundColor
 
@@ -560,7 +560,7 @@ struct EditIDPhotoViewContainer: View {
 
                 guard let idPhotoEditor = idPhotoEditor else { return }
 
-                if self.selectedBackgroundColor != .original {
+                if self.selectedBackgroundColor != .clear {
                     Task { @MainActor in
                         self.photoProcessesInProgress.insert(.backgroundColor)
                     }

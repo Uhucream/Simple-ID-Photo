@@ -26,7 +26,15 @@ struct CreateIDPhotoViewContainer: View {
     static let CREATED_ID_PHOTO_SAVE_FOLDER_NAME: String = "CreatedPhotos"
 
     static let DEFAULT_BACKGROUND_COLOR: IDPhotoBackgroundColor = .blue
-    static let DEFAULT_SIZE_SPECIFICATION: any IDPhotoSizeSpecification = JapanIDPhotoSizes.original
+    static let DEFAULT_SIZE_SPECIFICATION: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
+
+    //  MARK: w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
+    //  パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで表示しない
+    private var availableSizeSpecifications: [any IDPhotoSizeSpecification] {
+        let selectableJapanIDPhotoSizes: [any IDPhotoSizeSpecification] = JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }
+
+        return [OriginalSizeSpecification.original] + selectableJapanIDPhotoSizes
+    }
 
     @Environment(\.managedObjectContext) var viewContext
 
@@ -329,7 +337,7 @@ struct CreateIDPhotoViewContainer: View {
                     originalSizePreviewUIImage: $originalSizePreviewUIImage,
                     croppedPreviewUIImage: $croppedPreviewUIImage,
                     croppingCGRect: $croppingCGRect,
-                    availableSizeSpecifications: JapanIDPhotoSizes.pickerLineup
+                    availableSizeSpecifications: availableSizeSpecifications
                 )
                 .onTapDismissButton {
                     showDiscardViewConfirmationDialog()
@@ -346,7 +354,7 @@ struct CreateIDPhotoViewContainer: View {
                     originalSizePreviewUIImage: $originalSizePreviewUIImage,
                     croppedPreviewUIImage: $croppedPreviewUIImage,
                     croppingCGRect: $croppingCGRect,
-                    availableSizeSpecifications: JapanIDPhotoSizes.pickerLineup
+                    availableSizeSpecifications: availableSizeSpecifications
                 )
                 .onTapDismissButton {
                     showDiscardViewConfirmationDialog()
@@ -398,7 +406,7 @@ struct CreateIDPhotoViewContainer: View {
 
                 guard let idPhotoEditor = idPhotoEditor else { return }
 
-                let shouldShowProgress: Bool = self.selectedBackgroundColor != .original
+                let shouldShowProgress: Bool = self.selectedBackgroundColor != .clear
 
                 if shouldShowProgress {
                     Task { @MainActor in

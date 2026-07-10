@@ -24,18 +24,19 @@
 		FAB1E5ED0000000000000203 /* IDPhotoSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */; };
 		FAB1E5ED0000000000000204 /* IDPhotoBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */; };
 		FAB1E5ED0000000000000205 /* IDPhotoEditorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */; };
+		24DA02F02FFFD34500ADD288 /* MeasurementSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */; };
 		FAB1E5ED0000000000000206 /* IDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */; };
 		FAB1E5ED0000000000000207 /* OriginalSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */; };
-		FAB1E5ED0000000000000208 /* FaceOccupancyIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSize.swift */; };
-		FAB1E5ED0000000000000209 /* EdgeCutIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSize.swift */; };
-		FAB1E5ED000000000000020A /* JapanIDPhotoSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010A /* JapanIDPhotoSizes.swift */; };
+		FAB1E5ED0000000000000208 /* FaceOccupancyIDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */; };
+		FAB1E5ED0000000000000209 /* EdgeCutIDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */; };
+		FAB1E5ED000000000000020A /* JapanIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */; };
 		FAB1E5ED000000000000020B /* IDPhotoBackgroundColor+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */; };
 		FAB1E5ED000000000000020C /* IDPhotoSizeSpecification+Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */; };
 		FAB1E5ED000000000000020D /* AppliedIDPhotoSize+SizeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010D /* AppliedIDPhotoSize+SizeLabel.swift */; };
 		FAB1E5ED000000000000020E /* DetectedSubject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010E /* DetectedSubject+.swift */; };
 		FAB1E5ED0000000000000211 /* FaceOccupancyIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */; };
 		FAB1E5ED0000000000000212 /* EdgeCutIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */; };
-		FAB1E5ED0000000000000213 /* JapanIDPhotoSizesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000113 /* JapanIDPhotoSizesTests.swift */; };
+		FAB1E5ED0000000000000213 /* JapanIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */; };
 		FAB1E5ED0000000000000214 /* IDPhotoBackgroundColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */; };
 		FAB1E5ED0000000000000215 /* IDPhotoEditorStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000115 /* IDPhotoEditorStateTests.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
@@ -203,18 +204,19 @@
 		FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSubject.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoBackgroundColor.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditorError.swift; sourceTree = "<group>"; };
+		24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSize.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalSizeSpecification.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSize.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSize.swift; sourceTree = "<group>"; };
-		FAB1E5ED000000000000010A /* JapanIDPhotoSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSizes.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
+		FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSize.swift; sourceTree = "<group>"; };
 		FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDPhotoBackgroundColor+Presets.swift"; sourceTree = "<group>"; };
 		FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDPhotoSizeSpecification+Label.swift"; sourceTree = "<group>"; };
 		FAB1E5ED000000000000010D /* AppliedIDPhotoSize+SizeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoSize+SizeLabel.swift"; sourceTree = "<group>"; };
 		FAB1E5ED000000000000010E /* DetectedSubject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetectedSubject+.swift"; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSizeTests.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSizeTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000113 /* JapanIDPhotoSizesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSizesTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSizeTests.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoBackgroundColorTests.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000115 /* IDPhotoEditorStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditorStateTests.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000300 /* 2026_07_09_10_00_Introduce_SizeSpecificationID_And_DetectedSubject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2026_07_09_10_00_Introduce_SizeSpecificationID_And_DetectedSubject.xcdatamodel; sourceTree = "<group>"; };
@@ -482,11 +484,22 @@
 		4728DA42297ECBFE0056767F /* IDPhoto */ = {
 			isa = PBXGroup;
 			children = (
-				FAB1E5ED000000000000010A /* JapanIDPhotoSizes.swift */,
+				FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */,
 				FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */,
 				FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */,
 			);
 			path = IDPhoto;
+			sourceTree = "<group>";
+		};
+		24DA02F12FFFD4DC00ADD288 /* IDPhotoSizeSpecification */ = {
+			isa = PBXGroup;
+			children = (
+				FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */,
+				FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */,
+				FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */,
+				FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */,
+			);
+			path = IDPhotoSizeSpecification;
 			sourceTree = "<group>";
 		};
 		FAB1E5ED0000000000000100 /* IDPhotoEditor */ = {
@@ -497,10 +510,8 @@
 				FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */,
 				FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */,
 				FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */,
-				FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */,
-				FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */,
-				FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSize.swift */,
-				FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSize.swift */,
+				24DA02F12FFFD4DC00ADD288 /* IDPhotoSizeSpecification */,
+				24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */,
 			);
 			path = IDPhotoEditor;
 			sourceTree = "<group>";
@@ -986,7 +997,7 @@
 			children = (
 				FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */,
 				FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */,
-				FAB1E5ED0000000000000113 /* JapanIDPhotoSizesTests.swift */,
+				FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */,
 				FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */,
 				FAB1E5ED0000000000000115 /* IDPhotoEditorStateTests.swift */,
 			);
@@ -1416,11 +1427,12 @@
 				FAB1E5ED0000000000000203 /* IDPhotoSubject.swift in Sources */,
 				FAB1E5ED0000000000000204 /* IDPhotoBackgroundColor.swift in Sources */,
 				FAB1E5ED0000000000000205 /* IDPhotoEditorError.swift in Sources */,
+				24DA02F02FFFD34500ADD288 /* MeasurementSize.swift in Sources */,
 				FAB1E5ED0000000000000206 /* IDPhotoSizeSpecification.swift in Sources */,
 				FAB1E5ED0000000000000207 /* OriginalSizeSpecification.swift in Sources */,
-				FAB1E5ED0000000000000208 /* FaceOccupancyIDPhotoSize.swift in Sources */,
-				FAB1E5ED0000000000000209 /* EdgeCutIDPhotoSize.swift in Sources */,
-				FAB1E5ED000000000000020A /* JapanIDPhotoSizes.swift in Sources */,
+				FAB1E5ED0000000000000208 /* FaceOccupancyIDPhotoSizeSpecification.swift in Sources */,
+				FAB1E5ED0000000000000209 /* EdgeCutIDPhotoSizeSpecification.swift in Sources */,
+				FAB1E5ED000000000000020A /* JapanIDPhotoSize.swift in Sources */,
 				FAB1E5ED000000000000020B /* IDPhotoBackgroundColor+Presets.swift in Sources */,
 				FAB1E5ED000000000000020C /* IDPhotoSizeSpecification+Label.swift in Sources */,
 				FAB1E5ED000000000000020D /* AppliedIDPhotoSize+SizeLabel.swift in Sources */,
@@ -1497,7 +1509,7 @@
 			files = (
 				FAB1E5ED0000000000000211 /* FaceOccupancyIDPhotoSizeTests.swift in Sources */,
 				FAB1E5ED0000000000000212 /* EdgeCutIDPhotoSizeTests.swift in Sources */,
-				FAB1E5ED0000000000000213 /* JapanIDPhotoSizesTests.swift in Sources */,
+				FAB1E5ED0000000000000213 /* JapanIDPhotoSizeTests.swift in Sources */,
 				FAB1E5ED0000000000000214 /* IDPhotoBackgroundColorTests.swift in Sources */,
 				FAB1E5ED0000000000000215 /* IDPhotoEditorStateTests.swift in Sources */,
 			);

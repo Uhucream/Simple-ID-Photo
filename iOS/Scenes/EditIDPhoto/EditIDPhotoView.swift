@@ -118,7 +118,7 @@ struct EditIDPhotoView: View {
                                     .overlay(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 4))
                                     .padding(4)
                                     .overlay {
-                                        if selectedBackgroundColor == .original {
+                                        if selectedBackgroundColor == .clear {
                                             RoundedRectangle(cornerRadius: 8)
                                                 .stroke(Color.tintColor, lineWidth: 2)
                                         }
@@ -130,7 +130,7 @@ struct EditIDPhotoView: View {
                                     .frame(maxHeight: 40)
                                     .environment(\.colorScheme, .dark)
                                     .onTapGesture {
-                                        self.selectedBackgroundColor = .original
+                                        self.selectedBackgroundColor = .clear
                                     }
                                 
                                 IDPhotoBackgroundColorPicker(
@@ -378,7 +378,7 @@ struct EditIDPhotoView_Previews: PreviewProvider {
             selectedProcess: .constant(.size),
             selectedBackgroundColor: .constant(.blue),
             selectedBackgroundColorLabel: .constant("青"),
-            selectedSizeSpecification: .constant(JapanIDPhotoSizes.original),
+            selectedSizeSpecification: .constant(OriginalSizeSpecification.original),
             originalSizePreviewUIImage: .constant(
                 nil
             ),
@@ -391,7 +391,7 @@ struct EditIDPhotoView_Previews: PreviewProvider {
                 .blue,
                 .gray
             ],
-            availableSizeSpecifications: JapanIDPhotoSizes.pickerLineup
+            availableSizeSpecifications: JapanIDPhotoSize.allCases
         )
         .previewDisplayName("Edit ID Photo View")
     }

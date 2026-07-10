@@ -202,7 +202,7 @@ struct CreatedIDPhotoHistoryCard_Previews: PreviewProvider {
     static var previews: some View {
 
         let mockHistory: CreatedIDPhotoDetail = .init(
-            sizeSpecification: JapanIDPhotoSizes.w30h40,
+            sizeSpecification: JapanIDPhotoSize.w30xh40,
             createdAt: Calendar.current.date(byAdding: .year, value: -1, to: .now)!,
             createdUIImage: UIImage(named: "SampleIDPhoto")!
         )

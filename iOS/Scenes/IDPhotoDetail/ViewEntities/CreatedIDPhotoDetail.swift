@@ -22,10 +22,12 @@ struct CreatedIDPhotoDetail: Identifiable {
 
 private let startOfToday: Date = Calendar.current.startOfDay(for: .now)
 
-let mockHistoriesData: [CreatedIDPhotoDetail] = JapanIDPhotoSizes.pickerLineup.indices
+private let mockSizeSpecifications: [any IDPhotoSizeSpecification] = [OriginalSizeSpecification.original] + JapanIDPhotoSize.allCases
+
+let mockHistoriesData: [CreatedIDPhotoDetail] = mockSizeSpecifications.indices
     .map { (index) in
         return CreatedIDPhotoDetail(
-            sizeSpecification: JapanIDPhotoSizes.pickerLineup[index],
+            sizeSpecification: mockSizeSpecifications[index],
             createdAt: Calendar.current.date(byAdding: .month, value: -index, to: startOfToday)!,
             createdUIImage: UIImage(named: "SampleIDPhoto")!
         )

@@ -10,7 +10,7 @@ import Testing
 import CoreGraphics
 @testable import SimpleIDPhoto
 
-@Suite("EdgeCutIDPhotoSize (派生サイズ: 元サイズからのカット)")
+@Suite("EdgeCutIDPhotoSizeSpecification (派生サイズ: 元サイズからのカット)")
 struct EdgeCutIDPhotoSizeTests {
 
     private let subject: IDPhotoSubject = .init(
@@ -22,20 +22,20 @@ struct EdgeCutIDPhotoSizeTests {
     )
 
     /// 元サイズ 30 × 40 mm。この被写体でのクロップ矩形は (937.5, 1550, 1125, 1500)
-    private let baseSize: FaceOccupancyIDPhotoSize = .init(
+    private let baseSize: FaceOccupancyIDPhotoSizeSpecification = .init(
         id: "test.base.w30h40",
-        dimensions: MillimeterSize(width: 30, height: 40),
-        millimeterFaceHeight: 24,
-        millimeterCrownMargin: 4
+        dimensions: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
+        millimeterFaceHeight: .millimeters(24),
+        millimeterCrownMargin: .millimeters(4)
     )
 
     @Test("下部カット: 上端は固定され、origin.y が上がり高さが減る")
     func bottomCutKeepsTopEdgeFixed() throws {
-        let specification: EdgeCutIDPhotoSize = .init(
+        let specification: EdgeCutIDPhotoSizeSpecification = .init(
             id: "test.square30",
             baseSize: baseSize,
-            millimeterBottomCut: 10,
-            millimeterHorizontalCutPerSide: 0
+            millimeterBottomCut: .millimeters(10),
+            millimeterHorizontalCutPerSide: .zero
         )
 
         let baseRect: CGRect = try baseSize.croppingRect(for: subject)
@@ -55,11 +55,11 @@ struct EdgeCutIDPhotoSizeTests {
 
     @Test("左右カット: 左右均等に詰められる")
     func horizontalCutIsSymmetric() throws {
-        let specification: EdgeCutIDPhotoSize = .init(
+        let specification: EdgeCutIDPhotoSizeSpecification = .init(
             id: "test.cut",
             baseSize: baseSize,
-            millimeterBottomCut: 10,
-            millimeterHorizontalCutPerSide: 5
+            millimeterBottomCut: .millimeters(10),
+            millimeterHorizontalCutPerSide: .millimeters(5)
         )
 
         let baseRect: CGRect = try baseSize.croppingRect(for: subject)
@@ -75,13 +75,13 @@ struct EdgeCutIDPhotoSizeTests {
 
     @Test("millimeterSize はカット後の寸法を返す")
     func millimeterSizeReflectsCuts() {
-        let specification: EdgeCutIDPhotoSize = .init(
+        let specification: EdgeCutIDPhotoSizeSpecification = .init(
             id: "test.cut",
             baseSize: baseSize,
-            millimeterBottomCut: 10,
-            millimeterHorizontalCutPerSide: 5
+            millimeterBottomCut: .millimeters(10),
+            millimeterHorizontalCutPerSide: .millimeters(5)
         )
 
-        #expect(specification.millimeterSize == MillimeterSize(width: 20, height: 30))
+        #expect(specification.millimeterSize == MeasurementSize(width: .millimeters(20), height: .millimeters(30)))
     }
 }

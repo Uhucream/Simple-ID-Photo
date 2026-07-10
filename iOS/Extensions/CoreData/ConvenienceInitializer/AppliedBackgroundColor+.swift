@@ -19,10 +19,10 @@ extension AppliedBackgroundColor {
 
         self.id = id
 
-        switch backgroundColor.fill {
+        switch backgroundColor {
 
-        case .original:
-            //  「背景色なし」は alpha 0 で表現する (旧実装の .clear と同じ)
+        case .clear:
+            //  「背景色なし」は alpha 0 で表現する (旧実装の Color.clear と同じ)
             self.red = .zero
             self.green = .zero
             self.blue = .zero
@@ -40,15 +40,19 @@ extension AppliedBackgroundColor {
         self.createdIDPhoto = createdIDPhoto
     }
 
+}
+
+extension IDPhotoBackgroundColor {
+
     /// 保存された成分から背景色を復元する。
-    /// プリセットと同一色の場合は該当プリセットが返る
-    func parseToIDPhotoBackgroundColor() -> IDPhotoBackgroundColor {
-        return .fromStoredComponents(
-            red: self.red,
-            green: self.green,
-            blue: self.blue,
-            alpha: self.alpha,
-            colorSpaceRawValue: self.colorSpace
+    /// プリセットと同一色の場合は該当プリセットになる
+    init(_ appliedBackgroundColor: AppliedBackgroundColor) {
+        self.init(
+            red: appliedBackgroundColor.red,
+            green: appliedBackgroundColor.green,
+            blue: appliedBackgroundColor.blue,
+            alpha: appliedBackgroundColor.alpha,
+            colorSpaceRawValue: appliedBackgroundColor.colorSpace
         )
     }
 }

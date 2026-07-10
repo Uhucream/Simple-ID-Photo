@@ -12,6 +12,7 @@ import CoreImage
 /// IDPhotoEditor の操作結果として返される証明写真
 struct IDPhoto {
 
+    /// 加工済み画像
     let ciImage: CIImage
 
     /// 適用済みの背景色。一度も背景合成されていない場合は nil

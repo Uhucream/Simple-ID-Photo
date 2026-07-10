@@ -130,9 +130,7 @@ extension PersistenceController {
                 let legacyAppliedIDPhotoSizes: [AppliedIDPhotoSize] = try backgroundContext.fetch(fetchRequest)
 
                 legacyAppliedIDPhotoSizes.forEach { appliedIDPhotoSize in
-                    appliedIDPhotoSize.sizeSpecificationID = JapanIDPhotoSizes.sizeSpecificationID(
-                        fromLegacySizeVariantRawValue: appliedIDPhotoSize.sizeVariant
-                    )
+                    appliedIDPhotoSize.sizeSpecificationID = appliedIDPhotoSize.resolvedSizeSpecificationID
                 }
 
                 guard backgroundContext.hasChanges else { return }

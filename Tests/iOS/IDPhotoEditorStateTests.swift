@@ -57,7 +57,7 @@ struct IDPhotoEditorStateTests {
 
     private struct StubCropSpecification: IDPhotoSizeSpecification {
         let id: String = "test.stub"
-        let millimeterSize: MillimeterSize? = MillimeterSize(width: 20, height: 20)
+        let millimeterSize: MeasurementSize? = MeasurementSize(width: .millimeters(20), height: .millimeters(20))
 
         func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
             return CGRect(x: 100, y: 100, width: 200, height: 200)
@@ -66,20 +66,16 @@ struct IDPhotoEditorStateTests {
 
     private struct ThrowingCropSpecification: IDPhotoSizeSpecification {
         let id: String = "test.throwing"
-        let millimeterSize: MillimeterSize? = nil
+        let millimeterSize: MeasurementSize? = nil
 
         func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
             throw IDPhotoEditorError.croppingRegionUnsatisfiable
         }
     }
 
-    private static let blueBackgroundColor: IDPhotoBackgroundColor = .init(
-        fill: .solid(red: 0, green: 0, blue: 1, alpha: 1, colorSpace: .sRGB)
-    )
+    private static let blueBackgroundColor: IDPhotoBackgroundColor = .solid(red: 0, green: 0, blue: 1, alpha: 1, colorSpace: .sRGB)
 
-    private static let brownBackgroundColor: IDPhotoBackgroundColor = .init(
-        fill: .solid(red: 0.6, green: 0.4, blue: 0.2, alpha: 1, colorSpace: .sRGB)
-    )
+    private static let brownBackgroundColor: IDPhotoBackgroundColor = .solid(red: 0.6, green: 0.4, blue: 0.2, alpha: 1, colorSpace: .sRGB)
 
     /// 指定座標の 1px をレンダリングして RGBA (0-1) を返す
     private static func pixelComponents(of ciImage: CIImage, at point: CGPoint) -> (red: Double, green: Double, blue: Double, alpha: Double) {
@@ -185,7 +181,7 @@ struct IDPhotoEditorStateTests {
 
         try await editor.painted(with: Self.blueBackgroundColor)
 
-        let originalPaintedIDPhoto: IDPhoto = try await editor.painted(with: .original)
+        let originalPaintedIDPhoto: IDPhoto = try await editor.painted(with: .clear)
 
         //  背景 (右半分) も元画像の赤に戻る
         Self.expectPixel(of: originalPaintedIDPhoto.ciImage, at: CGPoint(x: 300, y: 300), isRed: 1, green: 0, blue: 0)

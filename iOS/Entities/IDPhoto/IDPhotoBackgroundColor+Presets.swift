@@ -29,7 +29,7 @@ extension IDPhotoBackgroundColor {
         let cgColor: CGColor = color.cgColor ?? UIColor(color).cgColor
 
         guard let displayP3ColorSpace: CGColorSpace = RGBColorSpace.displayP3.cgColorSpace else {
-            return .original
+            return .clear
         }
 
         //  色空間の違いによる成分の揺れをなくすため、Display P3 に正規化して保持する
@@ -42,16 +42,14 @@ extension IDPhotoBackgroundColor {
         guard
             let components: [CGFloat] = convertedCGColor?.components,
             components.count >= 4
-        else { return .original }
+        else { return .clear }
 
-        return IDPhotoBackgroundColor(
-            fill: .solid(
-                red: Double(components[0]),
-                green: Double(components[1]),
-                blue: Double(components[2]),
-                alpha: Double(components[3]),
-                colorSpace: .displayP3
-            )
+        return .solid(
+            red: Double(components[0]),
+            green: Double(components[1]),
+            blue: Double(components[2]),
+            alpha: Double(components[3]),
+            colorSpace: .displayP3
         )
     }
 }
@@ -61,9 +59,9 @@ extension IDPhotoBackgroundColor {
 
     /// ピッカーの色見本などに使用する SwiftUI Color
     var swiftUIColor: Color {
-        switch fill {
+        switch self {
 
-        case .original:
+        case .clear:
             return .clear
 
         case .solid(let red, let green, let blue, let alpha, let colorSpace):
@@ -83,7 +81,7 @@ extension IDPhotoBackgroundColor {
     var label: String {
         switch self {
 
-        case .original:
+        case .clear:
             return "背景色なし"
 
         case .blue:
@@ -111,31 +109,32 @@ extension IDPhotoBackgroundColor {
     ///
     /// プリセットと同一色 (色空間変換込みで比較) の場合は該当プリセットを返すため、
     /// ピッカーの選択状態やラベルが正しく一致する。
-    /// alpha が 0 の場合は「背景色なし」(旧実装の `.clear` に相当) として扱う。
-    static func fromStoredComponents(
+    /// alpha が 0 の場合は「背景色なし」(`.clear`) として扱う。
+    init(
         red: Double,
         green: Double,
         blue: Double,
         alpha: Double,
         colorSpaceRawValue: String?
-    ) -> IDPhotoBackgroundColor {
+    ) {
+        guard alpha > .zero else {
+            self = .clear
 
-        guard alpha > .zero else { return .original }
+            return
+        }
 
         let colorSpace: RGBColorSpace = colorSpaceRawValue.flatMap { RGBColorSpace(rawValue: $0) } ?? .sRGB
 
-        let restoredBackgroundColor: IDPhotoBackgroundColor = .init(
-            fill: .solid(
-                red: red,
-                green: green,
-                blue: blue,
-                alpha: alpha,
-                colorSpace: colorSpace
-            )
+        let restoredBackgroundColor: IDPhotoBackgroundColor = .solid(
+            red: red,
+            green: green,
+            blue: blue,
+            alpha: alpha,
+            colorSpace: colorSpace
         )
 
-        let matchedPreset: IDPhotoBackgroundColor? = presets.first { $0.isSameColor(as: restoredBackgroundColor) }
+        let matchedPreset: IDPhotoBackgroundColor? = IDPhotoBackgroundColor.presets.first { $0.isSameColor(as: restoredBackgroundColor) }
 
-        return matchedPreset ?? restoredBackgroundColor
+        self = matchedPreset ?? restoredBackgroundColor
     }
 }

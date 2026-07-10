@@ -14,7 +14,15 @@ import CoreImage
 ///
 /// UI フレームワークに依存させないため、コア層では数値 (成分 + 色空間) のみを保持する。
 /// アプリ側のプリセット (青・グレー・白・茶) は extension で提供される。
-struct IDPhotoBackgroundColor: Identifiable, Sendable {
+enum IDPhotoBackgroundColor: Sendable {
+
+    /// 背景合成なし (元画像の背景のまま)
+    case clear
+
+    case solid(red: Double, green: Double, blue: Double, alpha: Double, colorSpace: RGBColorSpace)
+}
+
+extension IDPhotoBackgroundColor {
 
     enum RGBColorSpace: String, Codable, Sendable {
         case sRGB
@@ -31,30 +39,16 @@ struct IDPhotoBackgroundColor: Identifiable, Sendable {
             }
         }
     }
+}
 
-    enum Fill: Sendable {
-
-        /// 背景合成なし (元画像の背景のまま)
-        case original
-
-        case solid(red: Double, green: Double, blue: Double, alpha: Double, colorSpace: RGBColorSpace)
-    }
-
-    let fill: Fill
-
-    init(fill: Fill) {
-        self.fill = fill
-    }
-
-    /// 背景合成なし (元画像の背景のまま)
-    static let original: IDPhotoBackgroundColor = .init(fill: .original)
+extension IDPhotoBackgroundColor: Identifiable {
 
     /// 同一色判定・永続化後の照合に使える安定 ID (成分から導出される)
     var id: String {
-        switch fill {
+        switch self {
 
-        case .original:
-            return "original"
+        case .clear:
+            return "clear"
 
         case .solid(let red, let green, let blue, let alpha, let colorSpace):
             let roundedComponents: [String] = [red, green, blue, alpha].map { String(format: "%.5f", $0) }
@@ -62,24 +56,11 @@ struct IDPhotoBackgroundColor: Identifiable, Sendable {
             return "solid:\(roundedComponents.joined(separator: "_")):\(colorSpace.rawValue)"
         }
     }
-
-    /// 背景合成に使用する CIColor。`.original` の場合は nil
-    var ciColor: CIColor? {
-        guard case .solid(let red, let green, let blue, let alpha, let colorSpace) = fill else { return nil }
-
-        guard let cgColorSpace = colorSpace.cgColorSpace else { return nil }
-
-        return CIColor(
-            red: red,
-            green: green,
-            blue: blue,
-            alpha: alpha,
-            colorSpace: cgColorSpace
-        )
-    }
 }
 
 extension IDPhotoBackgroundColor: Equatable {
+
+    //  色空間変換由来の浮動小数の揺れで同色が不一致にならないよう、自動合成ではなく導出 ID で比較する
     static func == (lhs: IDPhotoBackgroundColor, rhs: IDPhotoBackgroundColor) -> Bool {
         return lhs.id == rhs.id
     }
@@ -106,7 +87,7 @@ extension IDPhotoBackgroundColor {
     }
 
     private func displayP3Components() -> [CGFloat]? {
-        guard case .solid(let red, let green, let blue, let alpha, let colorSpace) = fill else { return nil }
+        guard case .solid(let red, let green, let blue, let alpha, let colorSpace) = self else { return nil }
 
         guard
             let cgColorSpace = colorSpace.cgColorSpace,
@@ -125,5 +106,23 @@ extension IDPhotoBackgroundColor {
         )
 
         return convertedCGColor?.components
+    }
+}
+
+extension CIColor {
+
+    /// 背景合成に使用する色。「背景色なし」(`.clear`) の場合は nil
+    convenience init?(idPhotoBackgroundColor: IDPhotoBackgroundColor) {
+        guard case .solid(let red, let green, let blue, let alpha, let colorSpace) = idPhotoBackgroundColor else { return nil }
+
+        guard let cgColorSpace = colorSpace.cgColorSpace else { return nil }
+
+        self.init(
+            red: red,
+            green: green,
+            blue: blue,
+            alpha: alpha,
+            colorSpace: cgColorSpace
+        )
     }
 }

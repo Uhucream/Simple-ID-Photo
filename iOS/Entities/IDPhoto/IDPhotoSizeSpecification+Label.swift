@@ -15,19 +15,10 @@ extension IDPhotoSizeSpecification {
     /// ピッカーなどに表示するサイズ名。
     /// 数値サイズは MeasurementFormatter によってロケールに応じてフォーマットされる
     var pickerLabel: String {
-        if self.id == JapanIDPhotoSizes.original.id {
-            return "オリジナル"
-        }
-
         guard let millimeterSize = self.millimeterSize else { return "オリジナル" }
 
-        let millimeterWidth: Int = .init(millimeterSize.width)
+        let millimeterWidth: Int = .init(millimeterSize.width.converted(to: .millimeters).value)
 
-        let heightMeasurement: Measurement<UnitLength> = .init(
-            value: millimeterSize.height,
-            unit: .millimeters
-        )
-
-        return "\(millimeterWidth) x \(projectGlobalMeasurementFormatter.string(from: heightMeasurement))"
+        return "\(millimeterWidth) x \(projectGlobalMeasurementFormatter.string(from: millimeterSize.height))"
     }
 }

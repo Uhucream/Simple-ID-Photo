@@ -11,7 +11,7 @@ import CoreGraphics
 import Foundation
 @testable import SimpleIDPhoto
 
-@Suite("FaceOccupancyIDPhotoSize (標準の写り方)")
+@Suite("FaceOccupancyIDPhotoSizeSpecification (標準の写り方)")
 struct FaceOccupancyIDPhotoSizeTests {
 
     /// 手計算しやすい値の被写体。
@@ -26,11 +26,11 @@ struct FaceOccupancyIDPhotoSizeTests {
 
     @Test("既知の被写体から期待どおりのクロップ矩形が生成される (旧 generateCroppingRect と同じ数式)")
     func croppingRectMatchesLegacyFormula() throws {
-        let specification: FaceOccupancyIDPhotoSize = .init(
+        let specification: FaceOccupancyIDPhotoSizeSpecification = .init(
             id: "test.w30h40",
-            dimensions: MillimeterSize(width: 30, height: 40),
-            millimeterFaceHeight: 24,
-            millimeterCrownMargin: 4
+            dimensions: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
+            millimeterFaceHeight: .millimeters(24),
+            millimeterCrownMargin: .millimeters(4)
         )
 
         let croppingRect: CGRect = try specification.croppingRect(for: subject)
@@ -48,11 +48,11 @@ struct FaceOccupancyIDPhotoSizeTests {
 
     @Test("顔矩形が .null の場合は throw する")
     func throwsWhenFaceRectIsNull() {
-        let specification: FaceOccupancyIDPhotoSize = .init(
+        let specification: FaceOccupancyIDPhotoSizeSpecification = .init(
             id: "test.w30h40",
-            dimensions: MillimeterSize(width: 30, height: 40),
-            millimeterFaceHeight: 24,
-            millimeterCrownMargin: 4
+            dimensions: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
+            millimeterFaceHeight: .millimeters(24),
+            millimeterCrownMargin: .millimeters(4)
         )
 
         let subjectWithoutFace: IDPhotoSubject = .init(

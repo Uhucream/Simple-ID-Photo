@@ -9,17 +9,6 @@
 import Foundation
 import CoreGraphics
 
-struct MillimeterSize: Codable, Equatable, Sendable {
-
-    let width: Double
-    let height: Double
-
-    init(width: Double, height: Double) {
-        self.width = width
-        self.height = height
-    }
-}
-
 /// 証明写真の「サイズ仕様書」。
 ///
 /// `IDPhotoEditor.cropped(to:)` に渡され、被写体の検出結果からクロップ矩形を生成する。
@@ -30,7 +19,7 @@ protocol IDPhotoSizeSpecification: Identifiable, Sendable {
     var id: String { get }
 
     /// 表示・印刷に使用する物理寸法。オリジナルサイズ (切り抜きなし) の場合は nil
-    var millimeterSize: MillimeterSize? { get }
+    var millimeterSize: MeasurementSize? { get }
 
     /// クロップ矩形の生成に被写体の検出結果を必要とするか。
     /// false の場合、`croppingRect(for:)` の subject には検出結果ではなく画像全体の情報のみが渡される
