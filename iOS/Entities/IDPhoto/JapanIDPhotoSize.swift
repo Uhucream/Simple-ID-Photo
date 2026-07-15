@@ -19,11 +19,17 @@ import CoreGraphics
 /// 保存済み ID からの復元は `JapanIDPhotoSize(rawValue:)`。
 enum JapanIDPhotoSize: String {
 
+    /// 正方・小 (2.5 × 2.5 cm)
+    case square25 = "jp.square25"
+
     /// 運転免許 (3.0 × 2.4 cm)
     case w24xh30 = "jp.w24h30"
 
     /// 長型枠 (3.0 × 2.5 cm)
     case w25xh30 = "jp.w25h30"
+
+    /// 正方・中 (3.0 × 3.0 cm)
+    case square30 = "jp.square30"
 
     /// 一般・履歴書 (4.0 × 3.0 cm)
     case w30xh40 = "jp.w30h40"
@@ -32,12 +38,6 @@ enum JapanIDPhotoSize: String {
     ///
     /// - Important: 寸法はパスポート規格と同じだが、写り方が異なるためパスポート申請には使用できない
     case w35xh45 = "jp.w35h45"
-
-    /// 正方・小 (2.5 × 2.5 cm)
-    case square25 = "jp.square25"
-
-    /// 正方・中 (3.0 × 3.0 cm)
-    case square30 = "jp.square30"
 
     /// 大型 (6.0 × 4.0 cm)
     case w40xh60 = "jp.w40h60"
@@ -84,21 +84,6 @@ extension JapanIDPhotoSize {
     private var specification: any IDPhotoSizeSpecification {
         switch self {
 
-        case .w24xh30:
-            return Self.w24xh30Standard
-
-        case .w25xh30:
-            return Self.w25xh30Standard
-
-        case .w30xh40:
-            return Self.w30xh40Standard
-
-        case .w35xh45:
-            return Self.w35xh45Standard
-
-        case .w50xh70:
-            return Self.w50xh70Standard
-
         case .square25:
             return EdgeCutIDPhotoSizeSpecification(
                 id: self.rawValue,
@@ -107,6 +92,12 @@ extension JapanIDPhotoSize {
                 millimeterHorizontalCutPerSide: .zero
             )
 
+        case .w24xh30:
+            return Self.w24xh30Standard
+
+        case .w25xh30:
+            return Self.w25xh30Standard
+
         case .square30:
             return EdgeCutIDPhotoSizeSpecification(
                 id: self.rawValue,
@@ -114,6 +105,12 @@ extension JapanIDPhotoSize {
                 millimeterBottomCut: .millimeters(10),
                 millimeterHorizontalCutPerSide: .zero
             )
+
+        case .w30xh40:
+            return Self.w30xh40Standard
+
+        case .w35xh45:
+            return Self.w35xh45Standard
 
         case .w40xh60:
             return EdgeCutIDPhotoSizeSpecification(
@@ -130,6 +127,9 @@ extension JapanIDPhotoSize {
                 millimeterBottomCut: .millimeters(10),
                 millimeterHorizontalCutPerSide: .millimeters(2.5)
             )
+
+        case .w50xh70:
+            return Self.w50xh70Standard
         }
     }
 }

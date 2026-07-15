@@ -38,19 +38,24 @@ struct EditIDPhotoViewContainer: View {
     //  w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
     //  パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで表示しない
     private var availableSizeSpecifications: [any IDPhotoSizeSpecification] {
-        let japanSizes: [any IDPhotoSizeSpecification] = JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }
+        var selectableSizes: [any IDPhotoSizeSpecification] = JapanIDPhotoSize.allCases.filter { $0 != .w35xh45 }
 
-        let lineup: [any IDPhotoSizeSpecification] = [OriginalSizeSpecification.original] + japanSizes
-
-        //  廃止サイズを使っている写真では、その仕様書もこの写真の編集中だけピッカーに出す
-        guard
+        //  廃止サイズを使っている写真では、その仕様書もこの写真の編集中だけ選べるようにする
+        if
             let appliedSizeSpecification = originalAppliedSizeSpecification,
-            lineup.contains(where: { $0.id == appliedSizeSpecification.id }) == false
-        else {
-            return lineup
+            let appliedMillimeterSize = appliedSizeSpecification.millimeterSize,
+            selectableSizes.contains(where: { $0.id == appliedSizeSpecification.id }) == false
+        {
+            let insertionIndex: Int = selectableSizes.firstIndex {
+                guard let millimeterSize = $0.millimeterSize else { return false }
+
+                return millimeterSize > appliedMillimeterSize
+            } ?? selectableSizes.endIndex
+
+            selectableSizes.insert(appliedSizeSpecification, at: insertionIndex)
         }
 
-        return [OriginalSizeSpecification.original, appliedSizeSpecification] + japanSizes
+        return [OriginalSizeSpecification.original] + selectableSizes
     }
 
     @Environment(\.managedObjectContext) private var viewContext

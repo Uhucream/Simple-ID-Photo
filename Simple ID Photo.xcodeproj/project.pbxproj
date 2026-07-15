@@ -37,6 +37,7 @@
 		FAB1E5ED0000000000000216 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */; };
 		FAB1E5ED0000000000000217 /* DiscontinuedIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000117 /* DiscontinuedIDPhotoSize.swift */; };
 		FAB1E5ED0000000000000218 /* DiscontinuedIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000118 /* DiscontinuedIDPhotoSizeTests.swift */; };
+		FAB1E5ED0000000000000219 /* MeasurementSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000119 /* MeasurementSizeTests.swift */; };
 		FAB1E5ED0000000000000211 /* FaceOccupancyIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */; };
 		FAB1E5ED0000000000000212 /* EdgeCutIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */; };
 		FAB1E5ED0000000000000213 /* JapanIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */; };
@@ -220,6 +221,7 @@
 		FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift"; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000117 /* DiscontinuedIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscontinuedIDPhotoSize.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000118 /* DiscontinuedIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscontinuedIDPhotoSizeTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000119 /* MeasurementSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSizeTests.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSizeTests.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSizeTests.swift; sourceTree = "<group>"; };
 		FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSizeTests.swift; sourceTree = "<group>"; };
@@ -1005,6 +1007,7 @@
 			children = (
 				FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */,
 				FAB1E5ED0000000000000118 /* DiscontinuedIDPhotoSizeTests.swift */,
+				FAB1E5ED0000000000000119 /* MeasurementSizeTests.swift */,
 				FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */,
 				FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */,
 				FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */,
@@ -1520,6 +1523,7 @@
 			files = (
 				FAB1E5ED0000000000000211 /* FaceOccupancyIDPhotoSizeTests.swift in Sources */,
 				FAB1E5ED0000000000000218 /* DiscontinuedIDPhotoSizeTests.swift in Sources */,
+				FAB1E5ED0000000000000219 /* MeasurementSizeTests.swift in Sources */,
 				FAB1E5ED0000000000000212 /* EdgeCutIDPhotoSizeTests.swift in Sources */,
 				FAB1E5ED0000000000000213 /* JapanIDPhotoSizeTests.swift in Sources */,
 				FAB1E5ED0000000000000214 /* IDPhotoBackgroundColorTests.swift in Sources */,

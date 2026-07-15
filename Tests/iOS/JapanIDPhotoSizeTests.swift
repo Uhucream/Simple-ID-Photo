@@ -63,6 +63,14 @@ struct JapanIDPhotoSizeTests {
         #expect(JapanIDPhotoSize.w50xh70.millimeterSize == MeasurementSize(width: .millimeters(50), height: .millimeters(70)))
     }
 
+    @Test("allCases が高さ→横幅の昇順に並んでいる")
+    func allCasesAreSortedByHeightThenWidth() {
+        let sizes: [MeasurementSize] = JapanIDPhotoSize.allCases.compactMap(\.millimeterSize)
+
+        #expect(sizes.count == JapanIDPhotoSize.allCases.count)
+        #expect(sizes == sizes.sorted())
+    }
+
     @Test("永続化 ID に重複がない")
     func specificationIDsAreUnique() {
         let allIDs: [String] = JapanIDPhotoSize.allCases.map(\.id)
