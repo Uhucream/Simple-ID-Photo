@@ -46,17 +46,29 @@ extension AppliedIDPhotoSize {
         }
     }
 
-    /// 保存済みの仕様書 ID から復元したサイズ仕様書
+    /// 保存済みのレコードから復元したサイズ仕様書
     ///
-    /// 廃止されたサイズや未実装のパスポート規格は復元できないため nil
+    /// 現行の規格に無いサイズ (廃止サイズ) は保存済みの mm 実寸から復元する。
+    /// mm も無い場合 (旧 custom レコードなど) のみ nil
     var resolvedSizeSpecification: (any IDPhotoSizeSpecification)? {
-        guard let resolvedID = self.resolvedSizeSpecificationID else { return nil }
+        if let resolvedID = self.resolvedSizeSpecificationID {
+            if resolvedID == OriginalSizeSpecification.original.id {
+                return OriginalSizeSpecification.original
+            }
 
-        if resolvedID == OriginalSizeSpecification.original.id {
-            return OriginalSizeSpecification.original
+            if let japanIDPhotoSize = JapanIDPhotoSize(rawValue: resolvedID) {
+                return japanIDPhotoSize
+            }
         }
 
-        return JapanIDPhotoSize(rawValue: resolvedID)
+        if self.millimetersWidth > .zero, self.millimetersHeight > .zero {
+            return DiscontinuedIDPhotoSize(
+                millimeterWidth: self.millimetersWidth,
+                millimeterHeight: self.millimetersHeight
+            )
+        }
+
+        return nil
     }
 
     /// 表示用ラベル

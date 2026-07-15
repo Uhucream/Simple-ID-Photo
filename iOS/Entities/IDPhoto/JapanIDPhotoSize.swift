@@ -72,20 +72,13 @@ extension JapanIDPhotoSize: IDPhotoSizeSpecification {
 
 extension JapanIDPhotoSize {
 
-    //  標準の写り方の顔占有率 (顔の高さ ÷ 写真の高さ)。
-    //  根拠のある値ではなく暫定値 (適正値は要調査。変更する場合はこの定数を書き換えるだけでよい)
-    private static let provisionalFaceHeightRatio: Double = 60 / 100
-
-    //  頭頂から写真上端までの余白 (暫定値)
-    private static let provisionalMillimeterCrownMargin: Measurement<UnitLength> = .millimeters(4)
-
     //  標準の写り方の仕様書。
     //  派生サイズの baseSize (square25 → w25xh30 など) からも参照されるため、定義を1箇所にまとめている
-    private static let w24xh30Standard: FaceOccupancyIDPhotoSizeSpecification = standard(id: JapanIDPhotoSize.w24xh30.rawValue, millimeterWidth: 24, millimeterHeight: 30)
-    private static let w25xh30Standard: FaceOccupancyIDPhotoSizeSpecification = standard(id: JapanIDPhotoSize.w25xh30.rawValue, millimeterWidth: 25, millimeterHeight: 30)
-    private static let w30xh40Standard: FaceOccupancyIDPhotoSizeSpecification = standard(id: JapanIDPhotoSize.w30xh40.rawValue, millimeterWidth: 30, millimeterHeight: 40)
-    private static let w35xh45Standard: FaceOccupancyIDPhotoSizeSpecification = standard(id: JapanIDPhotoSize.w35xh45.rawValue, millimeterWidth: 35, millimeterHeight: 45)
-    private static let w50xh70Standard: FaceOccupancyIDPhotoSizeSpecification = standard(id: JapanIDPhotoSize.w50xh70.rawValue, millimeterWidth: 50, millimeterHeight: 70)
+    private static let w24xh30Standard: FaceOccupancyIDPhotoSizeSpecification = .japanStandardFraming(id: JapanIDPhotoSize.w24xh30.rawValue, millimeterWidth: 24, millimeterHeight: 30)
+    private static let w25xh30Standard: FaceOccupancyIDPhotoSizeSpecification = .japanStandardFraming(id: JapanIDPhotoSize.w25xh30.rawValue, millimeterWidth: 25, millimeterHeight: 30)
+    private static let w30xh40Standard: FaceOccupancyIDPhotoSizeSpecification = .japanStandardFraming(id: JapanIDPhotoSize.w30xh40.rawValue, millimeterWidth: 30, millimeterHeight: 40)
+    private static let w35xh45Standard: FaceOccupancyIDPhotoSizeSpecification = .japanStandardFraming(id: JapanIDPhotoSize.w35xh45.rawValue, millimeterWidth: 35, millimeterHeight: 45)
+    private static let w50xh70Standard: FaceOccupancyIDPhotoSizeSpecification = .japanStandardFraming(id: JapanIDPhotoSize.w50xh70.rawValue, millimeterWidth: 50, millimeterHeight: 70)
 
     //  実体の仕様書。処理の分岐ではなく、case ごとの寸法データの選択
     private var specification: any IDPhotoSizeSpecification {
@@ -138,23 +131,6 @@ extension JapanIDPhotoSize {
                 millimeterHorizontalCutPerSide: .millimeters(2.5)
             )
         }
-    }
-
-    private static func standard(
-        id: String,
-        millimeterWidth: Double,
-        millimeterHeight: Double
-    ) -> FaceOccupancyIDPhotoSizeSpecification {
-
-        return FaceOccupancyIDPhotoSizeSpecification(
-            id: id,
-            dimensions: MeasurementSize(
-                width: .millimeters(millimeterWidth),
-                height: .millimeters(millimeterHeight)
-            ),
-            millimeterFaceHeight: .millimeters(millimeterHeight * provisionalFaceHeightRatio),
-            millimeterCrownMargin: provisionalMillimeterCrownMargin
-        )
     }
 }
 
