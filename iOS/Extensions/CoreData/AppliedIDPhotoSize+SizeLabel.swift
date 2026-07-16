@@ -36,7 +36,7 @@ extension AppliedIDPhotoSize {
         switch self.sizeVariant {
 
         case 0:
-            return OriginalSizeSpecification.original.id
+            return OriginalSizeSpecification().id
 
         case 1:
             return JapanIDPhotoSize.reservedPassportSpecificationID
@@ -52,7 +52,7 @@ extension AppliedIDPhotoSize {
     /// mm も無い場合 (旧 custom レコードなど) のみ nil
     var resolvedSizeSpecification: (any IDPhotoSizeSpecification)? {
         if let resolvedID = self.resolvedSizeSpecificationID {
-            if resolvedID == OriginalSizeSpecification.original.id {
+            if resolvedID == OriginalSizeSpecification().id {
                 return .original
             }
 
@@ -77,7 +77,7 @@ extension AppliedIDPhotoSize {
     var sizeLabel: AppliedIDPhotoSizeLabel {
         let resolvedID: String? = self.resolvedSizeSpecificationID
 
-        if resolvedID == OriginalSizeSpecification.original.id {
+        if resolvedID == OriginalSizeSpecification().id {
             return .original
         }
 

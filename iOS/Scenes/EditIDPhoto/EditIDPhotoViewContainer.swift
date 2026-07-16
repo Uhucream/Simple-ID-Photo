@@ -523,7 +523,7 @@ struct EditIDPhotoViewContainer: View {
             selectedSizeSpecificationPublisher
         ) { newSizeSpecification in
 
-            let currentAppliedSizeSpecificationID: String = self.originalAppliedSizeSpecification?.id ?? OriginalSizeSpecification.original.id
+            let currentAppliedSizeSpecificationID: String = self.originalAppliedSizeSpecification?.id ?? OriginalSizeSpecification().id
 
             let isSizeSpecificationChanged: Bool = newSizeSpecification.id != currentAppliedSizeSpecificationID
 

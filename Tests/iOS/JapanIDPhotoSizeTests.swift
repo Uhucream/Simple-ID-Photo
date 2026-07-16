@@ -77,7 +77,7 @@ struct JapanIDPhotoSizeTests {
 
         #expect(Set(allIDs).count == allIDs.count)
 
-        #expect(allIDs.contains(OriginalSizeSpecification.original.id) == false)
+        #expect(allIDs.contains(OriginalSizeSpecification().id) == false)
         #expect(allIDs.contains(JapanIDPhotoSize.reservedPassportSpecificationID) == false)
     }
 }
