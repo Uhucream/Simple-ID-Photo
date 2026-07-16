@@ -93,7 +93,6 @@ extension IDPhotoEditor {
     /// 背景色を合成し、元画像サイズの合成済み画像を返す
     ///
     /// 常に元画像から再合成するため、何度色を変えても画質は劣化しない
-    @discardableResult
     func painted(with backgroundColor: IDPhotoBackgroundColor) async throws -> IDPhoto {
         switch backgroundColor {
 

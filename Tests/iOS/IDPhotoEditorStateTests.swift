@@ -181,7 +181,7 @@ struct IDPhotoEditorStateTests {
     func paintingWithOriginalRestoresSourceImage() async throws {
         let editor: IDPhotoEditor = Self.makeEditor()
 
-        try await editor.painted(with: Self.blueBackgroundColor)
+        _ = try await editor.painted(with: Self.blueBackgroundColor)
 
         let originalPaintedIDPhoto: IDPhoto = try await editor.painted(with: .clear)
 
