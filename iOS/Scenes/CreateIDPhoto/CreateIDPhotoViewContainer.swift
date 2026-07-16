@@ -287,9 +287,9 @@ struct CreateIDPhotoViewContainer: View {
                     savedDirectory: sourcePhotoSavedDirectory
                 )
 
-                //  検出済みの場合のみ被写体情報を永続化する (オリジナルサイズのみで保存した場合などは未検出のまま)。
-                //  再編集時に Vision を再実行せず、Create と同一の検出結果を使えるようにするため
-                let detectedSubject: IDPhotoSubject? = await idPhotoEditor?.alreadyDetectedSubject()
+                //  再編集時に Vision を再実行せず Create と同一の検出結果を使えるよう、被写体情報を永続化する。
+                //  未検出なら検出してでも保存する。検出に失敗しても (人物・顔が写っていない等) 保存自体は妨げない
+                let detectedSubject: IDPhotoSubject? = try? await idPhotoEditor?.detectedSubject()
 
                 if let detectedSubject = detectedSubject {
                     newSourcePhotoRecord.detectedSubject = DetectedSubject(

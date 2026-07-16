@@ -352,8 +352,9 @@ struct EditIDPhotoViewContainer: View {
 
                     let appliedSizeSpecification: (any IDPhotoSizeSpecification)? = self.isSizeSpecificationModified ? self.selectedSizeSpecification : nil
 
-                    //  検出済みの被写体情報が未保存なら保存する (v4 以前に作成されたレコードのアップグレード)
-                    let detectedSubject: IDPhotoSubject? = await idPhotoEditor?.alreadyDetectedSubject()
+                    //  被写体情報が未保存なら保存する (v4 以前・原寸のみで作成されたレコードのアップグレード)。
+                    //  未検出なら検出してでも保存する。検出に失敗しても保存自体は妨げない
+                    let detectedSubject: IDPhotoSubject? = try? await idPhotoEditor?.detectedSubject()
 
                     try updateTargetCreatedIDPhotoRecord(
                         idPhotoBackgroundColor: appliedBackgroundColor,
@@ -756,7 +757,7 @@ extension EditIDPhotoViewContainer {
                 )
             }
 
-            //  v4 以前に作成されたレコードには検出結果が保存されていないため、このタイミングで保存する
+            //  検出結果が未保存のレコード (v4 以前・原寸のみで作成) には、このタイミングで保存する
             if
                 let detectedSubject = detectedSubject,
                 let sourcePhotoRecord = editTargetCreatedIDPhoto.sourcePhoto,
