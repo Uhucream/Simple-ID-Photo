@@ -50,20 +50,38 @@ actor IDPhotoEditor {
     ///   - sourceCIImage: 元画像
     ///   - orientation: 元画像の Exif orientation
     ///   - precomputedSubject: 永続化済みの検出結果。渡された場合、被写体検出の Vision 実行をスキップする
-    ///   - precomputedPersonMaskCIImage: テスト用のスタブマスク。渡された場合、マスク生成の Vision 実行をスキップする
     init(
         sourceCIImage: CIImage,
         orientation: CGImagePropertyOrientation,
-        precomputedSubject: IDPhotoSubject? = nil,
-        precomputedPersonMaskCIImage: CIImage? = nil
+        precomputedSubject: IDPhotoSubject? = nil
     ) {
         self.sourceCIImage = sourceCIImage
         self.sourceOrientation = orientation
 
         self.cachedSubject = precomputedSubject
-        self.cachedPersonMaskCIImage = precomputedPersonMaskCIImage
+        self.cachedPersonMaskCIImage = nil
 
         self.workingCIImage = sourceCIImage
+    }
+}
+
+//  テスト用の初期化
+extension IDPhotoEditor {
+
+    //  スタブの人物マスクを注入し、マスク生成の Vision 実行をスキップさせる
+    convenience init(
+        sourceCIImage: CIImage,
+        orientation: CGImagePropertyOrientation,
+        precomputedSubject: IDPhotoSubject? = nil,
+        stubPersonMask: CIImage
+    ) {
+        self.init(
+            sourceCIImage: sourceCIImage,
+            orientation: orientation,
+            precomputedSubject: precomputedSubject
+        )
+
+        self.cachedPersonMaskCIImage = stubPersonMask
     }
 }
 

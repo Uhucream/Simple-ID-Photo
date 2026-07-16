@@ -51,7 +51,7 @@ struct IDPhotoEditorStateTests {
             sourceCIImage: redSourceCIImage,
             orientation: .up,
             precomputedSubject: makeStubSubject(),
-            precomputedPersonMaskCIImage: makeStubPersonMask()
+            stubPersonMask: makeStubPersonMask()
         )
     }
 
