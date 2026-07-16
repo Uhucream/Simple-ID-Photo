@@ -41,7 +41,7 @@ struct Triangle: Shape {
 
 fileprivate struct PrintSizeGuideView<Content: View>: View {
 
-    private let  SIZE_GUIDE_BORDER_WIDTH: Double = 2
+    private let sizeGuideBorderWidth: Double = 2
     
     @ViewBuilder var content: () -> Content
     
@@ -82,8 +82,8 @@ fileprivate struct PrintSizeGuideView<Content: View>: View {
                 content()
                     .padding(triangleWidth)
             }
-            .padding(self.SIZE_GUIDE_BORDER_WIDTH)
-            .border(Color.fixedBlack, width: self.SIZE_GUIDE_BORDER_WIDTH)
+            .padding(self.sizeGuideBorderWidth)
+            .border(Color.fixedBlack, width: self.sizeGuideBorderWidth)
         }
     }
 }
@@ -116,17 +116,17 @@ struct ConfirmSaveViewContainer: View {
     @State private var idPhotoForSavingUIImage: UIImage? = nil
     
     var sourceIDPhotoUIImage: UIImage?
-    var sourceIDPhotoSizeVariant: IDPhotoSizeVariant
-    
+    var sourceIDPhotoMillimeterSize: MeasurementSize
+
     init(
         sourceIDPhotoUIImage: UIImage?,
-        sourceIDPhotoSizeVariant: IDPhotoSizeVariant
+        sourceIDPhotoMillimeterSize: MeasurementSize
     ) {
         _idPhotoForSavingUIImage = .init(initialValue: sourceIDPhotoUIImage)
-        
+
         self.sourceIDPhotoUIImage = sourceIDPhotoUIImage
-        
-        self.sourceIDPhotoSizeVariant = sourceIDPhotoSizeVariant
+
+        self.sourceIDPhotoMillimeterSize = sourceIDPhotoMillimeterSize
     }
     
     @MainActor
@@ -136,8 +136,14 @@ struct ConfirmSaveViewContainer: View {
         
         @ViewBuilder
         var imageRendererSourceView: some View {
-            let idPhotoCGSize: CGSize = self.sourceIDPhotoSizeVariant.photoSize.cgsize(pixelDensity: 350)
-            
+            let idPhotoWidthMeasurement: Measurement<UnitLength> = self.sourceIDPhotoMillimeterSize.width
+            let idPhotoHeightMeasurement: Measurement<UnitLength> = self.sourceIDPhotoMillimeterSize.height
+
+            let idPhotoCGSize: CGSize = .init(
+                width: idPhotoWidthMeasurement.pixelLength(pixelDensity: 350),
+                height: idPhotoHeightMeasurement.pixelLength(pixelDensity: 350)
+            )
+
             let idPhotoRoundedCGSize: CGSize = .init(
                 width: idPhotoCGSize.width,
                 height: idPhotoCGSize.height
@@ -217,7 +223,7 @@ struct ConfirmSaveViewContainer_Previews: PreviewProvider {
     static var previews: some View {
         ConfirmSaveViewContainer(
             sourceIDPhotoUIImage: .init(named: "SampleIDPhoto"),
-            sourceIDPhotoSizeVariant: .w24_h30
+            sourceIDPhotoMillimeterSize: .init(width: .millimeters(24), height: .millimeters(30))
         )
     }
 }

@@ -1,9 +1,9 @@
 //
 //  AppliedIDPhotoSize+.swift
 //  Simple ID Photo
-//  
+//
 //  Created by TakashiUshikoshi on 2023/03/01
-//  
+//
 //
 
 import CoreData
@@ -12,23 +12,36 @@ extension AppliedIDPhotoSize {
     convenience init(
         on context: NSManagedObjectContext,
         id: UUID = .init(),
-        millimetersHeight: Double,
+        sizeSpecificationID: String?,
         millimetersWidth: Double,
-        sizeVariant: IDPhotoSizeVariant,
-        faceHeight: AppliedIDPhotoFaceHeight? = nil,
-        marginsAroundFace: AppliedMarginsAroundFace? = nil,
+        millimetersHeight: Double,
         createdIDPhoto: CreatedIDPhoto? = nil
     ) {
         self.init(context: context)
-        
+
         self.id = id
-        
-        self.millimetersHeight = millimetersHeight
+
+        self.sizeSpecificationID = sizeSpecificationID
+
         self.millimetersWidth = millimetersWidth
-        self.sizeVariant = Int32(sizeVariant.rawValue)
-        
-        self.faceHeight = faceHeight
-        self.marginsAroundFace = marginsAroundFace
+        self.millimetersHeight = millimetersHeight
+
         self.createdIDPhoto = createdIDPhoto
+    }
+
+    convenience init(
+        on context: NSManagedObjectContext,
+        id: UUID = .init(),
+        sizeSpecification: any IDPhotoSizeSpecification,
+        createdIDPhoto: CreatedIDPhoto? = nil
+    ) {
+        self.init(
+            on: context,
+            id: id,
+            sizeSpecificationID: sizeSpecification.id,
+            millimetersWidth: sizeSpecification.millimeterSize.width.converted(to: .millimeters).value,
+            millimetersHeight: sizeSpecification.millimeterSize.height.converted(to: .millimeters).value,
+            createdIDPhoto: createdIDPhoto
+        )
     }
 }

@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-fileprivate let CROP_VIEW_IMAGE_HORIZONTAL_PADDING: CGFloat = 8
+fileprivate let cropViewImageHorizontalPadding: CGFloat = 8
 
-fileprivate let CROP_VIEW_ANIMATION_DURATION_SECONDS: Double = 0.5
+fileprivate let cropViewAnimationDurationSeconds: Double = 0.5
 
 struct EditIDPhotoView: View {
 
@@ -20,21 +20,21 @@ struct EditIDPhotoView: View {
 
     @Binding var selectedProcess: IDPhotoProcessSelection
 
-    @Binding var selectedBackgroundColor: Color
+    @Binding var selectedBackgroundColor: IDPhotoBackgroundColor
     @Binding var selectedBackgroundColorLabel: String
-    
-    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
-    
+
+    @Binding var selectedSizeSpecification: any IDPhotoSizeSpecification
+
     @Binding var originalSizePreviewUIImage: UIImage?
     @Binding var croppedPreviewUIImage: UIImage?
-    
+
     @Binding var croppingCGRect: CGRect
-    
+
     @Binding var shouldDisableDoneButton: Bool
-    
-    var availableBackgroundColors: [Color]
-    
-    var availableSizeVariants: [IDPhotoSizeVariant]
+
+    var availableBackgroundColors: [IDPhotoBackgroundColor]
+
+    var availableSizeSpecifications: [any IDPhotoSizeSpecification]
     
     private var previewCroppingCGRect: CGRect {
         let leftUpperOriginRect: CGRect = .init(
@@ -91,20 +91,6 @@ struct EditIDPhotoView: View {
         return view
     }
     
-    func renderSizeVariantLabel(_ variant: IDPhotoSizeVariant) -> Text {
-        if variant == .original {
-            return Text("オリジナル")
-        }
-        
-        if variant == .passport {
-            return Text("パスポート (35 x 45 mm)")
-        }
-        
-        let photoWidth: Int = Int(variant.photoSize.width.value)
-        
-        return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: variant.photoSize.height))")
-    }
-    
     @ViewBuilder
     func BottomControlButtons() -> some View {
         VStack(spacing: 0) {
@@ -156,9 +142,8 @@ struct EditIDPhotoView: View {
                 
                 if self.selectedProcess == .size {
                     IDPhotoSizePicker(
-                        availableSizeVariants: availableSizeVariants,
-                        renderSelectonLabel: renderSizeVariantLabel,
-                        selectedIDPhotoSize: $selectedIDPhotoSize
+                        availableSizeSpecifications: availableSizeSpecifications,
+                        selectedSizeSpecification: $selectedSizeSpecification
                     )
                 }
             }
@@ -269,7 +254,7 @@ struct EditIDPhotoView: View {
                 //
                 Color.clear
                     .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                    .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                    .padding(.horizontal, cropViewImageHorizontalPadding)
                     .anchorPreference(
                         key: NamedBoundsPreferenceKey.self,
                         value: .bounds
@@ -309,10 +294,10 @@ struct EditIDPhotoView: View {
                                             }
                                     }
                                 }
-                                .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                .padding(.horizontal, cropViewImageHorizontalPadding)
                                 .offset(previewImageOffset)
                                 .animation(
-                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                     value: previewImageOffset
                                 )
                                 .scaleEffect(previewImageViewScalingAmount)
@@ -321,7 +306,7 @@ struct EditIDPhotoView: View {
                                     y: croppingFrameProxy[namedAnchor.anchor].midY
                                 )
                                 .animation(
-                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                     value: previewImageViewScalingAmount
                                 )
                                 .transition(.scale)
@@ -339,7 +324,7 @@ struct EditIDPhotoView: View {
                                 if previewCroppingCGRect.size != .zero {
                                     Rectangle()
                                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .padding(.horizontal, cropViewImageHorizontalPadding)
                                         .position(
                                             x: proxy[namedAnchor.anchor].midX,
                                             y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
@@ -352,7 +337,7 @@ struct EditIDPhotoView: View {
                                     Rectangle()
                                         .stroke(.white, lineWidth: 2)
                                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .padding(.horizontal, cropViewImageHorizontalPadding)
                                         .position(
                                             x: proxy[namedAnchor.anchor].midX,
                                             y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
@@ -363,7 +348,7 @@ struct EditIDPhotoView: View {
                             .opacity(selectedProcess == .size ? 1 : 0)
                             .ignoresSafeArea()
                             .animation(
-                                .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                 value: previewImageViewScalingAmount
                             )
                             .transition(.scale)
@@ -386,11 +371,9 @@ struct EditIDPhotoView_Previews: PreviewProvider {
     static var previews: some View {
         EditIDPhotoView(
             selectedProcess: .constant(.size),
-            selectedBackgroundColor: .constant(
-                Color.idPhotoBackgroundColors.blue
-            ),
+            selectedBackgroundColor: .constant(.blue),
             selectedBackgroundColorLabel: .constant("青"),
-            selectedIDPhotoSize: .constant(.original),
+            selectedSizeSpecification: .constant(.original),
             originalSizePreviewUIImage: .constant(
                 nil
             ),
@@ -400,10 +383,10 @@ struct EditIDPhotoView_Previews: PreviewProvider {
             croppingCGRect: .constant(CGRect(origin: .zero, size: .zero)),
             shouldDisableDoneButton: .constant(true),
             availableBackgroundColors: [
-                .idPhotoBackgroundColors.blue,
-                .idPhotoBackgroundColors.gray
+                .blue,
+                .gray
             ],
-            availableSizeVariants: IDPhotoSizeVariant.allCases
+            availableSizeSpecifications: JapanIDPhotoSize.allCases
         )
         .previewDisplayName("Edit ID Photo View")
     }

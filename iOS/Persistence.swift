@@ -1,9 +1,9 @@
 //
 //  Persistence.swift
 //  Simple ID Photo
-//  
+//
 //  Created by TakashiUshikoshi on 2023/01/06
-//  
+//
 //
 
 import CoreData
@@ -15,66 +15,51 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        
-        
+
+
         let mockHistoriesDataWithIndices = zip(
             mockHistoriesData.indices,
             mockHistoriesData
         )
-        
+
         mockHistoriesDataWithIndices
             .forEach { (index: Int, history: CreatedIDPhotoDetail) in
-                
+
                 let imageFileName: String = "SampleIDPhoto"
-                
+
                 let createdFileURL: URL? = UIImage(named: imageFileName)!.saveOnLibraryCachesForTest(fileName: imageFileName)
-                
+
                 let createdFileNameWithExtension: String? = createdFileURL?.lastPathComponent
-                
+
                 let sourcePhotoSavedDirectory: SavedFilePath = .init(
                     on: viewContext,
                     rootSearchPathDirectory: .cachesDirectory,
                     relativePathFromRootSearchPath: ""
                 )
-                
+
                 let sourcePhoto: SourcePhoto = .init(
                     on: viewContext,
                     imageFileName: createdFileNameWithExtension,
                     shotDate: Calendar.current.date(byAdding: .month, value: -(index + 1), to: .now),
                     savedDirectory: sourcePhotoSavedDirectory
                 )
-                
+
                 let appliedBackgroundColor: AppliedBackgroundColor = .init(
                     on: viewContext,
-                    color: .idPhotoBackgroundColors.blue
+                    color: .blue
                 )
-                
-                let appliedIDPhotoFaceHeight: AppliedIDPhotoFaceHeight = .init(
-                    on: viewContext,
-                    millimetersHeight: history.idPhotoSizeType.photoSize.faceHeight.value
-                )
-                
-                let appliedMarginsAroundFace: AppliedMarginsAroundFace = .init(
-                    on: viewContext,
-                    bottom: history.idPhotoSizeType.photoSize.marginBottom?.value ?? -1,
-                    top: history.idPhotoSizeType.photoSize.marginTop.value
-                )
-                
+
                 let appliedIDPhotoSize: AppliedIDPhotoSize = .init(
                     on: viewContext,
-                    millimetersHeight: history.idPhotoSizeType.photoSize.height.value,
-                    millimetersWidth: history.idPhotoSizeType.photoSize.width.value,
-                    sizeVariant: history.idPhotoSizeType,
-                    faceHeight: appliedIDPhotoFaceHeight,
-                    marginsAroundFace: appliedMarginsAroundFace
+                    sizeSpecification: history.sizeSpecification
                 )
-                
+
                 let createdIDPhotoSavedDirectory: SavedFilePath = .init(
                     on: viewContext,
                     rootSearchPathDirectory: .cachesDirectory,
                     relativePathFromRootSearchPath: ""
                 )
-                
+
                 let createdIDPhoto: CreatedIDPhoto = .init(
                     on: viewContext,
                     createdAt: history.createdAt,
@@ -86,7 +71,7 @@ struct PersistenceController {
                     sourcePhoto: sourcePhoto
                 )
             }
-        
+
         do {
             try viewContext.save()
         } catch {
@@ -122,5 +107,38 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+    }
+}
+
+extension PersistenceController {
+
+    /// モデル v4 以前のレコードの sizeVariant (旧 enum の rawValue) を sizeSpecificationID へ移行する。
+    ///
+    /// 軽量マイグレーション (属性追加・エンティティ削除) では値変換ができないため、
+    /// Int → 文字列 ID の変換は起動時にアプリ側で行う。
+    /// 廃止されたサイズは nil のままとなり、保存済みの mm 実寸で表示される。
+    /// sizeVariant 属性そのものは次のモデルバージョンで削除する予定。
+    func backfillSizeSpecificationIDsIfNeeded() {
+        let backgroundContext: NSManagedObjectContext = container.newBackgroundContext()
+
+        backgroundContext.perform {
+            let fetchRequest: NSFetchRequest<AppliedIDPhotoSize> = AppliedIDPhotoSize.fetchRequest()
+
+            fetchRequest.predicate = NSPredicate(format: "sizeSpecificationID == nil")
+
+            do {
+                let legacyAppliedIDPhotoSizes: [AppliedIDPhotoSize] = try backgroundContext.fetch(fetchRequest)
+
+                legacyAppliedIDPhotoSizes.forEach { appliedIDPhotoSize in
+                    appliedIDPhotoSize.sizeSpecificationID = appliedIDPhotoSize.resolvedSizeSpecificationID
+                }
+
+                guard backgroundContext.hasChanges else { return }
+
+                try backgroundContext.save()
+            } catch {
+                print(error)
+            }
+        }
     }
 }

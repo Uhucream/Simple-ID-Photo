@@ -24,8 +24,8 @@ struct IDPhotoDetailView: View {
     @EnvironmentObject private var screenSizeHelper: ScreenSizeHelper
     
     @Binding var idPhotoImageURL: URL?
-    @Binding var idPhotoSizeType: IDPhotoSizeVariant
-    
+    @Binding var idPhotoSizeLabel: AppliedIDPhotoSizeLabel
+
     @Binding var createdAt: Date
     
     @Binding var updatedAt: Date
@@ -64,26 +64,36 @@ struct IDPhotoDetailView: View {
     
     @ViewBuilder
     func renderPhotoSizeLabel() -> some View {
-        
-        if idPhotoSizeType == .original {
+        switch idPhotoSizeLabel {
+
+        case .original:
             Text("オリジナルサイズ")
                 .fontWeight(.semibold)
-        } else if self.idPhotoSizeType == .passport {
+
+        case .passport:
             Text("パスポートサイズ")
                 .fontWeight(.semibold)
-        } else {
+
+        case .millimeters(let width, let height):
+            let widthMeasurement: Measurement<UnitLength> = .init(value: width, unit: .millimeters)
+            let heightMeasurement: Measurement<UnitLength> = .init(value: height, unit: .millimeters)
+
             HStack(alignment: .center) {
-                Text("横 \(projectGlobalMeasurementFormatter.string(from: idPhotoSizeType.photoSize.width))")
+                Text("横 \(projectGlobalMeasurementFormatter.string(from: widthMeasurement))")
                     .fontWeight(.semibold)
-                
+
                 Image(systemName: "xmark")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxHeight: 10)
-                
-                Text("縦 \(projectGlobalMeasurementFormatter.string(from: idPhotoSizeType.photoSize.height))")
+
+                Text("縦 \(projectGlobalMeasurementFormatter.string(from: heightMeasurement))")
                     .fontWeight(.semibold)
             }
+
+        case .unknown:
+            Text("サイズ不明")
+                .fontWeight(.semibold)
         }
     }
     
@@ -91,15 +101,15 @@ struct IDPhotoDetailView: View {
         Form {
             Section {
                 VStack(alignment: .center, spacing: 28) {
-                    
-                    let createdIDPhotoSize: IDPhotoSize = self.idPhotoSizeType.photoSize
-                    
+
+                    let defaultPlaceholderAspectRatio: CGFloat = 3 / 4
+
                     let createdIDPhotoAspectRatio: CGFloat = {
-                        if self.idPhotoSizeType == .original || self.idPhotoSizeType == .custom {
-                            return 3 / 4
+                        guard case .millimeters(let width, let height) = self.idPhotoSizeLabel, height > .zero else {
+                            return defaultPlaceholderAspectRatio
                         }
-                        
-                        return createdIDPhotoSize.width.value / createdIDPhotoSize.height.value
+
+                        return width / height
                     }()
                     
                     let screenWidth: CGFloat = screenSizeHelper.screenSize.width
@@ -240,7 +250,7 @@ struct IDPhotoDetailView_Previews: PreviewProvider {
                 idPhotoImageURL: .constant(
                     mockHistoriesData[0].createdUIImage.saveOnLibraryCachesForTest(fileName: "SampleIDPhoto")!
                 ),
-                idPhotoSizeType: .constant(IDPhotoSizeVariant.w30_h40),
+                idPhotoSizeLabel: .constant(.millimeters(width: 30, height: 40)),
                 createdAt: .constant(Calendar.current.date(byAdding: .month, value: -1, to: .now)!),
                 updatedAt: .constant(.now)
             )

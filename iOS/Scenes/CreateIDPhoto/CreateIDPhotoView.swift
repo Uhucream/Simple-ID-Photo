@@ -8,11 +8,6 @@
 
 import SwiftUI
 
-struct IDPhotoBackgroundColor {
-    let name: String
-    let color: Color
-}
-
 enum IDPhotoProcessSelection: Int, Identifiable {
     case backgroundColor
     case size
@@ -49,35 +44,30 @@ struct SizePreferenceKey: PreferenceKey {
     }
 }
 
-fileprivate let CROP_VIEW_IMAGE_HORIZONTAL_PADDING: CGFloat = 8
+fileprivate let cropViewImageHorizontalPadding: CGFloat = 8
 
-fileprivate let CROP_VIEW_ANIMATION_DURATION_SECONDS: Double = 0.5
+fileprivate let cropViewAnimationDurationSeconds: Double = 0.5
 
 struct CreateIDPhotoView: View {
-    private let BACKGROUND_COLORS: [Color] = [
-        .idPhotoBackgroundColors.blue,
-        .idPhotoBackgroundColors.gray,
-        .idPhotoBackgroundColors.white,
-        .idPhotoBackgroundColors.brown,
-    ]
-    
+    private let availableBackgroundColors: [IDPhotoBackgroundColor] = IDPhotoBackgroundColor.presets
+
     @Namespace private var previewImageNamespace
-    
+
     @State private var previewImageActualSize: CGSize = .zero
 
     @Binding var selectedProcess: IDPhotoProcessSelection
-    
-    @Binding var selectedBackgroundColor: Color
+
+    @Binding var selectedBackgroundColor: IDPhotoBackgroundColor
     @Binding var selectedBackgroundColorLabel: String
-    
-    @Binding var selectedIDPhotoSize: IDPhotoSizeVariant
-    
+
+    @Binding var selectedSizeSpecification: any IDPhotoSizeSpecification
+
     @Binding var originalSizePreviewUIImage: UIImage?
     @Binding var croppedPreviewUIImage: UIImage?
-    
+
     @Binding var croppingCGRect: CGRect
-    
-    var availableSizeVariants: [IDPhotoSizeVariant]
+
+    var availableSizeSpecifications: [any IDPhotoSizeSpecification]
     
     private var previewCroppingCGRect: CGRect {
         let leftUpperOriginRect: CGRect = .init(
@@ -134,20 +124,6 @@ struct CreateIDPhotoView: View {
         return view
     }
     
-    func renderSizeVariantLabel(_ variant: IDPhotoSizeVariant) -> Text {
-        if variant == .original {
-            return Text("オリジナル")
-        }
-        
-        if variant == .passport {
-            return Text("パスポート (35 x 45 mm)")
-        }
-        
-        let photoWidth: Int = Int(variant.photoSize.width.value)
-        
-        return Text("\(photoWidth) x \(projectGlobalMeasurementFormatter.string(from: variant.photoSize.height))")
-    }
-    
     @ViewBuilder
     func BottomControlButtons() -> some View {
         VStack(spacing: 0) {
@@ -187,7 +163,7 @@ struct CreateIDPhotoView: View {
                                     }
                                 
                                 IDPhotoBackgroundColorPicker(
-                                    availableBackgroundColors: BACKGROUND_COLORS,
+                                    availableBackgroundColors: availableBackgroundColors,
                                     selectedBackgroundColor: $selectedBackgroundColor
                                 )
                             }
@@ -199,9 +175,8 @@ struct CreateIDPhotoView: View {
                 
                 if self.selectedProcess == .size {
                     IDPhotoSizePicker(
-                        availableSizeVariants: availableSizeVariants,
-                        renderSelectonLabel: renderSizeVariantLabel,
-                        selectedIDPhotoSize: $selectedIDPhotoSize
+                        availableSizeSpecifications: availableSizeSpecifications,
+                        selectedSizeSpecification: $selectedSizeSpecification
                     )
                 }
             }
@@ -312,7 +287,7 @@ struct CreateIDPhotoView: View {
                 //
                 Color.clear
                     .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                    .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                    .padding(.horizontal, cropViewImageHorizontalPadding)
                     .anchorPreference(
                         key: NamedBoundsPreferenceKey.self,
                         value: .bounds
@@ -352,10 +327,10 @@ struct CreateIDPhotoView: View {
                                             }
                                     }
                                 }
-                                .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                .padding(.horizontal, cropViewImageHorizontalPadding)
                                 .offset(previewImageOffset)
                                 .animation(
-                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                     value: previewImageOffset
                                 )
                                 .scaleEffect(previewImageViewScalingAmount)
@@ -364,7 +339,7 @@ struct CreateIDPhotoView: View {
                                     y: croppingFrameProxy[namedAnchor.anchor].midY
                                 )
                                 .animation(
-                                    .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                    .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                     value: previewImageViewScalingAmount
                                 )
                                 .transition(.scale)
@@ -382,7 +357,7 @@ struct CreateIDPhotoView: View {
                                 if previewCroppingCGRect.size != .zero {
                                     Rectangle()
                                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .padding(.horizontal, cropViewImageHorizontalPadding)
                                         .position(
                                             x: proxy[namedAnchor.anchor].midX,
                                             y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
@@ -395,7 +370,7 @@ struct CreateIDPhotoView: View {
                                     Rectangle()
                                         .stroke(.white, lineWidth: 2)
                                         .aspectRatio(previewCroppingCGRect.size, contentMode: .fit)
-                                        .padding(.horizontal, CROP_VIEW_IMAGE_HORIZONTAL_PADDING)
+                                        .padding(.horizontal, cropViewImageHorizontalPadding)
                                         .position(
                                             x: proxy[namedAnchor.anchor].midX,
                                             y: proxy[namedAnchor.anchor].midY + proxy.safeAreaInsets.top
@@ -406,7 +381,7 @@ struct CreateIDPhotoView: View {
                             .opacity(selectedProcess == .size ? 1 : 0)
                             .ignoresSafeArea()
                             .animation(
-                                .easeOutQuart(duration: CROP_VIEW_ANIMATION_DURATION_SECONDS),
+                                .easeOutQuart(duration: cropViewAnimationDurationSeconds),
                                 value: previewImageViewScalingAmount
                             )
                             .transition(.scale)
@@ -429,11 +404,9 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
     static var previews: some View {
         CreateIDPhotoView(
             selectedProcess: .constant(.backgroundColor),
-            selectedBackgroundColor: .constant(
-                Color.idPhotoBackgroundColors.blue
-            ),
+            selectedBackgroundColor: .constant(.blue),
             selectedBackgroundColorLabel: .constant("青"),
-            selectedIDPhotoSize: .constant(.original),
+            selectedSizeSpecification: .constant(.original),
             originalSizePreviewUIImage: .constant(
                 .init(named: "TimCook")
             ),
@@ -441,7 +414,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
                 .init(named: "TimCook")
             ),
             croppingCGRect: .constant(CGRect(origin: .zero, size: UIImage(named: "TimCook")!.size)),
-            availableSizeVariants: IDPhotoSizeVariant.allCases
+            availableSizeSpecifications: JapanIDPhotoSize.allCases
         )
     }
 }

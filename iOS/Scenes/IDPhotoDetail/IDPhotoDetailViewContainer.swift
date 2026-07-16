@@ -30,17 +30,17 @@ struct IDPhotoDetailViewContainer: View {
     @State private var savingStatus: SavingStatus = .inProgress
     
     private func parseCreatedIDPhotoFileURL() -> URL? {
-        let DEFAULT_SAVE_DIRECTORY_ROOT: FileManager.SearchPathDirectory = .libraryDirectory
+        let defaultSaveDirectoryRoot: FileManager.SearchPathDirectory = .libraryDirectory
         
-        let LIBRARY_DIRECTORY_RAW_VALUE_INT64: Int64 = .init(DEFAULT_SAVE_DIRECTORY_ROOT.rawValue)
+        let libraryDirectoryRawValueInt64: Int64 = .init(defaultSaveDirectoryRoot.rawValue)
         
         let fileManager: FileManager = .default
         
         let fileSaveDestinationRootSearchDirectory: FileManager.SearchPathDirectory = .init(
             rawValue: UInt(
-                self.createdIDPhoto.savedDirectory?.rootSearchPathDirectory ?? LIBRARY_DIRECTORY_RAW_VALUE_INT64
+                self.createdIDPhoto.savedDirectory?.rootSearchPathDirectory ?? libraryDirectoryRawValueInt64
             )
-        ) ?? DEFAULT_SAVE_DIRECTORY_ROOT
+        ) ?? defaultSaveDirectoryRoot
         
         let saveDestinationRootSearchDirectoryPathURL: URL? = fileManager.urls(
             for: fileSaveDestinationRootSearchDirectory,
@@ -84,7 +84,7 @@ struct IDPhotoDetailViewContainer: View {
     
     private func onTapDeleteButton() -> Void {
         do {
-            let DEFAULT_SAVE_ROOT_SEARCH_PATH_DIRECTORY: FileManager.SearchPathDirectory = .libraryDirectory
+            let defaultSaveRootSearchPathDirectory: FileManager.SearchPathDirectory = .libraryDirectory
             
             if let sourcePhotoRecord: SourcePhoto = createdIDPhoto.sourcePhoto {
 
@@ -92,7 +92,7 @@ struct IDPhotoDetailViewContainer: View {
                 
                 let sourcePhotoSavedRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
                     rawValue: UInt(sourcePhotoSavedDirectory.rootSearchPathDirectory)
-                ) ?? DEFAULT_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+                ) ?? defaultSaveRootSearchPathDirectory
                 
                 guard let sourcePhotoFileName: String = sourcePhotoRecord.imageFileName else { return }
                 guard let relativePathFromRoot: String = sourcePhotoSavedDirectory.relativePathFromRootSearchPath else { return }
@@ -108,7 +108,7 @@ struct IDPhotoDetailViewContainer: View {
             
             let createdIDPhotoSavedRootSearchPathDirectory: FileManager.SearchPathDirectory = .init(
                 rawValue: UInt(createdIDPhotoSavedDirectory.rootSearchPathDirectory)
-            ) ?? DEFAULT_SAVE_ROOT_SEARCH_PATH_DIRECTORY
+            ) ?? defaultSaveRootSearchPathDirectory
             
             guard let createdIDPhotoFileName: String = createdIDPhoto.imageFileName else { return }
             guard let relativePathFromRoot: String = createdIDPhotoSavedDirectory.relativePathFromRootSearchPath else { return }
@@ -138,17 +138,7 @@ struct IDPhotoDetailViewContainer: View {
                         self.createdIDPhoto.imageFileName = newImageURL?.absoluteString
                     }
                 ),
-                idPhotoSizeType: Binding<IDPhotoSizeVariant>(
-                    get: {
-                        let appliedIDPhotoSize = createdIDPhoto.appliedIDPhotoSize
-                        let idPhotoSizeVariant: IDPhotoSizeVariant = IDPhotoSizeVariant(rawValue: Int(appliedIDPhotoSize?.sizeVariant ?? 0)) ?? .original
-                        
-                        return idPhotoSizeVariant
-                    },
-                    set: { (newIDPhotoSizeVariant) in
-                        createdIDPhoto.appliedIDPhotoSize?.sizeVariant = Int32(newIDPhotoSizeVariant.rawValue)
-                    }
-                ),
+                idPhotoSizeLabel: .readOnly(createdIDPhoto.appliedIDPhotoSize?.sizeLabel ?? .unknown),
                 createdAt: Binding<Date>(
                     get: {
                         let createdDate: Date = createdIDPhoto.createdAt ?? .distantPast
@@ -325,7 +315,7 @@ extension IDPhotoDetailViewContainer {
         
         let printingIDPhotoUIImage: UIImage = .init(url: createdIDPhotoFileURL)
         
-        //  MARK: IDPhotoSizeVariant.original など、CGSize が .zero のものはサイズ調整せずに印刷する
+        //  MARK: オリジナルサイズなど、CGSize が .zero のものはサイズ調整せずに印刷する
         if printingIDPhotoCGSize == .zero {
             
             let printInteractionController: UIPrintInteractionController = .shared

@@ -28,9 +28,13 @@ struct SimpleIDPhotoApp_iOS: App {
     @StateObject private var appStorageStore: AppStorageStore = .shared
 
     let persistenceController = PersistenceController.shared
-    
+
     let screenSizeHelper: ScreenSizeHelper = .shared
-    
+
+    init() {
+        persistenceController.backfillSizeSpecificationIDsIfNeeded()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
