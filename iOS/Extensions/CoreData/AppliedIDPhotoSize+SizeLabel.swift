@@ -53,7 +53,7 @@ extension AppliedIDPhotoSize {
     var resolvedSizeSpecification: (any IDPhotoSizeSpecification)? {
         if let resolvedID = self.resolvedSizeSpecificationID {
             if resolvedID == OriginalSizeSpecification.original.id {
-                return OriginalSizeSpecification.original
+                return .original
             }
 
             if let japanIDPhotoSize = JapanIDPhotoSize(rawValue: resolvedID) {

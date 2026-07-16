@@ -72,7 +72,7 @@ struct IDPhotoSizePicker_Previews: PreviewProvider {
     static var previews: some View {
         IDPhotoSizePicker(
             availableSizeSpecifications: JapanIDPhotoSize.allCases,
-            selectedSizeSpecification: .constant(OriginalSizeSpecification.original)
+            selectedSizeSpecification: .constant(.original)
         )
         .previewLayout(.sizeThatFits)
     }

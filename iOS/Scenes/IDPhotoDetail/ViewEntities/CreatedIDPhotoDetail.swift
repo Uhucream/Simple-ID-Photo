@@ -22,7 +22,7 @@ struct CreatedIDPhotoDetail: Identifiable {
 
 private let startOfToday: Date = Calendar.current.startOfDay(for: .now)
 
-private let mockSizeSpecifications: [any IDPhotoSizeSpecification] = [OriginalSizeSpecification.original] + JapanIDPhotoSize.allCases
+private let mockSizeSpecifications: [any IDPhotoSizeSpecification] = [.original] + JapanIDPhotoSize.allCases
 
 let mockHistoriesData: [CreatedIDPhotoDetail] = mockSizeSpecifications.indices
     .map { (index) in

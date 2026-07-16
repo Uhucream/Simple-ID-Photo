@@ -33,7 +33,7 @@ struct EditIDPhotoViewContainer: View {
 
     private let availableBackgroundColors: [IDPhotoBackgroundColor] = IDPhotoBackgroundColor.presets
 
-    private static let defaultSizeSpecification: any IDPhotoSizeSpecification = OriginalSizeSpecification.original
+    private static let defaultSizeSpecification: any IDPhotoSizeSpecification = .original
 
     //  w35xh45 は同寸法のパスポート規格 (規格の写り方) と誤認したユーザーが
     //  パスポート申請に使ってしまうのを防ぐため、パスポートサイズ対応が完了するまで表示しない
@@ -55,7 +55,7 @@ struct EditIDPhotoViewContainer: View {
             selectableSizes.insert(appliedSizeSpecification, at: insertionIndex)
         }
 
-        return [OriginalSizeSpecification.original] + selectableSizes
+        return [.original] + selectableSizes
     }
 
     @Environment(\.managedObjectContext) private var viewContext

@@ -373,7 +373,7 @@ struct EditIDPhotoView_Previews: PreviewProvider {
             selectedProcess: .constant(.size),
             selectedBackgroundColor: .constant(.blue),
             selectedBackgroundColorLabel: .constant("青"),
-            selectedSizeSpecification: .constant(OriginalSizeSpecification.original),
+            selectedSizeSpecification: .constant(.original),
             originalSizePreviewUIImage: .constant(
                 nil
             ),

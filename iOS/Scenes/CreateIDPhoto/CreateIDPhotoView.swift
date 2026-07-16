@@ -406,7 +406,7 @@ struct CreateIDPhotoView_Previews: PreviewProvider {
             selectedProcess: .constant(.backgroundColor),
             selectedBackgroundColor: .constant(.blue),
             selectedBackgroundColorLabel: .constant("青"),
-            selectedSizeSpecification: .constant(OriginalSizeSpecification.original),
+            selectedSizeSpecification: .constant(.original),
             originalSizePreviewUIImage: .constant(
                 .init(named: "TimCook")
             ),
