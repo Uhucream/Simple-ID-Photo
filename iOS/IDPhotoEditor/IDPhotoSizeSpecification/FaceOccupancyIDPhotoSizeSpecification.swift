@@ -17,7 +17,7 @@ struct FaceOccupancyIDPhotoSizeSpecification: IDPhotoSizeSpecification {
     let id: String
 
     /// 写真の物理寸法
-    let dimensions: MeasurementSize
+    let millimeterSize: MeasurementSize
 
     /// 顔 (頭頂〜顎) の高さ
     let millimeterFaceHeight: Measurement<UnitLength>
@@ -27,15 +27,11 @@ struct FaceOccupancyIDPhotoSizeSpecification: IDPhotoSizeSpecification {
 
     let requiresSubjectDetection: Bool = true
 
-    var millimeterSize: MeasurementSize {
-        return dimensions
-    }
-
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
         let faceWithHairRect: CGRect = subject.faceWithHairRect
 
-        let photoMillimeterWidth: Double = dimensions.width.converted(to: .millimeters).value
-        let photoMillimeterHeight: Double = dimensions.height.converted(to: .millimeters).value
+        let photoMillimeterWidth: Double = millimeterSize.width.converted(to: .millimeters).value
+        let photoMillimeterHeight: Double = millimeterSize.height.converted(to: .millimeters).value
 
         let faceMillimeterHeight: Double = millimeterFaceHeight.converted(to: .millimeters).value
         let crownMillimeterMargin: Double = millimeterCrownMargin.converted(to: .millimeters).value

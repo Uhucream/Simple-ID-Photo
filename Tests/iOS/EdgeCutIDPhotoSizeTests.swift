@@ -24,7 +24,7 @@ struct EdgeCutIDPhotoSizeTests {
     /// 元サイズ 30 × 40 mm。この被写体でのクロップ矩形は (937.5, 1550, 1125, 1500)
     private let baseSize: FaceOccupancyIDPhotoSizeSpecification = .init(
         id: "test.base.w30h40",
-        dimensions: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
+        millimeterSize: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
         millimeterFaceHeight: .millimeters(24),
         millimeterCrownMargin: .millimeters(4)
     )

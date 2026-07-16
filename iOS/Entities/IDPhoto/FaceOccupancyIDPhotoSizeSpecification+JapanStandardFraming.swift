@@ -21,7 +21,7 @@ extension FaceOccupancyIDPhotoSizeSpecification {
 
         return .init(
             id: id,
-            dimensions: MeasurementSize(
+            millimeterSize: MeasurementSize(
                 width: .millimeters(millimeterWidth),
                 height: .millimeters(millimeterHeight)
             ),

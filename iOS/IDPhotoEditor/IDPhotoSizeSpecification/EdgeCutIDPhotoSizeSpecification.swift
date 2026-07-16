@@ -29,8 +29,8 @@ struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
     let requiresSubjectDetection: Bool = true
 
     var millimeterSize: MeasurementSize {
-        let baseMillimeterWidth: Double = baseSize.dimensions.width.converted(to: .millimeters).value
-        let baseMillimeterHeight: Double = baseSize.dimensions.height.converted(to: .millimeters).value
+        let baseMillimeterWidth: Double = baseSize.millimeterSize.width.converted(to: .millimeters).value
+        let baseMillimeterHeight: Double = baseSize.millimeterSize.height.converted(to: .millimeters).value
 
         let bottomCutMillimeters: Double = millimeterBottomCut.converted(to: .millimeters).value
         let horizontalCutPerSideMillimeters: Double = millimeterHorizontalCutPerSide.converted(to: .millimeters).value
@@ -44,7 +44,7 @@ struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
         let baseCroppingRect: CGRect = try baseSize.croppingRect(for: subject)
 
-        let baseMillimeterHeight: Double = baseSize.dimensions.height.converted(to: .millimeters).value
+        let baseMillimeterHeight: Double = baseSize.millimeterSize.height.converted(to: .millimeters).value
 
         let pixelsPerMillimeter: CGFloat = baseCroppingRect.height / baseMillimeterHeight
 

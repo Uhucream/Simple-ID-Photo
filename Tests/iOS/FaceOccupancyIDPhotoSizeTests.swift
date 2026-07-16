@@ -28,7 +28,7 @@ struct FaceOccupancyIDPhotoSizeTests {
     func croppingRectMatchesLegacyFormula() throws {
         let specification: FaceOccupancyIDPhotoSizeSpecification = .init(
             id: "test.w30h40",
-            dimensions: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
+            millimeterSize: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
             millimeterFaceHeight: .millimeters(24),
             millimeterCrownMargin: .millimeters(4)
         )
@@ -50,7 +50,7 @@ struct FaceOccupancyIDPhotoSizeTests {
     func throwsWhenFaceRectIsNull() {
         let specification: FaceOccupancyIDPhotoSizeSpecification = .init(
             id: "test.w30h40",
-            dimensions: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
+            millimeterSize: MeasurementSize(width: .millimeters(30), height: .millimeters(40)),
             millimeterFaceHeight: .millimeters(24),
             millimeterCrownMargin: .millimeters(4)
         )
