@@ -9,26 +9,14 @@
 import SwiftUI
 import UIKit
 
-//  プリセット (asset catalog の色から生成)
 extension IDPhotoBackgroundColor {
-
-    static let blue: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.blue)
-    static let gray: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.gray)
-    static let white: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.white)
-    static let brown: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.brown)
-
-    static let presets: [IDPhotoBackgroundColor] = [
-        .blue,
-        .gray,
-        .white,
-        .brown
-    ]
-
     /// SwiftUI の Color から背景色を生成する (カスタムカラー用)
     static func custom(_ color: Color) -> IDPhotoBackgroundColor {
         let cgColor: CGColor = color.cgColor ?? UIColor(color).cgColor
 
-        guard let displayP3ColorSpace: CGColorSpace = RGBColorSpace.displayP3.cgColorSpace else {
+        let displayP3ColorSpace: CGColorSpace? = RGBColorSpace.displayP3.cgColorSpace
+
+        guard let displayP3ColorSpace else {
             return .clear
         }
 
@@ -39,10 +27,9 @@ extension IDPhotoBackgroundColor {
             options: nil
         )
 
-        guard
-            let components: [CGFloat] = convertedCGColor?.components,
-            components.count >= 4
-        else { return .clear }
+        let components: [CGFloat]? = convertedCGColor?.components
+
+        guard let components, components.count >= 4 else { return .clear }
 
         return .solid(
             red: Double(components[0]),
@@ -54,48 +41,38 @@ extension IDPhotoBackgroundColor {
     }
 }
 
+//  プリセット (asset catalog の色から生成)
+extension IDPhotoBackgroundColor {
+    static let blue: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.blue)
+    static let gray: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.gray)
+    static let white: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.white)
+    static let brown: IDPhotoBackgroundColor = .custom(Color.idPhotoBackgroundColors.brown)
+}
+
+extension IDPhotoBackgroundColor {
+    static let presets: [IDPhotoBackgroundColor] = [
+        .blue,
+        .gray,
+        .white,
+        .brown
+    ]
+}
+
 //  SwiftUI 連携
 extension IDPhotoBackgroundColor {
-
-    /// SwiftUI の Color 表現
-    var swiftUIColor: Color {
-        switch self {
-
-        case .clear:
-            return .clear
-
-        case .solid(let red, let green, let blue, let alpha, let colorSpace):
-            let swiftUIColorSpace: Color.RGBColorSpace = (colorSpace == .displayP3) ? .displayP3 : .sRGB
-
-            return Color(
-                swiftUIColorSpace,
-                red: red,
-                green: green,
-                blue: blue,
-                opacity: alpha
-            )
-        }
-    }
-
     /// UI に表示する色名ラベル
     var label: String {
         switch self {
-
         case .clear:
             return "背景色なし"
-
         case .blue:
             return "青"
-
         case .gray:
             return "グレー"
-
         case .white:
             return "白"
-
         case .brown:
             return "茶"
-
         default:
             return "カスタム"
         }

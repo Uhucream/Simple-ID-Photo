@@ -291,7 +291,7 @@ struct CreateIDPhotoViewContainer: View {
                 //  未検出なら検出してでも保存する。検出に失敗しても (人物・顔が写っていない等) 保存自体は妨げない
                 let detectedSubject: IDPhotoSubject? = try? await idPhotoEditor?.detectedSubject()
 
-                if let detectedSubject = detectedSubject {
+                if let detectedSubject {
                     newSourcePhotoRecord.detectedSubject = DetectedSubject(
                         on: viewContext,
                         subject: detectedSubject
@@ -471,7 +471,7 @@ struct CreateIDPhotoViewContainer: View {
                 Task { @MainActor in
                     self.croppedPreviewUIImage = croppedPhotoUIImage
                 }
-            } catch let error as IDPhotoEditorError {
+            } catch let error as IDPhotoEditor.Error {
                 Task { @MainActor in
                     self.croppingErrorMessage = error.localizedDescription
                     self.shouldShowCroppingErrorAlert = true

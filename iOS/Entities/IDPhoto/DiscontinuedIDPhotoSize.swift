@@ -11,8 +11,7 @@ import CoreGraphics
 
 /// 廃止された規格サイズ
 ///
-/// 現行の規格一覧にはないが、過去に作成された証明写真が使っているサイズを、
-/// 保存済みの物理寸法から標準の写り方で再現する。
+/// 現行の規格一覧にはないが、過去に作成された証明写真が使っているサイズを、保存済みの物理寸法から標準の写り方で再現する。
 struct DiscontinuedIDPhotoSize: IDPhotoSizeSpecification {
 
     let millimeterWidth: Double

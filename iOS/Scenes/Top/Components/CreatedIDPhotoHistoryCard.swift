@@ -21,6 +21,7 @@ struct CreatedIDPhotoHistoryCard: View {
     @ScaledMetric(relativeTo: .callout) var titleScaleFactor: CGFloat = 1
     @ScaledMetric(relativeTo: .callout) var thumbnailScaleFactor: CGFloat = 1
 
+    // FIXME: そもそも親から String で渡されるべき
     var sizeLabel: AppliedIDPhotoSizeLabel
 
     var idPhotoThumbnailImageURL: URL?

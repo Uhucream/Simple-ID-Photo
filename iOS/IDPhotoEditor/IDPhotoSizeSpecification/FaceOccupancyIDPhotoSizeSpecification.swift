@@ -10,10 +10,7 @@ import Foundation
 import CoreGraphics
 
 /// 標準の写り方 (顔が写真全体に占める割合を一定にする) の仕様書
-///
-/// カスタムサイズもこの仕様書で表現できる (寸法・顔の高さ・頭上の余白がすべてパラメータであるため)。
 struct FaceOccupancyIDPhotoSizeSpecification: IDPhotoSizeSpecification {
-
     let id: String
 
     /// 写真の物理寸法
@@ -42,7 +39,7 @@ struct FaceOccupancyIDPhotoSizeSpecification: IDPhotoSizeSpecification {
             photoMillimeterWidth > .zero,
             photoMillimeterHeight > .zero,
             faceMillimeterHeight > .zero
-        else { throw IDPhotoEditorError.croppingRegionUnsatisfiable }
+        else { throw IDPhotoEditor.Error.croppingRegionUnsatisfiable }
 
         let faceHeightRatio: Double = faceMillimeterHeight / photoMillimeterHeight
         let aspectRatio: Double = photoMillimeterWidth / photoMillimeterHeight

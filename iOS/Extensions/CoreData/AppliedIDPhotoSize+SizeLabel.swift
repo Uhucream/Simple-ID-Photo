@@ -25,9 +25,8 @@ enum AppliedIDPhotoSizeLabel: Equatable {
 
 extension AppliedIDPhotoSize {
 
+    // 未バックフィルのレコードは旧 sizeVariant からフォールバック解決する
     /// 仕様書 ID
-    ///
-    /// 未バックフィルのレコードは旧 sizeVariant からフォールバック解決する
     var resolvedSizeSpecificationID: String? {
         if let sizeSpecificationID = self.sizeSpecificationID {
             return sizeSpecificationID

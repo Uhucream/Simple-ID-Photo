@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24DA02F02FFFD34500ADD288 /* MeasurementSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */; };
 		4707215229B02A0800BD8535 /* AppliedIDPhotoSize+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */; };
 		4707215629B02A7200BD8535 /* CreatedIDPhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215529B02A7200BD8535 /* CreatedIDPhoto+.swift */; };
 		4707215829B02A8E00BD8535 /* SourcePhoto+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707215729B02A8E00BD8535 /* SourcePhoto+.swift */; };
@@ -19,30 +20,6 @@
 		4727C34029C43FC1000C9D90 /* AdMobListCellAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */; };
 		4727C34E29C467A9000C9D90 /* TopView_iOS16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C34B29C467A9000C9D90 /* TopView_iOS16.swift */; };
 		4727C34F29C467A9000C9D90 /* TopView_iOS15.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4727C34D29C467A9000C9D90 /* TopView_iOS15.swift */; };
-		FAB1E5ED0000000000000201 /* IDPhotoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000101 /* IDPhotoEditor.swift */; };
-		FAB1E5ED0000000000000202 /* IDPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000102 /* IDPhoto.swift */; };
-		FAB1E5ED0000000000000203 /* IDPhotoSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */; };
-		FAB1E5ED0000000000000204 /* IDPhotoBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */; };
-		FAB1E5ED0000000000000205 /* IDPhotoEditorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */; };
-		24DA02F02FFFD34500ADD288 /* MeasurementSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */; };
-		FAB1E5ED0000000000000206 /* IDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */; };
-		FAB1E5ED0000000000000207 /* OriginalSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */; };
-		FAB1E5ED0000000000000208 /* FaceOccupancyIDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */; };
-		FAB1E5ED0000000000000209 /* EdgeCutIDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */; };
-		FAB1E5ED000000000000020A /* JapanIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */; };
-		FAB1E5ED000000000000020B /* IDPhotoBackgroundColor+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */; };
-		FAB1E5ED000000000000020C /* IDPhotoSizeSpecification+Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */; };
-		FAB1E5ED000000000000020D /* AppliedIDPhotoSize+SizeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010D /* AppliedIDPhotoSize+SizeLabel.swift */; };
-		FAB1E5ED000000000000020E /* DetectedSubject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010E /* DetectedSubject+.swift */; };
-		FAB1E5ED0000000000000216 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */; };
-		FAB1E5ED0000000000000217 /* DiscontinuedIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000117 /* DiscontinuedIDPhotoSize.swift */; };
-		FAB1E5ED0000000000000218 /* DiscontinuedIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000118 /* DiscontinuedIDPhotoSizeTests.swift */; };
-		FAB1E5ED0000000000000219 /* MeasurementSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000119 /* MeasurementSizeTests.swift */; };
-		FAB1E5ED0000000000000211 /* FaceOccupancyIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */; };
-		FAB1E5ED0000000000000212 /* EdgeCutIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */; };
-		FAB1E5ED0000000000000213 /* JapanIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */; };
-		FAB1E5ED0000000000000214 /* IDPhotoBackgroundColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */; };
-		FAB1E5ED0000000000000215 /* IDPhotoEditorStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000115 /* IDPhotoEditorStateTests.swift */; };
 		472BCF08299E120A007D9BC3 /* ConfirmSaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */; };
 		472BCF0A299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */; };
 		472EA52429BA123700463D32 /* EditIDPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472EA52329BA123500463D32 /* EditIDPhotoView.swift */; };
@@ -158,6 +135,29 @@
 		96A697BC2BB7EFC5008C329A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 96A697BB2BB7EEE6008C329A /* PrivacyInfo.xcprivacy */; };
 		96A8C6412A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
 		96A8C6422A80D19B00455F85 /* Calendar+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A8C6402A80D19B00455F85 /* Calendar+.swift */; };
+		FAB1E5ED0000000000000201 /* IDPhotoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000101 /* IDPhotoEditor.swift */; };
+		FAB1E5ED0000000000000202 /* IDPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000102 /* IDPhoto.swift */; };
+		FAB1E5ED0000000000000203 /* IDPhotoSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */; };
+		FAB1E5ED0000000000000204 /* IDPhotoBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */; };
+		FAB1E5ED0000000000000205 /* IDPhotoEditorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */; };
+		FAB1E5ED0000000000000206 /* IDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */; };
+		FAB1E5ED0000000000000207 /* OriginalSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */; };
+		FAB1E5ED0000000000000208 /* FaceOccupancyIDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */; };
+		FAB1E5ED0000000000000209 /* EdgeCutIDPhotoSizeSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */; };
+		FAB1E5ED000000000000020A /* JapanIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */; };
+		FAB1E5ED000000000000020B /* IDPhotoBackgroundColor+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */; };
+		FAB1E5ED000000000000020C /* IDPhotoSizeSpecification+Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */; };
+		FAB1E5ED000000000000020D /* AppliedIDPhotoSize+SizeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010D /* AppliedIDPhotoSize+SizeLabel.swift */; };
+		FAB1E5ED000000000000020E /* DetectedSubject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED000000000000010E /* DetectedSubject+.swift */; };
+		FAB1E5ED0000000000000211 /* FaceOccupancyIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */; };
+		FAB1E5ED0000000000000212 /* EdgeCutIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */; };
+		FAB1E5ED0000000000000213 /* JapanIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */; };
+		FAB1E5ED0000000000000214 /* IDPhotoBackgroundColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */; };
+		FAB1E5ED0000000000000215 /* IDPhotoEditorStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000115 /* IDPhotoEditorStateTests.swift */; };
+		FAB1E5ED0000000000000216 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */; };
+		FAB1E5ED0000000000000217 /* DiscontinuedIDPhotoSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000117 /* DiscontinuedIDPhotoSize.swift */; };
+		FAB1E5ED0000000000000218 /* DiscontinuedIDPhotoSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000118 /* DiscontinuedIDPhotoSizeTests.swift */; };
+		FAB1E5ED0000000000000219 /* MeasurementSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1E5ED0000000000000119 /* MeasurementSizeTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,6 +192,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSize.swift; sourceTree = "<group>"; };
 		47013AEB296C006B000A0D89 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		47013AEC296C0224000A0D89 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4707215129B02A0800BD8535 /* AppliedIDPhotoSize+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoSize+.swift"; sourceTree = "<group>"; };
@@ -203,31 +204,6 @@
 		4727C33D29C43FC0000C9D90 /* AdMobListCellAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdMobListCellAssets.xcassets; sourceTree = "<group>"; };
 		4727C34B29C467A9000C9D90 /* TopView_iOS16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopView_iOS16.swift; sourceTree = "<group>"; };
 		4727C34D29C467A9000C9D90 /* TopView_iOS15.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopView_iOS15.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000101 /* IDPhotoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditor.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000102 /* IDPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhoto.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSubject.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoBackgroundColor.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditorError.swift; sourceTree = "<group>"; };
-		24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSize.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalSizeSpecification.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
-		FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSize.swift; sourceTree = "<group>"; };
-		FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDPhotoBackgroundColor+Presets.swift"; sourceTree = "<group>"; };
-		FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDPhotoSizeSpecification+Label.swift"; sourceTree = "<group>"; };
-		FAB1E5ED000000000000010D /* AppliedIDPhotoSize+SizeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoSize+SizeLabel.swift"; sourceTree = "<group>"; };
-		FAB1E5ED000000000000010E /* DetectedSubject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetectedSubject+.swift"; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift"; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000117 /* DiscontinuedIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscontinuedIDPhotoSize.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000118 /* DiscontinuedIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscontinuedIDPhotoSizeTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000119 /* MeasurementSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSizeTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSizeTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSizeTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSizeTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoBackgroundColorTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000115 /* IDPhotoEditorStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditorStateTests.swift; sourceTree = "<group>"; };
-		FAB1E5ED0000000000000300 /* 2026_07_09_10_00_Introduce_SizeSpecificationID_And_DetectedSubject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2026_07_09_10_00_Introduce_SizeSpecificationID_And_DetectedSubject.xcdatamodel; sourceTree = "<group>"; };
 		472AADAE29D1652F00D7E064 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		472BCF07299E120A007D9BC3 /* ConfirmSaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmSaveView.swift; sourceTree = "<group>"; };
 		472BCF09299E58F4007D9BC3 /* ConfirmSaveViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSaveViewContainer.swift; sourceTree = "<group>"; };
@@ -325,6 +301,30 @@
 		47FC2D6229C0354200F865A4 /* Info-macOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-macOS.plist"; sourceTree = "<group>"; };
 		96A697BB2BB7EEE6008C329A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		96A8C6402A80D19B00455F85 /* Calendar+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+.swift"; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000101 /* IDPhotoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditor.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000102 /* IDPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhoto.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSubject.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoBackgroundColor.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditorError.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalSizeSpecification.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSizeSpecification.swift; sourceTree = "<group>"; };
+		FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSize.swift; sourceTree = "<group>"; };
+		FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDPhotoBackgroundColor+Presets.swift"; sourceTree = "<group>"; };
+		FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IDPhotoSizeSpecification+Label.swift"; sourceTree = "<group>"; };
+		FAB1E5ED000000000000010D /* AppliedIDPhotoSize+SizeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppliedIDPhotoSize+SizeLabel.swift"; sourceTree = "<group>"; };
+		FAB1E5ED000000000000010E /* DetectedSubject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetectedSubject+.swift"; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000111 /* FaceOccupancyIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceOccupancyIDPhotoSizeTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000112 /* EdgeCutIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeCutIDPhotoSizeTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000113 /* JapanIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JapanIDPhotoSizeTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000114 /* IDPhotoBackgroundColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoBackgroundColorTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000115 /* IDPhotoEditorStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDPhotoEditorStateTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift"; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000117 /* DiscontinuedIDPhotoSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscontinuedIDPhotoSize.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000118 /* DiscontinuedIDPhotoSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscontinuedIDPhotoSizeTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000119 /* MeasurementSizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSizeTests.swift; sourceTree = "<group>"; };
+		FAB1E5ED0000000000000300 /* 2026_07_09_10_00_Introduce_SizeSpecificationID_And_DetectedSubject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2026_07_09_10_00_Introduce_SizeSpecificationID_And_DetectedSubject.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -409,6 +409,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24591F003008EC3E00749CB7 /* IDPhotoEditor */ = {
+			isa = PBXGroup;
+			children = (
+				FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */,
+				FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */,
+				FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */,
+			);
+			path = IDPhotoEditor;
+			sourceTree = "<group>";
+		};
+		24DA02F12FFFD4DC00ADD288 /* IDPhotoSizeSpecification */ = {
+			isa = PBXGroup;
+			children = (
+				FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */,
+				FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */,
+				FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */,
+				FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */,
+			);
+			path = IDPhotoSizeSpecification;
+			sourceTree = "<group>";
+		};
 		47013AEA296C004C000A0D89 /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
@@ -494,36 +515,8 @@
 			children = (
 				FAB1E5ED000000000000010A /* JapanIDPhotoSize.swift */,
 				FAB1E5ED0000000000000117 /* DiscontinuedIDPhotoSize.swift */,
-				FAB1E5ED0000000000000116 /* FaceOccupancyIDPhotoSizeSpecification+JapanStandardFraming.swift */,
-				FAB1E5ED000000000000010B /* IDPhotoBackgroundColor+Presets.swift */,
-				FAB1E5ED000000000000010C /* IDPhotoSizeSpecification+Label.swift */,
 			);
 			path = IDPhoto;
-			sourceTree = "<group>";
-		};
-		24DA02F12FFFD4DC00ADD288 /* IDPhotoSizeSpecification */ = {
-			isa = PBXGroup;
-			children = (
-				FAB1E5ED0000000000000106 /* IDPhotoSizeSpecification.swift */,
-				FAB1E5ED0000000000000107 /* OriginalSizeSpecification.swift */,
-				FAB1E5ED0000000000000108 /* FaceOccupancyIDPhotoSizeSpecification.swift */,
-				FAB1E5ED0000000000000109 /* EdgeCutIDPhotoSizeSpecification.swift */,
-			);
-			path = IDPhotoSizeSpecification;
-			sourceTree = "<group>";
-		};
-		FAB1E5ED0000000000000100 /* IDPhotoEditor */ = {
-			isa = PBXGroup;
-			children = (
-				FAB1E5ED0000000000000101 /* IDPhotoEditor.swift */,
-				FAB1E5ED0000000000000102 /* IDPhoto.swift */,
-				FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */,
-				FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */,
-				FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */,
-				24DA02F12FFFD4DC00ADD288 /* IDPhotoSizeSpecification */,
-				24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */,
-			);
-			path = IDPhotoEditor;
 			sourceTree = "<group>";
 		};
 		472BCF06299E120A007D9BC3 /* ConfirmSave */ = {
@@ -964,6 +957,7 @@
 				47AB8B8929AF6046008C753F /* CoreData */,
 				4778B34E29A7427000F35EE0 /* Foundation */,
 				4778B34B29A7423F00F35EE0 /* CoreImage */,
+				24591F003008EC3E00749CB7 /* IDPhotoEditor */,
 				4778B34C29A7425600F35EE0 /* ImageIO */,
 				4778B34F29A7428000F35EE0 /* UIKit */,
 				4778B34A29A7421600F35EE0 /* SwiftUI */,
@@ -1111,6 +1105,20 @@
 			path = Concurrency;
 			sourceTree = "<group>";
 		};
+		FAB1E5ED0000000000000100 /* IDPhotoEditor */ = {
+			isa = PBXGroup;
+			children = (
+				FAB1E5ED0000000000000101 /* IDPhotoEditor.swift */,
+				FAB1E5ED0000000000000102 /* IDPhoto.swift */,
+				FAB1E5ED0000000000000103 /* IDPhotoSubject.swift */,
+				FAB1E5ED0000000000000104 /* IDPhotoBackgroundColor.swift */,
+				FAB1E5ED0000000000000105 /* IDPhotoEditorError.swift */,
+				24DA02F12FFFD4DC00ADD288 /* IDPhotoSizeSpecification */,
+				24DA02EF2FFFD34500ADD288 /* MeasurementSize.swift */,
+			);
+			path = IDPhotoEditor;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1118,7 +1126,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 47C49B632967FB1F00F2BF35 /* Build configuration list for PBXNativeTarget "Simple ID Photo (iOS)" */;
 			buildPhases = (
-				47985C9129D13D6200E68025 /* Refresh Settings.bundle Acknowledgements */,
 				47C49B362967FB1C00F2BF35 /* Sources */,
 				47C49B372967FB1C00F2BF35 /* Frameworks */,
 				47C49B382967FB1C00F2BF35 /* Resources */,
@@ -1407,24 +1414,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
-		};
-		47985C9129D13D6200E68025 /* Refresh Settings.bundle Acknowledgements */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Refresh Settings.bundle Acknowledgements";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "scripts/refresh_settings_bundle_acknowledgements.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -71,7 +71,6 @@ extension JapanIDPhotoSize: IDPhotoSizeSpecification {
 }
 
 extension JapanIDPhotoSize {
-
     //  標準の写り方の仕様書。
     //  派生サイズの baseSize (square25 → w25xh30 など) からも参照されるため、定義を1箇所にまとめている
     private static let w24xh30Standard: FaceOccupancyIDPhotoSizeSpecification = .japanStandardFraming(id: JapanIDPhotoSize.w24xh30.rawValue, millimeterWidth: 24, millimeterHeight: 30)
@@ -135,7 +134,6 @@ extension JapanIDPhotoSize {
 }
 
 extension JapanIDPhotoSize {
-
     /// パスポート規格 (4.5 × 3.5 cm) の予約 ID
     ///
     /// 仕様書の実装はパスポートサイズ対応 (roadmap 5・別PR) で行うため、現時点では ID のみ予約している
@@ -144,31 +142,22 @@ extension JapanIDPhotoSize {
     /// 旧 `IDPhotoSizeVariant` (enum の rawValue) からの変換
     ///
     /// 廃止されたサイズ (custom / w40_h50 / w40_h55 / w50_h50) は nil を返す。
-    /// original (0) と passport (1) は本 enum の範囲外なので、呼び出し側で個別に扱う
     init?(legacySizeVariantRawValue: Int32) {
         switch legacySizeVariantRawValue {
-
         case 3:
             self = .w24xh30
-
         case 4:
             self = .w25xh30
-
         case 5:
             self = .square30
-
         case 6:
             self = .w30xh40
-
         case 7:
             self = .w35xh45
-
         case 10:
             self = .w40xh60
-
         case 11:
             self = .w45xh60
-
         default:
             return nil
         }

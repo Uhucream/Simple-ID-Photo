@@ -10,11 +10,7 @@ import Foundation
 import CoreGraphics
 
 /// 派生サイズ (元サイズをカットして作るサイズ) の仕様書
-///
-/// DNP の仕様に基づき、縦方向のカットは写真の下部のみ (上端は固定)、横方向のカットは左右均等。
-/// 詳細は `.claude/docs/photo_size_spec.md` 第7章を参照。
 struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
-
     let id: String
 
     /// カット元のサイズ仕様書
@@ -60,7 +56,7 @@ struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
         )
 
         guard croppingRect.width > .zero, croppingRect.height > .zero else {
-            throw IDPhotoEditorError.croppingRegionUnsatisfiable
+            throw IDPhotoEditor.Error.croppingRegionUnsatisfiable
         }
 
         return croppingRect

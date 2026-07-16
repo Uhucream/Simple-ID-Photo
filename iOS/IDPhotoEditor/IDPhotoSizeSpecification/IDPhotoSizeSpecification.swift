@@ -11,8 +11,7 @@ import CoreGraphics
 
 /// 証明写真の「サイズ仕様書」。
 ///
-/// `IDPhotoEditor.cropped(to:)` に渡され、被写体の検出結果からクロップ矩形を生成する。
-/// クロップ矩形の計算ロジックは各仕様書に閉じており、エディタ自身は計算を一切持たない。
+/// 被写体の検出結果からクロップ矩形を生成する。
 protocol IDPhotoSizeSpecification: Identifiable, Sendable {
 
     /// 仕様書の種類を一意に表す識別子
@@ -28,6 +27,6 @@ protocol IDPhotoSizeSpecification: Identifiable, Sendable {
 
     /// subject から、元画像の CoreImage 座標系 (原点込み) のクロップ矩形を生成する
     ///
-    /// 生成できない場合は throw する (エディタはそのまま rethrow する)
+    /// 生成できない場合は throw する
     func croppingRect(for subject: IDPhotoSubject) throws -> CGRect
 }

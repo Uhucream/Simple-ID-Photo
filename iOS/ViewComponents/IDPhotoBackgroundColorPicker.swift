@@ -17,7 +17,7 @@ struct IDPhotoBackgroundColorPicker: View {
         HStack(alignment: .center, spacing: 12) {
             ForEach(availableBackgroundColors) { backgroundColor in
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(backgroundColor.swiftUIColor)
+                    .fill(Color(idPhotoBackgroundColor: backgroundColor))
                     .aspectRatio(1.0, contentMode: .fit)
                     .padding(4)
                     .overlay {

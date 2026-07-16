@@ -63,23 +63,21 @@ actor IDPhotoEditor {
 
         self.workingCIImage = sourceCIImage
     }
-}
-
-//  テスト用の初期化
-extension IDPhotoEditor {
 
     //  スタブの人物マスクを注入し、マスク生成の Vision 実行をスキップさせる
-    convenience init(
+    init(
         sourceCIImage: CIImage,
         orientation: CGImagePropertyOrientation,
         precomputedSubject: IDPhotoSubject? = nil,
         stubPersonMask: CIImage
     ) {
-        self.init(
-            sourceCIImage: sourceCIImage,
-            orientation: orientation,
-            precomputedSubject: precomputedSubject
-        )
+        self.sourceCIImage = sourceCIImage
+        self.sourceOrientation = orientation
+
+        self.cachedSubject = precomputedSubject
+        self.cachedPersonMaskCIImage = nil
+
+        self.workingCIImage = sourceCIImage
 
         self.cachedPersonMaskCIImage = stubPersonMask
     }
@@ -92,7 +90,9 @@ extension IDPhotoEditor {
     ///
     /// 未検出の場合は Vision を実行して検出する
     func detectedSubject() async throws -> IDPhotoSubject {
-        if let cachedSubject = cachedSubject { return cachedSubject }
+        if let cachedSubject {
+            return cachedSubject
+        }
 
         let detectedSubject: IDPhotoSubject = try await detectSubject()
 
@@ -103,7 +103,7 @@ extension IDPhotoEditor {
 
     /// 検出済みの場合のみ被写体の検出結果を返す
     ///
-    /// Vision は実行しない
+    /// 被写体検出は実行されない
     func alreadyDetectedSubject() -> IDPhotoSubject? {
         return cachedSubject
     }
@@ -127,8 +127,8 @@ extension IDPhotoEditor {
         case .solid:
             let backgroundCIColor: CIColor? = .init(idPhotoBackgroundColor: backgroundColor)
 
-            guard let backgroundCIColor = backgroundCIColor else {
-                throw IDPhotoEditorError.invalidBackgroundColor
+            guard let backgroundCIColor else {
+                throw IDPhotoEditor.Error.invalidBackgroundColor
             }
 
             let solidColorBackgroundCIImage: CIImage = CIImage(color: backgroundCIColor)
@@ -225,7 +225,6 @@ extension IDPhotoEditor {
 
 //  人物マスク生成
 extension IDPhotoEditor {
-
     //  背景合成用の人物マスク (キャッシュされる)
     private func personMask() async throws -> CIImage {
         if let cachedPersonMaskCIImage = cachedPersonMaskCIImage { return cachedPersonMaskCIImage }
@@ -238,8 +237,8 @@ extension IDPhotoEditor {
             maskPixelBuffer = try await generatePersonSegmentationMaskPixelBuffer(qualityLevel: .accurate)
         }
 
-        guard let maskPixelBuffer = maskPixelBuffer else {
-            throw IDPhotoEditorError.personNotDetected
+        guard let maskPixelBuffer else {
+            throw IDPhotoEditor.Error.personNotDetected
         }
 
         let personMaskCIImage: CIImage = .init(cvImageBuffer: maskPixelBuffer)
@@ -258,8 +257,8 @@ extension IDPhotoEditor {
 
         let maskPixelBuffer: CVPixelBuffer? = try await generatePersonSegmentationMaskPixelBuffer(qualityLevel: .balanced)
 
-        guard let maskPixelBuffer = maskPixelBuffer else {
-            throw IDPhotoEditorError.personNotDetected
+        guard let maskPixelBuffer else {
+            throw IDPhotoEditor.Error.personNotDetected
         }
 
         return CIImage(cvImageBuffer: maskPixelBuffer)
@@ -341,17 +340,17 @@ extension IDPhotoEditor {
         let faceObservations: [VNFaceObservation]? = try await faceObservationsTask
 
         guard let personContourObservation = contoursObservations?.first else {
-            throw IDPhotoEditorError.personNotDetected
+            throw IDPhotoEditor.Error.personNotDetected
         }
 
         guard let faceObservation = faceObservations?.first else {
-            throw IDPhotoEditorError.faceNotDetected
+            throw IDPhotoEditor.Error.faceNotDetected
         }
 
         let personContour: VNContour? = personContourObservation.topLevelContours.max { $0.pointCount < $1.pointCount }
 
         guard let personContour = personContour else {
-            throw IDPhotoEditorError.personNotDetected
+            throw IDPhotoEditor.Error.personNotDetected
         }
 
         let personContourNormalizedBoundingBox: CGRect = personContour.normalizedPath.boundingBox
@@ -363,13 +362,13 @@ extension IDPhotoEditor {
         )
 
         guard let faceContourLandmark = faceObservation.landmarks?.faceContour else {
-            throw IDPhotoEditorError.faceNotDetected
+            throw IDPhotoEditor.Error.faceNotDetected
         }
 
         let faceContourPoints: [CGPoint] = faceContourLandmark.pointsInImage(imageSize: sourceImageSize)
 
         guard let chinPoint: CGPoint = faceContourPoints.min(by: { $0.y < $1.y }) else {
-            throw IDPhotoEditorError.faceNotDetected
+            throw IDPhotoEditor.Error.faceNotDetected
         }
 
         let faceBoundingBox: CGRect = VNImageRectForNormalizedRect(
@@ -453,7 +452,6 @@ extension IDPhotoEditor {
 
 //  Vision リクエスト実行
 extension IDPhotoEditor {
-
     private static func perform(
         _ requests: [VNRequest],
         on imageRequestHandler: VNImageRequestHandler
@@ -462,7 +460,7 @@ extension IDPhotoEditor {
         try await withTaskCancellationHandler {
             try Task.checkCancellation()
 
-            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Swift.Error>) in
                 visionRequestQueue.async {
                     do {
                         try imageRequestHandler.perform(requests)

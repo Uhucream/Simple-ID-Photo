@@ -21,6 +21,25 @@ extension Color {
     }
 }
 
+extension Color {
+    init(idPhotoBackgroundColor: IDPhotoBackgroundColor) {
+        switch idPhotoBackgroundColor {
+        case .clear:
+            self = .clear
+        case .solid(let red, let green, let blue, let alpha, let colorSpace):
+            let colorSpace: Color.RGBColorSpace = (colorSpace == .displayP3) ? .displayP3 : .sRGB
+
+            self.init(
+                colorSpace,
+                red: red,
+                green: green,
+                blue: blue,
+                opacity: alpha
+            )
+        }
+    }
+}
+
 // MARK: Standard content background colors
 extension Color {
     static let systemBackground = Color(uiColor: .systemBackground)

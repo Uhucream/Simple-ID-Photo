@@ -9,9 +9,7 @@
 import Foundation
 
 //  表示名の解決 (仕様書 ID がキー)。
-//  国際化対応 (roadmap 6) では、ここのリテラルを String Catalog のキーに差し替えるだけでよい
 extension IDPhotoSizeSpecification {
-
     /// ピッカーに表示するサイズ名
     ///
     /// 数値サイズは MeasurementFormatter によってロケールに応じてフォーマットされる

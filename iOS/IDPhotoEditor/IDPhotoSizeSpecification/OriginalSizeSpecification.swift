@@ -27,7 +27,6 @@ struct OriginalSizeSpecification: IDPhotoSizeSpecification {
 }
 
 extension IDPhotoSizeSpecification where Self == OriginalSizeSpecification {
-
     /// オリジナルサイズ (切り抜きなし)
     static var original: OriginalSizeSpecification {
         return .init()

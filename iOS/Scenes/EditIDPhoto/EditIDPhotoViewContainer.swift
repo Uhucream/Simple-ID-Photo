@@ -654,7 +654,7 @@ struct EditIDPhotoViewContainer: View {
                 Task { @MainActor in
                     self.croppedPreviewUIImage = croppedPhotoUIImage
                 }
-            } catch let error as IDPhotoEditorError {
+            } catch let error as IDPhotoEditor.Error {
                 Task { @MainActor in
                     self.croppingErrorMessage = error.localizedDescription
                     self.shouldShowCroppingErrorAlert = true
