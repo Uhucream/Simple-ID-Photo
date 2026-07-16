@@ -16,7 +16,8 @@ struct OriginalSizeSpecification: IDPhotoSizeSpecification {
 
     let id: String = "original"
 
-    let millimeterSize: MeasurementSize? = nil
+    //  切り抜きをしないため物理寸法を持たない。ダミー値
+    let millimeterSize: MeasurementSize = .init(width: .millimeters(-1), height: .millimeters(-1))
 
     let requiresSubjectDetection: Bool = false
 

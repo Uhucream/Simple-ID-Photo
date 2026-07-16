@@ -57,7 +57,7 @@ extension JapanIDPhotoSize: IDPhotoSizeSpecification {
         return self.rawValue
     }
 
-    var millimeterSize: MeasurementSize? {
+    var millimeterSize: MeasurementSize {
         return self.specification.millimeterSize
     }
 

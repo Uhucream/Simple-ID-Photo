@@ -24,7 +24,7 @@ struct DiscontinuedIDPhotoSize: IDPhotoSizeSpecification {
         return "discontinued.w\(Int(millimeterWidth))h\(Int(millimeterHeight))"
     }
 
-    var millimeterSize: MeasurementSize? {
+    var millimeterSize: MeasurementSize {
         return standardSpecification.millimeterSize
     }
 

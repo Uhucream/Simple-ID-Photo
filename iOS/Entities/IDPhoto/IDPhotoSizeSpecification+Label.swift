@@ -16,7 +16,9 @@ extension IDPhotoSizeSpecification {
     ///
     /// 数値サイズは MeasurementFormatter によってロケールに応じてフォーマットされる
     var pickerLabel: String {
-        guard let millimeterSize = self.millimeterSize else { return "オリジナル" }
+        guard self is OriginalSizeSpecification == false else { return "オリジナル" }
+
+        let millimeterSize: MeasurementSize = self.millimeterSize
 
         let millimeterWidth: Int = .init(millimeterSize.width.converted(to: .millimeters).value)
 

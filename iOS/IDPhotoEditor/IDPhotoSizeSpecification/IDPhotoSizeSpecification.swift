@@ -18,8 +18,8 @@ protocol IDPhotoSizeSpecification: Identifiable, Sendable {
     /// 仕様書の種類を一意に表す識別子
     var id: String { get }
 
-    /// 表示・印刷に使用する物理寸法。オリジナルサイズ (切り抜きなし) の場合は nil
-    var millimeterSize: MeasurementSize? { get }
+    /// 写真の物理寸法
+    var millimeterSize: MeasurementSize { get }
 
     /// クロップ矩形の生成に被写体の検出結果を必要とするか
     ///

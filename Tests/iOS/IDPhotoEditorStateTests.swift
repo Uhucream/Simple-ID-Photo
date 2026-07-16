@@ -57,7 +57,7 @@ struct IDPhotoEditorStateTests {
 
     private struct StubCropSpecification: IDPhotoSizeSpecification {
         let id: String = "test.stub"
-        let millimeterSize: MeasurementSize? = MeasurementSize(width: .millimeters(20), height: .millimeters(20))
+        let millimeterSize: MeasurementSize = .init(width: .millimeters(20), height: .millimeters(20))
         let requiresSubjectDetection: Bool = true
 
         func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {
@@ -67,7 +67,7 @@ struct IDPhotoEditorStateTests {
 
     private struct ThrowingCropSpecification: IDPhotoSizeSpecification {
         let id: String = "test.throwing"
-        let millimeterSize: MeasurementSize? = nil
+        let millimeterSize: MeasurementSize = .init(width: .millimeters(-1), height: .millimeters(-1))
         let requiresSubjectDetection: Bool = true
 
         func croppingRect(for subject: IDPhotoSubject) throws -> CGRect {

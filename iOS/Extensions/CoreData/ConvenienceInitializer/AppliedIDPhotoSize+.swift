@@ -39,8 +39,8 @@ extension AppliedIDPhotoSize {
             on: context,
             id: id,
             sizeSpecificationID: sizeSpecification.id,
-            millimetersWidth: sizeSpecification.millimeterSize?.width.converted(to: .millimeters).value ?? .zero,
-            millimetersHeight: sizeSpecification.millimeterSize?.height.converted(to: .millimeters).value ?? .zero,
+            millimetersWidth: sizeSpecification.millimeterSize.width.converted(to: .millimeters).value,
+            millimetersHeight: sizeSpecification.millimeterSize.height.converted(to: .millimeters).value,
             createdIDPhoto: createdIDPhoto
         )
     }

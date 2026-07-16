@@ -43,13 +43,13 @@ struct EditIDPhotoViewContainer: View {
         //  廃止サイズを使っている写真では、その仕様書もこの写真の編集中だけ選べるようにする
         if
             let appliedSizeSpecification = originalAppliedSizeSpecification,
-            let appliedMillimeterSize = appliedSizeSpecification.millimeterSize,
+            appliedSizeSpecification is OriginalSizeSpecification == false,
             selectableSizes.contains(where: { $0.id == appliedSizeSpecification.id }) == false
         {
-            let insertionIndex: Int = selectableSizes.firstIndex {
-                guard let millimeterSize = $0.millimeterSize else { return false }
+            let appliedMillimeterSize: MeasurementSize = appliedSizeSpecification.millimeterSize
 
-                return millimeterSize > appliedMillimeterSize
+            let insertionIndex: Int = selectableSizes.firstIndex {
+                return $0.millimeterSize > appliedMillimeterSize
             } ?? selectableSizes.endIndex
 
             selectableSizes.insert(appliedSizeSpecification, at: insertionIndex)

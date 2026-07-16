@@ -65,7 +65,7 @@ struct JapanIDPhotoSizeTests {
 
     @Test("allCases が高さ→横幅の昇順に並んでいる")
     func allCasesAreSortedByHeightThenWidth() {
-        let sizes: [MeasurementSize] = JapanIDPhotoSize.allCases.compactMap(\.millimeterSize)
+        let sizes: [MeasurementSize] = JapanIDPhotoSize.allCases.map(\.millimeterSize)
 
         #expect(sizes.count == JapanIDPhotoSize.allCases.count)
         #expect(sizes == sizes.sorted())

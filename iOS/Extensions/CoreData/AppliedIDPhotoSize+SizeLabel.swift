@@ -87,9 +87,10 @@ extension AppliedIDPhotoSize {
 
         if
             let resolvedID = resolvedID,
-            let japanIDPhotoSize = JapanIDPhotoSize(rawValue: resolvedID),
-            let millimeterSize = japanIDPhotoSize.millimeterSize
+            let japanIDPhotoSize = JapanIDPhotoSize(rawValue: resolvedID)
         {
+            let millimeterSize: MeasurementSize = japanIDPhotoSize.millimeterSize
+
             return .millimeters(
                 width: millimeterSize.width.converted(to: .millimeters).value,
                 height: millimeterSize.height.converted(to: .millimeters).value

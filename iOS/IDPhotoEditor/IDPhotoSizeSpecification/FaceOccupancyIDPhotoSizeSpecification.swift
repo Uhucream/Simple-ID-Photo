@@ -27,7 +27,7 @@ struct FaceOccupancyIDPhotoSizeSpecification: IDPhotoSizeSpecification {
 
     let requiresSubjectDetection: Bool = true
 
-    var millimeterSize: MeasurementSize? {
+    var millimeterSize: MeasurementSize {
         return dimensions
     }
 

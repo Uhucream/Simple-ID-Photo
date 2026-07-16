@@ -28,7 +28,7 @@ struct EdgeCutIDPhotoSizeSpecification: IDPhotoSizeSpecification {
 
     let requiresSubjectDetection: Bool = true
 
-    var millimeterSize: MeasurementSize? {
+    var millimeterSize: MeasurementSize {
         let baseMillimeterWidth: Double = baseSize.dimensions.width.converted(to: .millimeters).value
         let baseMillimeterHeight: Double = baseSize.dimensions.height.converted(to: .millimeters).value
 
