@@ -15,7 +15,7 @@ import CoreGraphics
 /// クロップ矩形の計算ロジックは各仕様書に閉じており、エディタ自身は計算を一切持たない。
 protocol IDPhotoSizeSpecification: Identifiable, Sendable {
 
-    /// 永続化に使用する安定 ID (例: "jp.w30h40", "original", "custom:<UUID>")
+    /// 仕様書の種類を一意に表す識別子
     var id: String { get }
 
     /// 表示・印刷に使用する物理寸法。オリジナルサイズ (切り抜きなし) の場合は nil
