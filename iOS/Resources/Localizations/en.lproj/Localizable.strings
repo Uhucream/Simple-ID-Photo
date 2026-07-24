@@ -9,3 +9,8 @@
 /* No comment provided by engineer. */
 "%@ について" = "About %@";
 
+"MeasurementSize.FormatStyle.widthLabel.full" = "Width";
+"MeasurementSize.FormatStyle.widthLabel.abbreviated" = "W";
+"MeasurementSize.FormatStyle.heightLabel.full" = "Height";
+"MeasurementSize.FormatStyle.heightLabel.abbreviated" = "H";
+

@@ -1,7 +1,12 @@
-/* 
+/*
   Localizable.strings
   Simple ID Photo
 
   Created by TakashiUshikoshi on 2023/01/07.
-  
+
 */
+
+"MeasurementSize.FormatStyle.widthLabel.full" = "横";
+"MeasurementSize.FormatStyle.widthLabel.abbreviated" = "W";
+"MeasurementSize.FormatStyle.heightLabel.full" = "縦";
+"MeasurementSize.FormatStyle.heightLabel.abbreviated" = "H";

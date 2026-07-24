@@ -23,6 +23,10 @@ extension Measurement<UnitLength> {
 }
 
 extension Measurement where UnitType == UnitLength {
+    static func millimeters(_ value: Double) -> Measurement<UnitLength> {
+        return Measurement<UnitLength>(value: value, unit: .millimeters)
+    }
+
     func pixelLength(pixelDensity: Double) -> CGFloat {
         return self.converted(to: .inches).value * pixelDensity
     }
